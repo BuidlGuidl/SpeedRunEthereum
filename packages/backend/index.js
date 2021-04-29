@@ -62,7 +62,7 @@ app.post('/', async function(request, response){
           })
           console.log("sendResult",sendResult)
           fs.appendFileSync("droppedTo.txt",request.body.address+"\n")
-          response.send(" ⏳ Sending you ETH... it could take some time...");
+          response.send(" ⏳ Sending you ETH... "+sendResult.hash);
         }
       }
 

@@ -242,9 +242,17 @@ function App(props) {
 
   let display = ""
   if(result){
+    let possibleTxId = result.substr(-66)
+    console.log("possibleTxId",possibleTxId)
+    let extraLink = ""
+    if(possibleTxId.indexOf("0x")==0){
+      extraLink = <a href={blockExplorer+"tx/"+possibleTxId} target="_blank">view transaction on etherscan</a>
+    }else{
+      possibleTxId=""
+    }
     display = (
       <div>
-        {result}
+        {result.replace(possibleTxId,"")} {extraLink}
         <div style={{marginTop:16}}>
           <a href={blockExplorer+"/address/"+address}>view your address on etherscan</a>
         </div>
