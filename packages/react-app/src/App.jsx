@@ -35,7 +35,8 @@ const axios = require('axios');
     (and then use the `useExternalContractLoader()` hook!)
 */
 
-const serverUrl = "https://backend.ether.delivery:49832/"
+//const serverUrl = "https://backend.ether.delivery:49832/"
+const serverUrl = "http://localhost:49832/"
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS['goerli']; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
@@ -255,23 +256,31 @@ function App(props) {
       <Button loading={loading} style={{marginTop:32}} type="primary" onClick={async ()=>{
 
         setLoading(true)
-        let currentLoader = setTimeout(()=>{setLoading(false)},4000)
-        let message = "I am signing as "+address+" and this message is unique";
-        let sig = await userProvider.send("personal_sign", [ message, address ]);
-        clearTimeout(currentLoader)
-        currentLoader = setTimeout(()=>{setLoading(false)},4000)
-        console.log("sig",sig)
-        const res = await axios.post(serverUrl, {
-          address: address,
-          message: message,
-          signature: sig,
-        })
-        clearTimeout(currentLoader)
-        setLoading(false)
-        console.log("RESULT:",res)
-        if(res.data){
-          setResult(res.data)
+        const msgToSign = await axios.get(serverUrl)
+        console.log("msgToSign",msgToSign)
+        if(msgToSign.data && msgToSign.data.length > 32){//<--- traffic escape hatch?
+          let currentLoader = setTimeout(()=>{setLoading(false)},4000)
+          let message = msgToSign.data.replace("**ADDRESS**",address)
+          let sig = await userProvider.send("personal_sign", [ message, address ]);
+          clearTimeout(currentLoader)
+          currentLoader = setTimeout(()=>{setLoading(false)},4000)
+          console.log("sig",sig)
+          const res = await axios.post(serverUrl, {
+            address: address,
+            message: message,
+            signature: sig,
+          })
+          clearTimeout(currentLoader)
+          setLoading(false)
+          console.log("RESULT:",res)
+          if(res.data){
+            setResult(res.data)
+          }
+        }else{
+          setLoading(false)
+          setResult("😅 Sorry, the server is overloaded. Please try again later. ⏳")
         }
+
       }}>
         <span style={{marginRight:8}}>🔏</span>  sign a message with your ethereum wallet
       </Button>
