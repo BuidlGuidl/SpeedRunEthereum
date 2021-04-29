@@ -15,6 +15,7 @@ import { formatEther, parseEther } from "@ethersproject/units";
 import { Hints, ExampleUI, Subgraph } from "./views"
 import { useThemeSwitcher } from "react-css-theme-switcher";
 import { INFURA_ID, DAI_ADDRESS, DAI_ABI, NETWORK, NETWORKS } from "./constants";
+const axios = require('axios');
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -34,9 +35,10 @@ import { INFURA_ID, DAI_ADDRESS, DAI_ABI, NETWORK, NETWORKS } from "./constants"
     (and then use the `useExternalContractLoader()` hook!)
 */
 
+const serverUrl = "https://backend.ether.delivery:49832/"
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS['mainnet']; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS['goerli']; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true
@@ -94,7 +96,7 @@ function App(props) {
   const yourLocalBalance = useBalance(localProvider, address);
 
   // Just plug in different 🛰 providers to get your balance on different chains:
-  const yourMainnetBalance = useBalance(mainnetProvider, address);
+  //const yourMainnetBalance = useBalance(mainnetProvider, address);
 
   // Load in your local 📝 contract and read a value from it:
   //const readContracts = useContractLoader(localProvider)
@@ -105,10 +107,10 @@ function App(props) {
   // EXTERNAL CONTRACT EXAMPLE:
   //
   // If you want to bring in the mainnet DAI contract it would look like:
-  const mainnetDAIContract = useExternalContractLoader(mainnetProvider, DAI_ADDRESS, DAI_ABI)
+//  const mainnetDAIContract = useExternalContractLoader(mainnetProvider, DAI_ADDRESS, DAI_ABI)
 
   // Then read your DAI balance like:
-  const myMainnetDAIBalance = useContractReader({DAI: mainnetDAIContract},"DAI", "balanceOf",["0x34aA3F359A9D614239015126635CE7732c18fDF3"])
+//  const myMainnetDAIBalance = useContractReader({DAI: mainnetDAIContract},"DAI", "balanceOf",["0x34aA3F359A9D614239015126635CE7732c18fDF3"])
 
   // keep track of a variable from the contract in the local React state:
   //const purpose = useContractReader(readContracts,"YourContract", "purpose")
@@ -125,19 +127,19 @@ function App(props) {
   // ☝️ These effects will log your major set up and upcoming transferEvents- and balance changes
   //
   useEffect(()=>{
-    if(DEBUG && mainnetProvider && address && selectedChainId && yourLocalBalance && yourMainnetBalance && /*readContracts && writeContracts &&*/ mainnetDAIContract){
+    if(DEBUG && mainnetProvider && address && selectedChainId && yourLocalBalance /*&&  yourMainnetBalance &&readContracts && writeContracts && mainnetDAIContract*/){
       console.log("_____________________________________ 🏗 scaffold-eth _____________________________________")
       console.log("🌎 mainnetProvider",mainnetProvider)
       console.log("🏠 localChainId",localChainId)
       console.log("👩‍💼 selected address:",address)
       console.log("🕵🏻‍♂️ selectedChainId:",selectedChainId)
       console.log("💵 yourLocalBalance",yourLocalBalance?formatEther(yourLocalBalance):"...")
-      console.log("💵 yourMainnetBalance",yourMainnetBalance?formatEther(yourMainnetBalance):"...")
+      /*console.log("💵 yourMainnetBalance",yourMainnetBalance?formatEther(yourMainnetBalance):"...")*/
     /*  console.log("📝 readContracts",readContracts) */
-      console.log("🌍 DAI contract on mainnet:",mainnetDAIContract)
+      /*console.log("🌍 DAI contract on mainnet:",mainnetDAIContract)*/
     /*  console.log("🔐 writeContracts",writeContracts) */
     }
-  }, [mainnetProvider, address, selectedChainId, yourLocalBalance, yourMainnetBalance, /*readContracts, writeContracts,*/ mainnetDAIContract])
+  }, [mainnetProvider, address, selectedChainId, yourLocalBalance, /*yourMainnetBalance, readContracts, writeContracts, mainnetDAIContract*/])
 
 
   const [oldMainnetBalance, setOldMainnetDAIBalance] = useState(0)
@@ -150,7 +152,7 @@ function App(props) {
   // const [oldBalance, setOldBalance] = useState(0)
 
   // Use this effect for often changing things like your balance and transfer events or contract-specific effects
-  useEffect(()=>{
+  /*useEffect(()=>{
     if(DEBUG){
       if(myMainnetDAIBalance && !myMainnetDAIBalance.eq(oldMainnetBalance)){
         console.log("🥇 myMainnetDAIBalance:",myMainnetDAIBalance)
@@ -167,19 +169,14 @@ function App(props) {
       //  setOldBalance(balance)
       //}
 
-      // For Master Branch Example
-      /*if(setPurposeEvents && setPurposeEvents !== oldPurposeEvents){
-        console.log("📟 SetPurpose events:",setPurposeEvents)
-        setOldPurposeEvents(setPurposeEvents)
-      }*/
     }
-  }, [myMainnetDAIBalance]) // For Buyer-Lazy-Mint Branch: balance, transferEvents
+  }, [myMainnetDAIBalance])*/ // For Buyer-Lazy-Mint Branch: balance, transferEvents
 
 
   let networkDisplay = ""
   if(localChainId && selectedChainId && localChainId != selectedChainId ){
     networkDisplay = (
-      <div style={{zIndex:2, position:'absolute', right:0,top:60,padding:16}}>
+      <div style={{zIndex:2, position:'absolute', right:0,top:0,padding:16}}>
         <Alert
           message={"⚠️ Wrong Network"}
           description={(
@@ -194,7 +191,7 @@ function App(props) {
     )
   }else{
     networkDisplay = (
-      <div style={{zIndex:-1, position:'absolute', right:154,top:28,padding:16,color:targetNetwork.color}}>
+      <div style={{zIndex:-1, position:'absolute', right:154,top:8,padding:16,color:targetNetwork.color}}>
         {targetNetwork.name}
       </div>
     )
@@ -236,12 +233,60 @@ function App(props) {
     )
   }
 
+  const isSigner = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner
+
+  const [ loading, setLoading ] = useState()
+
+  const [ result, setResult ] = useState()
+
+  let display = ""
+  if(result){
+    display = (
+      <div>
+        {result}
+        <div style={{marginTop:16}}>
+          <a href={blockExplorer+"/address/"+address}>view your address on etherscan</a>
+        </div>
+      </div>
+    )
+
+  } else if(isSigner){
+    display = (
+      <Button loading={loading} style={{marginTop:32}} type="primary" onClick={async ()=>{
+
+        setLoading(true)
+        let currentLoader = setTimeout(()=>{setLoading(false)},4000)
+        let message = "I am signing as "+address+" and this message is unique";
+        let sig = await userProvider.send("personal_sign", [ message, address ]);
+        clearTimeout(currentLoader)
+        currentLoader = setTimeout(()=>{setLoading(false)},4000)
+        console.log("sig",sig)
+        const res = await axios.post(serverUrl, {
+          address: address,
+          message: message,
+          signature: sig,
+        })
+        clearTimeout(currentLoader)
+        setLoading(false)
+        console.log("RESULT:",res)
+        if(res.data){
+          setResult(res.data)
+        }
+      }}>
+        <span style={{marginRight:8}}>🔏</span>  sign a message with your ethereum wallet
+      </Button>
+    )
+  }
+
   return (
     <div className="App">
 
       {/* ✏️ Edit the header and change the title to your project name */}
       <Header />
+
       {networkDisplay}
+      {/*
+
       <BrowserRouter>
 
         <Menu style={{ textAlign:"center" }} selectedKeys={[route]} mode="horizontal">
@@ -259,13 +304,9 @@ function App(props) {
           </Menu.Item>
         </Menu>
 
+
         <Switch>
           <Route exact path="/">
-            {/*
-                🎛 this scaffolding is full of commonly used components
-                this <Contract/> component will automatically parse your ABI
-                and give you a form to interact with it locally
-            */}
 
             <Contract
               name="DAI"
@@ -277,26 +318,6 @@ function App(props) {
             />
 
 
-            { /* uncomment for a second contract:
-            <Contract
-              name="SecondContract"
-              signer={userProvider.getSigner()}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-            />
-            */ }
-
-            { /* Uncomment to display and interact with an external contract (DAI on mainnet):
-            <Contract
-              name="DAI"
-              customContract={mainnetDAIContract}
-              signer={userProvider.getSigner()}
-              provider={mainnetProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-            />
-            */ }
           </Route>
           <Route path="/hints">
             <Hints
@@ -315,29 +336,27 @@ function App(props) {
               yourLocalBalance={yourLocalBalance}
               price={price}
               tx={tx}
-              /*writeContracts={writeContracts}
-              readContracts={readContracts}
-              purpose={purpose}
-              setPurposeEvents={setPurposeEvents}*/
             />
           </Route>
           <Route path="/subgraph">
             <Subgraph
             subgraphUri={props.subgraphUri}
             tx={tx}
-            /*writeContracts={writeContracts}*/
             mainnetProvider={mainnetProvider}
             />
           </Route>
         </Switch>
-      </BrowserRouter>
 
+      </BrowserRouter>
+      */}
       <ThemeSwitch />
 
 
       {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-      <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
+      <div style={{textAlign: "center", padding: 10 }}>
          <Account
+            connectText={"Connect Ethereum Wallet"}
+           onlyShowButton={!isSigner}
            address={address}
            localProvider={localProvider}
            userProvider={userProvider}
@@ -350,6 +369,8 @@ function App(props) {
          />
          {faucetHint}
       </div>
+
+      {display}
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support:
        <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>

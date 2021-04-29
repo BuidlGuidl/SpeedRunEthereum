@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const directoryName = "build";
 
-const BUCKETNAME = ""; // <<---- SET YOUR BUCKET NAME AND CREATE aws.json ** see below vvvvvvvvvv
+const BUCKETNAME = "ether.delivery"; // <<---- SET YOUR BUCKET NAME AND CREATE aws.json ** see below vvvvvvvvvv
 
 if (!BUCKETNAME) {
   console.log("☢️   Enter a bucket name in packages/react-app/scripts/s3.js ");
@@ -31,9 +31,9 @@ const options = {
 };
 
 // optional cloudfront invalidation rule
-// const invalidation = {
-//  awsDistributionId: "<Your CloudFront Distribution Id>",
-//  awsInvalidationPath: "/*"
-// }
+ const invalidation = {
+  awsDistributionId: "E3CASOI7ON3YZP",
+  awsInvalidationPath: "/*"
+ }
 
-s3FolderUpload(directoryName, credentials, options /* , invalidation */);
+s3FolderUpload( directoryName, credentials, options, invalidation );
