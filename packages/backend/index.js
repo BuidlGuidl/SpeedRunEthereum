@@ -7,19 +7,19 @@ var bodyParser = require("body-parser");
 var app = express();
 
 let cache = {}
-let currentMessage = "I am **ADDRESS** and I would like some Goerli ETH please!"
+let currentMessage = "I am **ADDRESS** and I would like to sign in to YourDapp, plz!"
 
+/*
+  Uncomment this if you want to create a wallet to send ETH or something...
 const INFURA = JSON.parse(fs.readFileSync("./infura.txt").toString().trim())
 const PK = fs.readFileSync("./pk.txt").toString().trim()
-
 let wallet = new ethers.Wallet(PK,new ethers.providers.InfuraProvider("goerli",INFURA))
 console.log(wallet.address)
-
 const checkWalletBalance = async ()=>{
   console.log("BALANCE:",ethers.utils.formatEther(await wallet.provider.getBalance(wallet.address)))
 }
 checkWalletBalance()
-
+*/
 
 app.use(cors())
 
@@ -30,46 +30,25 @@ app.get("/", function(req, res) {
     console.log("/")
     res.status(200).send(currentMessage);
 });
-/*
-app.get("/:key", function(req, res) {
-    let key = req.params.key
-    console.log("/",key)
-    res.status(200).send(cache[key]);
-});
-*/
 
 app.post('/', async function(request, response){
-    console.log("POOOOST!!!!",request.body);      // your JSON
-    var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-    console.log("IP",ip)
-       // echo the result back
-    const key = ip
-    console.log("key:",key)
-    if(!cache[key] || Date.now() - cache[key] > 60000){
-      cache[key] = Date.now()
-      console.log("NEW...",request.body.message, request.body.signature)
-
-      if(request.body.message!=currentMessage.replace("**ADDRESS**",request.body.address)){
-        response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
-      }else{
-        let recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature)
-        console.log("recovered",recovered)
-        if(recovered==request.body.address){
-          console.log("sending...")
-          let sendResult = await wallet.sendTransaction({
-            to: request.body.address,
-            value: ethers.utils.parseEther("0.01")
-          })
-          console.log("sendResult",sendResult)
-          fs.appendFileSync("droppedTo.txt",request.body.address+"\n")
-          response.send(" ⏳ Sending you ETH... "+sendResult.hash);
-        }
-      }
-
+    const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+    console.log("POST from ip address:",ip,request.body.message)
+    if(request.body.message!=currentMessage.replace("**ADDRESS**",request.body.address)){
+      response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
     }else{
-      response.send(" ⚠️ Too many requests (probably already ether headed your way) please check back later...");
+      let recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature)
+      if(recovered==request.body.address){
+        /*
+          maybe you want to send them some tokens or ETH?
+        let sendResult = await wallet.sendTransaction({
+          to: request.body.address,
+          value: ethers.utils.parseEther("0.01")
+        })
+        */
+        response.send(" 👍 successfully signed in as "+request.body.address+"!");
+      }
     }
-
 });
 
 

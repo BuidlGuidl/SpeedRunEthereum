@@ -39,7 +39,7 @@ const axios = require('axios');
 const serverUrl = "http://localhost:49832/"
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS['goerli']; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS['mainnet']; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true
@@ -226,11 +226,8 @@ function App(props) {
       possibleTxId=""
     }
     display = (
-      <div>
+      <div style={{marginTop:32}}>
         {result.replace(possibleTxId,"")} {extraLink}
-        <div style={{marginTop:16}}>
-          <a href={blockExplorer+"/address/"+address}>view your address on etherscan</a>
-        </div>
       </div>
     )
 
