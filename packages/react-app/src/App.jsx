@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import {  JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Row, Col, Button, Menu, Alert, Switch as SwitchD } from "antd";
+import { message, Row, Col, Button, Menu, Alert, Switch as SwitchD } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
@@ -264,30 +264,37 @@ function App(props) {
       <Button loading={loading} style={{marginTop:32}} type="primary" onClick={async ()=>{
 
         setLoading(true)
-        const msgToSign = await axios.get(serverUrl)
-        console.log("msgToSign",msgToSign)
-        if(msgToSign.data && msgToSign.data.length > 32){//<--- traffic escape hatch?
-          let currentLoader = setTimeout(()=>{setLoading(false)},4000)
-          let message = msgToSign.data.replace("**ADDRESS**",address)
-          let sig = await userProvider.send("personal_sign", [ message, address ]);
-          clearTimeout(currentLoader)
-          currentLoader = setTimeout(()=>{setLoading(false)},4000)
-          console.log("sig",sig)
-          const res = await axios.post(serverUrl, {
-            address: address,
-            message: message,
-            signature: sig,
-          })
-          clearTimeout(currentLoader)
-          setLoading(false)
-          console.log("RESULT:",res)
-          if(res.data){
-            setResult(res.data)
+        try{
+          const msgToSign = await axios.get(serverUrl)
+          console.log("msgToSign",msgToSign)
+          if(msgToSign.data && msgToSign.data.length > 32){//<--- traffic escape hatch?
+            let currentLoader = setTimeout(()=>{setLoading(false)},4000)
+            let message = msgToSign.data.replace("**ADDRESS**",address)
+            let sig = await userProvider.send("personal_sign", [ message, address ]);
+            clearTimeout(currentLoader)
+            currentLoader = setTimeout(()=>{setLoading(false)},4000)
+            console.log("sig",sig)
+            const res = await axios.post(serverUrl, {
+              address: address,
+              message: message,
+              signature: sig,
+            })
+            clearTimeout(currentLoader)
+            setLoading(false)
+            console.log("RESULT:",res)
+            if(res.data){
+              setResult(res.data)
+            }
+          }else{
+            setLoading(false)
+            setResult("😅 Sorry, the server is overloaded. Please try again later. ⏳")
           }
-        }else{
-          setLoading(false)
-          setResult("😅 Sorry, the server is overloaded. Please try again later. ⏳")
+        }catch(e){
+          message.error(' Sorry, the server is overloaded. 🧯🚒🔥');
+          console.log("FAILED TO GET...")
         }
+
+
 
       }}>
         <span style={{marginRight:8}}>🔏</span>  sign a message with your ethereum wallet
