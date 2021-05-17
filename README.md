@@ -7,7 +7,9 @@
 ```bash
 git clone https://github.com/austintgriffith/scaffold-eth.git sign-in-with-web3
 
-cd scaffold-eth
+cd sign-in-with-web3
+
+git checkout sign-in-with-web3
 ```
 
 ```bash
