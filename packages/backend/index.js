@@ -59,7 +59,16 @@ app.post('/', async function (request, response) {
 
       if (dummyDatabase[request.body.address] == null) {
         dummyDatabase[request.body.address] = {
-          "challenges": {}
+          "challenges": {
+            "simple-nft-example": {
+              "status": "ACCEPTED",
+              "url": "example.com"
+            },
+            "decentralized-staking": {
+              "status": "SUBMITTED",
+              "url": "example2.com"
+            }
+          }
         }
       }
       const userObject = dummyDatabase[request.body.address]
