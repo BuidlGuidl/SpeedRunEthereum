@@ -5,11 +5,9 @@
 ---
 
 ```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git sign-in-with-web3
+git clone git@github.com:carletex/scaffold-directory.git
 
-cd sign-in-with-web3
-
-git checkout sign-in-with-web3
+cd scaffold-directory
 ```
 
 ```bash
@@ -68,9 +66,3 @@ yarn backend
 ## 💬 Support Chat
 
 Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA)  to ask questions and find others building with 🏗 scaffold-eth!
-
----
-
-===================================================== [⏫ back to the top ⏫](https://github.com/austintgriffith/scaffold-eth#-scaffold-eth)
-
----
