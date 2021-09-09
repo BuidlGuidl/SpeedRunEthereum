@@ -1,22 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "antd/dist/antd.css";
-import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
+import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { message, Row, Col, Button, Menu, Alert, Switch as SwitchD } from "antd";
+import { Button, Alert, Switch as SwitchD } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
-import { useExchangePrice, useGasPrice, useUserProvider, useContractLoader, useContractReader, useEventListener, useBalance, useExternalContractLoader, useOnBlock, useLocalStorage } from "./hooks";
-import { Header, Account, Faucet, Ramp, Contract, GasGauge, ThemeSwitch } from "./components";
+import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock, useLocalStorage } from "./hooks";
+import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { formatEther, parseEther } from "@ethersproject/units";
-//import Hints from "./Hints";
-import { Hints, ExampleUI, Subgraph } from "./views"
-import { useThemeSwitcher } from "react-css-theme-switcher";
-import { INFURA_ID, DAI_ADDRESS, DAI_ABI, NETWORK, NETWORKS } from "./constants";
+import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { ProfileView, SignInView } from "./views"
-const axios = require('axios');
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -212,7 +208,7 @@ function App(props) {
   }
 
   const isSigner = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner
-  const [userObject, setUserObject] = useLocalStorage()
+  const [userObject, setUserObject] = useLocalStorage({})
 
   return (
     <div className="App">
@@ -239,7 +235,7 @@ function App(props) {
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={() => {
             logoutOfWeb3Modal()
-            setUserObject(undefined)
+            setUserObject({})
           }}
           blockExplorer={blockExplorer}
         />
@@ -251,6 +247,7 @@ function App(props) {
           <Route exact path="/">
 
             <SignInView
+              userObject={userObject}
               serverUrl={serverUrl}
               address={address}
               userProvider={userProvider}
@@ -269,45 +266,6 @@ function App(props) {
           </Route>
         </Switch>
       </BrowserRouter>
-
-      {/* 🗺 Extra UI like gas price, eth price, faucet, and support:
-       <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
-         <Row align="middle" gutter={[4, 4]}>
-           <Col span={8}>
-             <Ramp price={price} address={address} networks={NETWORKS}/>
-           </Col>
-
-           <Col span={8} style={{ textAlign: "center", opacity: 0.8 }}>
-             <GasGauge gasPrice={gasPrice} />
-           </Col>
-           <Col span={8} style={{ textAlign: "center", opacity: 1 }}>
-             <Button
-               onClick={() => {
-                 window.open("https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA");
-               }}
-               size="large"
-               shape="round"
-             >
-               <span style={{ marginRight: 8 }} role="img" aria-label="support">
-                 💬
-               </span>
-               Support
-             </Button>
-           </Col>
-         </Row>
-
-         <Row align="middle" gutter={[4, 4]}>
-           <Col span={24}>
-             {
-               faucetAvailable ? (
-                 <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider}/>
-               ) : (
-                 ""
-               )
-             }
-           </Col>
-         </Row>
-       </div>*/}
 
     </div>
   );

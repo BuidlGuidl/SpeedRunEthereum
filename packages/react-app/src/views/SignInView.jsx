@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { BrowserRouter, Switch, Route, Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { message, Button } from "antd";
 
-export default function SignInView({ serverUrl, address, userProvider, successCallback }) {
-  const history = useHistory();
+export default function SignInView({ serverUrl, address, userProvider, successCallback, userObject }) {
+    const history = useHistory();
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
+    if (userObject != null && Object.keys(userObject).length !== 0) {
+        history.push("/profile")
+    }
     return (
         <div> {error ? <div>{error}</div>
             :
@@ -48,7 +51,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
 
 
             }}>
-                <span style={{ marginRight: 8 }}>🔏</span>  sign a message with your ethereum walconst
+                <span style={{ marginRight: 8 }}>🔏</span>  sign a message with your ethereum welcome
             </Button>}
         </div>
     )
