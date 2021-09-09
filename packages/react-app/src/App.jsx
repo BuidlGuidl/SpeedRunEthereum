@@ -241,31 +241,31 @@ function App(props) {
         />
         {faucetHint}
       </div>
+      {isSigner ?
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/">
+              <SignInView
+                userObject={userObject}
+                serverUrl={serverUrl}
+                address={address}
+                userProvider={userProvider}
+                successCallback={userObject => {
+                  setUserObject(userObject)
+                }} />
 
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
+            </Route>
+            <Route path="/profile">
 
-            <SignInView
-              userObject={userObject}
-              serverUrl={serverUrl}
-              address={address}
-              userProvider={userProvider}
-              successCallback={userObject => {
-                setUserObject(userObject)
-              }} />
+              <ProfileView
+                userObject={userObject}
+                userName={address}
+              />
 
-          </Route>
-          <Route path="/profile">
-
-            <ProfileView
-              userObject={userObject}
-              userName={address}
-            />
-
-          </Route>
-        </Switch>
-      </BrowserRouter>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+        : null}
 
     </div>
   );
