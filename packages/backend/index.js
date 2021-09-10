@@ -5,6 +5,13 @@ const https = require('https')
 const cors = require('cors')
 const bodyParser = require("body-parser");
 const app = express();
+// Firebase set up
+const firebaseAdmin = require('firebase-admin');
+const firebaseServiceAccount = require('./firebaseServiceAccountKey.json');
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(firebaseServiceAccount)
+});
+const database = firebaseAdmin.firestore();
 
 let cache = {}
 const currentMessage = "I am **ADDRESS** and I would like to sign in to Scaffold-Directory, plz!"
