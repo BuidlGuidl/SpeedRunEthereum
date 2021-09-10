@@ -5,7 +5,7 @@
 ---
 
 ```bash
-git clone git@github.com:carletex/scaffold-directory.git
+git clone git@github.com:moonshotcollective/scaffold-directory.git
 
 cd scaffold-directory
 ```
@@ -27,6 +27,7 @@ yarn start
 This project uses Firebase (firestore) for data storage. You'll need to create a firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and donwload the file in https://console.cloud.google.com/, under IAM & Admin > Service Accounts > Keys.
 
 Then run:
+
 ```bash
 
 yarn backend
@@ -36,7 +37,6 @@ yarn backend
 📝 Edit your frontend `App.jsx` in `packages/react-app/src`
 
 📱 Open http://localhost:3000 to see the app
-
 
 ---
 
@@ -68,4 +68,4 @@ yarn backend
 
 ## 💬 Support Chat
 
-Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA)  to ask questions and find others building with 🏗 scaffold-eth!
+Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
