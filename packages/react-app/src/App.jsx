@@ -208,7 +208,7 @@ function App(props) {
   }
 
   const isSigner = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner
-  const [userObject, setUserObject] = useLocalStorage({})
+  const [userObject, setUserObject] = useLocalStorage("scaffold-directory-user", {});
 
   return (
     <div className="App">
@@ -250,9 +250,10 @@ function App(props) {
                 serverUrl={serverUrl}
                 address={address}
                 userProvider={userProvider}
-                successCallback={userObject => {
-                  setUserObject(userObject)
-                }} />
+                successCallback={responseUserObject => {
+                  setUserObject(responseUserObject);
+                }}
+              />
 
             </Route>
             <Route path="/profile">
