@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "antd/dist/antd.css";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Button, Alert, Switch as SwitchD } from "antd";
+import { Button, Alert } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
@@ -62,7 +62,30 @@ const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 // 🔭 block explorer URL
 const blockExplorer = targetNetwork.blockExplorer;
 
-function App(props) {
+/*
+  Web3 modal helps us "connect" external wallets:
+*/
+const web3Modal = new Web3Modal({
+  // network: "mainnet", // optional
+  cacheProvider: true, // optional
+  providerOptions: {
+    walletconnect: {
+      package: WalletConnectProvider, // required
+      options: {
+        infuraId: INFURA_ID,
+      },
+    },
+  },
+});
+
+const logoutOfWeb3Modal = async () => {
+  await web3Modal.clearCachedProvider();
+  setTimeout(() => {
+    window.location.reload();
+  }, 1);
+};
+
+function App() {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
   const [injectedProvider, setInjectedProvider] = useState();
@@ -194,7 +217,6 @@ function App(props) {
   }, [setRoute]);
 
   let faucetHint = "";
-  const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name == "localhost";
 
   const [faucetClicked, setFaucetClicked] = useState(false);
   if (
@@ -279,43 +301,22 @@ function App(props) {
   );
 }
 
-/*
-  Web3 modal helps us "connect" external wallets:
-*/
-const web3Modal = new Web3Modal({
-  // network: "mainnet", // optional
-  cacheProvider: true, // optional
-  providerOptions: {
-    walletconnect: {
-      package: WalletConnectProvider, // required
-      options: {
-        infuraId: INFURA_ID,
-      },
-    },
-  },
-});
-
-const logoutOfWeb3Modal = async () => {
-  await web3Modal.clearCachedProvider();
-  setTimeout(() => {
-    window.location.reload();
-  }, 1);
-};
-
-window.ethereum &&
-  window.ethereum.on("chainChanged", chainId => {
-    web3Modal.cachedProvider &&
+if (window.ethereum) {
+  window.ethereum.on("chainChanged", () => {
+    if (web3Modal.cachedProvider) {
       setTimeout(() => {
         window.location.reload();
       }, 1);
+    }
   });
 
-window.ethereum &&
-  window.ethereum.on("accountsChanged", accounts => {
-    web3Modal.cachedProvider &&
+  window.ethereum.on("accountsChanged", () => {
+    if (web3Modal.cachedProvider) {
       setTimeout(() => {
         window.location.reload();
       }, 1);
+    }
   });
+}
 
 export default App;
