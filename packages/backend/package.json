@@ -8,6 +8,7 @@
     "cors": "^2.8.5",
     "ethers": "^5.1.4",
     "express": "^4.17.1",
+    "firebase-admin": "^9.11.1",
     "https": "^1.0.0",
     "prettier": "^2.4.0"
   }
