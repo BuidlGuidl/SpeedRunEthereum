@@ -11,22 +11,20 @@ const firebaseServiceAccount = require('./firebaseServiceAccountKey.json');
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(firebaseServiceAccount)
 });
+// Docs: https://firebase.google.com/docs/firestore/quickstart#node.js_1
 const database = firebaseAdmin.firestore();
 
-let cache = {}
 const currentMessage = "I am **ADDRESS** and I would like to sign in to Scaffold-Directory, plz!"
-// should be from the database
-let dummyDatabase = {
-  "0xD028d504316FEc029CFa36bdc3A8f053F6E5a6e4": {
-    "challenges": {
-      "simple-nft-example": {
-        "status": "ACCEPTED",
-        "url": "example.com"
-      },
-      "decentralized-staking": {
-        "status": "SUBMITTED",
-        "url": "example2.com"
-      }
+
+const dummyData = {
+  "challenges": {
+    "simple-nft-example": {
+      "status": "ACCEPTED",
+      "url": "example.com"
+    },
+    "decentralized-staking": {
+      "status": "SUBMITTED",
+      "url": "example2.com"
     }
   }
 }
@@ -57,28 +55,27 @@ app.get("/", function (req, res) {
 app.post('/', async function (request, response) {
   const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message)
-  if (request.body.message != currentMessage.replace("**ADDRESS**", request.body.address)) {
+  if (request.body.message !== currentMessage.replace("**ADDRESS**", request.body.address)) {
     response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
   } else {
     let recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature)
-    if (recovered == request.body.address) {
+    const userAddress = request.body.address;
+    if (recovered === userAddress) {
       // we now know that the current user is th one that signed and sent this message
-
-      if (dummyDatabase[request.body.address] == null) {
-        dummyDatabase[request.body.address] = {
-          "challenges": {
-            "simple-nft-example": {
-              "status": "ACCEPTED",
-              "url": "example.com"
-            },
-            "decentralized-staking": {
-              "status": "SUBMITTED",
-              "url": "example2.com"
-            }
-          }
-        }
+      const user = await database.collection('users').doc(userAddress).get();
+      let userObject = {};
+      if (!user.exists) {
+        // Create user.
+        const userRef = database.collection('users').doc(userAddress);
+        await userRef.set(dummyData);
+        console.log('New user created: ', userAddress);
+        userObject = dummyData;
+      } else {
+        // Retrieve existing user.
+        console.log('Retrieving existing user: ', userAddress);
+        userObject = user.data()
       }
-      const userObject = dummyDatabase[request.body.address]
+
       response.json(userObject)
     }
     else {
