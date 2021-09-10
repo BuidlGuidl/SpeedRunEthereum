@@ -24,6 +24,9 @@ yarn start
 
 > start the backend service that listens for and verifies signatures:
 
+This project uses Firebase (firestore) for data storage. You'll need to create a firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and donwload the file in https://console.cloud.google.com/, under IAM & Admin > Service Accounts > Keys.
+
+Then run:
 ```bash
 
 yarn backend
