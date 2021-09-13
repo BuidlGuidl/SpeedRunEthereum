@@ -12,6 +12,7 @@ module.exports = {
     "react/prop-types": "off",
     "react/destructuring-assignment": "off",
     "no-console": "off",
+    "no-underscore-dangle": "off",
     "jsx-a11y/accessible-emoji": ["off"],
   },
 };
