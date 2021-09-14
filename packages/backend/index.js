@@ -51,6 +51,12 @@ app.get("/", function (req, res) {
   res.status(200).send(currentMessage);
 });
 
+app.get("/builders", async function (req, res) {
+  const buildersSnapshot = await database.collection('users').get();
+  console.log("/builders", buildersSnapshot);
+  res.status(200).send(buildersSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()})));
+});
+
 
 app.post('/', async function (request, response) {
   const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
