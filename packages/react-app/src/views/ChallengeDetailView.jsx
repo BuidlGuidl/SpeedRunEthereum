@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Typography, Space } from "antd";
 import { challengeInfo } from "../data/challenges";
 
@@ -23,6 +23,7 @@ export default function ChallengeDetailView({ userObject }) {
     <div>
       <Title>{challenge.label}</Title>
       <Space direction="vertical">
+        <Link to="/profile">{"<"}Back to challenges</Link>
         <Paragraph>{challenge.description}</Paragraph>
 
         <AntdLink href={challenge.url} target="_blank">
