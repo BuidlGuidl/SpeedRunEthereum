@@ -52,8 +52,8 @@ app.get("/", function (req, res) {
 });
 
 app.get("/builders", async function (req, res) {
+  console.log("/builders");
   const buildersSnapshot = await database.collection('users').get();
-  console.log("/builders", buildersSnapshot);
   res.status(200).send(buildersSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()})));
 });
 

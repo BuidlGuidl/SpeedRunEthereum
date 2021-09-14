@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Button, Alert } from "antd";
+import { Button, Alert, Menu } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
@@ -279,6 +279,28 @@ function App() {
       </div>
       {isSigner ? (
         <BrowserRouter>
+          <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
+            <Menu.Item key="/profile">
+              <Link
+                onClick={() => {
+                  setRoute("/profile");
+                }}
+                to="/profile"
+              >
+                My profile
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/builders">
+              <Link
+                onClick={() => {
+                  setRoute("/builders");
+                }}
+                to="/builders"
+              >
+                All Builders
+              </Link>
+            </Menu.Item>
+          </Menu>
           <Switch>
             <Route exact path="/">
               <SignInView
@@ -295,7 +317,7 @@ function App() {
               <ProfileView userObject={userObject} userName={address} />
             </Route>
             <Route path="/builders">
-              <BuilderListView serverUrl={serverUrl} />
+              <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
             </Route>
           </Switch>
         </BrowserRouter>
