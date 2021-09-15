@@ -62,7 +62,7 @@ app.get("/builders/:builderAddress", async function (req, res) {
   console.log(`/builders/${builderAddress}`);
 
   const builderSnapshot = await database.collection("users").doc(builderAddress).get();
-  res.status(200).send(builderSnapshot.data());
+  res.status(200).send({id: builderSnapshot.id, ...builderSnapshot.data()});
 });
 
 
