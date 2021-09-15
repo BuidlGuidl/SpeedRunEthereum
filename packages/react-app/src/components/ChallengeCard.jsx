@@ -1,16 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Typography } from "antd";
 
-const ChallengeCard = ({ challengeInfo, submissionInfo }) => (
+const { Text } = Typography;
+
+const ChallengeCard = ({ challengeId, challengeInfo, submissionInfo }) => (
   <div style={{ display: "inline-block", opacity: challengeInfo.disabled ? 0.5 : 1 }}>
     {challengeInfo.disabled ? (
-      <span>{challengeInfo.label}</span>
+      <Text>{challengeInfo.label}</Text>
     ) : (
-      <a href={challengeInfo.url} target="_blank" rel="noreferrer noopener">
-        {challengeInfo.label}
-      </a>
+      <Link to={`/challenge/${challengeId}`}>{challengeInfo.label}</Link>
     )}
-    {submissionInfo && <span> [{submissionInfo.status}]</span>}
-    {challengeInfo.disabled && <span> (disabled)</span>}
+    {submissionInfo && <Text> [{submissionInfo.status}]</Text>}
+    {challengeInfo.disabled && <Text> (disabled)</Text>}
   </div>
 );
 

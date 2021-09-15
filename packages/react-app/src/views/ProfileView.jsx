@@ -28,6 +28,7 @@ export default function ProfileView({ userObject, userName }) {
                         <ChallengeCard
                           challengeInfo={challengeInfo[challengeKey]}
                           submissionInfo={userObject.challenges[challengeKey]}
+                          challengeId={challengeKey}
                         />
                       </li>
                     ))}
@@ -43,6 +44,7 @@ export default function ProfileView({ userObject, userName }) {
                 <ChallengeCard
                   challengeInfo={challengeInfo[challengeKey]}
                   submissionInfo={userObject.challenges[challengeKey]}
+                  challengeId={challengeKey}
                 />
               </li>
             );
