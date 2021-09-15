@@ -12,7 +12,7 @@ import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock,
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
-import { ProfileView, SignInView } from "./views";
+import { ChallengeDetailView, ProfileView, SignInView } from "./views";
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -293,6 +293,9 @@ function App() {
             </Route>
             <Route path="/profile">
               <ProfileView userObject={userObject} userName={address} />
+            </Route>
+            <Route path="/challenge/:challengeId">
+              <ChallengeDetailView userObject={userObject} />
             </Route>
           </Switch>
         </BrowserRouter>
