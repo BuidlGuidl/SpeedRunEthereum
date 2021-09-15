@@ -12,7 +12,7 @@ import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock,
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
-import { BuilderListView, ChallengeDetailView, ProfileView, SignInView } from "./views";
+import { BuilderListView, ChallengeDetailView, ProfileView, SignInView, BuilderProfileView } from "./views";
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -316,8 +316,11 @@ function App() {
             <Route path="/profile">
               <ProfileView userObject={userObject} userName={address} />
             </Route>
-            <Route path="/builders">
+            <Route path="/builders" exact>
               <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+            </Route>
+            <Route path="/builders/:builderAddress">
+              <BuilderProfileView serverUrl={serverUrl} />
             </Route>
             <Route path="/challenge/:challengeId">
               <ChallengeDetailView userObject={userObject} />
