@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { message, Button } from "antd";
+import { message as uiMessage, Button } from "antd";
 
 export default function SignInView({ serverUrl, address, userProvider, successCallback, userObject }) {
   const history = useHistory();
@@ -23,7 +23,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
           onClick={async () => {
             setLoading(true);
             try {
-              const msgToSign = await axios.get(serverUrl);
+              const msgToSign = await axios.get(`${serverUrl}sign-message`);
               console.log("msgToSign", msgToSign);
               if (msgToSign.data && msgToSign.data.length > 32) {
                 // <--- traffic escape hatch?
@@ -37,7 +37,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
                   setLoading(false);
                 }, 4000);
                 console.log("sig", sig);
-                const res = await axios.post(serverUrl, {
+                const res = await axios.post(`${serverUrl}sign`, {
                   address,
                   message,
                   signature: sig,
@@ -55,7 +55,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
               }
             } catch (e) {
               console.log(e);
-              message.error(" Sorry, the server is overloaded. 🧯🚒🔥");
+              uiMessage.error(" Sorry, the server is overloaded. 🧯🚒🔥");
               console.log("FAILED TO GET...");
             }
           }}

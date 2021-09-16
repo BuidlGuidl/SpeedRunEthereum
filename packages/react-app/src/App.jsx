@@ -33,6 +33,7 @@ import { BuilderListView, ChallengeDetailView, ProfileView, SignInView } from ".
 */
 
 // const serverUrl = "https://backend.ether.delivery:49832/"
+// TODO PR COMMENT: we should probably remove the trailing / here. So we build urls doing ${serverUrl}/foo/bar instead of ${serverUrl}foo/bar
 const serverUrl = "http://localhost:49832/";
 
 /// 📡 What chain are your contracts deployed to?

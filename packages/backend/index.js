@@ -47,8 +47,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", function (req, res) {
-  console.log("/");
+app.get("/sign-message", function (req, res) {
+  console.log("/sign-message");
   res.status(200).send(currentMessage);
 });
 
@@ -60,7 +60,7 @@ app.get("/builders", async function (req, res) {
     .send(buildersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
 });
 
-app.post("/", async function (request, response) {
+app.post("/sign", async function (request, response) {
   const ip =
     request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
