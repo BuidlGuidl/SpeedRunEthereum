@@ -90,6 +90,29 @@ app.post('/', async function (request, response) {
   }
 });
 
+app.post('/challenges', async function (request, response) {
+  // ToDo. Auth / Validate route. https://github.com/moonshotcollective/scaffold-directory/issues/18
+  const { challengeId, deployedUrl, branchUrl, address } = request.body;
+  console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
+
+  const userRef = await database.collection('users').doc(address);
+  const user = await userRef.get();
+  if (user.exists) {
+    const existingChallenges = user.get('challenges');
+    // Overriding for now. We could support an array of submitted challenges.
+    // ToDo. Extract challenge status (ENUM)
+    existingChallenges[challengeId] = {
+      status: "SUBMITTED",
+      branchUrl: branchUrl,
+      deployedUrl: deployedUrl,
+    }
+    await userRef.set({ "challenges": existingChallenges });
+    response.sendStatus(200);
+  } else {
+    response.status(404).send("User not found!");
+  }
+});
+
 
 if (fs.existsSync('server.key') && fs.existsSync('server.cert')) {
   https.createServer({
