@@ -94,7 +94,12 @@ app.post("/sign", async function (request, response) {
         userObject = user.data();
       }
 
-      response.json(userObject);
+      // TODO get isAdmin from the userObject
+      const jwt = await firebaseAdmin
+        .auth()
+        .createCustomToken(recovered, { isAdmin: false });
+
+      response.json({ ...userObject, token: jwt });
     } else {
       response
         .status(401)
