@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import ChallengeCard from "../components/ChallengeCard";
 import { challengeSequence, challengeInfo } from "../data/challenges";
 
-export default function ProfileView({ userObject, userName }) {
+export default function BuilderHomeView({ userObject, userName }) {
   const history = useHistory();
   if (userObject == null || Object.keys(userObject).length === 0) {
     history.push("/");
