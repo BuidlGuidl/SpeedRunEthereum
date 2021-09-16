@@ -54,6 +54,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
                 setError("😅 Sorry, the server is overloaded. Please try again later. ⏳");
               }
             } catch (e) {
+              // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
               console.log(e);
               uiMessage.error(" Sorry, the server is overloaded. 🧯🚒🔥");
               console.log("FAILED TO GET...");
