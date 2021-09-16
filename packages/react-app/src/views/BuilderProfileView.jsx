@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography } from "antd";
+import { Typography, Spin } from "antd";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ChallengeList from "../components/ChallengeList";
@@ -32,7 +32,9 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
             <ChallengeList userChallenges={builder.challenges} />
           </div>
         </>
-      ) : null}
+      ) : (
+        <Spin />
+      )}
     </div>
   );
 }
