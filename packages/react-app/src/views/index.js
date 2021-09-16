@@ -5,3 +5,4 @@ export { default as ChallengeDetailView } from "./ChallengeDetailView";
 export { default as SignInView } from "./SignInView";
 export { default as ProfileView } from "./ProfileView";
 export { default as BuilderListView } from "./BuilderListView";
+export { default as BuilderProfileView } from "./BuilderProfileView";

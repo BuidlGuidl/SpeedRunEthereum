@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react";
 import { List, Typography } from "antd";
 import axios from "axios";
 import BuilderCard from "../components/BuilderCard";

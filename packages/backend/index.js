@@ -57,6 +57,14 @@ app.get("/builders", async function (req, res) {
   res.status(200).send(buildersSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()})));
 });
 
+app.get("/builders/:builderAddress", async function (req, res) {
+  const builderAddress = req.params.builderAddress;
+  console.log(`/builders/${builderAddress}`);
+
+  const builderSnapshot = await database.collection("users").doc(builderAddress).get();
+  res.status(200).send({id: builderSnapshot.id, ...builderSnapshot.data()});
+});
+
 
 app.post('/', async function (request, response) {
   const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
