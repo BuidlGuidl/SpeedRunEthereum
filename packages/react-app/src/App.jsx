@@ -320,7 +320,7 @@ function App() {
               <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
             </Route>
             <Route path="/challenge/:challengeId">
-              <ChallengeDetailView userObject={userObject} />
+              <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
             </Route>
           </Switch>
         </BrowserRouter>
