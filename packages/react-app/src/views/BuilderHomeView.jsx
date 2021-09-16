@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import ChallengeList from "../components/ChallengeList";
 
-export default function ProfileView({ userObject, userName }) {
+export default function BuilderHomeView({ userObject, userName }) {
   const history = useHistory();
   if (userObject == null || Object.keys(userObject).length === 0) {
     history.push("/");
