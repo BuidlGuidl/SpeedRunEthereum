@@ -100,8 +100,9 @@ app.post('/challenges', async function (request, response) {
   if (user.exists) {
     const existingChallenges = user.get('challenges');
     // Overriding for now. We could support an array of submitted challenges.
+    // ToDo. Extract challenge status (ENUM)
     existingChallenges[challengeId] = {
-      status: "PENDING",
+      status: "SUBMITTED",
       branchUrl: branchUrl,
       deployedUrl: deployedUrl,
     }
