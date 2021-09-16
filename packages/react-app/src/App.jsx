@@ -280,12 +280,12 @@ function App() {
       {isSigner ? (
         <BrowserRouter>
           <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
-            <Menu.Item key="/profile">
+            <Menu.Item key="/home">
               <Link
                 onClick={() => {
-                  setRoute("/profile");
+                  setRoute("/home");
                 }}
-                to="/profile"
+                to="/home"
               >
                 My profile
               </Link>
@@ -313,7 +313,7 @@ function App() {
                 }}
               />
             </Route>
-            <Route path="/profile">
+            <Route path="/home">
               <BuilderHomeView userObject={userObject} userName={address} />
             </Route>
             <Route path="/builders" exact>
