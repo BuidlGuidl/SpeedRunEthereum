@@ -13,6 +13,7 @@ import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { BuilderListView, ChallengeDetailView, ProfileView, SignInView } from "./views";
+import JwtTest from "./views/JwtTest"; // TODO debug only
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -322,6 +323,9 @@ function App() {
             </Route>
             <Route path="/challenge/:challengeId">
               <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
+            </Route>
+            <Route path="/jwt-test">
+              <JwtTest serverUrl={serverUrl} token={userObject.token} userProvider={userProvider} />
             </Route>
           </Switch>
         </BrowserRouter>

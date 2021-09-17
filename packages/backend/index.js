@@ -4,6 +4,7 @@ const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { jwtAuth } = require("./middlewares/auth");
 const app = express();
 // Firebase set up
 const firebaseAdmin = require("firebase-admin");
@@ -137,6 +138,12 @@ app.post("/challenges", async function (request, response) {
   } else {
     response.status(404).send("User not found!");
   }
+});
+
+app.get("/auth-jwt-restricted", jwtAuth, (req, res) => {
+  res.send(
+    `all working! 👌. Successfully authenticated request from ${req.address}`
+  );
 });
 
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
