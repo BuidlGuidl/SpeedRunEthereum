@@ -42,7 +42,7 @@ const jwtAuth = (req, res, next) => {
       algorithms: ["RS256"],
     });
   } catch (error) {
-    console.log("returning 401, invalid token");
+    console.log("returning 401, invalid token. Error:", error.message);
     res.status(401).send("invalid token");
     return;
   }

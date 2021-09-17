@@ -8,25 +8,29 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", width: 400, margin: "auto" }}>
-        <button
-          style={{ marginTop: 20 }}
-          type="button"
-          onClick={async () => {
-            try {
-              const response = await axios.get(`${serverUrl}auth-jwt-restricted`, {
-                headers: {
-                  authorization: `token ${token}`,
-                  address,
-                },
-              });
-              console.log(response);
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-        >
-          This sends valid JWT
-        </button>
+        <div>
+          <button
+            style={{ marginTop: 20 }}
+            type="button"
+            onClick={async () => {
+              try {
+                const response = await axios.get(`${serverUrl}auth-jwt-restricted`, {
+                  headers: {
+                    authorization: `token ${token}`,
+                    address,
+                  },
+                });
+                console.log(response);
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            This sends valid JWT
+          </button>
+          <br />
+          <span>Should fail if you signed with one account, and then switched accounts</span>
+        </div>
         <button
           style={{ marginTop: 20 }}
           type="button"
