@@ -346,7 +346,7 @@ function App() {
               <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
             </Route>
             <Route path="/challenge-review" exact>
-              <ChallengeReviewView />
+              <ChallengeReviewView serverUrl={serverUrl} />
             </Route>
           </Switch>
         </BrowserRouter>

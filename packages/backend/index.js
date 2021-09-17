@@ -121,6 +121,31 @@ app.post('/challenges', async function (request, response) {
   }
 });
 
+async function setChallengeStatus(userAddress, challengeId, newStatus, comment) {
+  const userRef = await database.collection('users').doc(userAddress);
+  const user = await userRef.get();
+  const existingChallenges = user.get('challenges');
+  existingChallenges[challengeId] = {
+    ...existingChallenges[challengeId],
+    status: newStatus,
+    reviewComment: comment,
+  }
+  await userRef.set({ "challenges": existingChallenges });
+}
+
+
+app.patch('/challenges', async function (request, response) {
+  //ToDo. Auth. Only admins
+  const { userAddress, challengeId, newStatus, comment } = request.body.params;
+  if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
+    response.status(400).send("Invalid status");
+  }
+  else {
+    await setChallengeStatus(userAddress, challengeId, newStatus, comment)
+    response.sendStatus(200);
+  }
+});
+
 
 async function getAllChallenges() {
   const usersDocs = (await database.collection('users').get()).docs;
