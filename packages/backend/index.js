@@ -54,7 +54,7 @@ app.get("/", function (req, res) {
 app.get("/builders", async function (req, res) {
   console.log("/builders");
   const buildersSnapshot = await database.collection('users').get();
-  res.status(200).send(buildersSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()})));
+  res.status(200).send(buildersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 });
 
 app.get("/builders/:builderAddress", async function (req, res) {
@@ -62,7 +62,7 @@ app.get("/builders/:builderAddress", async function (req, res) {
   console.log(`/builders/${builderAddress}`);
 
   const builderSnapshot = await database.collection("users").doc(builderAddress).get();
-  res.status(200).send({id: builderSnapshot.id, ...builderSnapshot.data()});
+  res.status(200).send({ id: builderSnapshot.id, ...builderSnapshot.data() });
 });
 
 
@@ -118,6 +118,34 @@ app.post('/challenges', async function (request, response) {
     response.sendStatus(200);
   } else {
     response.status(404).send("User not found!");
+  }
+});
+
+
+async function getAllChallenges() {
+  const usersDocs = (await database.collection('users').get()).docs;
+  const allChallenges = usersDocs.reduce(async (challenges, userDoc) => {
+    const userChallenges = await userDoc.get('challenges');
+    const userUnpackedChallenges = Object.keys(userChallenges)
+      .map(challengeKey => ({
+        userAddress: userDoc.id, id: challengeKey, ...userChallenges[challengeKey]
+      }))
+    return (await challenges).concat(userUnpackedChallenges);
+  }, [])
+
+  return allChallenges
+}
+
+
+app.get("/challenges", async function (request, response) {
+  //ToDo. Auth. Only admins
+  const status = request.query.status;
+  const allChallenges = await getAllChallenges()
+  if (status == null) {
+    response.json(allChallenges)
+  }
+  else {
+    response.json(allChallenges.filter(({ status: challengeStatus }) => challengeStatus === status))
   }
 });
 
