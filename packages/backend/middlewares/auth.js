@@ -1,7 +1,6 @@
 var jwt = require("jsonwebtoken");
 const serviceAccount = require("../firebaseServiceAccountKey.json");
 
-// TODO PR COMMENT Not sure why, but the custom error messages don't seem to be sent
 /**
  * Middleware to validate any request that needs to be authorized.
  *

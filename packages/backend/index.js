@@ -69,13 +69,12 @@ app.post("/sign", async function (request, response) {
     request.body.message !==
     currentMessage.replace("**ADDRESS**", request.body.address)
   ) {
-    // TODO PR COMMENT: should't this cause the signature to fail? this looks like an unnecessary check. Locally tested that signature fails
     response.send(
       " ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅"
     );
   } else {
     let recovered = ethers.utils.verifyMessage(
-      request.body.message, // TODO PR COMMENT: should't we use currentMessage here? why trust the frontend with the message?
+      request.body.message,
       request.body.signature
     );
     const userAddress = request.body.address;
