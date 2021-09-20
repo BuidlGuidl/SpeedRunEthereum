@@ -4,11 +4,13 @@ const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { jwtAuth } = require("./middlewares/auth");
-const app = express();
 // Firebase set up
 const firebaseAdmin = require("firebase-admin");
 const firebaseServiceAccount = require("./firebaseServiceAccountKey.json");
+const { jwtAuth } = require("./middlewares/auth");
+
+const app = express();
+
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
 });
@@ -47,18 +49,18 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/sign-message", function (req, res) {
+app.get("/sign-message", (req, res) => {
   console.log("/sign-message");
   res.status(200).send(currentMessage);
 });
 
-app.get("/builders", async function (req, res) {
+app.get("/builders", async (req, res) => {
   console.log("/builders");
   const buildersSnapshot = await database.collection("users").get();
   res.status(200).send(buildersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 });
 
-app.get("/builders/:builderAddress", async function (req, res) {
+app.get("/builders/:builderAddress", async (req, res) => {
   const builderAddress = req.params.builderAddress;
   console.log(`/builders/${builderAddress}`);
 
@@ -66,14 +68,13 @@ app.get("/builders/:builderAddress", async function (req, res) {
   res.status(200).send({ id: builderSnapshot.id, ...builderSnapshot.data() });
 });
 
-app.post("/sign", async function (request, response) {
-  const ip =
-    request.headers["x-forwarded-for"] || request.connection.remoteAddress;
+app.post("/sign", async (request, response) => {
+  const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
   if (request.body.message !== currentMessage.replace("**ADDRESS**", request.body.address)) {
     response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
   } else {
-    let recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature);
+    const recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature);
     const userAddress = request.body.address;
     if (recovered === userAddress) {
       // we now know that the current user is th one that signed and sent this message
@@ -92,9 +93,7 @@ app.post("/sign", async function (request, response) {
       }
 
       // TODO get isAdmin from the userObject
-      const jwt = await firebaseAdmin
-        .auth()
-        .createCustomToken(recovered, { isAdmin: false });
+      const jwt = await firebaseAdmin.auth().createCustomToken(recovered, { isAdmin: false });
 
       response.json({ ...userObject, token: jwt });
     } else {
@@ -103,7 +102,7 @@ app.post("/sign", async function (request, response) {
   }
 });
 
-app.post("/challenges", async function (request, response) {
+app.post("/challenges", async (request, response) => {
   // ToDo. Auth / Validate route. https://github.com/moonshotcollective/scaffold-directory/issues/18
   const { challengeId, deployedUrl, branchUrl, address } = request.body;
   console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
@@ -116,8 +115,8 @@ app.post("/challenges", async function (request, response) {
     // ToDo. Extract challenge status (ENUM)
     existingChallenges[challengeId] = {
       status: "SUBMITTED",
-      branchUrl: branchUrl,
-      deployedUrl: deployedUrl,
+      branchUrl,
+      deployedUrl,
     };
     await userRef.set({ challenges: existingChallenges });
     response.sendStatus(200);
@@ -177,9 +176,7 @@ app.get("/challenges", async function (request, response) {
 });
 
 app.get("/auth-jwt-restricted", jwtAuth, (req, res) => {
-  res.send(
-    `all working! 👌. Successfully authenticated request from ${req.address}`
-  );
+  res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });
 
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
@@ -195,7 +192,7 @@ if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
       console.log("HTTPS Listening: 49832");
     });
 } else {
-  const server = app.listen(49832, function () {
+  const server = app.listen(49832, () => {
     console.log("HTTP Listening on port:", server.address().port);
   });
 }
