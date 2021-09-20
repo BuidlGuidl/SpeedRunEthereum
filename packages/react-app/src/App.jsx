@@ -20,6 +20,7 @@ import {
   BuilderProfileView,
   ChallengeReviewView,
 } from "./views";
+import JwtTest from "./views/JwtTest"; // TODO debug only
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -347,6 +348,9 @@ function App() {
             </Route>
             <Route path="/challenge-review" exact>
               <ChallengeReviewView serverUrl={serverUrl} />
+             </Route>
+            <Route path="/jwt-test">
+              <JwtTest serverUrl={serverUrl} token={userObject.token} userProvider={userProvider} />
             </Route>
           </Switch>
         </BrowserRouter>
