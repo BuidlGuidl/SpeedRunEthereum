@@ -24,7 +24,7 @@ export default function ChallengeReviewView({ serverUrl }) {
     await axios.patch(serverUrl + `challenges`, {
       params: { userAddress, challengeId, comment, newStatus: "ACCEPTED" },
     });
-    await fetchSubmittedChallenges();
+    fetchSubmittedChallenges();
   }
 
   async function handleReject(userAddress, challengeId, comment) {
