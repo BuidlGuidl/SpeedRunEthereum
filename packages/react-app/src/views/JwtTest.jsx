@@ -8,6 +8,7 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", width: 400, margin: "auto" }}>
+        <h2>⚠️ Don&apos;t forget to sign the message at `/`, otherwise you won&apos;t have a token</h2>
         <div>
           <button
             style={{ marginTop: 20 }}
