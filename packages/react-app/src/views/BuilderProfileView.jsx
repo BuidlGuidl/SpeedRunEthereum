@@ -22,7 +22,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
   }, [builderAddress]);
 
   return (
-    <div>
+    <div className="container">
       <Link to="/builders">{"<"}Back to list of builders</Link>
       <Title>Builder Progress</Title>
       {builder ? (

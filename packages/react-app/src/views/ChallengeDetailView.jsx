@@ -21,7 +21,7 @@ export default function ChallengeDetailView({ userObject, serverUrl, address }) 
   }
 
   return (
-    <div>
+    <div className="container">
       <Title>{challenge.label}</Title>
       <Space direction="vertical">
         <Link to="/home">{"<"}Back to challenges</Link>
