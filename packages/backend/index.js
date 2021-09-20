@@ -15,8 +15,7 @@ firebaseAdmin.initializeApp({
 // Docs: https://firebase.google.com/docs/firestore/quickstart#node.js_1
 const database = firebaseAdmin.firestore();
 
-const currentMessage =
-  "I am **ADDRESS** and I would like to sign in to Scaffold-Directory, plz!";
+const currentMessage = "I am **ADDRESS** and I would like to sign in to Scaffold-Directory, plz!";
 
 const dummyData = {
   challenges: {
@@ -56,27 +55,25 @@ app.get("/sign-message", function (req, res) {
 app.get("/builders", async function (req, res) {
   console.log("/builders");
   const buildersSnapshot = await database.collection("users").get();
-  res
-    .status(200)
-    .send(buildersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+  res.status(200).send(buildersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+});
+
+app.get("/builders/:builderAddress", async function (req, res) {
+  const builderAddress = req.params.builderAddress;
+  console.log(`/builders/${builderAddress}`);
+
+  const builderSnapshot = await database.collection("users").doc(builderAddress).get();
+  res.status(200).send({ id: builderSnapshot.id, ...builderSnapshot.data() });
 });
 
 app.post("/sign", async function (request, response) {
   const ip =
     request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
-  if (
-    request.body.message !==
-    currentMessage.replace("**ADDRESS**", request.body.address)
-  ) {
-    response.send(
-      " ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅"
-    );
+  if (request.body.message !== currentMessage.replace("**ADDRESS**", request.body.address)) {
+    response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
   } else {
-    let recovered = ethers.utils.verifyMessage(
-      request.body.message,
-      request.body.signature
-    );
+    let recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature);
     const userAddress = request.body.address;
     if (recovered === userAddress) {
       // we now know that the current user is th one that signed and sent this message
@@ -101,11 +98,7 @@ app.post("/sign", async function (request, response) {
 
       response.json({ ...userObject, token: jwt });
     } else {
-      response
-        .status(401)
-        .send(
-          " 🚫 Signature verification failed! Please reload and try again. Sorry! 😅"
-        );
+      response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
     }
   }
 });
@@ -113,13 +106,7 @@ app.post("/sign", async function (request, response) {
 app.post("/challenges", async function (request, response) {
   // ToDo. Auth / Validate route. https://github.com/moonshotcollective/scaffold-directory/issues/18
   const { challengeId, deployedUrl, branchUrl, address } = request.body;
-  console.log(
-    "POST /challenges: ",
-    address,
-    challengeId,
-    deployedUrl,
-    branchUrl
-  );
+  console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
 
   const userRef = await database.collection("users").doc(address);
   const user = await userRef.get();
@@ -152,7 +139,7 @@ if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
         key: fs.readFileSync("server.key"),
         cert: fs.readFileSync("server.cert"),
       },
-      app
+      app,
     )
     .listen(49832, () => {
       console.log("HTTPS Listening: 49832");

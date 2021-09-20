@@ -8,7 +8,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   if (userObject != null && Object.keys(userObject).length !== 0) {
-    history.push("/profile");
+    history.push("/home");
   }
   return (
     <div>
@@ -47,7 +47,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
                 console.log("RESULT:", res);
                 if (res.data) {
                   successCallback(res.data);
-                  history.push("/profile");
+                  history.push("/home");
                 }
               } else {
                 setLoading(false);

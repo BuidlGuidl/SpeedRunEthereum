@@ -12,7 +12,7 @@ import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock,
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
-import { BuilderListView, ChallengeDetailView, ProfileView, SignInView } from "./views";
+import { BuilderListView, ChallengeDetailView, BuilderHomeView, SignInView, BuilderProfileView } from "./views";
 import JwtTest from "./views/JwtTest"; // TODO debug only
 /*
     Welcome to 🏗 scaffold-eth !
@@ -281,12 +281,12 @@ function App() {
       {isSigner ? (
         <BrowserRouter>
           <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
-            <Menu.Item key="/profile">
+            <Menu.Item key="/home">
               <Link
                 onClick={() => {
-                  setRoute("/profile");
+                  setRoute("/home");
                 }}
-                to="/profile"
+                to="/home"
               >
                 My profile
               </Link>
@@ -314,11 +314,14 @@ function App() {
                 }}
               />
             </Route>
-            <Route path="/profile">
-              <ProfileView userObject={userObject} userName={address} />
+            <Route path="/home">
+              <BuilderHomeView userObject={userObject} userName={address} />
             </Route>
-            <Route path="/builders">
+            <Route path="/builders" exact>
               <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+            </Route>
+            <Route path="/builders/:builderAddress">
+              <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
             </Route>
             <Route path="/challenge/:challengeId">
               <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
