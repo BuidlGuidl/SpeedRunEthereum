@@ -4,6 +4,7 @@ const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { jwtAuth } = require("./middlewares/auth");
 const app = express();
 // Firebase set up
 const firebaseAdmin = require("firebase-admin");
@@ -46,8 +47,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", function (req, res) {
-  console.log("/");
+app.get("/sign-message", function (req, res) {
+  console.log("/sign-message");
   res.status(200).send(currentMessage);
 });
 
@@ -65,8 +66,9 @@ app.get("/builders/:builderAddress", async function (req, res) {
   res.status(200).send({ id: builderSnapshot.id, ...builderSnapshot.data() });
 });
 
-app.post("/", async function (request, response) {
-  const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
+app.post("/sign", async function (request, response) {
+  const ip =
+    request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
   if (request.body.message !== currentMessage.replace("**ADDRESS**", request.body.address)) {
     response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
@@ -89,7 +91,12 @@ app.post("/", async function (request, response) {
         userObject = user.data();
       }
 
-      response.json(userObject);
+      // TODO get isAdmin from the userObject
+      const jwt = await firebaseAdmin
+        .auth()
+        .createCustomToken(recovered, { isAdmin: false });
+
+      response.json({ ...userObject, token: jwt });
     } else {
       response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
     }
@@ -117,6 +124,12 @@ app.post("/challenges", async function (request, response) {
   } else {
     response.status(404).send("User not found!");
   }
+});
+
+app.get("/auth-jwt-restricted", jwtAuth, (req, res) => {
+  res.send(
+    `all working! 👌. Successfully authenticated request from ${req.address}`
+  );
 });
 
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {

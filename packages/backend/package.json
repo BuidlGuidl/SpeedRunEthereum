@@ -10,6 +10,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^9.11.1",
     "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.12",
     "prettier": "^2.4.0"
   }
