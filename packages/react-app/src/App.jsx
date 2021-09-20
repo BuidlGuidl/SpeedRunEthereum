@@ -346,9 +346,10 @@ function App() {
             <Route path="/challenge/:challengeId">
               <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
             </Route>
+            {/* ToDo: Protect this route on the frontend? */}
             <Route path="/challenge-review" exact>
               <ChallengeReviewView serverUrl={serverUrl} />
-             </Route>
+            </Route>
             <Route path="/jwt-test">
               <JwtTest serverUrl={serverUrl} token={userObject.token} userProvider={userProvider} />
             </Route>
