@@ -24,7 +24,7 @@ export default function ChallengeDetailView({ userObject, serverUrl, address }) 
     <div>
       <Title>{challenge.label}</Title>
       <Space direction="vertical">
-        <Link to="/profile">{"<"}Back to challenges</Link>
+        <Link to="/home">{"<"}Back to challenges</Link>
         <Paragraph>{challenge.description}</Paragraph>
 
         <AntdLink href={challenge.url} target="_blank">
