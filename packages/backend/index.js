@@ -132,14 +132,14 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
   existingChallenges[challengeId] = {
     ...existingChallenges[challengeId],
     status: newStatus,
-    reviewComment: comment,
+    reviewComment: comment != null ? comment : "",
   };
   await userRef.set({ challenges: existingChallenges });
 }
 
 app.patch("/challenges", async (request, response) => {
   // ToDo. Auth. Only admins
-  const { userAddress, challengeId, newStatus, comment } = request.body.params;
+  const { userAddress, challengeId, newStatus, comment, test } = request.body.params;
   if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
     response.status(400).send("Invalid status");
   } else {
@@ -148,6 +148,9 @@ app.patch("/challenges", async (request, response) => {
   }
 });
 
+// ToDo: This is very inefficient,´. We fetch the whole database every time we call this.
+// We should create a getChallengesByStatus function that fetches the challenges by status.
+// https://github.com/moonshotcollective/scaffold-directory/pull/32#discussion_r711971355
 async function getAllChallenges() {
   const usersDocs = (await database.collection("users").get()).docs;
   const allChallenges = usersDocs.reduce(async (challenges, userDoc) => {
