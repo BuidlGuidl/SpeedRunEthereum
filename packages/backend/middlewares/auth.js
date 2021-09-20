@@ -24,14 +24,12 @@ const jwtAuth = (req, res, next) => {
   const addressHeader = req.headers.address;
   if (!tokenHeader) {
     console.log("returning 401, no authorization header");
-    res.status(401).send("You need to sign to access this resource");
+    res.sendStatus(401);
     return;
   }
   if (!addressHeader) {
     console.log("returning 401, no address header");
-    res
-      .status(401)
-      .send("You need to send the user address to access this resource");
+    res.sendStatus(401);
     return;
   }
   const token = tokenHeader.replace("token ", "");
@@ -43,7 +41,7 @@ const jwtAuth = (req, res, next) => {
     });
   } catch (error) {
     console.log("returning 401, invalid token. Error:", error.message);
-    res.status(401).send("invalid token");
+    res.sendStatus(401);
     return;
   }
 
@@ -51,7 +49,7 @@ const jwtAuth = (req, res, next) => {
 
   if (addressToken !== addressHeader) {
     console.log("returning 401, address mismatch");
-    res.status(401).send("Address mismatch");
+    res.sendStatus(401);
     return;
   }
 
