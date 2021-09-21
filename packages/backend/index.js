@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 // Firebase set up
 const firebaseAdmin = require("firebase-admin");
 const firebaseServiceAccount = require("./firebaseServiceAccountKey.json");
-const { jwtAuth, jwtAdminAuth } = require("./middlewares/auth");
+const { userOnly, adminOnly } = require("./middlewares/auth");
 
 const app = express();
 
@@ -101,7 +101,7 @@ app.post("/sign", async (request, response) => {
   }
 });
 
-app.post("/challenges", jwtAuth, async (request, response) => {
+app.post("/challenges", userOnly, async (request, response) => {
   const { challengeId, deployedUrl, branchUrl } = request.body;
   const address = request.address;
   console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
@@ -136,7 +136,7 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
   await userRef.update({ challenges: existingChallenges });
 }
 
-app.patch("/challenges", jwtAdminAuth, async (request, response) => {
+app.patch("/challenges", adminOnly, async (request, response) => {
   const { userAddress, challengeId, newStatus, comment } = request.body.params;
   if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
     response.status(400).send("Invalid status");
@@ -164,7 +164,7 @@ async function getAllChallenges() {
   return allChallenges;
 }
 
-app.get("/challenges", jwtAdminAuth, async (request, response) => {
+app.get("/challenges", adminOnly, async (request, response) => {
   const status = request.query.status;
   const allChallenges = await getAllChallenges();
   if (status == null) {
@@ -174,11 +174,11 @@ app.get("/challenges", jwtAdminAuth, async (request, response) => {
   }
 });
 
-app.get("/auth-jwt-restricted", jwtAuth, (req, res) => {
+app.get("/auth-jwt-restricted", userOnly, (req, res) => {
   res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });
 
-app.get("/auth-jwt-admin-restricted", jwtAdminAuth, (req, res) => {
+app.get("/auth-jwt-admin-restricted", adminOnly, (req, res) => {
   res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });
 

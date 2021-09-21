@@ -1,4 +1,4 @@
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const serviceAccount = require("../firebaseServiceAccountKey.json");
 
 /**
@@ -19,7 +19,7 @@ const serviceAccount = require("../firebaseServiceAccountKey.json");
  * @param {Express.Response} res
  * @param {Express.NextFunction} next
  */
-const jwtAuth = (req, res, next) => {
+const userOnly = (req, res, next) => {
   const tokenHeader = req.headers.authorization;
   const addressHeader = req.headers.address;
   if (!tokenHeader) {
@@ -66,9 +66,9 @@ const jwtAuth = (req, res, next) => {
  * @param {Express.Response} res
  * @param {Express.NextFunction} next
  */
-const jwtAdminAuth = (req, res, next) => {
-  jwtAuth(req, res, () => {
-    // Added by jwtAuth
+const adminOnly = (req, res, next) => {
+  userOnly(req, res, () => {
+    // Added by userOnly
     if (!req.isAdmin) {
       console.log("returning 401, Not an admin");
       res.sendStatus(401);
@@ -81,6 +81,6 @@ const jwtAdminAuth = (req, res, next) => {
 };
 
 module.exports = {
-  jwtAuth,
-  jwtAdminAuth,
+  userOnly,
+  adminOnly,
 };
