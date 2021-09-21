@@ -32,6 +32,30 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
           <br />
           <span>Should fail if you signed with one account, and then switched accounts</span>
         </div>
+        <div>
+          <button
+            style={{ marginTop: 20 }}
+            type="button"
+            onClick={async () => {
+              try {
+                const response = await axios.get(`${serverUrl}auth-jwt-admin-restricted`, {
+                  headers: {
+                    authorization: `token ${token}`,
+                    address,
+                  },
+                });
+                console.log(response);
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            This sends valid JWT (to an Admin route)
+          </button>
+          <br />
+          <span>Should fail if you signed with one account, and then switched accounts.</span>
+          <span>Should fail if you are signed in but you are not an admin.</span>
+        </div>
         <button
           style={{ marginTop: 20 }}
           type="button"

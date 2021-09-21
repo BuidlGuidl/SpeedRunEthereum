@@ -282,6 +282,7 @@ function App() {
             setUserObject({});
           }}
           blockExplorer={blockExplorer}
+          isAdmin={userObject.isAdmin}
         />
         {faucetHint}
       </div>
@@ -308,19 +309,18 @@ function App() {
                 All Builders
               </Link>
             </Menu.Item>
-            {
-              // TODO: only display when the JWT indicates the user is a admin
-            }
-            <Menu.Item key="/challenge-review">
-              <Link
-                onClick={() => {
-                  setRoute("/challenge-review");
-                }}
-                to="/challenge-review"
-              >
-                Review Challenges
-              </Link>
-            </Menu.Item>
+            {userObject.isAdmin && (
+              <Menu.Item key="/challenge-review">
+                <Link
+                  onClick={() => {
+                    setRoute("/challenge-review");
+                  }}
+                  to="/challenge-review"
+                >
+                  Review Challenges
+                </Link>
+              </Menu.Item>
+            )}
           </Menu>
           <Switch>
             <Route exact path="/">
@@ -348,7 +348,7 @@ function App() {
             </Route>
             {/* ToDo: Protect this route on the frontend? */}
             <Route path="/challenge-review" exact>
-              <ChallengeReviewView serverUrl={serverUrl} />
+              <ChallengeReviewView serverUrl={serverUrl} token={userObject.token} address={address} />
             </Route>
             <Route path="/jwt-test">
               <JwtTest serverUrl={serverUrl} token={userObject.token} userProvider={userProvider} />

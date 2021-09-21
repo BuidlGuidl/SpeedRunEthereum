@@ -1,9 +1,9 @@
 import React from "react";
-import { Button } from "antd";
+import { Badge, Button, Space } from "antd";
+import { useThemeSwitcher } from "react-css-theme-switcher";
 import Address from "./Address";
 import Balance from "./Balance";
 import Wallet from "./Wallet";
-import { useThemeSwitcher } from "react-css-theme-switcher";
 
 /*
   ~ What it does? ~
@@ -52,6 +52,7 @@ export default function Account({
   loadWeb3Modal,
   logoutOfWeb3Modal,
   blockExplorer,
+  isAdmin,
 }) {
   const modalButtons = [];
   if (web3Modal) {
@@ -77,7 +78,7 @@ export default function Account({
           type={minimized ? "default" : "primary"}
           onClick={loadWeb3Modal}
         >
-          {connectText?connectText:"connect"}
+          {connectText || "connect"}
         </Button>,
       );
     }
@@ -88,16 +89,27 @@ export default function Account({
   const display = minimized ? (
     ""
   ) : (
-    <span>
-      {address ? <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} /> : "Connecting..."}
+    <Space>
+      {isAdmin && <Badge count="admin" />}
+      {address ? (
+        <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
+      ) : (
+        "Connecting..."
+      )}
       <Balance address={address} provider={localProvider} price={price} />
-      <Wallet address={address} provider={userProvider} ensProvider={mainnetProvider} price={price} color={currentTheme == "light" ? "#1890ff" : "#2caad9"} />
-    </span>
+      <Wallet
+        address={address}
+        provider={userProvider}
+        ensProvider={mainnetProvider}
+        price={price}
+        color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
+      />
+    </Space>
   );
 
   return (
     <div>
-      {onlyShowButton?"":display}
+      {onlyShowButton ? "" : display}
       {modalButtons}
     </div>
   );

@@ -7,7 +7,7 @@ const { Text, Title } = Typography;
 
 const serverPath = "challenges";
 
-export default function ChallengeSubmission({ challenge, serverUrl, address }) {
+export default function ChallengeSubmission({ challenge, serverUrl, address, token }) {
   const { challengeId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -16,13 +16,20 @@ export default function ChallengeSubmission({ challenge, serverUrl, address }) {
     setIsSubmitting(true);
 
     try {
-      await axios.post(serverUrl + serverPath, {
-        challengeId,
-        deployedUrl,
-        branchUrl,
-        // ToDo. Wont need this after JWT is implemented.
-        address,
-      });
+      await axios.post(
+        serverUrl + serverPath,
+        {
+          challengeId,
+          deployedUrl,
+          branchUrl,
+        },
+        {
+          headers: {
+            authorization: `token ${token}`,
+            address,
+          },
+        },
+      );
     } catch (error) {
       notification.error({
         message: "Submission Error. Please try again.",

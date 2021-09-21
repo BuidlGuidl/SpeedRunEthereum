@@ -54,11 +54,33 @@ const jwtAuth = (req, res, next) => {
   }
 
   req.address = addressToken;
+  req.isAdmin = tokenContents.claims.isAdmin;
 
-  console.log("success!");
   next();
+};
+
+/**
+ * Middleware to validate logged in admin requests.
+ *
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ */
+const jwtAdminAuth = (req, res, next) => {
+  jwtAuth(req, res, () => {
+    // Added by jwtAuth
+    if (!req.isAdmin) {
+      console.log("returning 401, Not an admin");
+      res.sendStatus(401);
+      return;
+    }
+
+    next();
+  });
+
 };
 
 module.exports = {
   jwtAuth,
+  jwtAdminAuth,
 };
