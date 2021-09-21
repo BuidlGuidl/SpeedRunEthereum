@@ -117,7 +117,7 @@ app.post("/challenges", jwtAuth, async (request, response) => {
       branchUrl,
       deployedUrl,
     };
-    await userRef.set({ challenges: existingChallenges });
+    await userRef.update({ challenges: existingChallenges });
     response.sendStatus(200);
   } else {
     response.status(404).send("User not found!");
@@ -133,7 +133,7 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
     status: newStatus,
     reviewComment: comment != null ? comment : "",
   };
-  await userRef.set({ challenges: existingChallenges });
+  await userRef.update({ challenges: existingChallenges });
 }
 
 app.patch("/challenges", jwtAdminAuth, async (request, response) => {
