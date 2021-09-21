@@ -139,7 +139,7 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
 
 app.patch("/challenges", async (request, response) => {
   // ToDo. Auth. Only admins
-  const { userAddress, challengeId, newStatus, comment, test } = request.body.params;
+  const { userAddress, challengeId, newStatus, comment } = request.body.params;
   if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
     response.status(400).send("Invalid status");
   } else {
