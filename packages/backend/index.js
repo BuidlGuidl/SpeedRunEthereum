@@ -125,6 +125,58 @@ app.post("/challenges", async (request, response) => {
   }
 });
 
+async function setChallengeStatus(userAddress, challengeId, newStatus, comment) {
+  const userRef = await database.collection("users").doc(userAddress);
+  const user = await userRef.get();
+  const existingChallenges = user.get("challenges");
+  existingChallenges[challengeId] = {
+    ...existingChallenges[challengeId],
+    status: newStatus,
+    reviewComment: comment != null ? comment : "",
+  };
+  await userRef.set({ challenges: existingChallenges });
+}
+
+app.patch("/challenges", async (request, response) => {
+  // ToDo. Auth. Only admins
+  const { userAddress, challengeId, newStatus, comment } = request.body.params;
+  if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
+    response.status(400).send("Invalid status");
+  } else {
+    await setChallengeStatus(userAddress, challengeId, newStatus, comment);
+    response.sendStatus(200);
+  }
+});
+
+// ToDo: This is very inefficient,´. We fetch the whole database every time we call this.
+// We should create a getChallengesByStatus function that fetches the challenges by status.
+// https://github.com/moonshotcollective/scaffold-directory/pull/32#discussion_r711971355
+async function getAllChallenges() {
+  const usersDocs = (await database.collection("users").get()).docs;
+  const allChallenges = usersDocs.reduce(async (challenges, userDoc) => {
+    const userChallenges = await userDoc.get("challenges");
+    const userUnpackedChallenges = Object.keys(userChallenges).map(challengeKey => ({
+      userAddress: userDoc.id,
+      id: challengeKey,
+      ...userChallenges[challengeKey],
+    }));
+    return (await challenges).concat(userUnpackedChallenges);
+  }, []);
+
+  return allChallenges;
+}
+
+app.get("/challenges", async (request, response) => {
+  // ToDo. Auth. Only admins
+  const status = request.query.status;
+  const allChallenges = await getAllChallenges();
+  if (status == null) {
+    response.json(allChallenges);
+  } else {
+    response.json(allChallenges.filter(({ status: challengeStatus }) => challengeStatus === status));
+  }
+});
+
 app.get("/auth-jwt-restricted", jwtAuth, (req, res) => {
   res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });

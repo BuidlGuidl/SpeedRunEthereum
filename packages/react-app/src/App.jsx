@@ -12,7 +12,14 @@ import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock,
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
-import { BuilderListView, ChallengeDetailView, BuilderHomeView, SignInView, BuilderProfileView } from "./views";
+import {
+  BuilderListView,
+  ChallengeDetailView,
+  BuilderHomeView,
+  SignInView,
+  BuilderProfileView,
+  ChallengeReviewView,
+} from "./views";
 import JwtTest from "./views/JwtTest"; // TODO debug only
 /*
     Welcome to 🏗 scaffold-eth !
@@ -301,6 +308,19 @@ function App() {
                 All Builders
               </Link>
             </Menu.Item>
+            {
+              // TODO: only display when the JWT indicates the user is a admin
+            }
+            <Menu.Item key="/challenge-review">
+              <Link
+                onClick={() => {
+                  setRoute("/challenge-review");
+                }}
+                to="/challenge-review"
+              >
+                Review Challenges
+              </Link>
+            </Menu.Item>
           </Menu>
           <Switch>
             <Route exact path="/">
@@ -325,6 +345,10 @@ function App() {
             </Route>
             <Route path="/challenge/:challengeId">
               <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
+            </Route>
+            {/* ToDo: Protect this route on the frontend? */}
+            <Route path="/challenge-review" exact>
+              <ChallengeReviewView serverUrl={serverUrl} />
             </Route>
             <Route path="/jwt-test">
               <JwtTest serverUrl={serverUrl} token={userObject.token} userProvider={userProvider} />

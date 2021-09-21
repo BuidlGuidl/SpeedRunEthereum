@@ -11,7 +11,7 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
     history.push("/home");
   }
   return (
-    <div>
+    <div className="container">
       {" "}
       {error ? (
         <div>{error}</div>

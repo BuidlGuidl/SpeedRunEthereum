@@ -9,7 +9,7 @@ export default function BuilderHomeView({ userObject, userName }) {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Welcome {userName}!</h1>
       <div style={{ textAlign: "start" }}>
         <ChallengeList userChallenges={userObject.challenges} />
