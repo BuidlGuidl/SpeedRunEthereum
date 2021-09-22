@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
-export default function ChallengeReviewView({ serverUrl, token, address }) {
+export default function ChallengeReviewView({ serverUrl, jwt, address }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -12,7 +12,7 @@ export default function ChallengeReviewView({ serverUrl, token, address }) {
     const fetchedChallenges = await axios.get(serverUrl + `challenges`, {
       params: { status: "SUBMITTED" },
       headers: {
-        authorization: `token ${token}`,
+        authorization: `token ${jwt}`,
         address,
       },
     });
@@ -34,7 +34,7 @@ export default function ChallengeReviewView({ serverUrl, token, address }) {
       },
       {
         headers: {
-          authorization: `token ${token}`,
+          authorization: `token ${jwt}`,
           address,
         },
       },
@@ -51,7 +51,7 @@ export default function ChallengeReviewView({ serverUrl, token, address }) {
       },
       {
         headers: {
-          authorization: `token ${token}`,
+          authorization: `token ${jwt}`,
           address,
         },
       },

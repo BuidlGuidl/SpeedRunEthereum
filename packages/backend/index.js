@@ -101,6 +101,20 @@ app.post("/sign", async (request, response) => {
   }
 });
 
+app.get("/user", userOnly, async (request, response) => {
+  console.log(`/user`);
+  const { address } = request;
+  const user = await database.collection("users").doc(address).get();
+  if (!user.exists) {
+    // It should never happen, but just in case...
+    response.status(401).send("Something went wrong. Cant find the user in the database");
+    return;
+  }
+
+  console.log("Retrieving existing user: ", address);
+  response.json(user.data());
+});
+
 app.post("/challenges", userOnly, async (request, response) => {
   const { challengeId, deployedUrl, branchUrl } = request.body;
   const address = request.address;

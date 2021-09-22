@@ -3,11 +3,11 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { message as uiMessage, Button } from "antd";
 
-export default function SignInView({ serverUrl, address, userProvider, successCallback, userObject }) {
+export default function SignInView({ serverUrl, address, userProvider, successCallback, jwt }) {
   const history = useHistory();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
-  if (userObject != null && Object.keys(userObject).length !== 0) {
+  if (jwt != null && jwt !== "") {
     history.push("/home");
   }
   return (

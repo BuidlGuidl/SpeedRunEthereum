@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useUserAddress } from "eth-hooks";
 
-const JwtTest = ({ serverUrl, token, userProvider }) => {
+const JwtTest = ({ serverUrl, jwt, userProvider }) => {
   const address = useUserAddress(userProvider);
 
   return (
@@ -17,7 +17,7 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
               try {
                 const response = await axios.get(`${serverUrl}auth-jwt-restricted`, {
                   headers: {
-                    authorization: `token ${token}`,
+                    authorization: `token ${jwt}`,
                     address,
                   },
                 });
@@ -40,7 +40,7 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
               try {
                 const response = await axios.get(`${serverUrl}auth-jwt-admin-restricted`, {
                   headers: {
-                    authorization: `token ${token}`,
+                    authorization: `token ${jwt}`,
                     address,
                   },
                 });
@@ -81,7 +81,7 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
             try {
               const response = await axios.get(`${serverUrl}auth-jwt-restricted`, {
                 headers: {
-                  authorization: `token ${token}`,
+                  authorization: `token ${jwt}`,
                 },
               });
               console.log(response);
@@ -99,7 +99,7 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
             try {
               const response = await axios.get(`${serverUrl}auth-jwt-restricted`, {
                 headers: {
-                  authorization: `token ${token}`,
+                  authorization: `token ${jwt}`,
                   address: address.slice(0, -4) + "0000",
                 },
               });
@@ -118,7 +118,7 @@ const JwtTest = ({ serverUrl, token, userProvider }) => {
             try {
               const response = await axios.get(`${serverUrl}auth-jwt-restricted`, {
                 headers: {
-                  authorization: `token ${token}0000`,
+                  authorization: `token ${jwt}0000`,
                   address,
                 },
               });
