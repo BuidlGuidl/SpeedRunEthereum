@@ -335,7 +335,7 @@ function App() {
               />
             </Route>
             <Route path="/home">
-              <BuilderHomeView userObject={userObject} userName={address} />
+              <BuilderHomeView serverUrl={serverUrl} token={userObject.token} address={address} />
             </Route>
             <Route path="/builders" exact>
               <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
