@@ -2,14 +2,20 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
-export default function ChallengeReviewView({ serverUrl }) {
+export default function ChallengeReviewView({ serverUrl, token, address }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   async function fetchSubmittedChallenges() {
     setIsLoading(true);
-    console.log("getting challenges");
-    const fetchedChallenges = await axios.get(serverUrl + `challenges`, { params: { status: "SUBMITTED" } });
+    console.log("getting challenges", address);
+    const fetchedChallenges = await axios.get(serverUrl + `challenges`, {
+      params: { status: "SUBMITTED" },
+      headers: {
+        authorization: `token ${token}`,
+        address,
+      },
+    });
     setChallenges(fetchedChallenges.data);
     console.log(fetchedChallenges.data);
     setIsLoading(false);
@@ -17,21 +23,39 @@ export default function ChallengeReviewView({ serverUrl }) {
 
   useEffect(() => {
     fetchSubmittedChallenges();
-  }, [serverUrl]);
+  }, [serverUrl, address]);
 
   async function handleApprove(userAddress, challengeId, comment) {
     console.log(`approve ${challengeId} for ${userAddress} with comment ${comment}`);
-    await axios.patch(serverUrl + `challenges`, {
-      params: { userAddress, challengeId, comment, newStatus: "ACCEPTED" },
-    });
+    await axios.patch(
+      serverUrl + `challenges`,
+      {
+        params: { userAddress, challengeId, comment, newStatus: "ACCEPTED" },
+      },
+      {
+        headers: {
+          authorization: `token ${token}`,
+          address,
+        },
+      },
+    );
     fetchSubmittedChallenges();
   }
 
   async function handleReject(userAddress, challengeId, comment) {
     console.log(`reject ${challengeId} for ${userAddress} with comment ${comment}`);
-    await axios.patch(serverUrl + `challenges`, {
-      params: { userAddress, challengeId, comment, newStatus: "REJECTED" },
-    });
+    await axios.patch(
+      serverUrl + `challenges`,
+      {
+        params: { userAddress, challengeId, comment, newStatus: "REJECTED" },
+      },
+      {
+        headers: {
+          authorization: `token ${token}`,
+          address,
+        },
+      },
+    );
     fetchSubmittedChallenges();
   }
 

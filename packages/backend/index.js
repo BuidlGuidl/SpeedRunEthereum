@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 // Firebase set up
 const firebaseAdmin = require("firebase-admin");
 const firebaseServiceAccount = require("./firebaseServiceAccountKey.json");
-const { jwtAuth } = require("./middlewares/auth");
+const { userOnly, adminOnly } = require("./middlewares/auth");
 
 const app = express();
 
@@ -92,8 +92,7 @@ app.post("/sign", async (request, response) => {
         userObject = user.data();
       }
 
-      // TODO get isAdmin from the userObject
-      const jwt = await firebaseAdmin.auth().createCustomToken(recovered, { isAdmin: false });
+      const jwt = await firebaseAdmin.auth().createCustomToken(recovered, { isAdmin: !!userObject.isAdmin });
 
       response.json({ ...userObject, token: jwt });
     } else {
@@ -102,9 +101,9 @@ app.post("/sign", async (request, response) => {
   }
 });
 
-app.post("/challenges", async (request, response) => {
-  // ToDo. Auth / Validate route. https://github.com/moonshotcollective/scaffold-directory/issues/18
-  const { challengeId, deployedUrl, branchUrl, address } = request.body;
+app.post("/challenges", userOnly, async (request, response) => {
+  const { challengeId, deployedUrl, branchUrl } = request.body;
+  const address = request.address;
   console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
 
   const userRef = await database.collection("users").doc(address);
@@ -118,7 +117,7 @@ app.post("/challenges", async (request, response) => {
       branchUrl,
       deployedUrl,
     };
-    await userRef.set({ challenges: existingChallenges });
+    await userRef.update({ challenges: existingChallenges });
     response.sendStatus(200);
   } else {
     response.status(404).send("User not found!");
@@ -134,11 +133,10 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
     status: newStatus,
     reviewComment: comment != null ? comment : "",
   };
-  await userRef.set({ challenges: existingChallenges });
+  await userRef.update({ challenges: existingChallenges });
 }
 
-app.patch("/challenges", async (request, response) => {
-  // ToDo. Auth. Only admins
+app.patch("/challenges", adminOnly, async (request, response) => {
   const { userAddress, challengeId, newStatus, comment } = request.body.params;
   if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
     response.status(400).send("Invalid status");
@@ -166,8 +164,7 @@ async function getAllChallenges() {
   return allChallenges;
 }
 
-app.get("/challenges", async (request, response) => {
-  // ToDo. Auth. Only admins
+app.get("/challenges", adminOnly, async (request, response) => {
   const status = request.query.status;
   const allChallenges = await getAllChallenges();
   if (status == null) {
@@ -177,7 +174,11 @@ app.get("/challenges", async (request, response) => {
   }
 });
 
-app.get("/auth-jwt-restricted", jwtAuth, (req, res) => {
+app.get("/auth-jwt-restricted", userOnly, (req, res) => {
+  res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
+});
+
+app.get("/auth-jwt-admin-restricted", adminOnly, (req, res) => {
   res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });
 

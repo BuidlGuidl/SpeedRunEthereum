@@ -30,7 +30,7 @@ export default function ChallengeDetailView({ userObject, serverUrl, address }) 
         <AntdLink href={challenge.url} target="_blank">
           Link to challenge
         </AntdLink>
-        <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} />
+        <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} token={userObject.token} />
       </Space>
     </div>
   );
