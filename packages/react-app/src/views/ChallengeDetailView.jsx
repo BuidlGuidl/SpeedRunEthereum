@@ -6,10 +6,10 @@ import ChallengeSubmission from "../components/ChallengeSubmission";
 
 const { Title, Paragraph, Link: AntdLink } = Typography;
 
-export default function ChallengeDetailView({ userObject, serverUrl, address }) {
+export default function ChallengeDetailView({ serverUrl, address, jwt }) {
   const { challengeId } = useParams();
   const history = useHistory();
-  if (userObject == null || Object.keys(userObject).length === 0) {
+  if (jwt == null || jwt === "") {
     history.push("/");
   }
 
@@ -30,7 +30,7 @@ export default function ChallengeDetailView({ userObject, serverUrl, address }) 
         <AntdLink href={challenge.url} target="_blank">
           Link to challenge
         </AntdLink>
-        <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} token={userObject.token} />
+        <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} token={jwt} />
       </Space>
     </div>
   );

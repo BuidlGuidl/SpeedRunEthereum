@@ -3,11 +3,11 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ChallengeList from "../components/ChallengeList";
 
-export default function BuilderHomeView({ serverUrl, token, address }) {
-  const [user, setUser] = useState();
+export default function BuilderHomeView({ serverUrl, jwt, address }) {
+  const [userData, setUserData] = useState();
 
   const history = useHistory();
-  if (token == null) {
+  if (jwt == null || jwt === "") {
     history.push("/");
   }
 
@@ -16,22 +16,24 @@ export default function BuilderHomeView({ serverUrl, token, address }) {
       console.log("getting user data");
       const fetchedUserObject = await axios.get(serverUrl + `user`, {
         headers: {
-          authorization: `token ${token}`,
+          authorization: `token ${jwt}`,
           address,
         },
       });
-      setUser(fetchedUserObject.data);
+      setUserData(fetchedUserObject.data);
       console.log(fetchedUserObject.data);
     }
-    fetchUserData();
-  }, [address]);
+    if (jwt != null && jwt !== "") {
+      fetchUserData();
+    }
+  }, [jwt, address]);
 
   return (
     <div className="container">
       <h1>Welcome {address}!</h1>
-      {user ? (
+      {userData ? (
         <div style={{ textAlign: "start" }}>
-          <ChallengeList userChallenges={user.challenges} />
+          <ChallengeList userChallenges={userData.challenges} />
         </div>
       ) : null}
     </div>

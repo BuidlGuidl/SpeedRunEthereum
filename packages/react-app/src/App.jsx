@@ -21,6 +21,7 @@ import {
   ChallengeReviewView,
 } from "./views";
 import JwtTest from "./views/JwtTest"; // TODO debug only
+
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -252,9 +253,9 @@ function App() {
       </div>
     );
   }
-
   const isSigner = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
-  const [userObject, setUserObject] = useLocalStorage("scaffold-directory-user", {});
+  const [jwt, setJwt] = useLocalStorage("scaffold-directory-JWT", "");
+  const [isAdmin, setIsAdmin] = useLocalStorage("scaffold-directory-is-admin", false);
 
   return (
     <div className="App">
@@ -279,10 +280,11 @@ function App() {
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={() => {
             logoutOfWeb3Modal();
-            setUserObject({});
+            setJwt("");
+            setIsAdmin(false);
           }}
           blockExplorer={blockExplorer}
-          isAdmin={userObject.isAdmin}
+          isAdmin={isAdmin}
         />
         {faucetHint}
       </div>
@@ -309,7 +311,7 @@ function App() {
                 All Builders
               </Link>
             </Menu.Item>
-            {userObject.isAdmin && (
+            {isAdmin && (
               <Menu.Item key="/challenge-review">
                 <Link
                   onClick={() => {
@@ -325,17 +327,18 @@ function App() {
           <Switch>
             <Route exact path="/">
               <SignInView
-                userObject={userObject}
                 serverUrl={serverUrl}
                 address={address}
                 userProvider={userProvider}
-                successCallback={responseUserObject => {
-                  setUserObject(responseUserObject);
+                successCallback={({ isAdmin: isAdminReturned, token }) => {
+                  setJwt(token);
+                  setIsAdmin(isAdminReturned || false);
                 }}
+                jwt={jwt}
               />
             </Route>
             <Route path="/home">
-              <BuilderHomeView serverUrl={serverUrl} token={userObject.token} address={address} />
+              <BuilderHomeView serverUrl={serverUrl} jwt={jwt} address={address} />
             </Route>
             <Route path="/builders" exact>
               <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
@@ -344,14 +347,14 @@ function App() {
               <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
             </Route>
             <Route path="/challenge/:challengeId">
-              <ChallengeDetailView userObject={userObject} serverUrl={serverUrl} address={address} />
+              <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} />
             </Route>
             {/* ToDo: Protect this route on the frontend? */}
             <Route path="/challenge-review" exact>
-              <ChallengeReviewView serverUrl={serverUrl} token={userObject.token} address={address} />
+              <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} />
             </Route>
             <Route path="/jwt-test">
-              <JwtTest serverUrl={serverUrl} token={userObject.token} userProvider={userProvider} />
+              <JwtTest serverUrl={serverUrl} jwt={jwt} userProvider={userProvider} />
             </Route>
           </Switch>
         </BrowserRouter>
