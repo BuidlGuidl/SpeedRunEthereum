@@ -15,4 +15,7 @@ module.exports = {
     "no-underscore-dangle": "off",
     "jsx-a11y/accessible-emoji": ["off"],
   },
+  parserOptions: {
+    ecmaVersion: 2020,
+  },
 };

@@ -23,28 +23,26 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
           onClick={async () => {
             setLoading(true);
             try {
-              const msgToSign = await axios.get(`${serverUrl}sign-message`);
-              console.log("msgToSign", msgToSign);
-              if (msgToSign.data && msgToSign.data.length > 32) {
-                // <--- traffic escape hatch?
-                let currentLoader = setTimeout(() => {
-                  setLoading(false);
-                }, 4000);
-                const message = msgToSign.data.replace("**ADDRESS**", address);
-                const sig = await userProvider.send("personal_sign", [message, address]);
-                clearTimeout(currentLoader);
-                currentLoader = setTimeout(() => {
-                  setLoading(false);
-                }, 4000);
+              const signMessageResponse = await axios.get(`${serverUrl}sign-message`, {
+                params: {
+                  messageId: "login",
+                  address,
+                },
+              });
+              const signMessage = JSON.stringify(signMessageResponse.data);
+              console.log("signMessage", signMessage);
+
+              if (signMessage) {
+                const sig = await userProvider.send("personal_sign", [signMessage, address]);
                 console.log("sig", sig);
+
                 const res = await axios.post(`${serverUrl}sign`, {
                   address,
-                  message,
                   signature: sig,
                 });
-                clearTimeout(currentLoader);
+
                 setLoading(false);
-                console.log("RESULT:", res);
+
                 if (res.data) {
                   successCallback(res.data);
                   history.push("/home");
