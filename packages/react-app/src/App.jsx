@@ -347,11 +347,11 @@ function App() {
               <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
             </Route>
             <Route path="/challenge/:challengeId">
-              <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} />
+              <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} userProvider={userProvider} />
             </Route>
             {/* ToDo: Protect this route on the frontend? */}
             <Route path="/challenge-review" exact>
-              <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} />
+              <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} userProvider={userProvider} />
             </Route>
             <Route path="/jwt-test">
               <JwtTest serverUrl={serverUrl} jwt={jwt} userProvider={userProvider} />

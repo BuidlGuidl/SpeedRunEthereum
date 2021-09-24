@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const firebaseAdmin = require("firebase-admin");
 const firebaseServiceAccount = require("./firebaseServiceAccountKey.json");
 const { userOnly, adminOnly } = require("./middlewares/auth");
+const { getSignMessageForId, verifySignature } = require("./utils/sign");
 
 const app = express();
 
@@ -16,8 +17,6 @@ firebaseAdmin.initializeApp({
 });
 // Docs: https://firebase.google.com/docs/firestore/quickstart#node.js_1
 const database = firebaseAdmin.firestore();
-
-const currentMessage = "I am **ADDRESS** and I would like to sign in to Scaffold-Directory, plz!";
 
 const dummyData = {
   challenges: {
@@ -50,8 +49,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/sign-message", (req, res) => {
-  console.log("/sign-message");
-  res.status(200).send(currentMessage);
+  const messageId = req.query.messageId ?? "login";
+  const options = req.query;
+
+  console.log("/sign-message", messageId);
+  res.status(200).send(getSignMessageForId(messageId, options));
 });
 
 app.get("/builders", async (req, res) => {
@@ -71,34 +73,31 @@ app.get("/builders/:builderAddress", async (req, res) => {
 app.post("/sign", async (request, response) => {
   const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
-  if (request.body.message !== currentMessage.replace("**ADDRESS**", request.body.address)) {
-    response.send(" ⚠️ Secret message mismatch!?! Please reload and try again. Sorry! 😅");
-  } else {
-    const recovered = ethers.utils.verifyMessage(request.body.message, request.body.signature);
-    const userAddress = request.body.address;
-    if (recovered === userAddress) {
-      // we now know that the current user is th one that signed and sent this message
-      const user = await database.collection("users").doc(userAddress).get();
-      let userObject = {};
-      if (!user.exists) {
-        // Create user.
-        const userRef = database.collection("users").doc(userAddress);
-        await userRef.set(dummyData);
-        console.log("New user created: ", userAddress);
-        userObject = dummyData;
-      } else {
-        // Retrieve existing user.
-        console.log("Retrieving existing user: ", userAddress);
-        userObject = user.data();
-      }
 
-      const jwt = await firebaseAdmin.auth().createCustomToken(recovered, { isAdmin: !!userObject.isAdmin });
+  const signature = request.body.signature;
+  const userAddress = request.body.address;
+  const verifyOptions = {
+    messageId: "login",
+    address: userAddress,
+  };
 
-      response.json({ ...userObject, token: jwt });
-    } else {
-      response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
-    }
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
   }
+
+  const user = await database.collection("users").doc(userAddress).get();
+  if (!user.exists) {
+    // Create user.
+    const userRef = database.collection("users").doc(userAddress);
+    await userRef.set(dummyData);
+    console.log("New user created: ", userAddress);
+  }
+
+  const isAdmin = !!user.data().isAdmin;
+  const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin });
+
+  response.json({ isAdmin, token: jwt });
 });
 
 app.get("/user", userOnly, async (request, response) => {
@@ -116,9 +115,20 @@ app.get("/user", userOnly, async (request, response) => {
 });
 
 app.post("/challenges", userOnly, async (request, response) => {
-  const { challengeId, deployedUrl, branchUrl } = request.body;
+  const { challengeId, deployedUrl, branchUrl, signature } = request.body;
   const address = request.address;
   console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
+
+  const verifyOptions = {
+    messageId: "challengeSubmit",
+    address,
+    challengeId,
+  };
+
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
+  }
 
   const userRef = await database.collection("users").doc(address);
   const user = await userRef.get();
@@ -151,7 +161,22 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
 }
 
 app.patch("/challenges", adminOnly, async (request, response) => {
-  const { userAddress, challengeId, newStatus, comment } = request.body.params;
+  const { userAddress, challengeId, newStatus, comment, signature } = request.body.params;
+  const address = request.address;
+
+  const verifyOptions = {
+    messageId: "challengeReview",
+    address,
+    userAddress,
+    challengeId,
+    newStatus,
+  };
+
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
+  }
+
   if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
     response.status(400).send("Invalid status");
   } else {

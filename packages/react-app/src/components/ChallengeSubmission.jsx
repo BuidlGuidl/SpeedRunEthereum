@@ -7,13 +7,44 @@ const { Text, Title } = Typography;
 
 const serverPath = "challenges";
 
-export default function ChallengeSubmission({ challenge, serverUrl, address, token }) {
+export default function ChallengeSubmission({ challenge, serverUrl, address, token, userProvider }) {
   const { challengeId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onFinish = async values => {
     const { deployedUrl, branchUrl } = values;
     setIsSubmitting(true);
+
+    let signMessage;
+    try {
+      const signMessageResponse = await axios.get(serverUrl + `sign-message`, {
+        params: {
+          messageId: "challengeSubmit",
+          address,
+          challengeId,
+        },
+      });
+
+      signMessage = JSON.stringify(signMessageResponse.data);
+    } catch (error) {
+      notification.error({
+        message: "Can't get the message to sign. Please try again.",
+        description: error.toString(),
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    let signature;
+    try {
+      signature = await userProvider.send("personal_sign", [signMessage, address]);
+    } catch (error) {
+      notification.error({
+        message: "The signature was cancelled",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await axios.post(
@@ -22,6 +53,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, tok
           challengeId,
           deployedUrl,
           branchUrl,
+          signature,
         },
         {
           headers: {
