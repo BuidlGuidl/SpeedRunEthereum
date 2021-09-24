@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import ChallengeReviewList from "../components/ChallengeReviewList";
 import { notification } from "antd";
+import ChallengeReviewList from "../components/ChallengeReviewList";
 
 export default function ChallengeReviewView({ serverUrl, jwt, address, userProvider }) {
   const [challenges, setChallenges] = React.useState([]);
@@ -26,7 +26,7 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
     fetchSubmittedChallenges();
   }, [serverUrl, address]);
 
-  async function getSignature(challengeId, userAddress, newStatus) {
+  const handleSendReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
     try {
       const signMessageResponse = await axios.get(serverUrl + `sign-message`, {
@@ -34,7 +34,7 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
           messageId: "challengeReview",
           userAddress,
           challengeId,
-          newStatus,
+          newStatus: reviewType,
         },
       });
 
@@ -46,18 +46,21 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
       });
     }
 
-    return userProvider.send("personal_sign", [signMessage, address]);
-  }
+    let signature;
+    try {
+      signature = await userProvider.send("personal_sign", [signMessage, address]);
+    } catch (error) {
+      notification.error({
+        message: "The signature was cancelled",
+      });
+      return;
+    }
 
-  async function handleApprove(userAddress, challengeId, comment) {
-    const newStatus = "ACCEPTED";
-    const signature = await getSignature(challengeId, userAddress, newStatus);
-
-    console.log(`approve ${challengeId} for ${userAddress} with comment ${comment}`);
+    console.log(`${reviewType.toLowerCase()} ${challengeId} for ${userAddress} with comment ${comment}`);
     await axios.patch(
       serverUrl + `challenges`,
       {
-        params: { userAddress, challengeId, comment, newStatus, signature },
+        params: { userAddress, challengeId, comment, newStatus: reviewType, signature },
       },
       {
         headers: {
@@ -67,27 +70,7 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
       },
     );
     fetchSubmittedChallenges();
-  }
-
-  async function handleReject(userAddress, challengeId, comment) {
-    const newStatus = "REJECTED";
-    const signature = await getSignature(challengeId, userAddress, newStatus);
-
-    console.log(`reject ${challengeId} for ${userAddress} with comment ${comment}`);
-    await axios.patch(
-      serverUrl + `challenges`,
-      {
-        params: { userAddress, challengeId, comment, newStatus, signature },
-      },
-      {
-        headers: {
-          authorization: `token ${jwt}`,
-          address,
-        },
-      },
-    );
-    fetchSubmittedChallenges();
-  }
+  };
 
   return (
     <div className="container">
@@ -96,8 +79,8 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
         <ChallengeReviewList
           challengeSubmissions={challenges}
           isLoading={isLoading}
-          approveClick={handleApprove}
-          rejectClick={handleReject}
+          approveClick={handleSendReview("ACCEPTED")}
+          rejectClick={handleSendReview("REJECTED")}
         />
       </div>
     </div>

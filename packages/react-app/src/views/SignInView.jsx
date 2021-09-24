@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { message as uiMessage, Button } from "antd";
+import { message as uiMessage, notification, Button } from "antd";
 
+// TODO there are 3 was of showing errors here: `setError`, `uiMessage`, `notification`
+// the standard in other places seems to be `notification`
 export default function SignInView({ serverUrl, address, userProvider, successCallback, jwt }) {
   const history = useHistory();
   const [error, setError] = useState();
@@ -32,24 +34,34 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
               const signMessage = JSON.stringify(signMessageResponse.data);
               console.log("signMessage", signMessage);
 
-              if (signMessage) {
-                const sig = await userProvider.send("personal_sign", [signMessage, address]);
-                console.log("sig", sig);
-
-                const res = await axios.post(`${serverUrl}sign`, {
-                  address,
-                  signature: sig,
-                });
-
-                setLoading(false);
-
-                if (res.data) {
-                  successCallback(res.data);
-                  history.push("/home");
-                }
-              } else {
+              if (!signMessage) {
                 setLoading(false);
                 setError("😅 Sorry, the server is overloaded. Please try again later. ⏳");
+                return;
+              }
+
+              let signature;
+              try {
+                signature = await userProvider.send("personal_sign", [signMessage, address]);
+              } catch (err) {
+                notification.error({
+                  message: "The signature was cancelled",
+                });
+                setLoading(false);
+                return;
+              }
+              console.log("signature", signature);
+
+              const res = await axios.post(`${serverUrl}sign`, {
+                address,
+                signature,
+              });
+
+              setLoading(false);
+
+              if (res.data) {
+                successCallback(res.data);
+                history.push("/home");
               }
             } catch (e) {
               // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25

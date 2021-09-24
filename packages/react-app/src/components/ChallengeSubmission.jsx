@@ -34,7 +34,16 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, tok
       setIsSubmitting(false);
     }
 
-    const signature = await userProvider.send("personal_sign", [signMessage, address]);
+    let signature;
+    try {
+      signature = await userProvider.send("personal_sign", [signMessage, address]);
+    } catch (error) {
+      notification.error({
+        message: "The signature was cancelled",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await axios.post(
