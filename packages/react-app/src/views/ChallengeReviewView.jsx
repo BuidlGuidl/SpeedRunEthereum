@@ -44,6 +44,7 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
         message: "Can't get the message to sign. Please try again.",
         description: error.toString(),
       });
+      return;
     }
 
     let signature;

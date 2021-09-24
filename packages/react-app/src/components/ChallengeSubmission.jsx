@@ -32,6 +32,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, tok
         description: error.toString(),
       });
       setIsSubmitting(false);
+      return;
     }
 
     let signature;
