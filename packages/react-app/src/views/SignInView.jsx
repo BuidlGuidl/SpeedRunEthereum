@@ -9,71 +9,71 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
   const history = useHistory();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
-  if (jwt != null && jwt !== "") {
-    history.push("/home");
+
+  const handleLoginSigning = async () => {
+    setLoading(true);
+    try {
+      const signMessageResponse = await axios.get(`${serverUrl}sign-message`, {
+        params: {
+          messageId: "login",
+          address,
+        },
+      });
+      const signMessage = JSON.stringify(signMessageResponse.data);
+      console.log("signMessage", signMessage);
+
+      if (!signMessage) {
+        setLoading(false);
+        setError("😅 Sorry, the server is overloaded. Please try again later. ⏳");
+        return;
+      }
+
+      let signature;
+      try {
+        signature = await userProvider.send("personal_sign", [signMessage, address]);
+      } catch (err) {
+        notification.error({
+          message: "The signature was cancelled",
+        });
+        setLoading(false);
+        return;
+      }
+      console.log("signature", signature);
+
+      const res = await axios.post(`${serverUrl}sign`, {
+        address,
+        signature,
+      });
+
+      setLoading(false);
+
+      if (res.data) {
+        successCallback(res.data);
+        history.push("/my-profile");
+      }
+    } catch (e) {
+      // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
+      console.log(e);
+      uiMessage.error(" Sorry, the server is overloaded. 🧯🚒🔥");
+      console.log("FAILED TO GET...");
+    }
+  };
+
+  if (error) {
+    return <div>{error}</div>;
   }
+
   return (
     <div className="container">
-      {" "}
-      {error ? (
-        <div>{error}</div>
-      ) : (
-        <Button
-          loading={loading}
-          style={{ marginTop: 32 }}
-          type="primary"
-          onClick={async () => {
-            setLoading(true);
-            try {
-              const signMessageResponse = await axios.get(`${serverUrl}sign-message`, {
-                params: {
-                  messageId: "login",
-                  address,
-                },
-              });
-              const signMessage = JSON.stringify(signMessageResponse.data);
-              console.log("signMessage", signMessage);
-
-              if (!signMessage) {
-                setLoading(false);
-                setError("😅 Sorry, the server is overloaded. Please try again later. ⏳");
-                return;
-              }
-
-              let signature;
-              try {
-                signature = await userProvider.send("personal_sign", [signMessage, address]);
-              } catch (err) {
-                notification.error({
-                  message: "The signature was cancelled",
-                });
-                setLoading(false);
-                return;
-              }
-              console.log("signature", signature);
-
-              const res = await axios.post(`${serverUrl}sign`, {
-                address,
-                signature,
-              });
-
-              setLoading(false);
-
-              if (res.data) {
-                successCallback(res.data);
-                history.push("/home");
-              }
-            } catch (e) {
-              // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
-              console.log(e);
-              uiMessage.error(" Sorry, the server is overloaded. 🧯🚒🔥");
-              console.log("FAILED TO GET...");
-            }
-          }}
-        >
-          <span style={{ marginRight: 8 }}>🔏</span> sign a message with your ethereum welcome
-        </Button>
+      {/* ToDo. Also hide this if there is no wallet connected. Check `UserProvider.js`: Do we need a burner in this? */}
+      {!jwt && (
+        <>
+          <Button loading={loading} style={{ marginTop: 32 }} type="primary" onClick={handleLoginSigning}>
+            <span style={{ marginRight: 8 }}>🔏</span> sign a message with your ethereum welcome
+          </Button>
+        </>
       )}
+      <h2 style={{ marginTop: 32 }}>Activity feed</h2>
     </div>
   );
 }

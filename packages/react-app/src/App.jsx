@@ -288,77 +288,87 @@ function App() {
         />
         {faucetHint}
       </div>
-      {isSigner ? (
-        <BrowserRouter>
-          <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
-            <Menu.Item key="/home">
+      <BrowserRouter>
+        <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
+          <Menu.Item key="/">
+            <Link
+              onClick={() => {
+                setRoute("/");
+              }}
+              to="/"
+            >
+              Home
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/builders">
+            <Link
+              onClick={() => {
+                setRoute("/builders");
+              }}
+              to="/builders"
+            >
+              All Builders
+            </Link>
+          </Menu.Item>
+          {isSigner && (
+            <Menu.Item key="/my-profile">
               <Link
                 onClick={() => {
-                  setRoute("/home");
+                  setRoute("/my-profile");
                 }}
-                to="/home"
+                to="/my-profile"
               >
                 My profile
               </Link>
             </Menu.Item>
-            <Menu.Item key="/builders">
+          )}
+          {isAdmin && (
+            <Menu.Item key="/challenge-review">
               <Link
                 onClick={() => {
-                  setRoute("/builders");
+                  setRoute("/challenge-review");
                 }}
-                to="/builders"
+                to="/challenge-review"
               >
-                All Builders
+                Review Challenges
               </Link>
             </Menu.Item>
-            {isAdmin && (
-              <Menu.Item key="/challenge-review">
-                <Link
-                  onClick={() => {
-                    setRoute("/challenge-review");
-                  }}
-                  to="/challenge-review"
-                >
-                  Review Challenges
-                </Link>
-              </Menu.Item>
-            )}
-          </Menu>
-          <Switch>
-            <Route exact path="/">
-              <SignInView
-                serverUrl={serverUrl}
-                address={address}
-                userProvider={userProvider}
-                successCallback={({ isAdmin: isAdminReturned, token }) => {
-                  setJwt(token);
-                  setIsAdmin(isAdminReturned || false);
-                }}
-                jwt={jwt}
-              />
-            </Route>
-            <Route path="/home">
-              <BuilderHomeView serverUrl={serverUrl} jwt={jwt} address={address} />
-            </Route>
-            <Route path="/builders" exact>
-              <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-            </Route>
-            <Route path="/builders/:builderAddress">
-              <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-            </Route>
-            <Route path="/challenge/:challengeId">
-              <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} userProvider={userProvider} />
-            </Route>
-            {/* ToDo: Protect this route on the frontend? */}
-            <Route path="/challenge-review" exact>
-              <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} userProvider={userProvider} />
-            </Route>
-            <Route path="/jwt-test">
-              <JwtTest serverUrl={serverUrl} jwt={jwt} userProvider={userProvider} />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      ) : null}
+          )}
+        </Menu>
+        <Switch>
+          <Route exact path="/">
+            <SignInView
+              serverUrl={serverUrl}
+              address={address}
+              userProvider={userProvider}
+              successCallback={({ isAdmin: isAdminReturned, token }) => {
+                setJwt(token);
+                setIsAdmin(isAdminReturned || false);
+              }}
+              jwt={jwt}
+            />
+          </Route>
+          <Route path="/my-profile">
+            <BuilderHomeView serverUrl={serverUrl} jwt={jwt} address={address} />
+          </Route>
+          <Route path="/builders" exact>
+            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/builders/:builderAddress">
+            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/challenge/:challengeId">
+            <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} userProvider={userProvider} />
+          </Route>
+          {/* ToDo: Protect this route on the frontend? */}
+          <Route path="/challenge-review" exact>
+            <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} userProvider={userProvider} />
+          </Route>
+          <Route path="/jwt-test">
+            <JwtTest serverUrl={serverUrl} jwt={jwt} userProvider={userProvider} />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
