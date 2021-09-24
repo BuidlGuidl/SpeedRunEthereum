@@ -87,22 +87,17 @@ app.post("/sign", async (request, response) => {
   }
 
   const user = await database.collection("users").doc(userAddress).get();
-  let userObject = {};
   if (!user.exists) {
     // Create user.
     const userRef = database.collection("users").doc(userAddress);
     await userRef.set(dummyData);
     console.log("New user created: ", userAddress);
-    userObject = dummyData;
-  } else {
-    // Retrieve existing user.
-    console.log("Retrieving existing user: ", userAddress);
-    userObject = user.data();
   }
 
-  const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin: !!userObject.isAdmin });
+  const isAdmin = !!user.data().isAdmin;
+  const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin });
 
-  response.json({ ...userObject, token: jwt });
+  response.json({ isAdmin, token: jwt });
 });
 
 app.get("/user", userOnly, async (request, response) => {
