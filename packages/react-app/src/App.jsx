@@ -253,7 +253,7 @@ function App() {
       </div>
     );
   }
-  const isSigner = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
+  const isSignerProviderConnected = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
   const [jwt, setJwt] = useLocalStorage("scaffold-directory-JWT", "");
   const [isAdmin, setIsAdmin] = useLocalStorage("scaffold-directory-is-admin", false);
 
@@ -270,7 +270,7 @@ function App() {
       <div style={{ textAlign: "center", padding: 10 }}>
         <Account
           connectText="Connect Ethereum Wallet"
-          onlyShowButton={!isSigner}
+          onlyShowButton={!isSignerProviderConnected}
           address={address}
           localProvider={localProvider}
           userProvider={userProvider}
@@ -310,7 +310,7 @@ function App() {
               All Builders
             </Link>
           </Menu.Item>
-          {isSigner && (
+          {isSignerProviderConnected && (
             <Menu.Item key="/my-profile">
               <Link
                 onClick={() => {

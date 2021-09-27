@@ -100,9 +100,9 @@ app.post("/sign", async (request, response) => {
   response.json({ isAdmin, token: jwt });
 });
 
-app.get("/user", userOnly, async (request, response) => {
-  console.log(`/user`);
-  const { address } = request;
+app.get("/user", async (request, response) => {
+  const address = request.query.address;
+  console.log(`/user`, address);
   const user = await database.collection("users").doc(address).get();
   if (!user.exists) {
     // It should never happen, but just in case...

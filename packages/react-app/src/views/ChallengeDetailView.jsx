@@ -9,7 +9,7 @@ const { Title, Paragraph, Link: AntdLink } = Typography;
 export default function ChallengeDetailView({ serverUrl, address, jwt, userProvider }) {
   const { challengeId } = useParams();
   const history = useHistory();
-  if (jwt == null || jwt === "") {
+  if (!address) {
     history.push("/");
   }
 
