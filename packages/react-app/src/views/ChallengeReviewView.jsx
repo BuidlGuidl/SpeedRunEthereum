@@ -31,6 +31,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
       const signMessageResponse = await axios.get(serverUrl + `sign-message`, {
         params: {
           messageId: "challengeReview",
+          address,
           userAddress,
           challengeId,
           newStatus: reviewType,

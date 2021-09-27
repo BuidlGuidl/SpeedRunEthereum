@@ -13,6 +13,7 @@ const getSignMessageForId = (messageId, options) => {
       // ToDo. Submission nonce.
       return JSON.stringify({
         messageId,
+        address: options.address,
         userAddress: options.userAddress,
         challengeId: options.challengeId,
         newStatus: options.newStatus,

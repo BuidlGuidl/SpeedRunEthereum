@@ -4,14 +4,8 @@ const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const db = require("./services/db");
-const { withAddress } = require("./middlewares/auth");
+const { withAddress, adminOnly } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
-
-const adminOnly = (req, res, next) => {
-  // should be done in #51 https://github.com/moonshotcollective/scaffold-directory/issues/51
-  console.log("!! SKIPPING ADMIN CHECKS. THIS SHOULD BE FIXED IN #51");
-  next();
-};
 
 const app = express();
 
