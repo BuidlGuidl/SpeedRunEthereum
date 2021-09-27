@@ -78,6 +78,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, tok
     setIsSubmitting(false);
   };
 
+  if (!address) {
+    return <Text type="warning">Connect your wallet to submit this Challenge.</Text>
+  }
+
   return (
     <div>
       <Title level={2}>Submit Challenge: {challenge.label}</Title>
