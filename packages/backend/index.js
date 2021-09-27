@@ -101,9 +101,8 @@ app.post("/sign", async (request, response) => {
   }
 
   const isAdmin = !!user.data().isAdmin;
-  const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin });
 
-  response.json({ isAdmin, token: jwt });
+  response.json({ isAdmin });
 });
 
 app.get("/user", async (request, response) => {
