@@ -6,7 +6,7 @@ import ChallengeSubmission from "../components/ChallengeSubmission";
 
 const { Title, Paragraph, Link: AntdLink } = Typography;
 
-export default function ChallengeDetailView({ serverUrl, address, jwt, userProvider }) {
+export default function ChallengeDetailView({ serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const history = useHistory();
 
@@ -31,7 +31,6 @@ export default function ChallengeDetailView({ serverUrl, address, jwt, userProvi
           challenge={challenge}
           serverUrl={serverUrl}
           address={address}
-          token={jwt}
           userProvider={userProvider}
         />
       </Space>

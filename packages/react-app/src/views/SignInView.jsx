@@ -5,7 +5,7 @@ import { message as uiMessage, notification, Button } from "antd";
 
 // TODO there are 3 was of showing errors here: `setError`, `uiMessage`, `notification`
 // the standard in other places seems to be `notification`
-export default function SignInView({ serverUrl, address, userProvider, successCallback, jwt }) {
+export default function SignInView({ serverUrl, address, userProvider, successCallback }) {
   const history = useHistory();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
@@ -66,13 +66,9 @@ export default function SignInView({ serverUrl, address, userProvider, successCa
   return (
     <div className="container">
       {/* ToDo. Also hide this if there is no wallet connected. Check `UserProvider.js`: Do we need a burner in this? */}
-      {!jwt && (
-        <>
-          <Button loading={loading} style={{ marginTop: 32 }} type="primary" onClick={handleLoginSigning}>
-            <span style={{ marginRight: 8 }}>🔏</span> sign a message with your ethereum welcome
-          </Button>
-        </>
-      )}
+      <Button loading={loading} style={{ marginTop: 32 }} type="primary" onClick={handleLoginSigning}>
+        <span style={{ marginRight: 8 }}>🔏</span> sign a message with your ethereum welcome
+      </Button>
       <h2 style={{ marginTop: 32 }}>Activity feed</h2>
     </div>
   );
