@@ -1,10 +1,8 @@
-const ethers = require("ethers");
 const express = require("express");
 const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const firebaseAdmin = require("firebase-admin");
 const db = require("./services/db");
 const { withAddress } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
@@ -93,9 +91,8 @@ app.post("/sign", async (request, response) => {
   }
 
   const isAdmin = user.data.isAdmin ?? false;
-  const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin });
 
-  response.json({ isAdmin, token: jwt });
+  response.json({ isAdmin });
 });
 
 app.get("/user", async (request, response) => {
