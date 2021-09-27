@@ -9,9 +9,6 @@ const { Title, Paragraph, Link: AntdLink } = Typography;
 export default function ChallengeDetailView({ serverUrl, address, jwt, userProvider }) {
   const { challengeId } = useParams();
   const history = useHistory();
-  if (!address) {
-    history.push("/");
-  }
 
   const challenge = challengeInfo[challengeId];
   if (!challenge) {
