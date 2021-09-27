@@ -208,14 +208,6 @@ app.get("/challenges", adminOnly, async (request, response) => {
   }
 });
 
-app.get("/auth-jwt-restricted", withAddress, (req, res) => {
-  res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
-});
-
-app.get("/auth-jwt-admin-restricted", adminOnly, (req, res) => {
-  res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
-});
-
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
   https
     .createServer(
