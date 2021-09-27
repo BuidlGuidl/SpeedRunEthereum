@@ -20,7 +20,6 @@ import {
   BuilderProfileView,
   ChallengeReviewView,
 } from "./views";
-import JwtTest from "./views/JwtTest"; // TODO debug only
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -253,8 +252,8 @@ function App() {
       </div>
     );
   }
-  const isSignerProviderConnected = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
-  const [jwt, setJwt] = useLocalStorage("scaffold-directory-JWT", "");
+  const isSignerProviderConnected =
+    injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
   const [isAdmin, setIsAdmin] = useLocalStorage("scaffold-directory-is-admin", false);
 
   return (
@@ -280,7 +279,6 @@ function App() {
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={() => {
             logoutOfWeb3Modal();
-            setJwt("");
             setIsAdmin(false);
           }}
           blockExplorer={blockExplorer}
@@ -341,15 +339,13 @@ function App() {
               serverUrl={serverUrl}
               address={address}
               userProvider={userProvider}
-              successCallback={({ isAdmin: isAdminReturned, token }) => {
-                setJwt(token);
+              successCallback={({ isAdmin: isAdminReturned }) => {
                 setIsAdmin(isAdminReturned || false);
               }}
-              jwt={jwt}
             />
           </Route>
           <Route path="/my-profile">
-            <BuilderHomeView serverUrl={serverUrl} jwt={jwt} address={address} />
+            <BuilderHomeView serverUrl={serverUrl} address={address} />
           </Route>
           <Route path="/builders" exact>
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
@@ -358,14 +354,11 @@ function App() {
             <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
           </Route>
           <Route path="/challenge/:challengeId">
-            <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} userProvider={userProvider} />
+            <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/challenge-review" exact>
-            <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} userProvider={userProvider} />
-          </Route>
-          <Route path="/jwt-test">
-            <JwtTest serverUrl={serverUrl} jwt={jwt} userProvider={userProvider} />
+            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
         </Switch>
       </BrowserRouter>

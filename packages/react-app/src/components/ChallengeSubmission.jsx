@@ -7,7 +7,7 @@ const { Text, Title } = Typography;
 
 const serverPath = "challenges";
 
-export default function ChallengeSubmission({ challenge, serverUrl, address, token, userProvider }) {
+export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,7 +57,6 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, tok
         },
         {
           headers: {
-            authorization: `token ${token}`,
             address,
           },
         },
@@ -79,7 +78,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, tok
   };
 
   if (!address) {
-    return <Text type="warning">Connect your wallet to submit this Challenge.</Text>
+    return <Text type="warning">Connect your wallet to submit this Challenge.</Text>;
   }
 
   return (

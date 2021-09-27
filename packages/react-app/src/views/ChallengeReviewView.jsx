@@ -3,7 +3,7 @@ import axios from "axios";
 import { notification } from "antd";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
-export default function ChallengeReviewView({ serverUrl, jwt, address, userProvider }) {
+export default function ChallengeReviewView({ serverUrl, address, userProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -13,7 +13,6 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
     const fetchedChallenges = await axios.get(serverUrl + `challenges`, {
       params: { status: "SUBMITTED" },
       headers: {
-        authorization: `token ${jwt}`,
         address,
       },
     });
@@ -65,7 +64,6 @@ export default function ChallengeReviewView({ serverUrl, jwt, address, userProvi
       },
       {
         headers: {
-          authorization: `token ${jwt}`,
           address,
         },
       },
