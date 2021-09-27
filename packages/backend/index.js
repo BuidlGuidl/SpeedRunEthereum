@@ -6,8 +6,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const firebaseAdmin = require("firebase-admin");
 const db = require("./services/db");
-const { userOnly, adminOnly } = require("./middlewares/auth");
+const { withAddress } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
+
+const adminOnly = (req, res, next) => {
+  // should be done in #51 https://github.com/moonshotcollective/scaffold-directory/issues/51
+  console.log("!! SKIPPING ADMIN CHECKS. THIS SHOULD BE FIXED IN #51");
+  next();
+};
 
 const app = express();
 
@@ -106,7 +112,7 @@ app.get("/user", async (request, response) => {
   response.json(user.data);
 });
 
-app.post("/challenges", userOnly, async (request, response) => {
+app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, branchUrl, signature } = request.body;
   const address = request.address;
   console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
@@ -205,7 +211,7 @@ app.get("/challenges", adminOnly, async (request, response) => {
   }
 });
 
-app.get("/auth-jwt-restricted", userOnly, (req, res) => {
+app.get("/auth-jwt-restricted", withAddress, (req, res) => {
   res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });
 

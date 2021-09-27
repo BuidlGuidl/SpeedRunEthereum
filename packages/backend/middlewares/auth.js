@@ -1,6 +1,3 @@
-const jwt = require("jsonwebtoken");
-const serviceAccount = require("../firebaseServiceAccountKey.json");
-
 /**
  * Middleware to validate any request that needs to be authorized.
  *
@@ -19,68 +16,13 @@ const serviceAccount = require("../firebaseServiceAccountKey.json");
  * @param {Express.Response} res
  * @param {Express.NextFunction} next
  */
-const userOnly = (req, res, next) => {
-  const tokenHeader = req.headers.authorization;
-  const addressHeader = req.headers.address;
-  if (!tokenHeader) {
-    console.log("returning 401, no authorization header");
-    res.sendStatus(401);
-    return;
-  }
-  if (!addressHeader) {
-    console.log("returning 401, no address header");
-    res.sendStatus(401);
-    return;
-  }
-  const token = tokenHeader.replace("token ", "");
-
-  let tokenContents;
-  try {
-    tokenContents = jwt.verify(token, serviceAccount.private_key, {
-      algorithms: ["RS256"],
-    });
-  } catch (error) {
-    console.log("returning 401, invalid token. Error:", error.message);
-    res.sendStatus(401);
-    return;
-  }
-
-  const addressToken = tokenContents.uid;
-
-  if (addressToken !== addressHeader) {
-    console.log("returning 401, address mismatch");
-    res.sendStatus(401);
-    return;
-  }
-
-  req.address = addressToken;
-  req.isAdmin = tokenContents.claims.isAdmin;
+const withAddress = (req, res, next) => {
+  const { address } = req.headers;
+  req.address = address;
 
   next();
 };
 
-/**
- * Middleware to validate logged in admin requests.
- *
- * @param {Express.Request} req
- * @param {Express.Response} res
- * @param {Express.NextFunction} next
- */
-const adminOnly = (req, res, next) => {
-  userOnly(req, res, () => {
-    // Added by userOnly
-    if (!req.isAdmin) {
-      console.log("returning 401, Not an admin");
-      res.sendStatus(401);
-      return;
-    }
-
-    next();
-  });
-
-};
-
 module.exports = {
-  userOnly,
-  adminOnly,
+  withAddress,
 };
