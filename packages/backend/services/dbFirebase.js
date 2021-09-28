@@ -21,11 +21,6 @@ const updateUser = (userId, userData) => {
   return userDoc.update(userData);
 };
 
-const userExists = async address => {
-  const snapshot = await getUserSnapshotById(address);
-  return snapshot.exists;
-};
-
 const findAllUsers = async () => {
   const buildersSnapshot = await database.collection("users").get();
   return buildersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -44,5 +39,4 @@ module.exports = {
   updateUser,
   findAllUsers,
   findUserByAddress,
-  userExists,
 };

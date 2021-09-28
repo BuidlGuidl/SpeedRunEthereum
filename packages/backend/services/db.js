@@ -1,7 +1,8 @@
 const firebaseImplementation = require("./dbFirebase");
+const localImplementation = require("./dbLocal");
 
 // TODO in #47, use one implementation or the other based on .env
-const db = firebaseImplementation;
+const db = localImplementation;
 
 /**
  *
@@ -36,12 +37,9 @@ const findAllUsers = db.findAllUsers;
  */
 const findUserByAddress = db.findUserByAddress;
 
-const userExists = db.userExists;
-
 module.exports = {
   createUser,
   updateUser,
   findAllUsers,
   findUserByAddress,
-  userExists,
 };

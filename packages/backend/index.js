@@ -76,11 +76,12 @@ app.post("/sign", async (request, response) => {
     response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
     return;
   }
-  const user = await db.findUserByAddress(userAddress);
+  let user = await db.findUserByAddress(userAddress);
 
   if (!user.exists) {
     // Create user.
     await db.createUser(userAddress, dummyData);
+    user = await db.findUserByAddress(userAddress);
     console.log("New user created: ", userAddress);
   }
 
