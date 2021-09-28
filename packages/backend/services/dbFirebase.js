@@ -1,4 +1,5 @@
 const firebaseAdmin = require("firebase-admin");
+// TODO use an env var for this
 const firebaseServiceAccount = require("../firebaseServiceAccountKey.json");
 
 firebaseAdmin.initializeApp({
@@ -12,12 +13,12 @@ const getUserSnapshotById = id => getUserDoc(id).get();
 
 const createUser = (userId, userData) => {
   const userDoc = getUserDoc(userId);
-  userDoc.set(userData);
+  return userDoc.set(userData);
 };
 
 const updateUser = (userId, userData) => {
   const userDoc = getUserDoc(userId);
-  userDoc.update(userData);
+  return userDoc.update(userData);
 };
 
 const userExists = async address => {
