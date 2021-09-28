@@ -1,2 +1,3 @@
+.env
 firebaseServiceAccountKey.json
-local_database/
+local_database/local_db.json

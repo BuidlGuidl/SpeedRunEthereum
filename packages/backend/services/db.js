@@ -1,8 +1,14 @@
-const firebaseImplementation = require("./dbFirebase");
-const localImplementation = require("./dbLocal");
+require("dotenv").config();
 
-// TODO in #47, use one implementation or the other based on .env
-const db = localImplementation;
+const DB_SERVICES = {
+  firebase: "dbFirebase",
+  local: "dbLocal",
+};
+
+const selectedService = process.env.DATABASE_SERVICE ?? "local";
+const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
+// eslint-disable-next-line import/no-dynamic-require
+const db = require(`./${dbService}`);
 
 /**
  *
