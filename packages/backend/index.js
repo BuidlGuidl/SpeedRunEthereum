@@ -1,12 +1,10 @@
-const ethers = require("ethers");
 const express = require("express");
 const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const firebaseAdmin = require("firebase-admin");
 const db = require("./services/db");
-const { userOnly, adminOnly } = require("./middlewares/auth");
+const { withAddress, adminOnly } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 
 const app = express();
@@ -87,18 +85,16 @@ app.post("/sign", async (request, response) => {
   }
 
   const isAdmin = user.data.isAdmin ?? false;
-  const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin });
 
-  response.json({ isAdmin, token: jwt });
+  response.json({ isAdmin });
 });
 
-app.get("/user", userOnly, async (request, response) => {
-  console.log(`/user`);
-  const { address } = request;
+app.get("/user", async (request, response) => {
+  const address = request.query.address;
+  console.log(`/user`, address);
   const user = await db.findUserByAddress(address);
   if (!user.exists) {
-    // It should never happen, but just in case...
-    response.status(401).send("Something went wrong. Cant find the user in the database");
+    response.status(404).send("User doesn't exist");
     return;
   }
 
@@ -106,7 +102,7 @@ app.get("/user", userOnly, async (request, response) => {
   response.json(user.data);
 });
 
-app.post("/challenges", userOnly, async (request, response) => {
+app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, branchUrl, signature } = request.body;
   const address = request.address;
   console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
@@ -203,14 +199,6 @@ app.get("/challenges", adminOnly, async (request, response) => {
   } else {
     response.json(allChallenges.filter(({ status: challengeStatus }) => challengeStatus === status));
   }
-});
-
-app.get("/auth-jwt-restricted", userOnly, (req, res) => {
-  res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
-});
-
-app.get("/auth-jwt-admin-restricted", adminOnly, (req, res) => {
-  res.send(`all working! 👌. Successfully authenticated request from ${req.address}`);
 });
 
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
