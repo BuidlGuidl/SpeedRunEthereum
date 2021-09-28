@@ -4,19 +4,12 @@ const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-// Firebase set up
 const firebaseAdmin = require("firebase-admin");
-const firebaseServiceAccount = require("./firebaseServiceAccountKey.json");
+const db = require("./services/db");
 const { userOnly, adminOnly } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 
 const app = express();
-
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
-});
-// Docs: https://firebase.google.com/docs/firestore/quickstart#node.js_1
-const database = firebaseAdmin.firestore();
 
 const dummyData = {
   challenges: {
@@ -58,16 +51,16 @@ app.get("/sign-message", (req, res) => {
 
 app.get("/builders", async (req, res) => {
   console.log("/builders");
-  const buildersSnapshot = await database.collection("users").get();
-  res.status(200).send(buildersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+  const builders = await db.findAllUsers();
+  res.status(200).send(builders);
 });
 
 app.get("/builders/:builderAddress", async (req, res) => {
   const builderAddress = req.params.builderAddress;
   console.log(`/builders/${builderAddress}`);
 
-  const builderSnapshot = await database.collection("users").doc(builderAddress).get();
-  res.status(200).send({ id: builderSnapshot.id, ...builderSnapshot.data() });
+  const builder = await db.findUserByAddress(builderAddress);
+  res.status(200).send(builder.data);
 });
 
 app.post("/sign", async (request, response) => {
@@ -85,16 +78,15 @@ app.post("/sign", async (request, response) => {
     response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
     return;
   }
+  const user = await db.findUserByAddress(userAddress);
 
-  const user = await database.collection("users").doc(userAddress).get();
   if (!user.exists) {
     // Create user.
-    const userRef = database.collection("users").doc(userAddress);
-    await userRef.set(dummyData);
+    await db.createUser(userAddress, dummyData);
     console.log("New user created: ", userAddress);
   }
 
-  const isAdmin = !!user.data().isAdmin;
+  const isAdmin = user.data.isAdmin ?? false;
   const jwt = await firebaseAdmin.auth().createCustomToken(userAddress, { isAdmin });
 
   response.json({ isAdmin, token: jwt });
@@ -103,7 +95,7 @@ app.post("/sign", async (request, response) => {
 app.get("/user", userOnly, async (request, response) => {
   console.log(`/user`);
   const { address } = request;
-  const user = await database.collection("users").doc(address).get();
+  const user = await db.findUserByAddress(address);
   if (!user.exists) {
     // It should never happen, but just in case...
     response.status(401).send("Something went wrong. Cant find the user in the database");
@@ -111,7 +103,7 @@ app.get("/user", userOnly, async (request, response) => {
   }
 
   console.log("Retrieving existing user: ", address);
-  response.json(user.data());
+  response.json(user.data);
 });
 
 app.post("/challenges", userOnly, async (request, response) => {
@@ -130,34 +122,33 @@ app.post("/challenges", userOnly, async (request, response) => {
     return;
   }
 
-  const userRef = await database.collection("users").doc(address);
-  const user = await userRef.get();
-  if (user.exists) {
-    const existingChallenges = user.get("challenges");
-    // Overriding for now. We could support an array of submitted challenges.
-    // ToDo. Extract challenge status (ENUM)
-    existingChallenges[challengeId] = {
-      status: "SUBMITTED",
-      branchUrl,
-      deployedUrl,
-    };
-    await userRef.update({ challenges: existingChallenges });
-    response.sendStatus(200);
-  } else {
+  const user = await db.findUserByAddress(address);
+  if (!user.exists) {
     response.status(404).send("User not found!");
+    return;
   }
+
+  const existingChallenges = user.data.challenges;
+  // Overriding for now. We could support an array of submitted challenges.
+  // ToDo. Extract challenge status (ENUM)
+  existingChallenges[challengeId] = {
+    status: "SUBMITTED",
+    branchUrl,
+    deployedUrl,
+  };
+  await db.updateUser(address, { challenges: existingChallenges });
+  response.sendStatus(200);
 });
 
 async function setChallengeStatus(userAddress, challengeId, newStatus, comment) {
-  const userRef = await database.collection("users").doc(userAddress);
-  const user = await userRef.get();
-  const existingChallenges = user.get("challenges");
+  const user = await db.findUserByAddress(userAddress);
+  const existingChallenges = user.data.challenges;
   existingChallenges[challengeId] = {
     ...existingChallenges[challengeId],
     status: newStatus,
     reviewComment: comment != null ? comment : "",
   };
-  await userRef.update({ challenges: existingChallenges });
+  await db.updateUser(userAddress, { challenges: existingChallenges });
 }
 
 app.patch("/challenges", adminOnly, async (request, response) => {
@@ -189,15 +180,16 @@ app.patch("/challenges", adminOnly, async (request, response) => {
 // We should create a getChallengesByStatus function that fetches the challenges by status.
 // https://github.com/moonshotcollective/scaffold-directory/pull/32#discussion_r711971355
 async function getAllChallenges() {
-  const usersDocs = (await database.collection("users").get()).docs;
-  const allChallenges = usersDocs.reduce(async (challenges, userDoc) => {
-    const userChallenges = await userDoc.get("challenges");
+  // const usersDocs = (await database.collection("users").get()).docs;
+  const usersData = await db.findAllUsers();
+  const allChallenges = usersData.reduce((challenges, userData) => {
+    const userChallenges = userData.challenges;
     const userUnpackedChallenges = Object.keys(userChallenges).map(challengeKey => ({
-      userAddress: userDoc.id,
+      userAddress: userData.id,
       id: challengeKey,
       ...userChallenges[challengeKey],
     }));
-    return (await challenges).concat(userUnpackedChallenges);
+    return challenges.concat(userUnpackedChallenges);
   }, []);
 
   return allChallenges;
