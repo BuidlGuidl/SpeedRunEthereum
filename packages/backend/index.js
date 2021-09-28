@@ -94,8 +94,7 @@ app.get("/user", async (request, response) => {
   console.log(`/user`, address);
   const user = await db.findUserByAddress(address);
   if (!user.exists) {
-    // It should never happen, but just in case...
-    response.status(401).send("Something went wrong. Cant find the user in the database");
+    response.status(404).send("User doesn't exist");
     return;
   }
 

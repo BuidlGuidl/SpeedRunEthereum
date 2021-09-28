@@ -16,10 +16,11 @@ import {
   BuilderListView,
   ChallengeDetailView,
   BuilderHomeView,
-  SignInView,
   BuilderProfileView,
   ChallengeReviewView,
+  HomeView,
 } from "./views";
+import axios from "axios";
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -69,6 +70,12 @@ const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 
 // 🔭 block explorer URL
 const blockExplorer = targetNetwork.blockExplorer;
+
+const USER_ROLES = {
+  admin: "user_role.administrator",
+  anonymous: "user_role.anonymous",
+  registered: "user_role.registered",
+};
 
 /*
   Web3 modal helps us "connect" external wallets:
@@ -224,6 +231,26 @@ function App() {
     setRoute(window.location.pathname);
   }, [setRoute]);
 
+  const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      console.log("getting user data");
+      try {
+        const fetchedUserObject = await axios.get(serverUrl + `user`, {
+          params: { address },
+        });
+        setUserRole(fetchedUserObject.data.isAdmin ? USER_ROLES.admin : USER_ROLES.registered);
+      } catch (e) {
+        setUserRole(USER_ROLES.anonymous);
+      }
+    }
+
+    if (address) {
+      fetchUserData();
+    }
+  }, [address]);
+
   let faucetHint = "";
 
   const [faucetClicked, setFaucetClicked] = useState(false);
@@ -254,7 +281,6 @@ function App() {
   }
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
-  const [isAdmin, setIsAdmin] = useLocalStorage("scaffold-directory-is-admin", false);
 
   return (
     <div className="App">
@@ -279,10 +305,10 @@ function App() {
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={() => {
             logoutOfWeb3Modal();
-            setIsAdmin(false);
+            setUserRole(USER_ROLES.anonymous);
           }}
           blockExplorer={blockExplorer}
-          isAdmin={isAdmin}
+          isAdmin={userRole === USER_ROLES.admin}
         />
         {faucetHint}
       </div>
@@ -320,7 +346,7 @@ function App() {
               </Link>
             </Menu.Item>
           )}
-          {isAdmin && (
+          {USER_ROLES.admin === userRole && (
             <Menu.Item key="/challenge-review">
               <Link
                 onClick={() => {
@@ -335,13 +361,10 @@ function App() {
         </Menu>
         <Switch>
           <Route exact path="/">
-            <SignInView
+            <HomeView
               serverUrl={serverUrl}
               address={address}
               userProvider={userProvider}
-              successCallback={({ isAdmin: isAdminReturned }) => {
-                setIsAdmin(isAdminReturned || false);
-              }}
             />
           </Route>
           <Route path="/my-profile">
