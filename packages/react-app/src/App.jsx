@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { useLocation, Switch, Route, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
@@ -16,11 +16,11 @@ import {
   BuilderListView,
   ChallengeDetailView,
   BuilderHomeView,
-  SignInView,
   BuilderProfileView,
   ChallengeReviewView,
+  HomeView,
 } from "./views";
-import JwtTest from "./views/JwtTest"; // TODO debug only
+import axios from "axios";
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -71,6 +71,12 @@ const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 // 🔭 block explorer URL
 const blockExplorer = targetNetwork.blockExplorer;
 
+const USER_ROLES = {
+  admin: "user_role.administrator",
+  anonymous: "user_role.anonymous",
+  registered: "user_role.registered",
+};
+
 /*
   Web3 modal helps us "connect" external wallets:
 */
@@ -104,7 +110,7 @@ function App() {
   /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
   const gasPrice = useGasPrice(targetNetwork, "fast");
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
-  const userProvider = useUserProvider(injectedProvider, localProvider);
+  const userProvider = useUserProvider(injectedProvider);
   const address = useUserAddress(userProvider);
 
   // You can warn the user if you would like them to be on a specific network
@@ -220,10 +226,26 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  const [route, setRoute] = useState();
+  let location = useLocation();
+  const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
+
   useEffect(() => {
-    setRoute(window.location.pathname);
-  }, [setRoute]);
+    async function fetchUserData() {
+      console.log("getting user data");
+      try {
+        const fetchedUserObject = await axios.get(serverUrl + `user`, {
+          params: { address },
+        });
+        setUserRole(fetchedUserObject.data.isAdmin ? USER_ROLES.admin : USER_ROLES.registered);
+      } catch (e) {
+        setUserRole(USER_ROLES.anonymous);
+      }
+    }
+
+    if (address) {
+      fetchUserData();
+    }
+  }, [address]);
 
   let faucetHint = "";
 
@@ -253,9 +275,8 @@ function App() {
       </div>
     );
   }
-  const isSigner = injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
-  const [jwt, setJwt] = useLocalStorage("scaffold-directory-JWT", "");
-  const [isAdmin, setIsAdmin] = useLocalStorage("scaffold-directory-is-admin", false);
+  const isSignerProviderConnected =
+    injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
 
   return (
     <div className="App">
@@ -270,7 +291,7 @@ function App() {
       <div style={{ textAlign: "center", padding: 10 }}>
         <Account
           connectText="Connect Ethereum Wallet"
-          onlyShowButton={!isSigner}
+          onlyShowButton={!isSignerProviderConnected}
           address={address}
           localProvider={localProvider}
           userProvider={userProvider}
@@ -280,85 +301,58 @@ function App() {
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={() => {
             logoutOfWeb3Modal();
-            setJwt("");
-            setIsAdmin(false);
+            setUserRole(USER_ROLES.anonymous);
           }}
           blockExplorer={blockExplorer}
-          isAdmin={isAdmin}
+          isAdmin={userRole === USER_ROLES.admin}
         />
         {faucetHint}
       </div>
-      {isSigner ? (
-        <BrowserRouter>
-          <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
-            <Menu.Item key="/home">
-              <Link
-                onClick={() => {
-                  setRoute("/home");
-                }}
-                to="/home"
-              >
-                My profile
-              </Link>
+      <>
+        <Menu
+          style={{ textAlign: "center", marginBottom: "25px" }}
+          selectedKeys={[location.pathname]}
+          mode="horizontal"
+        >
+          <Menu.Item key="/">
+            <Link to="/">Home</Link>
+          </Menu.Item>
+          <Menu.Item key="/builders">
+            <Link to="/builders">All Builders</Link>
+          </Menu.Item>
+          {isSignerProviderConnected && (
+            <Menu.Item key="/my-profile">
+              <Link to="/my-profile">My profile</Link>
             </Menu.Item>
-            <Menu.Item key="/builders">
-              <Link
-                onClick={() => {
-                  setRoute("/builders");
-                }}
-                to="/builders"
-              >
-                All Builders
-              </Link>
+          )}
+          {USER_ROLES.admin === userRole && (
+            <Menu.Item key="/challenge-review">
+              <Link to="/challenge-review">Review Challenges</Link>
             </Menu.Item>
-            {isAdmin && (
-              <Menu.Item key="/challenge-review">
-                <Link
-                  onClick={() => {
-                    setRoute("/challenge-review");
-                  }}
-                  to="/challenge-review"
-                >
-                  Review Challenges
-                </Link>
-              </Menu.Item>
-            )}
-          </Menu>
-          <Switch>
-            <Route exact path="/">
-              <SignInView
-                serverUrl={serverUrl}
-                address={address}
-                userProvider={userProvider}
-                successCallback={({ isAdmin: isAdminReturned, token }) => {
-                  setJwt(token);
-                  setIsAdmin(isAdminReturned || false);
-                }}
-                jwt={jwt}
-              />
-            </Route>
-            <Route path="/home">
-              <BuilderHomeView serverUrl={serverUrl} jwt={jwt} address={address} />
-            </Route>
-            <Route path="/builders" exact>
-              <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-            </Route>
-            <Route path="/builders/:builderAddress">
-              <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-            </Route>
-            <Route path="/challenge/:challengeId">
-              <ChallengeDetailView serverUrl={serverUrl} address={address} jwt={jwt} userProvider={userProvider} />
-            </Route>
-            {/* ToDo: Protect this route on the frontend? */}
-            <Route path="/challenge-review" exact>
-              <ChallengeReviewView serverUrl={serverUrl} jwt={jwt} address={address} userProvider={userProvider} />
-            </Route>
-            <Route path="/jwt-test">
-              <JwtTest serverUrl={serverUrl} jwt={jwt} userProvider={userProvider} />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      ) : null}
+          )}
+        </Menu>
+        <Switch>
+          <Route exact path="/">
+            <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+          <Route exact path="/my-profile">
+            <BuilderHomeView serverUrl={serverUrl} address={address} />
+          </Route>
+          <Route path="/builders" exact>
+            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/builders/:builderAddress">
+            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/challenge/:challengeId">
+            <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+          {/* ToDo: Protect this route on the frontend? */}
+          <Route path="/challenge-review" exact>
+            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+        </Switch>
+      </>
     </div>
   );
 }

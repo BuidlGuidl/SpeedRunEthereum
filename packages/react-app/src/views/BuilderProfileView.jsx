@@ -29,7 +29,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
         <>
           <Address address={builder.id} ensProvider={mainnetProvider} />
           <div style={{ textAlign: "start" }}>
-            <ChallengeList userChallenges={builder.challenges} />
+            <ChallengeList userChallenges={builder.challenges ?? []} />
           </div>
         </>
       ) : (

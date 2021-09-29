@@ -1,7 +1,14 @@
-const firebaseImplementation = require("./dbFirebase");
+require("dotenv").config();
 
-// TODO in #47, use one implementation or the other based on .env
-const db = firebaseImplementation;
+const DB_SERVICES = {
+  firebase: "./dbFirebase",
+  local: "./dbLocal",
+};
+
+const selectedService = process.env.DATABASE_SERVICE ?? "local";
+const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
+// eslint-disable-next-line import/no-dynamic-require
+const db = require(dbService);
 
 /**
  *
@@ -36,12 +43,9 @@ const findAllUsers = db.findAllUsers;
  */
 const findUserByAddress = db.findUserByAddress;
 
-const userExists = db.userExists;
-
 module.exports = {
   createUser,
   updateUser,
   findAllUsers,
   findUserByAddress,
-  userExists,
 };

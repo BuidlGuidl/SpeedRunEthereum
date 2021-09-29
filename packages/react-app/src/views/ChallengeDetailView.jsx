@@ -1,17 +1,14 @@
 import React from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Typography, Space } from "antd";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 
 const { Title, Paragraph, Link: AntdLink } = Typography;
 
-export default function ChallengeDetailView({ serverUrl, address, jwt, userProvider }) {
+export default function ChallengeDetailView({ serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const history = useHistory();
-  if (jwt == null || jwt === "") {
-    history.push("/");
-  }
 
   const challenge = challengeInfo[challengeId];
   if (!challenge) {
@@ -24,7 +21,6 @@ export default function ChallengeDetailView({ serverUrl, address, jwt, userProvi
     <div className="container">
       <Title>{challenge.label}</Title>
       <Space direction="vertical">
-        <Link to="/home">{"<"}Back to challenges</Link>
         <Paragraph>{challenge.description}</Paragraph>
 
         <AntdLink href={challenge.url} target="_blank">
@@ -34,7 +30,6 @@ export default function ChallengeDetailView({ serverUrl, address, jwt, userProvi
           challenge={challenge}
           serverUrl={serverUrl}
           address={address}
-          token={jwt}
           userProvider={userProvider}
         />
       </Space>
