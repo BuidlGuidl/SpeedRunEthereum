@@ -10,11 +10,7 @@ export default function HomeView({ serverUrl, address, userProvider }) {
       <Space direction="vertical">
         <Title>Welcome to scaffold-directory!</Title>
         <Text>Sign, build and show!</Text>
-        <SignatureSignUp
-          serverUrl={serverUrl}
-          address={address}
-          userProvider={userProvider}
-        />
+        <SignatureSignUp serverUrl={serverUrl} address={address} userProvider={userProvider} />
         <Title level={3}>Activity feed</Title>
       </Space>
     </div>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { useLocation, Switch, Route, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
@@ -226,11 +226,7 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  const [route, setRoute] = useState();
-  useEffect(() => {
-    setRoute(window.location.pathname);
-  }, [setRoute]);
-
+  let location = useLocation();
   const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
 
   useEffect(() => {
@@ -312,62 +308,34 @@ function App() {
         />
         {faucetHint}
       </div>
-      <BrowserRouter>
-        <Menu style={{ textAlign: "center", marginBottom: "25px" }} selectedKeys={[route]} mode="horizontal">
+      <>
+        <Menu
+          style={{ textAlign: "center", marginBottom: "25px" }}
+          selectedKeys={[location.pathname]}
+          mode="horizontal"
+        >
           <Menu.Item key="/">
-            <Link
-              onClick={() => {
-                setRoute("/");
-              }}
-              to="/"
-            >
-              Home
-            </Link>
+            <Link to="/">Home</Link>
           </Menu.Item>
           <Menu.Item key="/builders">
-            <Link
-              onClick={() => {
-                setRoute("/builders");
-              }}
-              to="/builders"
-            >
-              All Builders
-            </Link>
+            <Link to="/builders">All Builders</Link>
           </Menu.Item>
           {isSignerProviderConnected && (
             <Menu.Item key="/my-profile">
-              <Link
-                onClick={() => {
-                  setRoute("/my-profile");
-                }}
-                to="/my-profile"
-              >
-                My profile
-              </Link>
+              <Link to="/my-profile">My profile</Link>
             </Menu.Item>
           )}
           {USER_ROLES.admin === userRole && (
             <Menu.Item key="/challenge-review">
-              <Link
-                onClick={() => {
-                  setRoute("/challenge-review");
-                }}
-                to="/challenge-review"
-              >
-                Review Challenges
-              </Link>
+              <Link to="/challenge-review">Review Challenges</Link>
             </Menu.Item>
           )}
         </Menu>
         <Switch>
           <Route exact path="/">
-            <HomeView
-              serverUrl={serverUrl}
-              address={address}
-              userProvider={userProvider}
-            />
+            <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
-          <Route path="/my-profile">
+          <Route exact path="/my-profile">
             <BuilderHomeView serverUrl={serverUrl} address={address} />
           </Route>
           <Route path="/builders" exact>
@@ -384,7 +352,7 @@ function App() {
             <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
         </Switch>
-      </BrowserRouter>
+      </>
     </div>
   );
 }
