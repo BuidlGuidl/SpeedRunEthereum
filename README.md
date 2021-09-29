@@ -1,8 +1,14 @@
-# 🏗 scaffold-eth - 🔏 sign in with web3 example
+# 🏗 scaffold-directory
 
-> Ask users to sign a message with their web3 wallet and recover it in a backend service.
+Scaffold-directory aims to provide a structured learning path for onboarding developers to Ethereum.
+
+[🏃‍♀️Ethereum Dev Speed Run](https://medium.com/@austin_48503/%EF%B8%8Fethereum-dev-speed-run-bd72bcba6a4c) with a framework for submitting challenges, get feedback from ethereum builders, and in the process unlocking new challenges and prof of completion.
 
 ---
+
+## Project setup
+
+Get the project code:
 
 ```bash
 git clone git@github.com:moonshotcollective/scaffold-directory.git
@@ -10,23 +16,15 @@ git clone git@github.com:moonshotcollective/scaffold-directory.git
 cd scaffold-directory
 ```
 
+Install dependencies:
+
 ```bash
 
 yarn install
 
 ```
 
-```bash
-
-yarn start
-
-```
-
-> start the backend service that listens for and verifies signatures:
-
-This project uses Firebase (firestore) for data storage. You'll need to create a firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and donwload the file in https://console.cloud.google.com/, under IAM & Admin > Service Accounts > Keys.
-
-Then run:
+Start the backend service:
 
 ```bash
 
@@ -34,38 +32,61 @@ yarn backend
 
 ```
 
-📝 Edit your frontend `App.jsx` in `packages/react-app/src`
+In a new terminal, start the frontend:
 
-📱 Open http://localhost:3000 to see the app
+```bash
 
----
+yarn start
 
-> Connect a web3 wallet:
+```
 
-![image](https://user-images.githubusercontent.com/2653167/116907182-794c0480-abfe-11eb-9b63-935d8848b613.png)
-
----
-
-> Sign a message to prove you own the address:
-
-![image](https://user-images.githubusercontent.com/2653167/116907431-c6c87180-abfe-11eb-9382-e885a39c0579.png)
-
-![image](https://user-images.githubusercontent.com/2653167/116907476-dc3d9b80-abfe-11eb-9fb6-f0c2af0f40a1.png)
+At this point, you should have the app available at <http://localhost:3000>. By default, a locale JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter.
 
 ---
 
-> A backend server verifies sigatures:
+## Firebase Setup (optional)
 
-![image](https://user-images.githubusercontent.com/2653167/116907561-fb3c2d80-abfe-11eb-9b09-f1c81265040b.png)
+If you want to use Firebase (firestore) for data storage. You'll need to create a Firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and download the file at <https://console.cloud.google.com/>, under IAM & Admin > Service Accounts > Keys.
+
+Then you will have to create a `.env` file in `packages/backend/` and add `DATABASE_SERVICE=firebase` (see a sample here `packages/backend/.env.sample`).
+
+Then re-run:
+
+```bash
+
+yarn backend
+
+```
 
 ---
 
-> The frontend can then react to the correct signature:
+## Usage
 
-![image](https://user-images.githubusercontent.com/2653167/116907586-02633b80-abff-11eb-9ab4-3c5a9a16d64d.png)
+📱 Open <http://localhost:3000> to see the app
 
----
+![image](https://user-images.githubusercontent.com/2156509/135258832-61bcc08f-68be-4cb8-9493-15a4e0e6be98.png)
 
-## 💬 Support Chat
+List all builder profiles:
 
-Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
+![image](https://user-images.githubusercontent.com/2156509/135259080-d01fb534-b5b5-4604-8feb-5f8263074af6.png)
+
+View a builder profile:
+
+![image](https://user-images.githubusercontent.com/2156509/135259288-8591d335-47a3-4216-b4bc-2ec47df132f5.png)
+
+Connect your ethereum wallet by clicking "Connect Ethereum Wallet" -> Sign up / Sign in by clicking the "Sign a message to Sign up.." button and signing the message:
+
+![image](https://user-images.githubusercontent.com/2156509/135259597-71b21540-4982-482d-ba9f-0abf2f379dc4.png)
+
+This opens your profile view:
+
+![image](https://user-images.githubusercontent.com/2156509/135261902-abb2e4d8-0d34-49a5-aaa1-52d9010ea3f3.png)
+
+Submit the solution to a challenge by 1.) clicking a challenge in your profile view, 2.) complete the challenge according to the description (found by clicking the "Link to challenge"), 3.) past the URL with your solution and 4.) submit it by clicking the submit button and signing the message.
+
+![image](https://user-images.githubusercontent.com/2156509/135262069-7e00ad55-effe-4409-8378-5ec0afee25ff.png)
+
+Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
+>In order to set an admin in the local database file, add `"isAdmin": true` to the user objects in `packages/backend/local_database/local_db.json`.
+
+![image](https://user-images.githubusercontent.com/2156509/135267093-4be16c3c-ddfb-4877-8329-cc78b82dcfae.png)
