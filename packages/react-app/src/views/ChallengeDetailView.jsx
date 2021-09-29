@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Typography, Space } from "antd";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
@@ -21,7 +21,6 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
     <div className="container">
       <Title>{challenge.label}</Title>
       <Space direction="vertical">
-        <Link to="/home">{"<"}Back to challenges</Link>
         <Paragraph>{challenge.description}</Paragraph>
 
         <AntdLink href={challenge.url} target="_blank">
