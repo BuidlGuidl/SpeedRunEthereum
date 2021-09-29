@@ -1,14 +1,14 @@
 require("dotenv").config();
 
 const DB_SERVICES = {
-  firebase: "dbFirebase",
-  local: "dbLocal",
+  firebase: "./dbFirebase",
+  local: "./dbLocal",
 };
 
 const selectedService = process.env.DATABASE_SERVICE ?? "local";
 const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
 // eslint-disable-next-line import/no-dynamic-require
-const db = require(`./${dbService}`);
+const db = require(dbService);
 
 /**
  *
