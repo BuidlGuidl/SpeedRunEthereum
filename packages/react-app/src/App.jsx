@@ -8,6 +8,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import { formatEther, parseEther } from "@ethersproject/units";
+import axios from "axios";
 import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock, useLocalStorage } from "./hooks";
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
@@ -20,7 +21,6 @@ import {
   ChallengeReviewView,
   HomeView,
 } from "./views";
-import axios from "axios";
 
 /*
     Welcome to 🏗 scaffold-eth !
@@ -41,8 +41,8 @@ import axios from "axios";
     (and then use the `useExternalContractLoader()` hook!)
 */
 
-// const serverUrl = "https://backend.ether.delivery:49832/"
-const serverUrl = "http://localhost:49832/";
+// const serverUrl = "https://backend.ether.delivery:49832"
+const serverUrl = "http://localhost:49832";
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
@@ -233,7 +233,7 @@ function App() {
     async function fetchUserData() {
       console.log("getting user data");
       try {
-        const fetchedUserObject = await axios.get(serverUrl + `user`, {
+        const fetchedUserObject = await axios.get(serverUrl + `/user`, {
           params: { address },
         });
         setUserRole(fetchedUserObject.data.isAdmin ? USER_ROLES.admin : USER_ROLES.registered);

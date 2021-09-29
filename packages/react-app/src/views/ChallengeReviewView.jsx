@@ -10,7 +10,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
   async function fetchSubmittedChallenges() {
     setIsLoading(true);
     console.log("getting challenges", address);
-    const fetchedChallenges = await axios.get(serverUrl + `challenges`, {
+    const fetchedChallenges = await axios.get(serverUrl + `/challenges`, {
       params: { status: "SUBMITTED" },
       headers: {
         address,
@@ -28,7 +28,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
   const handleSendReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
     try {
-      const signMessageResponse = await axios.get(serverUrl + `sign-message`, {
+      const signMessageResponse = await axios.get(serverUrl + `/sign-message`, {
         params: {
           messageId: "challengeReview",
           address,
@@ -59,7 +59,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
 
     console.log(`${reviewType.toLowerCase()} ${challengeId} for ${userAddress} with comment ${comment}`);
     await axios.patch(
-      serverUrl + `challenges`,
+      serverUrl + `/challenges`,
       {
         params: { userAddress, challengeId, comment, newStatus: reviewType, signature },
       },

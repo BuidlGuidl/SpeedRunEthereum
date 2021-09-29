@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 const { Text, Title } = Typography;
 
-const serverPath = "challenges";
+const serverPath = "/challenges";
 
 export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
@@ -17,7 +17,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
     let signMessage;
     try {
-      const signMessageResponse = await axios.get(serverUrl + `sign-message`, {
+      const signMessageResponse = await axios.get(serverUrl + `/sign-message`, {
         params: {
           messageId: "challengeSubmit",
           address,

@@ -14,7 +14,7 @@ export default function BuilderHomeView({ serverUrl, address }) {
   useEffect(() => {
     async function fetchUserData() {
       console.log("getting user data");
-      const fetchedUserObject = await axios.get(serverUrl + `user`, {
+      const fetchedUserObject = await axios.get(serverUrl + `/user`, {
         params: { address },
       });
       setUserData(fetchedUserObject.data);

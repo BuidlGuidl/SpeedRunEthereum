@@ -4,7 +4,7 @@ import axios from "axios";
 import BuilderCard from "../components/BuilderCard";
 
 const { Title } = Typography;
-const serverPath = "builders";
+const serverPath = "/builders";
 
 export default function BuilderListView({ serverUrl, mainnetProvider }) {
   const [builders, setBuilders] = useState([]);
