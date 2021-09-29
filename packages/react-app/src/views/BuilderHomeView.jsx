@@ -31,7 +31,7 @@ export default function BuilderHomeView({ serverUrl, address }) {
       <h1>Welcome {address}!</h1>
       {userData ? (
         <div style={{ textAlign: "start" }}>
-          <ChallengeList userChallenges={userData.challenges} />
+          <ChallengeList userChallenges={userData.challenges ?? []} />
         </div>
       ) : null}
     </div>

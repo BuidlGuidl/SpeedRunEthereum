@@ -1,11 +1,11 @@
 const fs = require("fs");
 
 const DATABASE_PATH = "./local_database/local_db.json";
+const SEED_PATH = "./local_database/seed.json";
 
 if (!fs.existsSync(DATABASE_PATH)) {
-  const file = fs.openSync(DATABASE_PATH, "w");
-  fs.writeFileSync(file, "{}");
-  fs.closeSync(file);
+  // Seed the local database if empty.
+  fs.copyFileSync(SEED_PATH, DATABASE_PATH, fs.constants.COPYFILE_EXCL);
 }
 
 const database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));

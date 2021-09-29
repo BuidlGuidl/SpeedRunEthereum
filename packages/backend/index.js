@@ -9,19 +9,6 @@ const { getSignMessageForId, verifySignature } = require("./utils/sign");
 
 const app = express();
 
-const dummyData = {
-  challenges: {
-    "simple-nft-example": {
-      status: "ACCEPTED",
-      url: "example.com",
-    },
-    "decentralized-staking": {
-      status: "SUBMITTED",
-      url: "example2.com",
-    },
-  },
-};
-
 /*
   Uncomment this if you want to create a wallet to send ETH or something...
 const INFURA = JSON.parse(fs.readFileSync("./infura.txt").toString().trim())
@@ -80,7 +67,7 @@ app.post("/sign", async (request, response) => {
 
   if (!user.exists) {
     // Create user.
-    await db.createUser(userAddress, dummyData);
+    await db.createUser(userAddress, { creationTimestamp: new Date().getTime() });
     user = await db.findUserByAddress(userAddress);
     console.log("New user created: ", userAddress);
   }
@@ -125,7 +112,7 @@ app.post("/challenges", withAddress, async (request, response) => {
     return;
   }
 
-  const existingChallenges = user.data.challenges;
+  const existingChallenges = user.data.challenges ?? {};
   // Overriding for now. We could support an array of submitted challenges.
   // ToDo. Extract challenge status (ENUM)
   existingChallenges[challengeId] = {
@@ -180,7 +167,7 @@ async function getAllChallenges() {
   // const usersDocs = (await database.collection("users").get()).docs;
   const usersData = await db.findAllUsers();
   const allChallenges = usersData.reduce((challenges, userData) => {
-    const userChallenges = userData.challenges;
+    const userChallenges = userData.challenges ?? {};
     const userUnpackedChallenges = Object.keys(userChallenges).map(challengeKey => ({
       userAddress: userData.id,
       id: challengeKey,
