@@ -40,13 +40,13 @@ yarn start
 
 ```
 
-At this point, you should have the app available at <http://localhost:3000>. By default, a locale JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter.
+At this point, you should have the app available at <http://localhost:3000>. By default, a locale JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter (check `packages/backend/services/db.js`).
 
 ---
 
 ## Firebase Setup (optional)
 
-If you want to use Firebase (firestore) for data storage. You'll need to create a Firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and download the file at <https://console.cloud.google.com/>, under IAM & Admin > Service Accounts > Keys.
+If you want to use Firebase (firestore) for data storage, you'll need to create a Firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and download the file at <https://console.cloud.google.com/>, under IAM & Admin > Service Accounts > Keys.
 
 Then you will have to create a `.env` file in `packages/backend/` and add `DATABASE_SERVICE=firebase` (see a sample here `packages/backend/.env.sample`).
 
@@ -87,6 +87,6 @@ Submit the solution to a challenge by 1.) clicking a challenge in your profile v
 ![image](https://user-images.githubusercontent.com/2156509/135262069-7e00ad55-effe-4409-8378-5ec0afee25ff.png)
 
 Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
->In order to set an admin in the local database file, add `"isAdmin": true` to the user objects in `packages/backend/local_database/local_db.json`.
+>In order to set an admin in the local database file, add `"isAdmin": true` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
 
 ![image](https://user-images.githubusercontent.com/2156509/135267093-4be16c3c-ddfb-4877-8329-cc78b82dcfae.png)
