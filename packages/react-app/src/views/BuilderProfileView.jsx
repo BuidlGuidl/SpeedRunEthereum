@@ -14,7 +14,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
 
   useEffect(() => {
     async function fetchBuilder() {
-      const fetchedBuilder = await axios.get(serverUrl + `builders/${builderAddress}`);
+      const fetchedBuilder = await axios.get(serverUrl + `/builders/${builderAddress}`);
       setBuilder(fetchedBuilder.data);
       console.log(fetchedBuilder.data);
     }

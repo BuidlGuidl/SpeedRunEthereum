@@ -13,7 +13,7 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
   const handleLoginSigning = async () => {
     setLoading(true);
     try {
-      const signMessageResponse = await axios.get(`${serverUrl}sign-message`, {
+      const signMessageResponse = await axios.get(`${serverUrl}/sign-message`, {
         params: {
           messageId: "login",
           address,
@@ -40,7 +40,7 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
       }
       console.log("signature", signature);
 
-      const res = await axios.post(`${serverUrl}sign`, {
+      const res = await axios.post(`${serverUrl}/sign`, {
         address,
         signature,
       });
