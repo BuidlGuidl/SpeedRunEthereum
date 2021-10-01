@@ -11,6 +11,7 @@ export default function ChallengeReviewList({ challengeSubmissions, isLoading, a
       dataSource={challengeSubmissions}
       renderItem={challenge => (
         <List.Item
+          key={challenge.userAddress + challenge.id}
           actions={[
             <Button type="link" href={challenge.branchUrl} target="_blank">
               Code
