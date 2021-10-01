@@ -27,7 +27,6 @@ export default function ChallengeReviewList({ challengeSubmissions, isLoading, a
                   currentCommentMap[challenge.userAddress + challenge.id] = e.target.value;
                   setCommentMap(currentCommentMap);
                 }}
-                value={commentMap[challenge.userAddress + challenge.id]}
                 placeholder="Comment for builder"
                 style={{ marginBottom: 10 }}
                 rows={2}
