@@ -1,0 +1,11 @@
+# Google app engine deployment
+runtime: nodejs14
+env: standard
+entrypoint: node index.js
+env_variables:
+  DATABASE_SERVICE: "firebase"
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto

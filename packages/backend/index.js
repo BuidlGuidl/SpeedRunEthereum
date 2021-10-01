@@ -213,11 +213,13 @@ app.get("/challenges", adminOnly, async (request, response) => {
   }
 });
 
-// If nothing caught the request, return 404
+// If nothing processed the request, return 404
 app.use((req, res) => {
   console.log(`Request to ${req.path} resulted in 404`);
   res.status(404).json({ error: "not found" });
 });
+
+const PORT = process.env.PORT || 49832;
 
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
   https
@@ -228,11 +230,11 @@ if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
       },
       app,
     )
-    .listen(49832, () => {
-      console.log("HTTPS Listening: 49832");
+    .listen(PORT, () => {
+      console.log(`HTTPS Listening: ${PORT}`);
     });
 } else {
-  const server = app.listen(49832, () => {
+  const server = app.listen(PORT, () => {
     console.log("HTTP Listening on port:", server.address().port);
   });
 }
