@@ -9,7 +9,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import { formatEther, parseEther } from "@ethersproject/units";
 import axios from "axios";
-import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock, useLocalStorage } from "./hooks";
+import { useExchangePrice, useGasPrice, useUserProvider, useBalance } from "./hooks";
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
@@ -143,9 +143,9 @@ function App() {
   //  const mainnetDAIContract = useExternalContractLoader(mainnetProvider, DAI_ADDRESS, DAI_ABI)
 
   // If you want to call a function on a new block
-  useOnBlock(mainnetProvider, () => {
-    console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
-  });
+  // useOnBlock(mainnetProvider, () => {
+  //   console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
+  // });
 
   // Then read your DAI balance like:
   //  const myMainnetDAIBalance = useContractReader({DAI: mainnetDAIContract},"DAI", "balanceOf",["0x34aA3F359A9D614239015126635CE7732c18fDF3"])
@@ -226,7 +226,7 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  let location = useLocation();
+  const location = useLocation();
   const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
 
   useEffect(() => {
