@@ -7,6 +7,7 @@ const db = require("./services/db");
 const { withAddress, adminOnly } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
+const eventsRoutes = require("./routes/events");
 
 const app = express();
 
@@ -26,6 +27,8 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use("/events", eventsRoutes);
 
 app.get("/sign-message", (req, res) => {
   const messageId = req.query.messageId ?? "login";
@@ -208,6 +211,12 @@ app.get("/challenges", adminOnly, async (request, response) => {
   } else {
     response.json(allChallenges.filter(({ status: challengeStatus }) => challengeStatus === status));
   }
+});
+
+// If nothing caught the request, return 404
+app.use((req, res) => {
+  console.log(`Request to ${req.path} resulted in 404`);
+  res.status(404).json({ error: "not found" });
 });
 
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {

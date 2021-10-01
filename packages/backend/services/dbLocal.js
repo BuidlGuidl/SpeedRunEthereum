@@ -5,6 +5,7 @@
  *  - Events are stored in an array structure. Each item in the array is the event's data.
  */
 const fs = require("fs");
+const { getProp } = require("../utils/object");
 
 const DATABASE_PATH = "./local_database/local_db.json";
 const SEED_PATH = "./local_database/seed.json";
@@ -23,9 +24,19 @@ const persist = () => {
   fs.closeSync(file);
 };
 
+/**
+ * @param {*} conditionsArg
+ * @returns an array of functions for every condition which returns true if a
+ * given event passes the condition.
+ */
 const generateLocalDbConditionsFromArgs = conditionsArg => {
-  // TODO implement this
-  return conditionsArg;
+  return Object.entries(conditionsArg).map(([paths, values]) => {
+    const brokenPaths = paths.split(",").map(path => path.split("/"));
+    const valuesArray = values.split(",");
+    return testedEvent => {
+      return brokenPaths.some(pathArray => valuesArray.some(value => getProp(testedEvent, pathArray) === value));
+    };
+  });
 };
 
 // --- Users
