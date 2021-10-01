@@ -41,21 +41,21 @@ const generateLocalDbConditionsFromArgs = conditionsArg => {
 
 // --- Users
 const findUserByAddress = builderAddress => {
-  if (!database[builderAddress]) {
+  if (!database.users[builderAddress]) {
     return { exists: false };
   }
-  return { exists: true, data: { id: builderAddress, ...database[builderAddress] } };
+  return { exists: true, data: { id: builderAddress, ...database.users[builderAddress] } };
 };
 
 const createUser = (userId, userData) => {
-  database[userId] = userData;
+  database.users[userId] = userData;
   persist();
 };
 
 const updateUser = (userId, userData) => {
   const { id, ...existingUserData } = findUserByAddress(userId).data;
 
-  database[userId] = {
+  database.users[userId] = {
     ...existingUserData,
     ...userData,
   };
@@ -64,7 +64,7 @@ const updateUser = (userId, userData) => {
 };
 
 const findAllUsers = () => {
-  return Object.entries(database).map(([id, userData]) => ({ id, ...userData }));
+  return Object.entries(database.users).map(([id, userData]) => ({ id, ...userData }));
 };
 
 // --- Events
