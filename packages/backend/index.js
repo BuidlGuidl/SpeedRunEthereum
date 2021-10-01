@@ -189,6 +189,8 @@ app.get("/challenges", adminOnly, async (request, response) => {
   }
 });
 
+const PORT = process.env.PORT || 49832;
+
 if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
   https
     .createServer(
@@ -198,11 +200,11 @@ if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
       },
       app,
     )
-    .listen(49832, () => {
-      console.log("HTTPS Listening: 49832");
+    .listen(PORT, () => {
+      console.log(`HTTPS Listening: ${PORT}`);
     });
 } else {
-  const server = app.listen(49832, () => {
+  const server = app.listen(PORT, () => {
     console.log("HTTP Listening on port:", server.address().port);
   });
 }

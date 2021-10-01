@@ -41,8 +41,8 @@ import {
     (and then use the `useExternalContractLoader()` hook!)
 */
 
-// const serverUrl = "https://backend.ether.delivery:49832"
-const serverUrl = "http://localhost:49832";
+// Defaults to localhost.
+const serverUrl = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:49832";
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
