@@ -8,7 +8,7 @@
         "simple-nft-example": {
           "status": "SUBMITTED",
           "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example"
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1"
         }
       }
     },
@@ -17,22 +17,140 @@
         "simple-nft-example": {
           "status": "ACCEPTED",
           "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example",
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
           "reviewComment": "Nice work!"
         },
         "decentralized-staking": {
           "status": "REJECTED",
-          "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/decentralized-staking",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/decentralized-staking",
-          "reviewComment": "Connect wallet is throwing an error"
-        },
-        "token-vendor": {
-          "status": "SUBMITTED",
-          "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/token-vendor",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/token-vendor"
+          "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking",
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking_v1",
+          "reviewComment": "It throws an error when opening the app."
+        }
+      }
+    },
+    "0x90F79bf6EB2c4f870365E785982E1f101E93b906": {
+      "creationTimestamp": 1633088553225,
+      "challenges": {
+        "simple-nft-example": {
+          "status": "ACCEPTED",
+          "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example",
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v2",
+          "reviewComment": "Now it's working great!"
         }
       }
     }
   },
-  "events": []
+  "events": [
+    {
+      "type": "challenge.submit",
+      "timestamp": 1633088366263,
+      "signature": "0x1b1b687d6093833a9fd4b5c95abd7957b29fd566efeb6503c7e9d8af12132c9a10ddc6882bc4bf60e16f247ee50c41bd66f81d16de0039570e7599b03ddfb6211c",
+      "payload": {
+        "builderAddress": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        "challengeId": "simple-nft-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+        "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example"
+      }
+    },
+    {
+      "type": "challenge.submit",
+      "timestamp": 1633088396705,
+      "signature": "0x2df2d823812b98659eb194457109319f0c70f2c4ab294a39af4d1c1ddf20638d593faf85c2ad41b150fc9730af8e67834314b5bb0c11d1720454862872db7bc81c",
+      "payload": {
+        "builderAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "challengeId": "simple-nft-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+        "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example"
+      }
+    },
+    {
+      "type": "challenge.review",
+      "timestamp": 1633088451792,
+      "signature": "0xcdfefbe69ddd8ab12e1977204e8386e2a269569cc3a0239d47a7a49d08b68c7725c88bd58910349ffc12710868ae7f06b94bb27aca10e2db8e3eb102f34755b41b",
+      "payload": {
+        "reviewAction": "ACCEPTED",
+        "builderAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "challengeId": "simple-nft-example",
+        "reviewMessage": "Nice work!"
+      }
+    },
+    {
+      "type": "challenge.submit",
+      "timestamp": 1633088489080,
+      "signature": "0x98a168bab9dede09bad4d8d5ad27dddc927586df18977a44dd5ea5e5def0341660a7f28043d7943e7e9de9b2b2164d6d0007e8ae4814c7a57e0611d946395b971b",
+      "payload": {
+        "builderAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "challengeId": "decentralized-staking",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking_v1",
+        "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking"
+      }
+    },
+    {
+      "type": "challenge.review",
+      "timestamp": 1633088521082,
+      "signature": "0x00799cf005c20d4f100a781a86bacf17b14c2d6626d92e3bcf44650e22732720706e2890f053cf43d8edd7ccc6835506989c24f0260cd8e6e49504f03a48b8d01b",
+      "payload": {
+        "reviewAction": "REJECTED",
+        "builderAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "challengeId": "decentralized-staking",
+        "reviewMessage": "It throws an error when opening the app."
+      }
+    },
+    {
+      "type": "user.create",
+      "timestamp": 1633088553223,
+      "signature": "0x74b500bd922a586464dce6d9f33bee7a6a6c625549efeacf801330d89799f264708c72ccbb4409a155ba794236dafb22e282cc06e6b1acd32c8fac6de6f926be1c",
+      "payload": {
+        "userAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+      }
+    },
+    {
+      "type": "challenge.submit",
+      "timestamp": 1633088623502,
+      "signature": "0xbd0be26d857401b95df562861e38856e2f27a3d551d803f83cb919d9bb76ead950a3e3af439a0cb9c0004b4dfe11c84225464679ebc6895746211d0be7b0ec571c",
+      "payload": {
+        "builderAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+        "challengeId": "simple-nft-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+        "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example"
+      }
+    },
+    {
+      "type": "challenge.review",
+      "timestamp": 1633088716152,
+      "signature": "0x5f30d50ff98a08824a193ed99edc574ce5fd503409700add72b6f71968d24fab30a425229eeeaa40116b89e1ea3033b476aff2f477eae563f646f23c3046813c1c",
+      "payload": {
+        "reviewAction": "REJECTED",
+        "builderAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+        "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "challengeId": "simple-nft-example",
+        "reviewMessage": "Needs some work around the minting."
+      }
+    },
+    {
+      "type": "challenge.submit",
+      "timestamp": 1633088741374,
+      "signature": "0xbd0be26d857401b95df562861e38856e2f27a3d551d803f83cb919d9bb76ead950a3e3af439a0cb9c0004b4dfe11c84225464679ebc6895746211d0be7b0ec571c",
+      "payload": {
+        "builderAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+        "challengeId": "simple-nft-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v2",
+        "branchUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example"
+      }
+    },
+    {
+      "type": "challenge.review",
+      "timestamp": 1633088783021,
+      "signature": "0x3064c9dedf01c439ae76a267ab63455835f0a3badbda696663c74999f12018254e765e4b7d28dfe5804dc621abfd64fcf7cd325ab9435cd7d9bc14875f3968b31b",
+      "payload": {
+        "reviewAction": "ACCEPTED",
+        "builderAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+        "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "challengeId": "simple-nft-example",
+        "reviewMessage": "Now it's working great!"
+      }
+    }
+  ]
 }
