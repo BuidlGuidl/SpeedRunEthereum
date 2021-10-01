@@ -1,3 +1,9 @@
+/**
+ * LOCAL DATABASE
+ *
+ *  - Users are stored in an object structure, with keys being users' addresses, and values being users' data.
+ *  - Events are stored in an array structure. Each item in the array is the event's data.
+ */
 const fs = require("fs");
 
 const DATABASE_PATH = "./local_database/local_db.json";
@@ -10,17 +16,24 @@ if (!fs.existsSync(DATABASE_PATH)) {
 
 const database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
 
+// --- Utilities
+const persist = () => {
+  const file = fs.openSync(DATABASE_PATH, "w");
+  fs.writeFileSync(file, JSON.stringify(database, null, 2));
+  fs.closeSync(file);
+};
+
+const generateLocalDbConditionsFromArgs = conditionsArg => {
+  // TODO implement this
+  return conditionsArg;
+};
+
+// --- Users
 const findUserByAddress = builderAddress => {
   if (!database[builderAddress]) {
     return { exists: false };
   }
   return { exists: true, data: { id: builderAddress, ...database[builderAddress] } };
-};
-
-const persist = () => {
-  const file = fs.openSync(DATABASE_PATH, "w");
-  fs.writeFileSync(file, JSON.stringify(database, null, 2));
-  fs.closeSync(file);
 };
 
 const createUser = (userId, userData) => {
@@ -43,9 +56,33 @@ const findAllUsers = () => {
   return Object.entries(database).map(([id, userData]) => ({ id, ...userData }));
 };
 
+// --- Events
+const createEvent = event => {
+  database.events.push(event);
+
+  persist();
+};
+
+const findAllEvents = ({ limit: limitArg } = {}) => {
+  const limit = limitArg ?? database.length;
+  return database.events.slice(limit * -1);
+};
+
+const findEventsWhere = ({ conditions: conditionsArg, limit } = {}) => {
+  const allEvents = findAllEvents({ limit });
+
+  const conditions = generateLocalDbConditionsFromArgs(conditionsArg);
+
+  return allEvents.filter(event => conditions.every(condition => condition(event)));
+};
+
 module.exports = {
   createUser,
   updateUser,
   findAllUsers,
   findUserByAddress,
+
+  createEvent,
+  findAllEvents,
+  findEventsWhere,
 };

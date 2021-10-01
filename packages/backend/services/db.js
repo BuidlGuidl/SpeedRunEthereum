@@ -10,6 +10,8 @@ const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
 // eslint-disable-next-line import/no-dynamic-require
 const db = require(dbService);
 
+// --- Users
+
 /**
  *
  * @param {Address} userAddress The user's address
@@ -43,9 +45,19 @@ const findAllUsers = db.findAllUsers;
  */
 const findUserByAddress = db.findUserByAddress;
 
+// --- Events
+// TODO add jsdocs
+const createEvent = db.createEvent;
+const findAllEvents = db.findAllEvents;
+const findEventsWhere = db.findEventsWhere;
+
 module.exports = {
   createUser,
   updateUser,
   findAllUsers,
   findUserByAddress,
+
+  createEvent,
+  findAllEvents,
+  findEventsWhere,
 };
