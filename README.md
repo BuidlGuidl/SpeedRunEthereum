@@ -46,9 +46,9 @@ At this point, you should have the app available at <http://localhost:3000>. By 
 
 ## Firebase Setup (optional)
 
-If you want to use Firebase (firestore) for data storage, you'll need to create a Firebase project and place the service account key configuration in `packages/backend/firebaseServiceAccountKey.json`. You can generate and download the file at <https://console.cloud.google.com/>, under IAM & Admin > Service Accounts > Keys.
+If you want to use Firebase (firestore) for data storage, you'll need to create a Firebase project and download the service account key configuration. You can generate and download the file at <https://console.cloud.google.com/>, under IAM & Admin > Service Accounts > Keys.
 
-Then you will have to create a `.env` file in `packages/backend/` and add `DATABASE_SERVICE=firebase` (see a sample here `packages/backend/.env.sample`).
+Then you will have to create a `.env` file in `packages/backend/` with `DATABASE_SERVICE=firebase` the path to the service account on `GOOGLE_APPLICATION_CREDENTIALS` (see a sample here `packages/backend/.env.sample`).
 
 Then re-run:
 
