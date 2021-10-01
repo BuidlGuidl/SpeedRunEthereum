@@ -12,7 +12,7 @@ import axios from "axios";
 import { useExchangePrice, useGasPrice, useUserProvider, useBalance, useOnBlock, useLocalStorage } from "./hooks";
 import { Header, Account, ThemeSwitch } from "./components";
 import { Transactor } from "./helpers";
-import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
+import { INFURA_ID, NETWORK, NETWORKS, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
   ChallengeDetailView,
@@ -40,9 +40,6 @@ import {
     You can also bring in contract artifacts in `constants.js`
     (and then use the `useExternalContractLoader()` hook!)
 */
-
-// const serverUrl = "https://backend.ether.delivery:49832"
-const serverUrl = "http://localhost:49832";
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
@@ -226,7 +223,7 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  let location = useLocation();
+  const location = useLocation();
   const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
 
   useEffect(() => {
