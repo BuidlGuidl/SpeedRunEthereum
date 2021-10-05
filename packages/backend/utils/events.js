@@ -15,6 +15,7 @@ const createEvent = (type, payload, signature) => ({
 });
 
 const validParams = ["type", "builder", "challengeId", "reviewAction", "reviewer"];
+const validReviewActions = ["ACCEPTED", "REJECTED"]; // TODO this should be a shared constant
 const validTypes = Object.values(EVENT_TYPES);
 const validateEventsQueryParams = query => {
   const failingQueries = [];
@@ -28,6 +29,13 @@ const validateEventsQueryParams = query => {
     if (name === "type") {
       valuesArray.forEach(value => {
         if (!validTypes.includes(value)) {
+          failingQueries.push([name, value]);
+        }
+      });
+    }
+    if (name === "reviewAction") {
+      valuesArray.forEach(value => {
+        if (!validReviewActions.includes(value)) {
           failingQueries.push([name, value]);
         }
       });
