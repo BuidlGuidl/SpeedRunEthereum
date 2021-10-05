@@ -11,7 +11,7 @@ export default function HomeView({ serverUrl, address, userProvider }) {
   useEffect(() => {
     const updateEvents = async () => {
       const events = await getAllEvents();
-      setEventFeeds(events);
+      setEventFeeds(events.reverse());
     };
 
     updateEvents();
