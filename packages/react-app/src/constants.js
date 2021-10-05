@@ -23,7 +23,7 @@ export const NETWORK = (chainId)=>{
 }
 
 // export const SERVER_URL = "https://backend.ether.delivery:49832"
-export const SERVER_URL = "http://localhost:49832";
+export const SERVER_URL = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:49832";
 
 export const NETWORKS = {
     localhost: {
