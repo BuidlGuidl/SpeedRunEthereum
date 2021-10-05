@@ -16,7 +16,7 @@ const router = express.Router();
  * All params accept a comma separated list of values, allowing to filter for multiple values at once. They act as an OR.
  * Every query param condition must be met for a event to pass the filter. Each query param acts as an AND.
  */
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   console.log("/events");
   const query = req.query;
   const failingQueries = validateEventsQueryParams(query);
@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
 
   const conditions = queryParamsToConditions(query);
 
-  const matchingEvents = db.findEventsWhere({ conditions });
+  const matchingEvents = await db.findEventsWhere({ conditions });
   res.json(matchingEvents);
 });
 
