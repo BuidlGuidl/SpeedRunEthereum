@@ -4,10 +4,12 @@
  *  - Users are stored in an object structure, with keys being users' addresses, and values being users' data.
  *  - Events are stored in an array structure. Each item in the array is the event's data.
  */
+require("dotenv").config();
 const fs = require("fs");
 const { getProp } = require("../utils/object");
 
-const DATABASE_PATH = "./local_database/local_db.json";
+const DATABASE_PATH =
+  process.env.NODE_ENV === "test" ? "./local_database/__testing__local_db.json" : "./local_database/local_db.json";
 const SEED_PATH = "./local_database/seed.json";
 
 if (!fs.existsSync(DATABASE_PATH)) {
@@ -96,4 +98,6 @@ module.exports = {
   createEvent,
   findAllEvents,
   findEventsWhere,
+
+  __internal_database: database, // testing only
 };

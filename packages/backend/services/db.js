@@ -76,4 +76,6 @@ module.exports = {
   createEvent,
   findAllEvents,
   findEventsWhere,
+
+  __internal_database: db.__internal_database, // testing only
 };
