@@ -127,7 +127,7 @@ app.post("/challenges", withAddress, async (request, response) => {
     deployedUrl,
   };
   const eventPayload = {
-    builderAddress: address,
+    userAddress: address,
     challengeId,
     deployedUrl,
     branchUrl,
@@ -149,7 +149,7 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
 
   const eventPayload = {
     reviewAction: newStatus,
-    builderAddress: userAddress,
+    userAddress,
     reviewerAddress,
     challengeId,
     reviewMessage: comment ?? "",

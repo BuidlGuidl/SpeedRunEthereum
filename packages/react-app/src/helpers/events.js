@@ -10,11 +10,11 @@ const EVENT_TYPES = {
 export const eventToString = ({ type, payload }) => {
   switch (type) {
     case EVENT_TYPES.CHALLENGE_SUBMIT: {
-      return `${payload.builderAddress.slice(0, 6)}... submitted a solution for ${payload.challengeId}`;
+      return `${payload.userAddress.slice(0, 6)}... submitted a solution for ${payload.challengeId}`;
     }
 
     case EVENT_TYPES.CHALLENGE_REVIEW: {
-      return `A challenge submitted by ${payload.builderAddress.slice(
+      return `A challenge submitted by ${payload.userAddress.slice(
         0,
         6,
       )}... has been ${payload.reviewAction.toLowerCase()}`;

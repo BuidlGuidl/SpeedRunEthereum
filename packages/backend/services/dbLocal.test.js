@@ -23,14 +23,14 @@ const dummySignature =
 
 const dummyPayloadsByType = {
   [EVENT_TYPES.CHALLENGE_SUBMIT]: {
-    builderAddress: dummyAddressA,
+    userAddress: dummyAddressA,
     challengeId: dummyChallengeIdA,
     deployedUrl: "https://moonshotcollective.space/",
     branchUrl: "https://github.com/moonshotcollective/scaffold-directory",
   },
   [EVENT_TYPES.CHALLENGE_REVIEW]: {
     reviewAction: "ACCEPTED",
-    builderAddress: dummyAddressA,
+    userAddress: dummyAddressA,
     reviewerAddress: dummyAddressB,
     challengeId: dummyChallengeIdA,
     reviewMessage: dummyMessage,
@@ -71,25 +71,25 @@ const queryStringToConditions = queryString => {
 
 const userCreateEventA = createTestEvent(EVENT_TYPES.USER_CREATE, { userAddress: dummyAddressA });
 const userCreateEventB = createTestEvent(EVENT_TYPES.USER_CREATE, { userAddress: dummyAddressB });
-const challengeSubmitEventA = createTestEvent(EVENT_TYPES.CHALLENGE_SUBMIT, { builderAddress: dummyAddressA });
-const challengeSubmitEventB = createTestEvent(EVENT_TYPES.CHALLENGE_SUBMIT, { builderAddress: dummyAddressB });
+const challengeSubmitEventA = createTestEvent(EVENT_TYPES.CHALLENGE_SUBMIT, { userAddress: dummyAddressA });
+const challengeSubmitEventB = createTestEvent(EVENT_TYPES.CHALLENGE_SUBMIT, { userAddress: dummyAddressB });
 const challengeReviewApproveEventA = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  builderAddress: dummyAddressA,
+  userAddress: dummyAddressA,
   reviewerAddress: dummyAddressC,
   reviewAction: "ACCEPTED",
 });
 const challengeReviewApproveEventB = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  builderAddress: dummyAddressB,
+  userAddress: dummyAddressB,
   reviewerAddress: dummyAddressC,
   reviewAction: "ACCEPTED",
 });
 const challengeReviewRejectEventA = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  builderAddress: dummyAddressA,
+  userAddress: dummyAddressA,
   reviewerAddress: dummyAddressC,
   reviewAction: "REJECTED",
 });
 const challengeReviewRejectEventB = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  builderAddress: dummyAddressB,
+  userAddress: dummyAddressB,
   reviewerAddress: dummyAddressC,
   reviewAction: "REJECTED",
 });
@@ -166,9 +166,9 @@ describe("The local database", () => {
         ]);
       });
 
-      it("by builder", () => {
+      it("by user", () => {
         seedDb();
-        const queryStringA = `builder=${dummyAddressA}`;
+        const queryStringA = `user=${dummyAddressA}`;
         const conditionsA = queryStringToConditions(queryStringA);
         const resultingEventsA = db.findEventsWhere({ conditions: conditionsA });
         expect(resultingEventsA).toHaveLength(4);
@@ -179,7 +179,7 @@ describe("The local database", () => {
           challengeReviewRejectEventA,
         ]);
 
-        const queryStringB = `builder=${dummyAddressB}`;
+        const queryStringB = `user=${dummyAddressB}`;
         const conditionsB = queryStringToConditions(queryStringB);
         const resultingEventsB = db.findEventsWhere({ conditions: conditionsB });
         expect(resultingEventsB).toHaveLength(4);
@@ -190,7 +190,7 @@ describe("The local database", () => {
           challengeReviewRejectEventB,
         ]);
 
-        const queryStringC = `builder=${dummyAddressC}`;
+        const queryStringC = `user=${dummyAddressC}`;
         const conditionsC = queryStringToConditions(queryStringC);
         const resultingEventsC = db.findEventsWhere({ conditions: conditionsC });
         expect(resultingEventsC).toHaveLength(0);
@@ -281,7 +281,7 @@ describe("The local database", () => {
         });
         expect(resultingExpectedNoResults).toHaveLength(0);
 
-        const query2 = `type=${EVENT_TYPES.USER_CREATE},${EVENT_TYPES.CHALLENGE_SUBMIT}&builder=${dummyAddressA}`;
+        const query2 = `type=${EVENT_TYPES.USER_CREATE},${EVENT_TYPES.CHALLENGE_SUBMIT}&user=${dummyAddressA}`;
         const conditions2 = queryStringToConditions(query2);
         const results2 = db.findEventsWhere({
           conditions: conditions2,
@@ -293,7 +293,7 @@ describe("The local database", () => {
           userAddress: "anotherUser",
         });
         db.createEvent(anotherUserEvent);
-        const query3 = `type=${EVENT_TYPES.USER_CREATE}&builder=${dummyAddressA},${dummyAddressB}`;
+        const query3 = `type=${EVENT_TYPES.USER_CREATE}&user=${dummyAddressA},${dummyAddressB}`;
         const conditions3 = queryStringToConditions(query3);
         const results3 = db.findEventsWhere({
           conditions: conditions3,
