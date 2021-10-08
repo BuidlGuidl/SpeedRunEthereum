@@ -8,6 +8,8 @@ require("dotenv").config();
 const fs = require("fs");
 const { getProp } = require("../utils/object");
 
+console.log("using local db");
+
 const DATABASE_PATH =
   process.env.NODE_ENV === "test" ? "./local_database/__testing__local_db.json" : "./local_database/local_db.json";
 const SEED_PATH = "./local_database/seed.json";

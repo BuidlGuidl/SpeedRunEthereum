@@ -1,6 +1,8 @@
 require("dotenv").config();
 const firebaseAdmin = require("firebase-admin");
 
+console.log("using firebase");
+
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.applicationDefault(),
