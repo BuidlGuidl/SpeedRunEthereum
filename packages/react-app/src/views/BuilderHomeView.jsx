@@ -24,7 +24,7 @@ export default function BuilderHomeView({ serverUrl, address }) {
     if (address) {
       fetchUserData();
     }
-  }, [address]);
+  }, [address, serverUrl]);
 
   return (
     <div className="container">

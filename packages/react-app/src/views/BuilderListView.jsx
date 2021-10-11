@@ -14,7 +14,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
     }
 
     fetchBuilders();
-  }, []);
+  }, [serverUrl]);
 
   return (
     <div className="container">

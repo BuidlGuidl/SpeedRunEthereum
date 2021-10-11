@@ -65,7 +65,7 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
   // ToDo. Also hide this if there is no wallet connected. Check `UserProvider.js`: Do we need a burner in this?
   return (
     <button disabled={loading} style={{ marginTop: 32 }} type="button" onClick={handleLoginSigning}>
-      <span style={{ marginRight: 8 }}>🔏</span> Sign a message to Sign Up on Scaffold-directory
+      <span style={{ marginRight: 8 }} role="img" aria-label="lock-icon">🔏</span> Sign a message to Sign Up on Scaffold-directory
     </button>
   );
 }

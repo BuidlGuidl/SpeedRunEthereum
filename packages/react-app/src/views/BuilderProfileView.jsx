@@ -16,7 +16,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
       console.log(fetchedBuilder.data);
     }
     fetchBuilder();
-  }, [builderAddress]);
+  }, [builderAddress, serverUrl]);
 
   return (
     <div className="container">

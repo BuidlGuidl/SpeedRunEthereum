@@ -112,7 +112,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
             />
           </label>
           <div className="form-item">
-            <button type="button" onClick={onFinish}>
+            <button type="button" onClick={onFinish} disabled={isSubmitting}>
               Submit
             </button>
           </div>

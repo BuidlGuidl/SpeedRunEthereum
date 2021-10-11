@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import axios from "axios";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
@@ -7,7 +7,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  async function fetchSubmittedChallenges() {
+  const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoading(true);
     console.log("getting challenges", address);
     const fetchedChallenges = await axios.get(serverUrl + `/challenges`, {
@@ -19,11 +19,11 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
     setChallenges(fetchedChallenges.data);
     console.log(fetchedChallenges.data);
     setIsLoading(false);
-  }
+  }, [address, serverUrl]);
 
   useEffect(() => {
     fetchSubmittedChallenges();
-  }, [serverUrl, address]);
+  }, [serverUrl, address, fetchSubmittedChallenges]);
 
   const handleSendReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;

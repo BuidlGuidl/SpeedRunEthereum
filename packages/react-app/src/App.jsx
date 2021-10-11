@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocation, Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
 import Web3Modal from "web3modal";
@@ -95,7 +95,7 @@ function App() {
       console.log("👩‍💼 selected address:", address);
       console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
     }
-  }, [mainnetProvider, address, selectedChainId]);
+  }, [mainnetProvider, address, selectedChainId, localChainId]);
 
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
@@ -108,7 +108,6 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  const location = useLocation();
   const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
 
   useEffect(() => {

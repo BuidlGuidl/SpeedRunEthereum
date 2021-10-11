@@ -18,7 +18,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
     <div className="container">
       <h1>{challenge.label}</h1>
       <p>{challenge.description}</p>
-      <a href={challenge.url} target="_blank" rel="noreferrer">
+      <a href={challenge.url} target="_blank" rel="noopener noreferrer">
         Link to challenge
       </a>
       <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} userProvider={userProvider} />

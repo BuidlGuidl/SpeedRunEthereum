@@ -12,11 +12,11 @@ export default function ChallengeReviewList({ challengeSubmissions, isLoading, a
             <strong>{challengeInfo[challenge.id].label}</strong>
             <p>{challengeInfo[challenge.id].description}</p>
           </div>
-          <a href={challenge.branchUrl} target="_blank" rel="noreferrer">
+          <a href={challenge.branchUrl} target="_blank" rel="noopener noreferrer">
             Code
           </a>
           ,
-          <a href={challenge.deployedUrl} target="_blank" rel="noreferrer">
+          <a href={challenge.deployedUrl} target="_blank" rel="noopener noreferrer">
             Live Demo
           </a>
           <div>
