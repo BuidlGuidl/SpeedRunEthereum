@@ -48,22 +48,19 @@ export default function Account({
   isAdmin,
 }) {
   const modalButtons = [];
+
   if (web3Modal) {
     if (web3Modal.cachedProvider) {
       modalButtons.push(
-        <span
-          key="logoutbutton"
-          style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-          onClick={logoutOfWeb3Modal}
-        >
+        <p key="logoutbutton" style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }} onClick={logoutOfWeb3Modal}>
           logout
-        </span>,
+        </p>,
       );
     } else {
       modalButtons.push(
-        <span key="loginbutton" style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }} onClick={loadWeb3Modal}>
+        <p key="loginbutton" style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }} onClick={loadWeb3Modal}>
           {connectText || "connect"}
-        </span>,
+        </p>,
       );
     }
   }
