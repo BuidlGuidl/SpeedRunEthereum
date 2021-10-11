@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Spin } from "antd";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ChallengeList from "../components/ChallengeList";
 import Address from "../components/Address";
-
-const { Title } = Typography;
 
 export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
   const { builderAddress } = useParams();
@@ -24,7 +21,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
   return (
     <div className="container">
       <Link to="/builders">{"<"}Back to list of builders</Link>
-      <Title>Builder Progress</Title>
+      <h1>Builder Progress</h1>
       {builder ? (
         <>
           <Address address={builder.id} ensProvider={mainnetProvider} />
@@ -33,7 +30,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
           </div>
         </>
       ) : (
-        <Spin />
+        "Loading..."
       )}
     </div>
   );

@@ -1,8 +1,5 @@
 import React from "react";
-import { Badge, Button, Space } from "antd";
 import Address from "./Address";
-import Balance from "./Balance";
-import Wallet from "./Wallet";
 
 /*
   ~ What it does? ~
@@ -54,28 +51,19 @@ export default function Account({
   if (web3Modal) {
     if (web3Modal.cachedProvider) {
       modalButtons.push(
-        <Button
+        <span
           key="logoutbutton"
           style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-          shape="round"
-          size="large"
           onClick={logoutOfWeb3Modal}
         >
           logout
-        </Button>,
+        </span>,
       );
     } else {
       modalButtons.push(
-        <Button
-          key="loginbutton"
-          style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-          shape="round"
-          size="large"
-          type={minimized ? "default" : "primary"}
-          onClick={loadWeb3Modal}
-        >
+        <span key="loginbutton" style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }} onClick={loadWeb3Modal}>
           {connectText || "connect"}
-        </Button>,
+        </span>,
       );
     }
   }
@@ -83,14 +71,14 @@ export default function Account({
   const display = minimized ? (
     ""
   ) : (
-    <Space>
-      {isAdmin && <Badge count="admin" />}
+    <>
+      {isAdmin && <span>ADMIN</span>}
       {address ? (
         <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
       ) : (
         "Connecting..."
       )}
-    </Space>
+    </>
   );
 
   return (

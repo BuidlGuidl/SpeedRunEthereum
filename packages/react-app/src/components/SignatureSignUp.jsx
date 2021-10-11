@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { message as uiMessage, notification, Button } from "antd";
 
 // TODO there are 3 was of showing errors here: `setError`, `uiMessage`, `notification`
 // the standard in other places seems to be `notification`
+// ToDo. Console.error => notification (Chakra ui alert)
 export default function SignatureSignUp({ serverUrl, address, userProvider }) {
   const history = useHistory();
   const [error, setError] = useState();
@@ -32,7 +32,7 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
       try {
         signature = await userProvider.send("personal_sign", [signMessage, address]);
       } catch (err) {
-        notification.error({
+        console.error({
           message: "The signature was cancelled",
         });
         setLoading(false);
@@ -53,7 +53,7 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
     } catch (e) {
       // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
       console.log(e);
-      uiMessage.error(" Sorry, the server is overloaded. 🧯🚒🔥");
+      console.error(" Sorry, the server is overloaded. 🧯🚒🔥");
       console.log("FAILED TO GET...");
     }
   };
@@ -64,8 +64,8 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
 
   // ToDo. Also hide this if there is no wallet connected. Check `UserProvider.js`: Do we need a burner in this?
   return (
-    <Button loading={loading} style={{ marginTop: 32 }} type="primary" onClick={handleLoginSigning}>
+    <button disabled={loading} style={{ marginTop: 32 }} type="button" onClick={handleLoginSigning}>
       <span style={{ marginRight: 8 }}>🔏</span> Sign a message to Sign Up on Scaffold-directory
-    </Button>
+    </button>
   );
 }

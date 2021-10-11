@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { List, Typography } from "antd";
 import axios from "axios";
 import BuilderCard from "../components/BuilderCard";
 
-const { Title } = Typography;
 const serverPath = "/builders";
 
 export default function BuilderListView({ serverUrl, mainnetProvider }) {
@@ -20,16 +18,14 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
 
   return (
     <div className="container">
-      <Title>scaffold-eth Builders</Title>
-      <List
-        bordered
-        dataSource={builders}
-        renderItem={builder => (
-          <List.Item>
+      <h1>scaffold-eth Builders</h1>
+      <ul>
+        {builders.map(builder => (
+          <li>
             <BuilderCard builder={builder} mainnetProvider={mainnetProvider} />
-          </List.Item>
-        )}
-      />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

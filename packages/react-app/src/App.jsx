@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, Switch, Route, Link } from "react-router-dom";
-import "antd/dist/antd.css";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Menu } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
@@ -159,28 +157,24 @@ function App() {
         />
       </div>
       <>
-        <Menu
-          style={{ textAlign: "center", marginBottom: "25px" }}
-          selectedKeys={[location.pathname]}
-          mode="horizontal"
-        >
-          <Menu.Item key="/">
+        <ul style={{ textAlign: "center", marginBottom: "25px" }}>
+          <li key="/">
             <Link to="/">Home</Link>
-          </Menu.Item>
-          <Menu.Item key="/builders">
+          </li>
+          <li key="/builders">
             <Link to="/builders">All Builders</Link>
-          </Menu.Item>
+          </li>
           {isSignerProviderConnected && (
-            <Menu.Item key="/my-profile">
+            <li key="/my-profile">
               <Link to="/my-profile">My profile</Link>
-            </Menu.Item>
+            </li>
           )}
           {USER_ROLES.admin === userRole && (
-            <Menu.Item key="/challenge-review">
+            <li key="/challenge-review">
               <Link to="/challenge-review">Review Challenges</Link>
-            </Menu.Item>
+            </li>
           )}
-        </Menu>
+        </ul>
         <Switch>
           <Route exact path="/">
             <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />

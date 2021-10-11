@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { notification } from "antd";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
+// ToDo. console.error => Chakra UI alert
 export default function ChallengeReviewView({ serverUrl, address, userProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -40,7 +40,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      notification.error({
+      console.error({
         message: "Can't get the message to sign. Please try again.",
         description: error.toString(),
       });
@@ -51,7 +51,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      notification.error({
+      console.error({
         message: "The signature was cancelled",
       });
       return;

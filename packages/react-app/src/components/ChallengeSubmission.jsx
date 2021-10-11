@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Button, Form, Input, notification, Spin, Typography } from "antd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const { Text, Title } = Typography;
-
 const serverPath = "/challenges";
 
+// ToDo. console.error / log => notifications (chakra UI "alerts")
+// ToDo. on-line form validation
 export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deployedUrl, setDeployedUrl] = useState("");
+  const [branchUrl, setBranchUrl] = useState("");
 
-  const onFinish = async values => {
-    const { deployedUrl, branchUrl } = values;
+  const onFinish = async () => {
     setIsSubmitting(true);
 
     let signMessage;
@@ -27,7 +27,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      notification.error({
+      console.error({
         message: "Can't get the message to sign. Please try again.",
         description: error.toString(),
       });
@@ -39,7 +39,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      notification.error({
+      console.error({
         message: "The signature was cancelled",
       });
       setIsSubmitting(false);
@@ -62,7 +62,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
         },
       );
     } catch (error) {
-      notification.error({
+      console.error({
         message: "Submission Error. Please try again.",
         description: error.toString(),
       });
@@ -71,58 +71,52 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
       return;
     }
 
-    notification.success({
+    console.log({
       message: "Challenge submitted!",
     });
     setIsSubmitting(false);
   };
 
   if (!address) {
-    return <Text type="warning">Connect your wallet to submit this Challenge.</Text>;
+    return <p className="warning">Connect your wallet to submit this Challenge.</p>;
   }
 
   return (
     <div>
-      <Title level={2}>Submit Challenge: {challenge.label}</Title>
+      <h2>Submit Challenge: {challenge.label}</h2>
       {challenge.isDisabled ? (
-        <Text type="warning">This challenge is disabled.</Text>
+        <p className="warning">This challenge is disabled.</p>
       ) : (
-        <Form
-          name="basic"
-          initialValues={{ branchUrl: challenge.url }}
-          onFinish={onFinish}
-          layout="vertical"
-          autoComplete="off"
-        >
-          <Form.Item
-            label="Deployed URL"
-            name="deployedUrl"
-            rules={[
-              { required: true, message: "Required field" },
-              { type: "url", message: "Please enter a valid URL" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+        <form name="basic" autoComplete="off">
+          <label htmlFor="deployedUrl">
+            Deployed URL
+            <input
+              type="text"
+              name="deployedUrl"
+              value={deployedUrl}
+              onChange={e => {
+                setDeployedUrl(e.target.value);
+              }}
+            />
+          </label>
 
-          <Form.Item
-            label="Branch URL"
-            name="branchUrl"
-            rules={[
-              { required: true, message: "Required field" },
-              { type: "url", message: "Please enter a valid URL" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Spin spinning={isSubmitting}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Spin>
-          </Form.Item>
-        </Form>
+          <label htmlFor="branchUrl">
+            Branch URL
+            <input
+              type="text"
+              name="branchUrl"
+              value={branchUrl}
+              onChange={e => {
+                setBranchUrl(e.target.value);
+              }}
+            />
+          </label>
+          <div className="form-item">
+            <button type="button" onClick={onFinish}>
+              Submit
+            </button>
+          </div>
+        </form>
       )}
     </div>
   );

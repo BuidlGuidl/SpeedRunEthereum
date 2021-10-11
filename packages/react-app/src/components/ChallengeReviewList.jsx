@@ -1,63 +1,61 @@
 import React from "react";
-import { List, Button, Input } from "antd";
 import { challengeInfo } from "../data/challenges";
 
 export default function ChallengeReviewList({ challengeSubmissions, isLoading, approveClick, rejectClick }) {
   const [commentMap, setCommentMap] = React.useState({});
+
   return (
-    <List
-      loading={isLoading}
-      itemLayout="vertical"
-      dataSource={challengeSubmissions}
-      renderItem={challenge => (
-        <List.Item
-          key={challenge.userAddress + challenge.id}
-          actions={[
-            <Button type="link" href={challenge.branchUrl} target="_blank">
-              Code
-            </Button>,
-            <Button type="link" href={challenge.deployedUrl} target="_blank">
-              Live Demo
-            </Button>,
-          ]}
-          extra={
-            <div>
-              <Input.TextArea
-                onChange={e => {
-                  const currentCommentMap = commentMap;
-                  currentCommentMap[challenge.userAddress + challenge.id] = e.target.value;
-                  setCommentMap(currentCommentMap);
-                }}
-                placeholder="Comment for builder"
-                style={{ marginBottom: 10 }}
-                rows={2}
-              />
-              <Button
-                type="primary"
-                style={{ marginRight: 10 }}
-                onClick={() =>
-                  approveClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
-                }
-              >
-                Approve Button
-              </Button>
-              <Button
-                danger
-                onClick={() =>
-                  rejectClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
-                }
-              >
-                Reject
-              </Button>
-            </div>
-          }
-        >
-          <List.Item.Meta
-            title={challengeInfo[challenge.id].label}
-            description={challengeInfo[challenge.id].description}
-          />
-        </List.Item>
-      )}
-    />
+    <ul>
+      {challengeSubmissions.map(challenge => (
+        <li key={challenge.userAddress + challenge.id}>
+          <div>
+            <strong>{challengeInfo[challenge.id].label}</strong>
+            <p>{challengeInfo[challenge.id].description}</p>
+          </div>
+          <a href={challenge.branchUrl} target="_blank" rel="noreferrer">
+            Code
+          </a>
+          ,
+          <a href={challenge.deployedUrl} target="_blank" rel="noreferrer">
+            Live Demo
+          </a>
+          <div>
+            <textarea
+              onChange={e => {
+                const value = e.target.value;
+                setCommentMap(preCommentMap => {
+                  const currentCommentMap = { ...preCommentMap };
+                  currentCommentMap[challenge.userAddress + challenge.id] = value;
+                  return currentCommentMap;
+                });
+              }}
+              placeholder="Comment for builder"
+              style={{ marginBottom: 10 }}
+              rows={2}
+            />
+            <button
+              type="button"
+              disabled={isLoading}
+              style={{ marginRight: 10 }}
+              onClick={() =>
+                approveClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
+              }
+            >
+              Approve Button
+            </button>
+            <button
+              type="button"
+              disabled={isLoading}
+              className="danger"
+              onClick={() =>
+                rejectClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
+              }
+            >
+              Reject
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }

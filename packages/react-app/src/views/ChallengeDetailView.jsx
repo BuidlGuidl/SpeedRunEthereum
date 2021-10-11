@@ -1,10 +1,7 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Typography, Space } from "antd";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
-
-const { Title, Paragraph, Link: AntdLink } = Typography;
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
@@ -19,20 +16,12 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
 
   return (
     <div className="container">
-      <Title>{challenge.label}</Title>
-      <Space direction="vertical">
-        <Paragraph>{challenge.description}</Paragraph>
-
-        <AntdLink href={challenge.url} target="_blank">
-          Link to challenge
-        </AntdLink>
-        <ChallengeSubmission
-          challenge={challenge}
-          serverUrl={serverUrl}
-          address={address}
-          userProvider={userProvider}
-        />
-      </Space>
+      <h1>{challenge.label}</h1>
+      <p>{challenge.description}</p>
+      <a href={challenge.url} target="_blank" rel="noreferrer">
+        Link to challenge
+      </a>
+      <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} userProvider={userProvider} />
     </div>
   );
 }
