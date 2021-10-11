@@ -10,7 +10,7 @@ import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
 import { Header, Account, ThemeSwitch } from "./components";
-import { INFURA_ID, NETWORKS } from "./constants";
+import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
   ChallengeDetailView,
@@ -19,9 +19,6 @@ import {
   ChallengeReviewView,
   HomeView,
 } from "./views";
-
-// Defaults to localhost.
-const serverUrl = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:49832";
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)

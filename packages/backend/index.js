@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const db = require("./services/db");
 const { withAddress, adminOnly } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
+const { EVENT_TYPES, createEvent } = require("./utils/events");
+const eventsRoutes = require("./routes/events");
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use("/events", eventsRoutes);
 
 app.get("/sign-message", (req, res) => {
   const messageId = req.query.messageId ?? "login";
@@ -67,6 +71,8 @@ app.post("/sign", async (request, response) => {
 
   if (!user.exists) {
     // Create user.
+    const event = createEvent(EVENT_TYPES.USER_CREATE, { userAddress }, signature);
+    db.createEvent(event); // INFO: async, no await here
     await db.createUser(userAddress, { creationTimestamp: new Date().getTime() });
     user = await db.findUserByAddress(userAddress);
     console.log("New user created: ", userAddress);
@@ -120,11 +126,19 @@ app.post("/challenges", withAddress, async (request, response) => {
     branchUrl,
     deployedUrl,
   };
+  const eventPayload = {
+    userAddress: address,
+    challengeId,
+    deployedUrl,
+    branchUrl,
+  };
+  const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
+  db.createEvent(event); // INFO: async, no await here
   await db.updateUser(address, { challenges: existingChallenges });
   response.sendStatus(200);
 });
 
-async function setChallengeStatus(userAddress, challengeId, newStatus, comment) {
+async function setChallengeStatus(userAddress, reviewerAddress, challengeId, newStatus, comment, signature) {
   const user = await db.findUserByAddress(userAddress);
   const existingChallenges = user.data.challenges;
   existingChallenges[challengeId] = {
@@ -132,6 +146,16 @@ async function setChallengeStatus(userAddress, challengeId, newStatus, comment) 
     status: newStatus,
     reviewComment: comment != null ? comment : "",
   };
+
+  const eventPayload = {
+    reviewAction: newStatus,
+    userAddress,
+    reviewerAddress,
+    challengeId,
+    reviewMessage: comment ?? "",
+  };
+  const event = createEvent(EVENT_TYPES.CHALLENGE_REVIEW, eventPayload, signature);
+  db.createEvent(event); // INFO: async, no await here
   await db.updateUser(userAddress, { challenges: existingChallenges });
 }
 
@@ -155,7 +179,7 @@ app.patch("/challenges", adminOnly, async (request, response) => {
   if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
     response.status(400).send("Invalid status");
   } else {
-    await setChallengeStatus(userAddress, challengeId, newStatus, comment);
+    await setChallengeStatus(userAddress, address, challengeId, newStatus, comment, signature);
     response.sendStatus(200);
   }
 });
@@ -187,6 +211,12 @@ app.get("/challenges", adminOnly, async (request, response) => {
   } else {
     response.json(allChallenges.filter(({ status: challengeStatus }) => challengeStatus === status));
   }
+});
+
+// If nothing processed the request, return 404
+app.use((req, res) => {
+  console.log(`Request to ${req.path} resulted in 404`);
+  res.status(404).json({ error: "not found" });
 });
 
 const PORT = process.env.PORT || 49832;
