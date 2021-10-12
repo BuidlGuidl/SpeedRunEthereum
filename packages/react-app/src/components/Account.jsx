@@ -1,5 +1,7 @@
 import React from "react";
-import Address from "./Address";
+import { Badge, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import Blockies from "react-blockies";
 
 /*
   ~ What it does? ~
@@ -37,51 +39,33 @@ import Address from "./Address";
 
 export default function Account({
   connectText,
-  onlyShowButton,
+  isWalletConnected,
   address,
-  mainnetProvider,
-  minimized,
-  web3Modal,
   loadWeb3Modal,
   logoutOfWeb3Modal,
-  blockExplorer,
   isAdmin,
 }) {
-  const modalButtons = [];
+  const connectWallet = (
+    <Button colorScheme="blue" key="loginbutton" onClick={loadWeb3Modal}>
+      {connectText || "connect"}
+    </Button>
+  );
 
-  if (web3Modal) {
-    if (web3Modal.cachedProvider) {
-      modalButtons.push(
-        <p key="logoutbutton" style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }} onClick={logoutOfWeb3Modal}>
-          logout
-        </p>,
-      );
-    } else {
-      modalButtons.push(
-        <p key="loginbutton" style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }} onClick={loadWeb3Modal}>
-          {connectText || "connect"}
-        </p>,
-      );
-    }
-  }
-
-  const display = minimized ? (
-    ""
-  ) : (
-    <>
-      {isAdmin && <span>ADMIN</span>}
-      {address ? (
-        <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
-      ) : (
-        "Connecting..."
-      )}
-    </>
+  const accountMenu = address && (
+    <Menu>
+      <MenuButton as={Button} variant="outline" rightIcon={<ChevronDownIcon />}>
+        <Blockies seed={address.toLowerCase()} size={8} />
+      </MenuButton>
+      <MenuList>
+        <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
+      </MenuList>
+    </Menu>
   );
 
   return (
     <div>
-      {onlyShowButton ? "" : display}
-      {modalButtons}
+      {isAdmin && <Badge colorScheme="red" mr={4}>admin</Badge>}
+      {isWalletConnected ? accountMenu : connectWallet}
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { chakra, Box, Center, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
-
-// displays a page header
 
 export default function Header({
   injectedProvider,
@@ -20,31 +19,38 @@ export default function Header({
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
 
   return (
-    <>
-      <a href="/">scaffold directory</a>
-      <ul style={{ textAlign: "center", marginBottom: "25px" }}>
-        <li key="/">
+    <Flex borderBottom="1px" borderColor="gray.300" mb={10}>
+      <Center pl={13} pr={9} py={6}>
+        <a href="/">
+          <span role="img" aria-label="castle icon">
+            🏰
+          </span>{" "}
+          <strong>BuidlGuidl</strong>
+        </a>
+      </Center>
+      <HStack as="ul" spacing="36px" style={{ listStyle: "none" }}>
+        <chakra.li key="/" color="gray.500" _hover={{ color: "gray.700" }}>
           <Link to="/">Home</Link>
-        </li>
-        <li key="/builders">
-          <Link to="/builders">All Builders</Link>
-        </li>
+        </chakra.li>
+        <chakra.li key="/builders" color="gray.500" _hover={{ color: "gray.700" }}>
+          <Link to="/builders">Builders</Link>
+        </chakra.li>
         {isSignerProviderConnected && (
-          <li key="/my-profile">
+          <chakra.li key="/my-profile" color="gray.500" _hover={{ color: "gray.700" }}>
             <Link to="/my-profile">My profile</Link>
-          </li>
+          </chakra.li>
         )}
         {userRoles.admin === userRole && (
-          <li key="/challenge-review">
+          <chakra.li key="/challenge-review" color="gray.500" _hover={{ color: "gray.700" }}>
             <Link to="/challenge-review">Review Challenges</Link>
-          </li>
+          </chakra.li>
         )}
-      </ul>
-
-      <div style={{ textAlign: "center", padding: 10 }}>
+      </HStack>
+      <Spacer />
+      <Box py={4} px={10}>
         <Account
-          connectText="Connect Ethereum Wallet"
-          onlyShowButton={!isSignerProviderConnected}
+          connectText="Connect Wallet"
+          isWalletConnected={isSignerProviderConnected}
           address={address}
           mainnetProvider={mainnetProvider}
           web3Modal={web3Modal}
@@ -56,7 +62,7 @@ export default function Header({
           blockExplorer={blockExplorer}
           isAdmin={userRole === userRoles.admin}
         />
-      </div>
-    </>
+      </Box>
+    </Flex>
   );
 }
