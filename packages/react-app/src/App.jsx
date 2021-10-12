@@ -7,7 +7,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
-import { Header, ThemeSwitch } from "./components";
+import { Header } from "./components";
 import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
@@ -144,7 +144,6 @@ function App() {
         blockExplorer={blockExplorer}
         setUserRole={setUserRole}
       />
-      <ThemeSwitch />
       <Switch>
         <Route exact path="/">
           <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
