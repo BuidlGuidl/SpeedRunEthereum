@@ -51,19 +51,6 @@ export default function Header({
             Builders
           </NavLink>
         </chakra.li>
-        {isSignerProviderConnected && (
-          <chakra.li key="/my-profile" color="gray.500" _hover={{ color: "gray.700" }}>
-            <NavLink
-              to="/my-profile"
-              exact
-              activeStyle={{
-                color: "var(--chakra-colors-gray-700)",
-              }}
-            >
-              My profile
-            </NavLink>
-          </chakra.li>
-        )}
         {userRoles.admin === userRole && (
           <chakra.li key="/challenge-review" color="gray.500" _hover={{ color: "gray.700" }}>
             <NavLink

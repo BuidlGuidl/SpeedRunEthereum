@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Badge, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import Blockies from "react-blockies";
@@ -57,6 +58,9 @@ export default function Account({
         <Blockies seed={address.toLowerCase()} size={8} />
       </MenuButton>
       <MenuList>
+        <MenuItem as={Link} to="/my-profile" d="block">
+          My profile
+        </MenuItem>
         <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
       </MenuList>
     </Menu>
