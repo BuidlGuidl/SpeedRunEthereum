@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import axios from "axios";
+import { Container, Heading } from "@chakra-ui/react";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
 // ToDo. console.error => Chakra UI alert
@@ -73,8 +74,8 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
   };
 
   return (
-    <div className="container">
-      <h1>Challenge Submissions Ready for Review!</h1>
+    <Container>
+      <Heading as="h1">Challenge Submissions Ready for Review!</Heading>
       <div style={{ textAlign: "start" }}>
         <ChallengeReviewList
           challengeSubmissions={challenges}
@@ -83,6 +84,6 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
           rejectClick={handleSendReview("REJECTED")}
         />
       </div>
-    </div>
+    </Container>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { Container, Heading } from "@chakra-ui/react";
 import ChallengeList from "../components/ChallengeList";
 
 export default function BuilderHomeView({ serverUrl, address }) {
@@ -27,13 +28,13 @@ export default function BuilderHomeView({ serverUrl, address }) {
   }, [address, serverUrl]);
 
   return (
-    <div className="container">
-      <h1>Welcome {address}!</h1>
+    <Container>
+      <Heading as="h1">Welcome {address}!</Heading>
       {userData ? (
         <div style={{ textAlign: "start" }}>
           <ChallengeList userChallenges={userData.challenges ?? []} />
         </div>
       ) : null}
-    </div>
+    </Container>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Container, Heading } from "@chakra-ui/react";
 import BuilderCard from "../components/BuilderCard";
 
 const serverPath = "/builders";
@@ -17,15 +18,15 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
   }, [serverUrl]);
 
   return (
-    <div className="container">
-      <h1>scaffold-eth Builders</h1>
-      <ul>
+    <Container>
+      <Heading as="h1">scaffold-eth Builders</Heading>
+      <ul style={{ listStyle: "none" }}>
         {builders.map(builder => (
-          <li>
+          <li key={builder.id}>
             <BuilderCard builder={builder} mainnetProvider={mainnetProvider} />
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 }

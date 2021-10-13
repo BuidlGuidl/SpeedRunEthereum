@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { Container, Heading } from "@chakra-ui/react";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 
@@ -15,13 +16,13 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
   }
 
   return (
-    <div className="container">
-      <h1>{challenge.label}</h1>
+    <Container>
+      <Heading as="h1">{challenge.label}</Heading>
       <p>{challenge.description}</p>
       <a href={challenge.url} target="_blank" rel="noopener noreferrer">
         Link to challenge
       </a>
       <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} userProvider={userProvider} />
-    </div>
+    </Container>
   );
 }
