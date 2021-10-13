@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouteLink, useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Heading } from "@chakra-ui/react";
+import { Container, Heading, Link } from "@chakra-ui/react";
 import ChallengeList from "../components/ChallengeList";
 import Address from "../components/Address";
 
@@ -21,7 +21,9 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
 
   return (
     <Container>
-      <Link to="/builders">{"<"}Back to list of builders</Link>
+      <Link as={RouteLink} to="/builders">
+        {"<"}Back to list of builders
+      </Link>
       <Heading as="h1">Builder Progress</Heading>
       {builder ? (
         <>

@@ -1,16 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouteLink } from "react-router-dom";
+import { HStack, Link } from "@chakra-ui/react";
 
 const ChallengeCard = ({ challengeId, challengeInfo, submissionInfo }) => (
-  <div style={{ display: "inline-block", opacity: challengeInfo.disabled ? 0.5 : 1 }}>
+  <HStack spacing="6px" style={{ opacity: challengeInfo.disabled ? 0.5 : 1 }}>
     {challengeInfo.disabled ? (
       <p>{challengeInfo.label}</p>
     ) : (
-      <Link to={`/challenge/${challengeId}`}>{challengeInfo.label}</Link>
+      <Link as={RouteLink} to={`/challenge/${challengeId}`}>
+        {challengeInfo.label}
+      </Link>
     )}
     {submissionInfo && <p> [{submissionInfo.status}]</p>}
     {challengeInfo.disabled && <p> (disabled)</p>}
-  </div>
+  </HStack>
 );
 
 export default ChallengeCard;
