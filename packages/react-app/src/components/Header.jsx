@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { chakra, Box, Center, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
 
@@ -30,19 +30,51 @@ export default function Header({
       </Center>
       <HStack as="ul" spacing="36px" style={{ listStyle: "none" }}>
         <chakra.li key="/" color="gray.500" _hover={{ color: "gray.700" }}>
-          <Link to="/">Home</Link>
+          <NavLink
+            to="/"
+            exact
+            activeStyle={{
+              color: "var(--chakra-colors-gray-700)",
+            }}
+          >
+            Home
+          </NavLink>
         </chakra.li>
         <chakra.li key="/builders" color="gray.500" _hover={{ color: "gray.700" }}>
-          <Link to="/builders">Builders</Link>
+          <NavLink
+            to="/builders"
+            exact
+            activeStyle={{
+              color: "var(--chakra-colors-gray-700)",
+            }}
+          >
+            Builders
+          </NavLink>
         </chakra.li>
         {isSignerProviderConnected && (
           <chakra.li key="/my-profile" color="gray.500" _hover={{ color: "gray.700" }}>
-            <Link to="/my-profile">My profile</Link>
+            <NavLink
+              to="/my-profile"
+              exact
+              activeStyle={{
+                color: "var(--chakra-colors-gray-700)",
+              }}
+            >
+              My profile
+            </NavLink>
           </chakra.li>
         )}
         {userRoles.admin === userRole && (
           <chakra.li key="/challenge-review" color="gray.500" _hover={{ color: "gray.700" }}>
-            <Link to="/challenge-review">Review Challenges</Link>
+            <NavLink
+              to="/challenge-review"
+              exact
+              activeStyle={{
+                color: "var(--chakra-colors-gray-700)",
+              }}
+            >
+              Review Challenges
+            </NavLink>
           </chakra.li>
         )}
       </HStack>
