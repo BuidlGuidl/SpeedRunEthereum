@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Spin } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouteLink, useParams } from "react-router-dom";
 import axios from "axios";
+import { Container, Heading, Link } from "@chakra-ui/react";
 import ChallengeList from "../components/ChallengeList";
 import Address from "../components/Address";
-
-const { Title } = Typography;
 
 export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
   const { builderAddress } = useParams();
@@ -19,12 +17,14 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
       console.log(fetchedBuilder.data);
     }
     fetchBuilder();
-  }, [builderAddress]);
+  }, [builderAddress, serverUrl]);
 
   return (
-    <div className="container">
-      <Link to="/builders">{"<"}Back to list of builders</Link>
-      <Title>Builder Progress</Title>
+    <Container>
+      <Link as={RouteLink} to="/builders">
+        {"<"}Back to list of builders
+      </Link>
+      <Heading as="h1">Builder Progress</Heading>
       {builder ? (
         <>
           <Address address={builder.id} ensProvider={mainnetProvider} />
@@ -33,8 +33,8 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
           </div>
         </>
       ) : (
-        <Spin />
+        "Loading..."
       )}
-    </div>
+    </Container>
   );
 }

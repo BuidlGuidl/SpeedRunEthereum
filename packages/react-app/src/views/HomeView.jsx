@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Space } from "antd";
+import { Container, Heading } from "@chakra-ui/react";
 import SignatureSignUp from "../components/SignatureSignUp";
 import { getAllEvents } from "../data/api";
 import { eventToString } from "../helpers/events";
-
-const { Text, Title } = Typography;
 
 export default function HomeView({ serverUrl, address, userProvider }) {
   const [eventsFeed, setEventFeeds] = useState([]);
@@ -18,16 +16,14 @@ export default function HomeView({ serverUrl, address, userProvider }) {
   }, []);
 
   return (
-    <div className="container">
-      <Space direction="vertical">
-        <Title>Welcome to scaffold-directory!</Title>
-        <Text>Sign, build and show!</Text>
-        <SignatureSignUp serverUrl={serverUrl} address={address} userProvider={userProvider} />
-        <Title level={3}>Activity feed</Title>
-        {eventsFeed.map(event => (
-          <div>{eventToString(event)}</div>
-        ))}
-      </Space>
-    </div>
+    <Container>
+      <Heading as="h1">Welcome to scaffold-directory!</Heading>
+      <p>Sign, build and show!</p>
+      <SignatureSignUp serverUrl={serverUrl} address={address} userProvider={userProvider} />
+      <h3>Activity feed</h3>
+      {eventsFeed.map(event => (
+        <div>{eventToString(event)}</div>
+      ))}
+    </Container>
   );
 }

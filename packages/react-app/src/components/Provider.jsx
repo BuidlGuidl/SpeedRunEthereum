@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button, Badge } from "antd";
 import { usePoller, useBlockNumber } from "eth-hooks";
 // import { WalletOutlined } from '@ant-design/icons';
 
@@ -45,15 +44,14 @@ export default function Provider(props) {
     !network.chainId
   ) {
     return (
-      <Button
-        shape="round"
-        size="large"
+      <button
+        type="button"
         onClick={() => {
           setShowMore(!showMore);
         }}
       >
-        <Badge status={status} /> {props.name}
-      </Button>
+        <span>{status}</span> {props.name}
+      </button>
     );
   }
 
@@ -85,14 +83,14 @@ export default function Provider(props) {
   }
 
   return (
-    <Button
-      shape="round"
-      size="large"
+    <button
+      type="button"
       onClick={() => {
         setShowMore(!showMore);
       }}
     >
-      <Badge status={status} /> {props.name} {showWallet} #{blockNumber} {showExtra}
-    </Button>
+      <span>{status}</span>
+      {props.name} {showWallet} #{blockNumber} {showExtra}
+    </button>
   );
 }

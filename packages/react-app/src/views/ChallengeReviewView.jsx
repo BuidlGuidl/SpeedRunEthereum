@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import axios from "axios";
-import { notification } from "antd";
+import { Container, Heading } from "@chakra-ui/react";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 
+// ToDo. console.error => Chakra UI alert
 export default function ChallengeReviewView({ serverUrl, address, userProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  async function fetchSubmittedChallenges() {
+  const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoading(true);
     console.log("getting challenges", address);
     const fetchedChallenges = await axios.get(serverUrl + `/challenges`, {
@@ -19,11 +20,11 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
     setChallenges(fetchedChallenges.data);
     console.log(fetchedChallenges.data);
     setIsLoading(false);
-  }
+  }, [address, serverUrl]);
 
   useEffect(() => {
     fetchSubmittedChallenges();
-  }, [serverUrl, address]);
+  }, [serverUrl, address, fetchSubmittedChallenges]);
 
   const handleSendReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
@@ -40,7 +41,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      notification.error({
+      console.error({
         message: "Can't get the message to sign. Please try again.",
         description: error.toString(),
       });
@@ -51,7 +52,7 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      notification.error({
+      console.error({
         message: "The signature was cancelled",
       });
       return;
@@ -73,8 +74,8 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
   };
 
   return (
-    <div className="container">
-      <h1>Challenge Submissions Ready for Review!</h1>
+    <Container>
+      <Heading as="h1">Challenge Submissions Ready for Review!</Heading>
       <div style={{ textAlign: "start" }}>
         <ChallengeReviewList
           challengeSubmissions={challenges}
@@ -83,6 +84,6 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
           rejectClick={handleSendReview("REJECTED")}
         />
       </div>
-    </div>
+    </Container>
   );
 }

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import usePoller from "./Poller";
 import useOnBlock from "./OnBlock";
-import { Provider } from "@ethersproject/providers";
 
 const DEBUG = false;
 

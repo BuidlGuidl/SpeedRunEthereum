@@ -1,15 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocation, Switch, Route, Link } from "react-router-dom";
-import "antd/dist/antd.css";
+import { Switch, Route } from "react-router-dom";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Menu } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
-import { Header, Account, ThemeSwitch } from "./components";
+import { Header } from "./components";
 import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
@@ -97,9 +95,10 @@ function App() {
       console.log("👩‍💼 selected address:", address);
       console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
     }
-  }, [mainnetProvider, address, selectedChainId]);
+  }, [mainnetProvider, address, selectedChainId, localChainId]);
 
   const loadWeb3Modal = useCallback(async () => {
+    console.log('LOAD MODAL');
     const provider = await web3Modal.connect();
     setInjectedProvider(new Web3Provider(provider));
   }, [setInjectedProvider]);
@@ -110,7 +109,6 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  const location = useLocation();
   const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
 
   useEffect(() => {
@@ -131,78 +129,42 @@ function App() {
     }
   }, [address]);
 
-  const isSignerProviderConnected =
-    injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
-
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
-      <Header />
-
-      <ThemeSwitch />
-
-      {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-      <div style={{ textAlign: "center", padding: 10 }}>
-        <Account
-          connectText="Connect Ethereum Wallet"
-          onlyShowButton={!isSignerProviderConnected}
-          address={address}
-          mainnetProvider={mainnetProvider}
-          web3Modal={web3Modal}
-          loadWeb3Modal={loadWeb3Modal}
-          logoutOfWeb3Modal={() => {
-            logoutOfWeb3Modal();
-            setUserRole(USER_ROLES.anonymous);
-          }}
-          blockExplorer={blockExplorer}
-          isAdmin={userRole === USER_ROLES.admin}
-        />
-      </div>
-      <>
-        <Menu
-          style={{ textAlign: "center", marginBottom: "25px" }}
-          selectedKeys={[location.pathname]}
-          mode="horizontal"
-        >
-          <Menu.Item key="/">
-            <Link to="/">Home</Link>
-          </Menu.Item>
-          <Menu.Item key="/builders">
-            <Link to="/builders">All Builders</Link>
-          </Menu.Item>
-          {isSignerProviderConnected && (
-            <Menu.Item key="/my-profile">
-              <Link to="/my-profile">My profile</Link>
-            </Menu.Item>
-          )}
-          {USER_ROLES.admin === userRole && (
-            <Menu.Item key="/challenge-review">
-              <Link to="/challenge-review">Review Challenges</Link>
-            </Menu.Item>
-          )}
-        </Menu>
-        <Switch>
-          <Route exact path="/">
-            <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-          </Route>
-          <Route exact path="/my-profile">
-            <BuilderHomeView serverUrl={serverUrl} address={address} />
-          </Route>
-          <Route path="/builders" exact>
-            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-          </Route>
-          <Route path="/builders/:builderAddress">
-            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-          </Route>
-          <Route path="/challenge/:challengeId">
-            <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-          </Route>
-          {/* ToDo: Protect this route on the frontend? */}
-          <Route path="/challenge-review" exact>
-            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-          </Route>
-        </Switch>
-      </>
+      <Header
+        injectedProvider={injectedProvider}
+        userRoles={USER_ROLES}
+        userRole={userRole}
+        address={address}
+        web3Modal={web3Modal}
+        mainnetProvider={mainnetProvider}
+        loadWeb3Modal={loadWeb3Modal}
+        logoutOfWeb3Modal={logoutOfWeb3Modal}
+        blockExplorer={blockExplorer}
+        setUserRole={setUserRole}
+      />
+      <Switch>
+        <Route exact path="/">
+          <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+        </Route>
+        <Route exact path="/my-profile">
+          <BuilderHomeView serverUrl={serverUrl} address={address} />
+        </Route>
+        <Route path="/builders" exact>
+          <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+        </Route>
+        <Route path="/builders/:builderAddress">
+          <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+        </Route>
+        <Route path="/challenge/:challengeId">
+          <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+        </Route>
+        {/* ToDo: Protect this route on the frontend? */}
+        <Route path="/challenge-review" exact>
+          <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+        </Route>
+      </Switch>
     </div>
   );
 }

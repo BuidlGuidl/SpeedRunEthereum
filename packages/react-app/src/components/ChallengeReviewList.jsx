@@ -1,39 +1,56 @@
 import React from "react";
-import { List, Button, Input } from "antd";
+import { chakra, Button, HStack, Link, VStack, Textarea } from "@chakra-ui/react";
 import { challengeInfo } from "../data/challenges";
 
 export default function ChallengeReviewList({ challengeSubmissions, isLoading, approveClick, rejectClick }) {
   const [commentMap, setCommentMap] = React.useState({});
+
   return (
-    <List
-      loading={isLoading}
-      itemLayout="vertical"
-      dataSource={challengeSubmissions}
-      renderItem={challenge => (
-        <List.Item
-          key={challenge.userAddress + challenge.id}
-          actions={[
-            <Button type="link" href={challenge.branchUrl} target="_blank">
+    <VStack as="ul" spacing={6}>
+      {challengeSubmissions.map(challenge => (
+        <chakra.li key={challenge.userAddress + challenge.id} w="100%">
+          <div>
+            <strong>{challengeInfo[challenge.id].label}</strong>
+            <p>{challengeInfo[challenge.id].description}</p>
+          </div>
+          <HStack spacing={3}>
+            <Link href={challenge.branchUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
               Code
-            </Button>,
-            <Button type="link" href={challenge.deployedUrl} target="_blank">
+            </Link>
+            <Link href={challenge.deployedUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
               Live Demo
-            </Button>,
-          ]}
-          extra={
-            <div>
-              <Input.TextArea
-                onChange={e => {
-                  const currentCommentMap = commentMap;
-                  currentCommentMap[challenge.userAddress + challenge.id] = e.target.value;
-                  setCommentMap(currentCommentMap);
-                }}
-                placeholder="Comment for builder"
-                style={{ marginBottom: 10 }}
-                rows={2}
-              />
+            </Link>
+          </HStack>
+          <div>
+            <Textarea
+              onChange={e => {
+                const value = e.target.value;
+                setCommentMap(preCommentMap => {
+                  const currentCommentMap = { ...preCommentMap };
+                  currentCommentMap[challenge.userAddress + challenge.id] = value;
+                  return currentCommentMap;
+                });
+              }}
+              placeholder="Comment for builder"
+              style={{ marginBottom: 10 }}
+              rows={2}
+            />
+            <HStack spacing="12px">
               <Button
-                type="primary"
+                type="button"
+                colorScheme="red"
+                disabled={isLoading}
+                className="danger"
+                onClick={() =>
+                  rejectClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
+                }
+              >
+                Reject
+              </Button>
+              <Button
+                type="button"
+                colorScheme="blue"
+                disabled={isLoading}
                 style={{ marginRight: 10 }}
                 onClick={() =>
                   approveClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
@@ -41,23 +58,10 @@ export default function ChallengeReviewList({ challengeSubmissions, isLoading, a
               >
                 Approve Button
               </Button>
-              <Button
-                danger
-                onClick={() =>
-                  rejectClick(challenge.userAddress, challenge.id, commentMap[challenge.userAddress + challenge.id])
-                }
-              >
-                Reject
-              </Button>
-            </div>
-          }
-        >
-          <List.Item.Meta
-            title={challengeInfo[challenge.id].label}
-            description={challengeInfo[challenge.id].description}
-          />
-        </List.Item>
-      )}
-    />
+            </HStack>
+          </div>
+        </chakra.li>
+      ))}
+    </VStack>
   );
 }

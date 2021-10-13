@@ -1,8 +1,8 @@
 import React from "react";
-import { Badge, Button, Space } from "antd";
-import Address from "./Address";
-import Balance from "./Balance";
-import Wallet from "./Wallet";
+import { Link } from "react-router-dom";
+import { Badge, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import Blockies from "react-blockies";
 
 /*
   ~ What it does? ~
@@ -40,63 +40,36 @@ import Wallet from "./Wallet";
 
 export default function Account({
   connectText,
-  onlyShowButton,
+  isWalletConnected,
   address,
-  mainnetProvider,
-  minimized,
-  web3Modal,
   loadWeb3Modal,
   logoutOfWeb3Modal,
-  blockExplorer,
   isAdmin,
 }) {
-  const modalButtons = [];
-  if (web3Modal) {
-    if (web3Modal.cachedProvider) {
-      modalButtons.push(
-        <Button
-          key="logoutbutton"
-          style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-          shape="round"
-          size="large"
-          onClick={logoutOfWeb3Modal}
-        >
-          logout
-        </Button>,
-      );
-    } else {
-      modalButtons.push(
-        <Button
-          key="loginbutton"
-          style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-          shape="round"
-          size="large"
-          type={minimized ? "default" : "primary"}
-          onClick={loadWeb3Modal}
-        >
-          {connectText || "connect"}
-        </Button>,
-      );
-    }
-  }
+  const connectWallet = (
+    <Button colorScheme="blue" key="loginbutton" onClick={loadWeb3Modal}>
+      {connectText || "connect"}
+    </Button>
+  );
 
-  const display = minimized ? (
-    ""
-  ) : (
-    <Space>
-      {isAdmin && <Badge count="admin" />}
-      {address ? (
-        <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
-      ) : (
-        "Connecting..."
-      )}
-    </Space>
+  const accountMenu = address && (
+    <Menu>
+      <MenuButton as={Button} variant="outline" rightIcon={<ChevronDownIcon />}>
+        <Blockies seed={address.toLowerCase()} size={8} />
+      </MenuButton>
+      <MenuList>
+        <MenuItem as={Link} to="/my-profile" d="block">
+          My profile
+        </MenuItem>
+        <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
+      </MenuList>
+    </Menu>
   );
 
   return (
     <div>
-      {onlyShowButton ? "" : display}
-      {modalButtons}
+      {isAdmin && <Badge colorScheme="red" mr={4}>admin</Badge>}
+      {isWalletConnected ? accountMenu : connectWallet}
     </div>
   );
 }
