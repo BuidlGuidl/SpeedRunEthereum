@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Button, Heading, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 const serverPath = "/challenges";
 
@@ -78,19 +79,19 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   };
 
   if (!address) {
-    return <p className="warning">Connect your wallet to submit this Challenge.</p>;
+    return <Text color="orange.400" className="warning">Connect your wallet to submit this Challenge.</Text>;
   }
 
   return (
     <div>
-      <h2>Submit Challenge: {challenge.label}</h2>
+      <Heading as="h2" size="md">Submit Challenge: {challenge.label}</Heading>
       {challenge.isDisabled ? (
-        <p className="warning">This challenge is disabled.</p>
+        <Text color="orange.400" className="warning">This challenge is disabled.</Text>
       ) : (
         <form name="basic" autoComplete="off">
-          <label htmlFor="deployedUrl">
-            Deployed URL
-            <input
+          <FormControl id="deployedUrl">
+            <FormLabel>Deployed URL</FormLabel>
+            <Input
               type="text"
               name="deployedUrl"
               value={deployedUrl}
@@ -98,11 +99,11 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
                 setDeployedUrl(e.target.value);
               }}
             />
-          </label>
+          </FormControl>
 
-          <label htmlFor="branchUrl">
-            Branch URL
-            <input
+          <FormControl id="branchUrl">
+            <FormLabel>Branch URL</FormLabel>
+            <Input
               type="text"
               name="branchUrl"
               value={branchUrl}
@@ -110,11 +111,12 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
                 setBranchUrl(e.target.value);
               }}
             />
-          </label>
+          </FormControl>
+
           <div className="form-item">
-            <button type="button" onClick={onFinish} disabled={isSubmitting}>
+            <Button colorScheme="blue" onClick={onFinish} disabled={isSubmitting}>
               Submit
-            </button>
+            </Button>
           </div>
         </form>
       )}
