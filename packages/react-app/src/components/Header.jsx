@@ -80,6 +80,7 @@ export default function Header({
           }}
           blockExplorer={blockExplorer}
           isAdmin={userRole === userRoles.admin}
+          ensProvider={mainnetProvider}
         />
       </Box>
     </Flex>
