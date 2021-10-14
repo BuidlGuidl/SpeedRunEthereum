@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Badge, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { Badge, Button, Menu, MenuButton, MenuDivider, MenuList, MenuItem } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 
 /*
@@ -53,13 +53,14 @@ export default function Account({
 
   const accountMenu = address && (
     <Menu>
-      <MenuButton as={Button} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.45} />
+      <MenuButton as={Button} px={0} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.4} />
       </MenuButton>
       <MenuList>
         <MenuItem as={Link} to="/my-profile" d="block">
           My profile
         </MenuItem>
+        <MenuDivider />
         <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
       </MenuList>
     </Menu>
