@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouteLink, useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Heading, Link } from "@chakra-ui/react";
+import { Box, Container, Heading, Link } from "@chakra-ui/react";
 import ChallengeList from "../components/ChallengeList";
 import Address from "../components/Address";
 
@@ -26,12 +26,12 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
       </Link>
       <Heading as="h1">Builder Progress</Heading>
       {builder ? (
-        <>
-          <Address address={builder.id} ensProvider={mainnetProvider} />
+        <Box pos="relative">
+          <Address address={builder.id} ensProvider={mainnetProvider} scale="0.4" />
           <div style={{ textAlign: "start" }}>
             <ChallengeList userChallenges={builder.challenges ?? []} />
           </div>
-        </>
+        </Box>
       ) : (
         "Loading..."
       )}
