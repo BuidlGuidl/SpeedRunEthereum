@@ -7,7 +7,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
-import { Header } from "./components";
+import { Header, FlashMessages } from "./components";
 import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
@@ -71,6 +71,8 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
+export const FlashMessagesContext = React.createContext([]);
+
 function App() {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
@@ -129,42 +131,55 @@ function App() {
     }
   }, [address]);
 
+  const [flashMessages, setFlashMessages] = useState([]);
+  const flashMessagesActions = {
+    flashMessage: {
+      success: message =>
+        setFlashMessages(prevFlashMessages => [...prevFlashMessages, { status: "success", text: message }]),
+      error: message =>
+        setFlashMessages(prevFlashMessages => [...prevFlashMessages, { status: "error", text: message }]),
+    },
+  };
+
   return (
     <div className="App">
-      {/* ✏️ Edit the header and change the title to your project name */}
-      <Header
-        injectedProvider={injectedProvider}
-        userRoles={USER_ROLES}
-        userRole={userRole}
-        address={address}
-        web3Modal={web3Modal}
-        mainnetProvider={mainnetProvider}
-        loadWeb3Modal={loadWeb3Modal}
-        logoutOfWeb3Modal={logoutOfWeb3Modal}
-        blockExplorer={blockExplorer}
-        setUserRole={setUserRole}
-      />
-      <Switch>
-        <Route exact path="/">
-          <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-        </Route>
-        <Route exact path="/my-profile">
-          <BuilderHomeView serverUrl={serverUrl} address={address} />
-        </Route>
-        <Route path="/builders" exact>
-          <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-        </Route>
-        <Route path="/builders/:builderAddress">
-          <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-        </Route>
-        <Route path="/challenge/:challengeId">
-          <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-        </Route>
-        {/* ToDo: Protect this route on the frontend? */}
-        <Route path="/challenge-review" exact>
-          <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-        </Route>
-      </Switch>
+      <FlashMessagesContext.Provider value={flashMessagesActions}>
+        {/* ✏️ Edit the header and change the title to your project name */}
+        <Header
+          injectedProvider={injectedProvider}
+          userRoles={USER_ROLES}
+          userRole={userRole}
+          address={address}
+          web3Modal={web3Modal}
+          mainnetProvider={mainnetProvider}
+          loadWeb3Modal={loadWeb3Modal}
+          logoutOfWeb3Modal={logoutOfWeb3Modal}
+          blockExplorer={blockExplorer}
+          setUserRole={setUserRole}
+        />
+        <Switch>
+          <Route exact path="/">
+            <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+          <Route exact path="/my-profile">
+            <BuilderHomeView serverUrl={serverUrl} address={address} />
+          </Route>
+          <Route path="/builders" exact>
+            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/builders/:builderAddress">
+            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/challenge/:challengeId">
+            <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+          {/* ToDo: Protect this route on the frontend? */}
+          <Route path="/challenge-review" exact>
+            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+        </Switch>
+        <FlashMessages messages={flashMessages} />
+      </FlashMessagesContext.Provider>
     </div>
   );
 }
