@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Badge, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import Blockies from "react-blockies";
+import QRPunkBlockie from "./QrPunkBlockie";
 
 /*
   ~ What it does? ~
@@ -54,8 +53,8 @@ export default function Account({
 
   const accountMenu = address && (
     <Menu>
-      <MenuButton as={Button} variant="outline" rightIcon={<ChevronDownIcon />}>
-        <Blockies seed={address.toLowerCase()} size={8} />
+      <MenuButton as={Button} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.45} />
       </MenuButton>
       <MenuList>
         <MenuItem as={Link} to="/my-profile" d="block">
@@ -68,7 +67,11 @@ export default function Account({
 
   return (
     <div>
-      {isAdmin && <Badge colorScheme="red" mr={4}>admin</Badge>}
+      {isAdmin && (
+        <Badge colorScheme="red" mr={4}>
+          admin
+        </Badge>
+      )}
       {isWalletConnected ? accountMenu : connectWallet}
     </div>
   );

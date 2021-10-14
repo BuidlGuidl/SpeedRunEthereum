@@ -1,5 +1,5 @@
 import React from "react";
-import Blockies from "react-blockies";
+import QRPunkBlockie from "./QrPunkBlockie";
 import { HStack } from "@chakra-ui/react";
 import { useLookupAddress } from "../hooks";
 
@@ -48,9 +48,9 @@ export default function Address(props) {
   return (
     <HStack spacing="24px">
       <span style={{ verticalAlign: "middle" }}>
-        <Blockies seed={address.toLowerCase()} size={8} scale={props.fontSize ? props.fontSize / 7 : 4} />
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={props.scale ?? 1} />
       </span>
-      <span style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
+      <span style={{ verticalAlign: "middle", paddingLeft: props.scale ? 80 * props.scale : 20, fontSize: props.fontSize ? props.fontSize : 28 }}>
         {displayAddress}
       </span>
     </HStack>
