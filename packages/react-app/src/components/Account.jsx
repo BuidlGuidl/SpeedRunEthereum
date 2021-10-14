@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Badge, Button, Menu, MenuButton, MenuDivider, MenuList, MenuItem } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex, Menu, MenuButton, MenuDivider, MenuList, MenuItem, Text } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
+import { useLookupAddress } from "../hooks";
 
 /*
   ~ What it does? ~
@@ -44,6 +45,7 @@ export default function Account({
   loadWeb3Modal,
   logoutOfWeb3Modal,
   isAdmin,
+  ensProvider,
 }) {
   const connectWallet = (
     <Button colorScheme="blue" key="loginbutton" onClick={loadWeb3Modal}>
@@ -51,12 +53,33 @@ export default function Account({
     </Button>
   );
 
+  const ens = useLookupAddress(ensProvider, address);
+
   const accountMenu = address && (
     <Menu>
       <MenuButton as={Button} px={0} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
         <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.4} />
       </MenuButton>
       <MenuList>
+        <MenuItem as={Box} _focus={{ background: "none" }} _active={{ background: "none" }}>
+          <Flex>
+            <Box pos="relative">
+              <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.6} />
+            </Box>
+            <Box ml={3} mt={2}>
+              {ens && (
+                <Text fontWeight="bold" lineHeight={1.3}>
+                  {ens}
+                </Text>
+              )}
+              <Text color="gray.500" lineHeight={1.3}>
+                {/* ToDo. Move to Utils */}
+                {address.substr(0, 6) + "..." + address.substr(-4)}
+              </Text>
+            </Box>
+          </Flex>
+        </MenuItem>
+        <MenuDivider />
         <MenuItem as={Link} to="/my-profile" d="block">
           My profile
         </MenuItem>
