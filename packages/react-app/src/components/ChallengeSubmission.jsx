@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Button, Heading, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import useFlashMessages from "../hooks/useFlashMessages";
 
 const serverPath = "/challenges";
 
-// ToDo. console.error / log => notifications (chakra UI "alerts")
 // ToDo. on-line form validation
 export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deployedUrl, setDeployedUrl] = useState("");
   const [branchUrl, setBranchUrl] = useState("");
+  const flashMessages = useFlashMessages();
 
   const onFinish = async () => {
     setIsSubmitting(true);
@@ -28,10 +29,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      console.error({
-        message: "Can't get the message to sign. Please try again.",
-        description: error.toString(),
-      });
+      flashMessages.error("Can't get the message to sign. Please try again.");
       setIsSubmitting(false);
       return;
     }
@@ -40,9 +38,8 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      console.error({
-        message: "The signature was cancelled",
-      });
+      flashMessages.error("The signature was cancelled");
+      console.error(error);
       setIsSubmitting(false);
       return;
     }
@@ -63,18 +60,14 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
         },
       );
     } catch (error) {
-      console.error({
-        message: "Submission Error. Please try again.",
-        description: error.toString(),
-      });
+      flashMessages.error("Submission Error. Please try again.");
+      console.error(error);
       setIsSubmitting(false);
 
       return;
     }
 
-    console.log({
-      message: "Challenge submitted!",
-    });
+    flashMessages.success("Challenge submitted!");
     setIsSubmitting(false);
   };
 

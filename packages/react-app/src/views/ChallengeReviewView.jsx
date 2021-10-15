@@ -2,11 +2,12 @@ import React, { useCallback, useEffect } from "react";
 import axios from "axios";
 import { Container, Heading } from "@chakra-ui/react";
 import ChallengeReviewList from "../components/ChallengeReviewList";
+import useFlashMessages from "../hooks/useFlashMessages";
 
-// ToDo. console.error => Chakra UI alert
 export default function ChallengeReviewView({ serverUrl, address, userProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const flashMessages = useFlashMessages();
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoading(true);
@@ -41,10 +42,8 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      console.error({
-        message: "Can't get the message to sign. Please try again.",
-        description: error.toString(),
-      });
+      flashMessages.error(" Sorry, the server is overloaded. 🧯🚒🔥");
+      console.error(error);
       return;
     }
 
@@ -52,24 +51,29 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      console.error({
-        message: "The signature was cancelled",
-      });
+      flashMessages.error("Couldn't get a signature from the Wallet");
+      console.error(error);
       return;
     }
 
-    console.log(`${reviewType.toLowerCase()} ${challengeId} for ${userAddress} with comment ${comment}`);
-    await axios.patch(
-      serverUrl + `/challenges`,
-      {
-        params: { userAddress, challengeId, comment, newStatus: reviewType, signature },
-      },
-      {
-        headers: {
-          address,
+    try {
+      await axios.patch(
+        serverUrl + `/challenges`,
+        {
+          params: { userAddress, challengeId, comment, newStatus: reviewType, signature },
         },
-      },
-    );
+        {
+          headers: {
+            address,
+          },
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      flashMessages.error("Can't submit the review");
+      return;
+    }
+    flashMessages.success("Review submitted successfully");
     fetchSubmittedChallenges();
   };
 
