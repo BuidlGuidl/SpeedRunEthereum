@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
+import uuid from 'uuid/v4';
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
 import Web3Modal from "web3modal";
@@ -17,6 +18,7 @@ import {
   ChallengeReviewView,
   HomeView,
 } from "./views";
+import FlashMessagesContext from "./context/FlashMessagesContext";
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
@@ -71,7 +73,6 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
-export const FlashMessagesContext = React.createContext([]);
 
 function App() {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
@@ -131,13 +132,19 @@ function App() {
     }
   }, [address]);
 
+  // Flash Messages.
   const [flashMessages, setFlashMessages] = useState([]);
+  const messageWithStatus = status => message => {
+    const id = uuid();
+    setTimeout(() => {
+      setFlashMessages(prevFlashMessages => prevFlashMessages.filter(({ id: messageId }) => id !== messageId));
+    }, 3000);
+    setFlashMessages(prevFlashMessages => [...prevFlashMessages, { id, status, text: message }]);
+  };
   const flashMessagesActions = {
-    flashMessage: {
-      success: message =>
-        setFlashMessages(prevFlashMessages => [...prevFlashMessages, { status: "success", text: message }]),
-      error: message =>
-        setFlashMessages(prevFlashMessages => [...prevFlashMessages, { status: "error", text: message }]),
+    flashMessages: {
+      success: messageWithStatus("success"),
+      error: messageWithStatus("error"),
     },
   };
 
