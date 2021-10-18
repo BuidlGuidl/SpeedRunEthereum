@@ -87,7 +87,6 @@ export default function BaseQRPunkBlockie({
 
   return (
     <Wrapper
-      id="wrapper"
       style={{
         width: PUNK_SIZE * scale,
         height: PUNK_SIZE * scale,
@@ -100,7 +99,6 @@ export default function BaseQRPunkBlockie({
       {...otherProps}
     >
       <div
-        id="blockie"
         style={{
           opacity: 0.4,
           top: 0,
@@ -112,7 +110,6 @@ export default function BaseQRPunkBlockie({
         <Blockies seed={address.toLowerCase()} scale={(PUNK_SIZE / 8) * scale} />
       </div>
       <div
-        id="punk"
         style={{
           position: "absolute",
           left: 0,

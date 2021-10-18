@@ -70,7 +70,6 @@ export default function QRPunkBlockie({ address, copyAddressOnClick, scale: scal
 
   return (
     <Wrapper
-      id="wrapper"
       style={{
         width: PUNK_SIZE * scale,
         height: PUNK_SIZE * scale,
@@ -83,7 +82,6 @@ export default function QRPunkBlockie({ address, copyAddressOnClick, scale: scal
       {...otherExtraProps}
     >
       <div
-        id="blockie"
         style={{
           opacity: 0.4,
           top: 0,
@@ -95,7 +93,6 @@ export default function QRPunkBlockie({ address, copyAddressOnClick, scale: scal
         <Blockies seed={address.toLowerCase()} scale={(PUNK_SIZE / 8) * scale} />
       </div>
       <div
-        id="punk"
         style={{
           position: "absolute",
           left: 0,
