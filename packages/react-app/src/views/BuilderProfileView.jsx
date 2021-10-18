@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouteLink, useParams } from "react-router-dom";
 import axios from "axios";
-import { Box, Container, Heading, Link } from "@chakra-ui/react";
+import { Box, Container, SimpleGrid, GridItem } from "@chakra-ui/react";
 import ChallengeList from "../components/ChallengeList";
 import Address from "../components/Address";
+import BuilderProfileCard from "../components/BuilderProfileCard";
 
 export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
   const { builderAddress } = useParams();
@@ -20,21 +21,15 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
   }, [builderAddress, serverUrl]);
 
   return (
-    <Container>
-      <Link as={RouteLink} to="/builders">
-        {"<"}Back to list of builders
-      </Link>
-      <Heading as="h1">Builder Progress</Heading>
-      {builder ? (
-        <Box pos="relative">
-          <Address address={builder.id} ensProvider={mainnetProvider} w="12.5" />
-          <div style={{ textAlign: "start" }}>
-            <ChallengeList userChallenges={builder.challenges ?? []} />
-          </div>
-        </Box>
-      ) : (
-        "Loading..."
-      )}
+    <Container maxW="container.xl">
+      <SimpleGrid gap={14} columns={4}>
+        <GridItem colSpan={1}>
+          <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} />
+        </GridItem>
+        <GridItem bgColor="blue.400" colSpan={3}>
+          Table
+        </GridItem>
+      </SimpleGrid>
     </Container>
   );
 }
