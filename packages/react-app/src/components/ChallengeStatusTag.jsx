@@ -18,7 +18,7 @@ const ChallengeStatusTag = ({ status }) => {
       break;
     }
     case CHALLENGE_SUBMISSION_STATUS.SUBMITTED: {
-      label = "In progress";
+      label = "Submitted";
       break;
     }
     default:

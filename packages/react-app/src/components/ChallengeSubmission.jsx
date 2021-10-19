@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, Heading, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import useFlashMessages from "../hooks/useFlashMessages";
 
@@ -9,6 +9,7 @@ const serverPath = "/challenges";
 // ToDo. on-line form validation
 export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
+  const history = useHistory();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deployedUrl, setDeployedUrl] = useState("");
   const [branchUrl, setBranchUrl] = useState("");
@@ -69,6 +70,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
     flashMessages.success("Challenge submitted!");
     setIsSubmitting(false);
+    history.push("/my-profile");
   };
 
   if (!address) {

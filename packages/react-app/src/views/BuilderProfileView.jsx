@@ -15,22 +15,32 @@ import {
   Tr,
   Th,
   Td,
+  TableCaption,
   Container,
   SimpleGrid,
   GridItem,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import BuilderProfileCard from "../components/BuilderProfileCard";
 import { challengeInfo } from "../data/challenges";
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
+import ChallengeList from "../components/ChallengeList";
 
 // TODO get the real level of challenge
 // TODO get the real number of attempts using the events
 // TODO get the real date of submission using the events
-  export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
+export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [builder, setBuilder] = useState();
   const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
@@ -101,6 +111,7 @@ import { getAcceptedChallenges } from "../helpers/builders";
           </Flex>
           {challenges ? (
             <Table>
+              <TableCaption><Button colorScheme="blue" onClick={onOpen}>Start a challenge</Button></TableCaption>
               <Thead>
                 <Tr>
                   <Th w="full">Name</Th>
@@ -146,7 +157,7 @@ import { getAcceptedChallenges } from "../helpers/builders";
                   <Text color="gray.500" mb={4}>
                     Show off your skills. Learn everything you need to build on Ethereum!
                   </Text>
-                  <Button colorScheme="blue">Start a challenge</Button>
+                  <Button colorScheme="blue" onClick={onOpen}>Start a challenge</Button>
                 </Box>
               ) : (
                 <Box maxW="xs" textAlign="center">
@@ -159,6 +170,16 @@ import { getAcceptedChallenges } from "../helpers/builders";
           )}
         </GridItem>
       </SimpleGrid>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>List of challenges</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody px={8} pb={8}>
+            <ChallengeList userChallenges={builder?.challenges ?? []} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }
