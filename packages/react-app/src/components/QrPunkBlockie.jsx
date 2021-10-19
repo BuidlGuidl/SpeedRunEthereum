@@ -3,6 +3,7 @@
 
 import React from "react";
 import Blockies from "react-blockies";
+import { Box, Button } from "@chakra-ui/react";
 
 const PUNK_SIZE = 112; // punk size with scale = 1
 const ORIGINAL_PUNK_SIZE = 24; // punk size pixels in the original file
@@ -13,7 +14,7 @@ const PUNK_SIZE_RATIO = PUNK_SIZE / ORIGINAL_PUNK_SIZE;
 const Wrapper = ({ address, copyAddressOnClick, children, ...otherProps }) => {
   if (copyAddressOnClick) {
     return (
-      <button
+      <Button
         type="button"
         onClick={() => {
           navigator.clipboard
@@ -31,42 +32,58 @@ const Wrapper = ({ address, copyAddressOnClick, children, ...otherProps }) => {
         {...otherProps}
       >
         {children}
-      </button>
+      </Button>
     );
   }
 
-  return <div {...otherProps}>{children}</div>;
+  return <Box {...otherProps}>{children}</Box>;
 };
 
 /**
- * Cleaner version of QrPunkBlockie
+ * Chakra version of QrPunkBlockie
  *
  * @param {{
  *  address: string,
  *  copyAddressOnClick: boolean,
  *  scale: number,
  *  width: number,
+ *  w: number,
  *  withQr: boolean,
- * ...otherProps: any
+ * ...otherProps: import("@chakra-ui/system").ChakraProps
  * }} props Some notes on the props:
  *  - `withQr` is not implemented yet
+ *  - `w` is the size in Chakra's fashion. This is, w = 20 would be equivalent
+ *    to width = 20 * 4 = 80. We don't check if the given value for `w` is
+ *    actually a chakra dimension.
  *  - `width` is the desired size in pixels
- *  - Both `width` and `scale` are used for setting the dimensions. When
- *    conflicting, `width` has preference over `scale`. `scale` is only
- *    supported for QrPunkBlockie compatibility
+ *  - All `w`, `width` and `scale` are used for setting the dimensions. When
+ *    conflicting, `w` has preference over `width`, and they have preference
+ *    over `scale`. `scale` is only supported for QrPunkBlockie compatibility
  *
- * @returns React component
+ * @returns {import("@chakra-ui/system").ChakraComponent} Chakra component
  */
-export default function QRPunkBlockie({ address, copyAddressOnClick, scale: scaleArg, width, withQr, ...extraProps }) {
+export default function BaseQRPunkBlockie({
+                                            address,
+                                            copyAddressOnClick,
+                                            scale: scaleArg,
+                                            width: widthArg,
+                                            w,
+                                            withQr,
+                                            ...extraProps
+                                          }) {
+  if (withQr) {
+    console.warn("The chakra punk blockie has not implemented the qr yet");
+  }
   const part1 = address?.slice(2, 22);
   const part2 = address?.slice(-20);
 
   const x = parseInt(part1, 16) % 100;
   const y = parseInt(part2, 16) % 100;
 
+  const width = w ? w * 4 : widthArg;
   const scale = width ? width / PUNK_SIZE : scaleArg ?? 1;
 
-  const { style: extraStyle, ...otherExtraProps } = extraProps;
+  const { style: extraStyle, ...otherProps } = extraProps;
 
   return (
     <Wrapper
@@ -79,7 +96,7 @@ export default function QRPunkBlockie({ address, copyAddressOnClick, scale: scal
         overflow: "hidden",
         ...extraStyle,
       }}
-      {...otherExtraProps}
+      {...otherProps}
     >
       <div
         style={{
