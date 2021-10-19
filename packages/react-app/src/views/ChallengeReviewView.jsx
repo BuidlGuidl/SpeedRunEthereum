@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import axios from "axios";
 import { Container, Heading, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
-import ChallengeReviewList from "../components/ChallengeReviewList";
+import ChallengeReviewRow from "../components/ChallengeReviewRow";
 import useFlashMessages from "../hooks/useFlashMessages";
 
 export default function ChallengeReviewView({ serverUrl, address, userProvider, mainnetProvider }) {
@@ -95,13 +95,15 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
           </Tr>
         </Thead>
         <Tbody>
-          <ChallengeReviewList
-            challengeSubmissions={challenges}
-            isLoading={isLoading}
-            approveClick={handleSendReview("ACCEPTED")}
-            rejectClick={handleSendReview("REJECTED")}
-            mainnetProvider={mainnetProvider}
-          />
+          {challenges.map(challenge => (
+            <ChallengeReviewRow
+              challenge={challenge}
+              isLoading={isLoading}
+              approveClick={handleSendReview("ACCEPTED")}
+              rejectClick={handleSendReview("REJECTED")}
+              mainnetProvider={mainnetProvider}
+            />
+          ))}
         </Tbody>
       </Table>
     </Container>

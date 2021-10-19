@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
-import BuilderCard from "../components/BuilderCard";
+import BuilderRow from "../components/BuilderRow";
 
 const serverPath = "/builders";
 
@@ -36,15 +36,12 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
         <Thead>
           <Tr>
             <Th>Builder</Th>
-            <Th>Builds</Th>
             <Th>Challenges</Th>
           </Tr>
         </Thead>
         <Tbody>
           {builders.map(builder => (
-            <Tr key={builder.id}>
-              <BuilderCard builder={builder} mainnetProvider={mainnetProvider} />
-            </Tr>
+            <BuilderRow builder={builder} mainnetProvider={mainnetProvider} />
           ))}
         </Tbody>
       </Table>
