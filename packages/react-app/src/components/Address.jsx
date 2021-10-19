@@ -54,6 +54,7 @@ export default function Address(props) {
         style={{
           verticalAlign: "middle",
           fontSize: props.fontSize ? props.fontSize : 28,
+          fontWeight: "bold",
         }}
       >
         {displayAddress}

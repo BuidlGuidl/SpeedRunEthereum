@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { chakra, Container, Heading } from "@chakra-ui/react";
-import BuilderCard from "../components/BuilderCard";
+import { Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import BuilderRow from "../components/BuilderRow";
 
 const serverPath = "/builders";
 
@@ -18,15 +18,33 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
   }, [serverUrl]);
 
   return (
-    <Container>
-      <Heading as="h1">scaffold-eth Builders</Heading>
-      <ul style={{ listStyle: "none" }}>
-        {builders.map(builder => (
-          <chakra.li pb={4} key={builder.id}>
-            <BuilderCard builder={builder} mainnetProvider={mainnetProvider} />
-          </chakra.li>
-        ))}
-      </ul>
+    <Container maxW="container.lg">
+      <Container maxW="container.md" centerContent>
+        <Heading as="h1" mb="2">
+          All Builders
+        </Heading>
+        <Text color="gray.700" textAlign="center">
+          List of Ethereum builders creating products, prototypes, and tutorials with{" "}
+          <Link href="https://github.com/scaffold-eth/scaffold-eth" color="teal.500" isExternal>
+            scaffold-eth
+          </Link>
+          .
+        </Text>
+        <Text color="gray.700" mb="6">You can fund Eth development sending Eth to any stream.</Text>
+      </Container>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Builder</Th>
+            <Th>Challenges</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {builders.map(builder => (
+            <BuilderRow builder={builder} mainnetProvider={mainnetProvider} />
+          ))}
+        </Tbody>
+      </Table>
     </Container>
   );
 }
