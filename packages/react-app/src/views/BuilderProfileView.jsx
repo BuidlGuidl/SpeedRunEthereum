@@ -28,12 +28,13 @@ import { getAcceptedChallenges } from "../helpers/builders";
 // TODO get the real level of challenge
 // TODO get the real number of attempts using the events
 // TODO get the real date of submission using the events
-export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
+  export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
 
   const [builder, setBuilder] = useState();
   const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
+  const isMyProfile = builderAddress === address;
 
   useEffect(() => {
     async function fetchBuilder() {
@@ -97,7 +98,6 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
               Challenges
             </Text>
             <Spacer />
-            <Button colorScheme="blue">New challenge</Button>
           </Flex>
           {challenges ? (
             <Table>
@@ -138,15 +138,23 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
               py={36}
               w="full"
             >
-              <Box maxW="xs" textAlign="center">
-                <Text fontWeight="medium" color="gray.700" mb={2}>
-                  Start a new challenge
-                </Text>
-                <Text color="gray.500" mb={4}>
-                  Show off your skills. Learn everything you need to build on Ethereum!
-                </Text>
-                <Button colorScheme="blue">Start a challenge</Button>
-              </Box>
+              {isMyProfile ? (
+                <Box maxW="xs" textAlign="center">
+                  <Text fontWeight="medium" color="gray.700" mb={2}>
+                    Start a new challenge
+                  </Text>
+                  <Text color="gray.500" mb={4}>
+                    Show off your skills. Learn everything you need to build on Ethereum!
+                  </Text>
+                  <Button colorScheme="blue">Start a challenge</Button>
+                </Box>
+              ) : (
+                <Box maxW="xs" textAlign="center">
+                  <Text color="gray.500" mb={4}>
+                    This builder hasn't completed any challenges.
+                  </Text>
+                </Box>
+              )}
             </Flex>
           )}
         </GridItem>

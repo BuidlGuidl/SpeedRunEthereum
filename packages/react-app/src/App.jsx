@@ -166,14 +166,19 @@ function App() {
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
           </Route>
           <Route path="/builders/:builderAddress">
-            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
           </Route>
           <Route path="/challenge/:challengeId">
             <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/challenge-review" exact>
-            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} mainnetProvider={mainnetProvider} />
+            <ChallengeReviewView
+              serverUrl={serverUrl}
+              address={address}
+              userProvider={userProvider}
+              mainnetProvider={mainnetProvider}
+            />
           </Route>
         </Switch>
         <FlashMessages messages={flashMessages} />
