@@ -182,7 +182,7 @@ function App() {
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/challenge-review" exact>
-            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} mainnetProvider={mainnetProvider} />
           </Route>
         </Switch>
         <FlashMessages messages={flashMessages} />

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import axios from "axios";
-import { Container, Heading } from "@chakra-ui/react";
+import { Container, Heading, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import ChallengeReviewList from "../components/ChallengeReviewList";
 import useFlashMessages from "../hooks/useFlashMessages";
 
-export default function ChallengeReviewView({ serverUrl, address, userProvider }) {
+export default function ChallengeReviewView({ serverUrl, address, userProvider, mainnetProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const flashMessages = useFlashMessages();
@@ -78,16 +78,32 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider }
   };
 
   return (
-    <Container>
-      <Heading as="h1">Challenge Submissions Ready for Review!</Heading>
-      <div style={{ textAlign: "start" }}>
-        <ChallengeReviewList
-          challengeSubmissions={challenges}
-          isLoading={isLoading}
-          approveClick={handleSendReview("ACCEPTED")}
-          rejectClick={handleSendReview("REJECTED")}
-        />
-      </div>
+    <Container maxW="container.lg">
+      <Container maxW="container.md" centerContent>
+        <Heading as="h1">Review Submissions</Heading>
+        <Text color="gray.700" mb="6">Pending submissions to validate.</Text>
+      </Container>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Builder</Th>
+            <Th>Challenge</Th>
+            <Th>Code</Th>
+            <Th>Live demo</Th>
+            <Th>Comment</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <ChallengeReviewList
+            challengeSubmissions={challenges}
+            isLoading={isLoading}
+            approveClick={handleSendReview("ACCEPTED")}
+            rejectClick={handleSendReview("REJECTED")}
+            mainnetProvider={mainnetProvider}
+          />
+        </Tbody>
+      </Table>
     </Container>
   );
 }
