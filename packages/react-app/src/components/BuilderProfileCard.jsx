@@ -1,7 +1,7 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
 import { Flex, Divider, Text, Link, Skeleton, SkeletonText } from "@chakra-ui/react";
-import QRPunkBlockieChakra from "./QrPunkBlockieChakra";
+import QRPunkBlockie from "./QrPunkBlockie";
 import { getIconForProfileLinkType } from "../helpers/socialIcons";
 import useDisplayAddress from "../hooks/useDisplayAddress";
 import { ellipsizedAddress } from "../helpers/strings";
@@ -26,7 +26,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
           /* delay execution */
           <>
             <Link as={RouteLink} to={`/builders/${builder.id}`}>
-              <QRPunkBlockieChakra withQr={false} address={builder.id?.toLowerCase()} w={52} borderRadius="lg" />
+              <QRPunkBlockie withQr={false} address={builder.id?.toLowerCase()} w={52} borderRadius="lg" />
             </Link>
             <Flex alignContent="center" direction="column" mt={4}>
               {hasEns ? (

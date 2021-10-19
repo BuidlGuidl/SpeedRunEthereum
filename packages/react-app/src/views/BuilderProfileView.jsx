@@ -23,6 +23,7 @@ import { InfoOutlineIcon } from "@chakra-ui/icons";
 import BuilderProfileCard from "../components/BuilderProfileCard";
 import { challengeInfo } from "../data/challenges";
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
+import { getAcceptedChallenges } from "../helpers/builders";
 
 // TODO get the real level of challenge
 // TODO get the real number of attempts using the events
@@ -32,6 +33,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
 
   const [builder, setBuilder] = useState();
   const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
+  const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
 
   useEffect(() => {
     async function fetchBuilder() {
@@ -56,7 +58,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
               </Flex>
               <div>
                 <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                  4
+                  {acceptedChallenges.length}
                 </Text>
                 <Text fontSize="sm" color="gray.600" textAlign="right">
                   challenges completed
@@ -69,7 +71,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
               </Flex>
               <div>
                 <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                  95%
+                  --
                 </Text>
                 <Text fontSize="sm" color="gray.600" textAlign="right">
                   Success rate
@@ -82,7 +84,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
               </Flex>
               <div>
                 <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                  Beginner
+                  --
                 </Text>
                 <Text fontSize="sm" color="gray.600" textAlign="right">
                   Builder role
