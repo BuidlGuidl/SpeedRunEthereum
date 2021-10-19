@@ -27,7 +27,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider }) {
       <Heading as="h1">Builder Progress</Heading>
       {builder ? (
         <Box pos="relative">
-          <Address address={builder.id} ensProvider={mainnetProvider} scale="0.4" />
+          <Address address={builder.id} ensProvider={mainnetProvider} w="12.5" />
           <div style={{ textAlign: "start" }}>
             <ChallengeList userChallenges={builder.challenges ?? []} />
           </div>

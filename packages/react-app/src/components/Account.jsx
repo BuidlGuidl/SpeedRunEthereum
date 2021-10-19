@@ -58,13 +58,13 @@ export default function Account({
   const accountMenu = address && (
     <Menu>
       <MenuButton as={Button} px={0} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.4} />
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w="9" borderRadius="md" />
       </MenuButton>
       <MenuList>
         <MenuItem as={Box} _focus={{ background: "none" }} _active={{ background: "none" }}>
           <Flex>
             <Box pos="relative">
-              <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={0.6} />
+              <QRPunkBlockie withQr={false} address={address.toLowerCase()} w="19" borderRadius="md" />
             </Box>
             <Box ml={3} mt={2}>
               {ens && (

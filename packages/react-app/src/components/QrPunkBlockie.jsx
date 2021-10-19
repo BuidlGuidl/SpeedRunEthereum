@@ -63,14 +63,14 @@ const Wrapper = ({ address, copyAddressOnClick, children, ...otherProps }) => {
  * @returns {import("@chakra-ui/system").ChakraComponent} Chakra component
  */
 export default function BaseQRPunkBlockie({
-                                            address,
-                                            copyAddressOnClick,
-                                            scale: scaleArg,
-                                            width: widthArg,
-                                            w,
-                                            withQr,
-                                            ...extraProps
-                                          }) {
+  address,
+  copyAddressOnClick,
+  scale: scaleArg,
+  width: widthArg,
+  w,
+  withQr,
+  ...extraProps
+}) {
   if (withQr) {
     console.warn("The chakra punk blockie has not implemented the qr yet");
   }

@@ -48,7 +48,7 @@ export default function Address(props) {
   return (
     <HStack spacing="20px">
       <span style={{ verticalAlign: "middle" }}>
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} scale={props.scale ?? 1} />
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={props.w ?? 12.5} borderRadius="md" />
       </span>
       <span
         style={{

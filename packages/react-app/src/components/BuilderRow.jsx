@@ -13,7 +13,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
     <Tr key={builder.id}>
       <Td>
         <Link as={RouteLink} to={`/builders/${builder.id}`} pos="relative">
-          <Address address={builder.id} ensProvider={mainnetProvider} scale="0.4" fontSize="16" />
+          <Address address={builder.id} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
         </Link>
       </Td>
       <Td>{acceptedChallenges ? acceptedChallenges.length : 0}</Td>
