@@ -16,6 +16,11 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   const flashMessages = useFlashMessages();
 
   const onFinish = async () => {
+    if (!deployedUrl || !branchUrl) {
+      flashMessages.error("Both fields are required");
+      return;
+    }
+
     setIsSubmitting(true);
 
     let signMessage;
@@ -74,17 +79,17 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   };
 
   if (!address) {
-    return <Text color="orange.400" className="warning">Connect your wallet to submit this Challenge.</Text>;
+    return <Text color="orange.400" className="warning" align="center">Connect your wallet to submit this Challenge.</Text>;
   }
 
   return (
     <div>
-      <Heading as="h2" size="md">Submit Challenge: {challenge.label}</Heading>
+      <Heading as="h2" size="md" mb={4}>Submit Challenge: {challenge.label}</Heading>
       {challenge.isDisabled ? (
         <Text color="orange.400" className="warning">This challenge is disabled.</Text>
       ) : (
         <form name="basic" autoComplete="off">
-          <FormControl id="deployedUrl">
+          <FormControl id="deployedUrl" isRequired>
             <FormLabel>Deployed URL</FormLabel>
             <Input
               type="text"
@@ -96,7 +101,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
             />
           </FormControl>
 
-          <FormControl id="branchUrl">
+          <FormControl id="branchUrl" isRequired mt={4}>
             <FormLabel>Branch URL</FormLabel>
             <Input
               type="text"
@@ -109,7 +114,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
           </FormControl>
 
           <div className="form-item">
-            <Button colorScheme="blue" onClick={onFinish} disabled={isSubmitting}>
+            <Button colorScheme="blue" onClick={onFinish} isLoading={isSubmitting} mt={4} isFullWidth>
               Submit
             </Button>
           </div>
