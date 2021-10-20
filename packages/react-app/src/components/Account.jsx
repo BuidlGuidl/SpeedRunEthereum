@@ -86,27 +86,41 @@ export default function Account({
     </Button>
   );
 
+  const UserDisplayName = ({ mb, textAlign }) =>
+    hasEns ? (
+      <>
+        <Text fontSize="md" fontWeight="bold" textAlign={textAlign} color="gray.700">
+          {ens}
+        </Text>
+        <Text color="gray.500" fontSize="sm" fontWeight="normal" textAlign={textAlign} mb={mb}>
+          {shortAddress}
+        </Text>
+      </>
+    ) : (
+      <Text fontSize="md" fontWeight="semibold" textAlign={textAlign} color="gray.700" mb={mb}>
+        {shortAddress}
+      </Text>
+    );
+
   const accountMenu = address && (
     <Menu>
-      <MenuButton as={Button} px={0} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w="9" borderRadius="md" />
+      <MenuButton
+        p="px"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius={8}
+        _focus={{ boxShadow: "none" }}
+        _hover={{ opacity: 0.8 }}
+      >
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
       </MenuButton>
-      <MenuList>
+      <MenuList color="gray.600">
         <MenuItem as={Box} _focus={{ background: "none" }} _active={{ background: "none" }}>
-          <Flex>
-            <Box pos="relative">
-              <QRPunkBlockie withQr={false} address={address.toLowerCase()} w="19" borderRadius="md" />
-            </Box>
-            <Box ml={3} mt={2}>
-              {ens && (
-                <Text fontWeight="bold" lineHeight={1.3}>
-                  {ens}
-                </Text>
-              )}
-              <Text color="gray.500" lineHeight={1.3}>
-                {/* ToDo. Move to Utils */}
-                {address.substr(0, 6) + "..." + address.substr(-4)}
-              </Text>
+          <Flex align="center">
+            <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={14} borderRadius={6} />
+            <Box ml={4}>
+              {/* ToDo. Move to Utils */}
+              <UserDisplayName textAlign="left" />
             </Box>
           </Flex>
         </MenuItem>
@@ -125,7 +139,7 @@ export default function Account({
   };
 
   const anonymousMenu = address && (
-    <Popover initialFocusRef={registerButtonRef} isOpen={isPopoverOpen} onClose={closePopover}>
+    <Popover placement="bottom-end" initialFocusRef={registerButtonRef} isOpen={isPopoverOpen} onClose={closePopover}>
       <PopoverTrigger>
         <Button variant="ghost" _hover={{ backgroundColor: "gray.50" }} w={9} p={0} onClick={openPopover}>
           <Icon as={HeroIconUser} w={6} h={6} color="gray.500" />
@@ -146,23 +160,10 @@ export default function Account({
           <Text color="gray.600" fontSize="sm" fontWeight="normal" textAlign="center" mb={6}>
             Sign a message with your wallet to create a builder profile.
           </Text>
-          <Box m="auto" p={0.5} borderWidth="1px" borderColor="gray.200" borderRadius={8}>
+          <Box m="auto" p="px" borderWidth="1px" borderColor="gray.200" borderRadius={8}>
             <QRPunkBlockie address={address} w={19} borderRadius={6} />
           </Box>
-          {hasEns ? (
-            <>
-              <Text fontSize="md" fontWeight="semibold" textAlign="center">
-                {ens}
-              </Text>
-              <Text color="gray.600" fontSize="sm" fontWeight="normal" textAlign="center" mb={6}>
-                {shortAddress}
-              </Text>
-            </>
-          ) : (
-            <Text fontSize="md" fontWeight="semibold" textAlign="center" mb={6}>
-              {shortAddress}
-            </Text>
-          )}
+          <UserDisplayName textAlign="center" mb={6} />
           <SignatureSignUp
             ref={registerButtonRef}
             userProvider={userProvider}
@@ -178,13 +179,13 @@ export default function Account({
   const userMenu = isAnonymous ? anonymousMenu : accountMenu;
 
   return (
-    <Box>
+    <Flex align="center">
       {isAdmin && (
         <Badge colorScheme="red" mr={4}>
           admin
         </Badge>
       )}
       {isWalletConnected ? userMenu : connectWallet}
-    </Box>
+    </Flex>
   );
 }
