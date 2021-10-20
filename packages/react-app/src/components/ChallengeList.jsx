@@ -1,10 +1,11 @@
 import React from "react";
+import { chakra } from "@chakra-ui/react";
 import ChallengeCard from "./ChallengeCard";
 import { challengeSequence, challengeInfo } from "../data/challenges";
 
 export default function ChallengeList({ userChallenges }) {
   return (
-    <ul>
+    <chakra.ul listStyleType="none">
       {challengeSequence.map((challengeKeyOrGroup, idx) => {
         const step = idx + 1;
         if (Array.isArray(challengeKeyOrGroup)) {
@@ -13,7 +14,7 @@ export default function ChallengeList({ userChallenges }) {
           return (
             <li key={`challenge-group-step-${step}`} style={{ marginTop: 8 }}>
               <strong>Challenge {step}:{" "}</strong>
-              <ul>
+              <chakra.ul listStyleType="none">
                 {challengeGroup.map(challengeKey => (
                   <li key={challengeKey}>
                     <ChallengeCard
@@ -23,7 +24,7 @@ export default function ChallengeList({ userChallenges }) {
                     />
                   </li>
                 ))}
-              </ul>
+              </chakra.ul>
             </li>
           );
         }
@@ -40,6 +41,6 @@ export default function ChallengeList({ userChallenges }) {
           </li>
         );
       })}
-    </ul>
+    </chakra.ul>
   );
 }

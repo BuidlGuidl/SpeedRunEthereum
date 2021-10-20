@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
-import uuid from 'uuid/v4';
+import { Switch, Redirect, Route } from "react-router-dom";
+import uuid from "uuid/v4";
 import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
 import Web3Modal from "web3modal";
@@ -10,14 +10,7 @@ import axios from "axios";
 import { useUserProvider } from "./hooks";
 import { Header, FlashMessages } from "./components";
 import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
-import {
-  BuilderListView,
-  ChallengeDetailView,
-  BuilderHomeView,
-  BuilderProfileView,
-  ChallengeReviewView,
-  HomeView,
-} from "./views";
+import { BuilderListView, ChallengeDetailView, BuilderProfileView, ChallengeReviewView, HomeView } from "./views";
 import FlashMessagesContext from "./context/FlashMessagesContext";
 
 /// 📡 What chain are your contracts deployed to?
@@ -73,7 +66,6 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
-
 function App() {
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
@@ -101,7 +93,6 @@ function App() {
   }, [mainnetProvider, address, selectedChainId, localChainId]);
 
   const loadWeb3Modal = useCallback(async () => {
-    console.log('LOAD MODAL');
     const provider = await web3Modal.connect();
     setInjectedProvider(new Web3Provider(provider));
   }, [setInjectedProvider]);
@@ -169,20 +160,25 @@ function App() {
             <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
           <Route exact path="/my-profile">
-            <BuilderHomeView serverUrl={serverUrl} address={address} />
+            <Redirect to={"/builders/" + address} />
           </Route>
           <Route path="/builders" exact>
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
           </Route>
           <Route path="/builders/:builderAddress">
-            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
           </Route>
           <Route path="/challenge/:challengeId">
             <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/challenge-review" exact>
-            <ChallengeReviewView serverUrl={serverUrl} address={address} userProvider={userProvider} mainnetProvider={mainnetProvider} />
+            <ChallengeReviewView
+              serverUrl={serverUrl}
+              address={address}
+              userProvider={userProvider}
+              mainnetProvider={mainnetProvider}
+            />
           </Route>
         </Switch>
         <FlashMessages messages={flashMessages} />

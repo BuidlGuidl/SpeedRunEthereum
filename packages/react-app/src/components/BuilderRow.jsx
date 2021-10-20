@@ -2,13 +2,10 @@ import React from "react";
 import { Link as RouteLink } from "react-router-dom";
 import { Link, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
+import { getAcceptedChallenges } from "../helpers/builders";
 
 const BuilderRow = ({ builder, mainnetProvider }) => {
-  const acceptedChallenges =
-    builder.challenges &&
-    // ToDo. Move "ACCEPTED" to a shared constant.
-    Object.keys(builder.challenges).filter(challengeId => builder.challenges[challengeId].status === "ACCEPTED");
-
+  const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
   return (
     <Tr key={builder.id}>
       <Td>
