@@ -125,7 +125,7 @@ export default function Account({
           </Flex>
         </MenuItem>
         <MenuDivider />
-        <MenuItem as={Link} to="/my-profile" d="block">
+        <MenuItem as={Link} fontWeight="normal" to="/my-profile" d="block">
           My profile
         </MenuItem>
         <MenuDivider />
