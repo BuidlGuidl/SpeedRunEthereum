@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { Button } from "@chakra-ui/react";
+import { forwardRef, Button } from "@chakra-ui/react";
 import useFlashMessages from "../hooks/useFlashMessages";
+import { SERVER_URL as serverUrl } from "../constants";
+import { USER_ROLES } from "../helpers/constants";
 
-export default function SignatureSignUp({ serverUrl, address, userProvider }) {
-  const history = useHistory();
+const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserRole }, ref) => {
   const [loading, setLoading] = useState(false);
   const flashMessages = useFlashMessages();
 
@@ -53,14 +53,16 @@ export default function SignatureSignUp({ serverUrl, address, userProvider }) {
     setLoading(false);
 
     if (res.data) {
-      history.push("/my-profile");
+      onSuccess();
+      setUserRole(res.data.isAdmin ? USER_ROLES.admin : USER_ROLES.registered);
     }
   };
 
-  // ToDo. Also hide this if there is no wallet connected. Check `UserProvider.js`: Do we need a burner in this?
   return (
-    <Button colorScheme="blue" disabled={loading} onClick={handleLoginSigning} my={5}>
-      <span style={{ marginRight: 8 }} role="img" aria-label="lock-icon">🔏</span> Sign a message to Sign Up on Scaffold-directory
+    <Button ref={ref} colorScheme="blue" disabled={loading} onClick={handleLoginSigning}>
+      ✍️ Register
     </Button>
   );
-}
+});
+
+export default SignatureSignUp;

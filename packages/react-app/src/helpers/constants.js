@@ -3,3 +3,9 @@ export const CHALLENGE_SUBMISSION_STATUS = {
   REJECTED: "REJECTED",
   SUBMITTED: "SUBMITTED",
 };
+
+export const USER_ROLES = {
+  admin: "user_role.administrator",
+  anonymous: "user_role.anonymous",
+  registered: "user_role.registered",
+};
