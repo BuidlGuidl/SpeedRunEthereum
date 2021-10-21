@@ -131,7 +131,7 @@ function App() {
           <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
         </Route>
         <Route exact path="/my-profile">
-          <Redirect to={"/builders/" + address} />
+          {address && <Redirect to={"/builders/" + address} />}
         </Route>
         <Route path="/builders" exact>
           <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
