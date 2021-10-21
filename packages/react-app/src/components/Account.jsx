@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Badge,
   Box,
@@ -71,6 +71,7 @@ export default function Account({
 }) {
   const ens = useDisplayAddress(ensProvider, address);
   const shortAddress = ellipsizedAddress(address);
+  const history = useHistory();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const registerButtonRef = useRef();
   const openPopover = () => setIsPopoverOpen(true);
@@ -136,6 +137,7 @@ export default function Account({
 
   const handleSignUpSuccess = () => {
     closePopover();
+    history.push("/my-profile");
   };
 
   const anonymousMenu = address && (
