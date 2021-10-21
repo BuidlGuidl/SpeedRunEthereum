@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, Heading, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
-import useFlashMessages from "../hooks/useFlashMessages";
+import { Button, Heading, FormControl, FormLabel, Input, Text, useToast } from "@chakra-ui/react";
 
 const serverPath = "/challenges";
 
@@ -10,14 +9,17 @@ const serverPath = "/challenges";
 export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const history = useHistory();
+  const toast = useToast({ position: "top", isClosable: true });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deployedUrl, setDeployedUrl] = useState("");
   const [branchUrl, setBranchUrl] = useState("");
-  const flashMessages = useFlashMessages();
 
   const onFinish = async () => {
     if (!deployedUrl || !branchUrl) {
-      flashMessages.error("Both fields are required");
+      toast({
+        status: "error",
+        description: "Can't get the message to sign. Please try again",
+      });
       return;
     }
 
@@ -35,7 +37,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      flashMessages.error("Can't get the message to sign. Please try again.");
+      toast({
+        description: "Can't get the message to sign. Please try again",
+        status: "error",
+      });
       setIsSubmitting(false);
       return;
     }
@@ -44,7 +49,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      flashMessages.error("The signature was cancelled");
+      toast({
+        status: "error",
+        description: "The signature was cancelled",
+      });
       console.error(error);
       setIsSubmitting(false);
       return;
@@ -66,14 +74,20 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
         },
       );
     } catch (error) {
-      flashMessages.error("Submission Error. Please try again.");
+      toast({
+        status: "error",
+        description: "Submission Error. Please try again.",
+      });
       console.error(error);
       setIsSubmitting(false);
 
       return;
     }
 
-    flashMessages.success("Challenge submitted!");
+    toast({
+      status: "success",
+      description: "Challenge submitted!",
+    });
     setIsSubmitting(false);
     history.push("/my-profile");
   };

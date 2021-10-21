@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { forwardRef, chakra, Button } from "@chakra-ui/react";
-import useFlashMessages from "../hooks/useFlashMessages";
+import { forwardRef, chakra, Button, useToast } from "@chakra-ui/react";
 import { SERVER_URL as serverUrl } from "../constants";
 import { USER_ROLES } from "../helpers/constants";
 
 const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserRole }, ref) => {
   const [loading, setLoading] = useState(false);
-  const flashMessages = useFlashMessages();
+  const toast = useToast({ position: "top", isClosable: true });
 
   const handleLoginSigning = async () => {
     setLoading(true);
@@ -23,15 +22,21 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
       console.log("signMessage", signMessage);
     } catch (e) {
       // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
-      flashMessages.error(" Sorry, the server is overloaded. 🧯🚒🔥");
+      toast({
+        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        status: "error",
+      });
       setLoading(false);
       console.log(e);
       return;
     }
 
     if (!signMessage) {
+      toast({
+        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        status: "error",
+      });
       setLoading(false);
-      flashMessages.error(" Sorry, the server is overloaded. 🧯🚒🔥");
       return;
     }
 
@@ -39,7 +44,10 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (err) {
-      flashMessages.error("Couldn't get a signature from the Wallet");
+      toast({
+        description: "Couldn't get a signature from the Wallet",
+        status: "error",
+      });
       setLoading(false);
       return;
     }
