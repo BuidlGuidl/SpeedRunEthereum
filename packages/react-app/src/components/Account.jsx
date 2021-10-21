@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link as RouteLink } from "react-router-dom";
 import {
   AvatarBadge,
   Badge,
   Box,
   Button,
   Flex,
+  Link,
   Icon,
   Menu,
   MenuButton,
@@ -17,6 +18,7 @@ import {
   PopoverContent,
   PopoverBody,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import useDisplayAddress from "../hooks/useDisplayAddress";
@@ -72,7 +74,7 @@ export default function Account({
 }) {
   const ens = useDisplayAddress(ensProvider, address);
   const shortAddress = ellipsizedAddress(address);
-  const history = useHistory();
+  const toast = useToast({ position: "top", isClosable: true });
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const registerButtonRef = useRef();
   const openPopover = () => setIsPopoverOpen(true);
@@ -127,7 +129,7 @@ export default function Account({
           </Flex>
         </MenuItem>
         <MenuDivider />
-        <MenuItem as={Link} fontWeight="normal" to="/my-profile" d="block">
+        <MenuItem as={RouteLink} fontWeight="normal" to="/my-profile" d="block">
           My profile
         </MenuItem>
         <MenuDivider />
@@ -138,7 +140,19 @@ export default function Account({
 
   const handleSignUpSuccess = () => {
     closePopover();
-    history.push("/my-profile");
+    toast({
+      title: "You are now registered!",
+      description: (
+        <>
+          Visit{" "}
+          <Link href="/my-profile" textDecoration="underline">
+            your profile
+          </Link>{" "}
+          to start building
+        </>
+      ),
+      status: "success",
+    });
   };
 
   const anonymousMenu = address && (

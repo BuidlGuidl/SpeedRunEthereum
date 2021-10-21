@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect } from "react";
 import axios from "axios";
-import { Container, Heading, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import { Container, Heading, Text, Table, Thead, Tbody, Tr, Th, useToast } from "@chakra-ui/react";
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
-import useFlashMessages from "../hooks/useFlashMessages";
 
 export default function ChallengeReviewView({ serverUrl, address, userProvider, mainnetProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const flashMessages = useFlashMessages();
+  const toast = useToast({ position: "top", isClosable: true });
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoading(true);
@@ -42,7 +41,10 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
 
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
-      flashMessages.error(" Sorry, the server is overloaded. 🧯🚒🔥");
+      toast({
+        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        status: "error",
+      });
       console.error(error);
       return;
     }
@@ -51,7 +53,10 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
     try {
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
-      flashMessages.error("Couldn't get a signature from the Wallet");
+      toast({
+        description: "Couldn't get a signature from the Wallet",
+        status: "error",
+      });
       console.error(error);
       return;
     }
@@ -70,10 +75,16 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
       );
     } catch (error) {
       console.error(error);
-      flashMessages.error("Can't submit the review");
+      toast({
+        description: "Can't submit the review",
+        status: "error",
+      });
       return;
     }
-    flashMessages.success("Review submitted successfully");
+    toast({
+      description: "Review submitted successfully",
+      status: "success",
+    });
     fetchSubmittedChallenges();
   };
 
