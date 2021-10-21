@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
-  Avatar,
   AvatarBadge,
   Badge,
   Box,
