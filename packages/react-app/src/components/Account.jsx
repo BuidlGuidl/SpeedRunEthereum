@@ -1,8 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Badge, Box, Button, Flex, Menu, MenuButton, MenuDivider, MenuList, MenuItem, Text } from "@chakra-ui/react";
+import React, { useRef, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import {
+  Avatar,
+  AvatarBadge,
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuList,
+  MenuItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  Text,
+} from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
-import { useLookupAddress } from "../hooks";
+import useDisplayAddress from "../hooks/useDisplayAddress";
+import { ellipsizedAddress } from "../helpers/strings";
+import { USER_ROLES } from "../helpers/constants";
+import HeroIconUser from "./icons/HeroIconUser";
+import SignatureSignUp from "./SignatureSignUp";
 
 /*
   ~ What it does? ~
@@ -39,48 +61,74 @@ import { useLookupAddress } from "../hooks";
 */
 
 export default function Account({
-  connectText,
-  isWalletConnected,
   address,
+  connectText,
+  ensProvider,
+  isWalletConnected,
   loadWeb3Modal,
   logoutOfWeb3Modal,
-  isAdmin,
-  ensProvider,
+  setUserRole,
+  userProvider,
+  userRole,
 }) {
+  const ens = useDisplayAddress(ensProvider, address);
+  const shortAddress = ellipsizedAddress(address);
+  const history = useHistory();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const registerButtonRef = useRef();
+  const openPopover = () => setIsPopoverOpen(true);
+  const closePopover = () => setIsPopoverOpen(false);
+
+  const hasEns = ens !== shortAddress;
+  const isAdmin = userRole === USER_ROLES.admin;
+  const isAnonymous = userRole === USER_ROLES.anonymous;
+
   const connectWallet = (
     <Button colorScheme="blue" key="loginbutton" onClick={loadWeb3Modal}>
       {connectText || "connect"}
     </Button>
   );
 
-  const ens = useLookupAddress(ensProvider, address);
+  const UserDisplayName = ({ mb, textAlign }) =>
+    hasEns ? (
+      <>
+        <Text fontSize="md" fontWeight="bold" textAlign={textAlign} color="gray.700">
+          {ens}
+        </Text>
+        <Text color="gray.500" fontSize="sm" fontWeight="normal" textAlign={textAlign} mb={mb}>
+          {shortAddress}
+        </Text>
+      </>
+    ) : (
+      <Text fontSize="md" fontWeight="semibold" textAlign={textAlign} color="gray.700" mb={mb}>
+        {shortAddress}
+      </Text>
+    );
 
   const accountMenu = address && (
     <Menu>
-      <MenuButton as={Button} px={0} variant="ghost" _focus={{ boxShadow: "none" }} _hover={{ opacity: 0.8 }}>
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w="9" borderRadius="md" />
+      <MenuButton
+        p="px"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius={8}
+        _focus={{ boxShadow: "none" }}
+        _hover={{ opacity: 0.8 }}
+      >
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
       </MenuButton>
-      <MenuList>
+      <MenuList color="gray.600">
         <MenuItem as={Box} _focus={{ background: "none" }} _active={{ background: "none" }}>
-          <Flex>
-            <Box pos="relative">
-              <QRPunkBlockie withQr={false} address={address.toLowerCase()} w="19" borderRadius="md" />
-            </Box>
-            <Box ml={3} mt={2}>
-              {ens && (
-                <Text fontWeight="bold" lineHeight={1.3}>
-                  {ens}
-                </Text>
-              )}
-              <Text color="gray.500" lineHeight={1.3}>
-                {/* ToDo. Move to Utils */}
-                {address.substr(0, 6) + "..." + address.substr(-4)}
-              </Text>
+          <Flex align="center">
+            <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={14} borderRadius={6} />
+            <Box ml={4}>
+              {/* ToDo. Move to Utils */}
+              <UserDisplayName textAlign="left" />
             </Box>
           </Flex>
         </MenuItem>
         <MenuDivider />
-        <MenuItem as={Link} to="/my-profile" d="block">
+        <MenuItem as={Link} fontWeight="normal" to="/my-profile" d="block">
           My profile
         </MenuItem>
         <MenuDivider />
@@ -89,14 +137,62 @@ export default function Account({
     </Menu>
   );
 
+  const handleSignUpSuccess = () => {
+    closePopover();
+    history.push("/my-profile");
+  };
+
+  const anonymousMenu = address && (
+    <Popover placement="bottom-end" initialFocusRef={registerButtonRef} isOpen={isPopoverOpen} onClose={closePopover}>
+      <PopoverTrigger>
+        <Button variant="ghost" _hover={{ backgroundColor: "gray.50" }} w={9} p={0} onClick={openPopover}>
+          <Box>
+            <Icon as={HeroIconUser} w={6} h={6} color="gray.500" />
+            <AvatarBadge boxSize={2} bg="red.500" borderRadius="full" top="4px" right="4px" />
+          </Box>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent w={72}>
+        <PopoverBody
+          as={Flex}
+          direction="column"
+          px={9}
+          py={10}
+          _focus={{ background: "none" }}
+          _active={{ background: "none" }}
+        >
+          <Text color="gray.700" fontWeight="bold" textAlign="center" mb={1}>
+            Register as a builder
+          </Text>
+          <Text color="gray.600" fontSize="sm" fontWeight="normal" textAlign="center" mb={6}>
+            Sign a message with your wallet to create a builder profile.
+          </Text>
+          <Box m="auto" p="px" borderWidth="1px" borderColor="gray.200" borderRadius={8}>
+            <QRPunkBlockie address={address} w={19} borderRadius={6} />
+          </Box>
+          <UserDisplayName textAlign="center" mb={6} />
+          <SignatureSignUp
+            ref={registerButtonRef}
+            userProvider={userProvider}
+            address={address}
+            onSuccess={handleSignUpSuccess}
+            setUserRole={setUserRole}
+          />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
+
+  const userMenu = isAnonymous ? anonymousMenu : accountMenu;
+
   return (
-    <div>
+    <Flex align="center">
       {isAdmin && (
         <Badge colorScheme="red" mr={4}>
           admin
         </Badge>
       )}
-      {isWalletConnected ? accountMenu : connectWallet}
-    </div>
+      {isWalletConnected ? userMenu : connectWallet}
+    </Flex>
   );
 }

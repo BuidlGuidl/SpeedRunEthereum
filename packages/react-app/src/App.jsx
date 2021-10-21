@@ -12,6 +12,7 @@ import { Header, FlashMessages } from "./components";
 import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
 import { BuilderListView, ChallengeDetailView, BuilderProfileView, ChallengeReviewView, HomeView } from "./views";
 import FlashMessagesContext from "./context/FlashMessagesContext";
+import { USER_ROLES } from "./helpers/constants";
 
 /// 📡 What chain are your contracts deployed to?
 const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
@@ -33,15 +34,6 @@ const localProviderUrl = targetNetwork.rpcUrl;
 const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REACT_APP_PROVIDER : localProviderUrl;
 if (DEBUG) console.log("🏠 Connecting to provider:", localProviderUrlFromEnv);
 const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
-
-// 🔭 block explorer URL
-const blockExplorer = targetNetwork.blockExplorer;
-
-const USER_ROLES = {
-  admin: "user_role.administrator",
-  anonymous: "user_role.anonymous",
-  registered: "user_role.registered",
-};
 
 /*
   Web3 modal helps us "connect" external wallets:
@@ -145,14 +137,12 @@ function App() {
         {/* ✏️ Edit the header and change the title to your project name */}
         <Header
           injectedProvider={injectedProvider}
-          userRoles={USER_ROLES}
           userRole={userRole}
           address={address}
-          web3Modal={web3Modal}
           mainnetProvider={mainnetProvider}
+          userProvider={userProvider}
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={logoutOfWeb3Modal}
-          blockExplorer={blockExplorer}
           setUserRole={setUserRole}
         />
         <Switch>
