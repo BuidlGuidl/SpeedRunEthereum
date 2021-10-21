@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
+  Avatar,
+  AvatarBadge,
   Badge,
   Box,
   Button,
@@ -144,7 +146,10 @@ export default function Account({
     <Popover placement="bottom-end" initialFocusRef={registerButtonRef} isOpen={isPopoverOpen} onClose={closePopover}>
       <PopoverTrigger>
         <Button variant="ghost" _hover={{ backgroundColor: "gray.50" }} w={9} p={0} onClick={openPopover}>
-          <Icon as={HeroIconUser} w={6} h={6} color="gray.500" />
+          <Box>
+            <Icon as={HeroIconUser} w={6} h={6} color="gray.500" />
+            <AvatarBadge boxSize={2} bg="red.500" borderRadius="full" top="4px" right="4px" />
+          </Box>
         </Button>
       </PopoverTrigger>
       <PopoverContent w={72}>
