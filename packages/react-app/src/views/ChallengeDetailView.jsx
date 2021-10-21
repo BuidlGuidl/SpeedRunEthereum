@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Container, Heading, Link, Text } from "@chakra-ui/react";
+import { Button, Container, Heading, Text } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 
@@ -16,13 +17,33 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
   }
 
   return (
-    <Container>
-      <Heading as="h1">{challenge.label}</Heading>
-      <Text>{challenge.description}</Text>
-      <Link color="teal.500" href={challenge.url} target="_blank" rel="noopener noreferrer">
-        Link to challenge
-      </Link>
-      <ChallengeSubmission challenge={challenge} serverUrl={serverUrl} address={address} userProvider={userProvider} />
+    <Container maxW="container.lg">
+      <Container maxW="container.md" centerContent>
+        <Heading as="h1" mb="2">
+          {challenge.label}
+        </Heading>
+        <Text color="gray.700" mb="6">
+          {challenge.description}
+        </Text>
+        <Button
+          as="a"
+          colorScheme="gray"
+          variant="outline"
+          href={challenge.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Link to challenge <ExternalLinkIcon ml={1} />
+        </Button>
+      </Container>
+      <Container maxW="container.sm" mt={10} centerContent>
+        <ChallengeSubmission
+          challenge={challenge}
+          serverUrl={serverUrl}
+          address={address}
+          userProvider={userProvider}
+        />
+      </Container>
     </Container>
   );
 }
