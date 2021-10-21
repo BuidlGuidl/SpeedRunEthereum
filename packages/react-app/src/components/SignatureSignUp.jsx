@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { forwardRef, Button } from "@chakra-ui/react";
+import { forwardRef, chakra, Button } from "@chakra-ui/react";
 import useFlashMessages from "../hooks/useFlashMessages";
 import { SERVER_URL as serverUrl } from "../constants";
 import { USER_ROLES } from "../helpers/constants";
@@ -60,7 +60,7 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
 
   return (
     <Button ref={ref} colorScheme="blue" disabled={loading} onClick={handleLoginSigning}>
-      ✍️ Register
+      <span role="img" aria-label="write icon">✍</span><chakra.span ml={2}>Register</chakra.span>
     </Button>
   );
 });

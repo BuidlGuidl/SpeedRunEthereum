@@ -35,9 +35,6 @@ const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REA
 if (DEBUG) console.log("🏠 Connecting to provider:", localProviderUrlFromEnv);
 const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 
-// 🔭 block explorer URL
-const blockExplorer = targetNetwork.blockExplorer;
-
 /*
   Web3 modal helps us "connect" external wallets:
 */
