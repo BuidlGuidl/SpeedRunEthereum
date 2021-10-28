@@ -91,6 +91,10 @@ const findEventsWhere = ({ conditions: conditionsArg, limit } = {}) => {
   return allEvents.filter(event => conditions.every(condition => condition(event)));
 };
 
+const findAllBuilds = () => {
+  return database.builds;
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -100,6 +104,8 @@ module.exports = {
   createEvent,
   findAllEvents,
   findEventsWhere,
+
+  findAllBuilds,
 
   __internal_database: database, // testing only
 };

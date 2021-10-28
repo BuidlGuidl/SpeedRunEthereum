@@ -8,6 +8,7 @@ const { withAddress, adminOnly } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
 const eventsRoutes = require("./routes/events");
+const buildsRoutes = require("./routes/builds");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/events", eventsRoutes);
+app.use("/builds", buildsRoutes);
 
 app.get("/sign-message", (req, res) => {
   const messageId = req.query.messageId ?? "login";
