@@ -128,7 +128,7 @@ function App() {
       />
       <Switch>
         <Route exact path="/">
-          <HomeView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          <HomeView />
         </Route>
         <Route exact path="/my-profile">
           {address && <Redirect to={"/builders/" + address} />}
