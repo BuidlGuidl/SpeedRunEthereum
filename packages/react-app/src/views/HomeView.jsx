@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Container, SimpleGrid, Heading, Text } from "@chakra-ui/react";
 import BuildCard from "../components/BuildCard";
-import { getAllEvents, getAllBuilds } from "../data/api";
-import { eventToString } from "../helpers/events";
+import { getAllBuilds } from "../data/api";
 
 export default function HomeView() {
-  const [eventsFeed, setEventFeeds] = useState([]);
   const [builds, setBuilds] = useState([]);
   useEffect(() => {
-    const updateEvents = async () => {
-      const events = await getAllEvents();
-      setEventFeeds(events.reverse());
-    };
-
     const updateBuilds = async () => {
       const allBuilds = await getAllBuilds();
       setBuilds(allBuilds);
     };
 
-    updateEvents();
     updateBuilds();
   }, []);
 
