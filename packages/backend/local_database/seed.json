@@ -40,6 +40,261 @@
       }
     }
   },
+  "builds": [
+    {
+      "name": "🎟 Simple NFT Example",
+      "desc": "Mint and display NFTs on Ethereum with a full example app...",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/simple-nft-example",
+      "readMore": "",
+      "image": "simplenft.png"
+    },
+    {
+      "name": "🧾 Minimum Viable Payment Channel",
+      "desc": "Make micro payments in ETH with signatures over a open session",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/payment-channel",
+      "readMore": "",
+      "image": "paymentchannel.png"
+    },
+    {
+      "name": "📈 Bonding Curve",
+      "desc": "Learn about bonding curves and play around with the 😃 bonding curve token",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/bonding-curve",
+      "readMore": "",
+      "image": "bondingcurve.png"
+    },
+    {
+      "name": "🏷 ✍️ NFT Signature Based Auction",
+      "desc": "Discover how you can build your own NFT auction where the bids go off-chain!",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/signature-nft-auction",
+      "readMore": "",
+      "image": "highestbid.png"
+    },
+    {
+      "name": "👻 Lender",
+      "desc": "A component for depositing & borrowing assets on Aave",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/lender",
+      "readMore": "https://azfuller20.medium.com/lend-with-aave-v2-20bacceedade",
+      "image": "lender.png"
+    },
+    {
+      "name": "🐸 Chainlink 🎲 VRF 🎫 NFT",
+      "desc": "Use VRF to get a 🎲 random \"⚔️ strength\" for each NFT as it is minted...",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/chainlink-vrf-nft",
+      "readMore": "https://youtu.be/63sXEPIEh-k?t=1773",
+      "image": "randomimage.png"
+    },
+    {
+      "name": "💵 Meta-Multi-Sig Wallet",
+      "desc": "An off-chain signature-based multi-sig wallet",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/meta-multi-sig",
+      "readMore": "",
+      "image": "metamultisig.png"
+    },
+    {
+      "name": "🎨 Nifty.ink",
+      "desc": "NFT artwork platform powered by meta transactions, burner wallets, sidechains, and bridged to Ethereum.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/nifty-ink-dev",
+      "readMore": "https://nifty.ink",
+      "image": "niftyink.png"
+    },
+    {
+      "name": "⏳ Simple Stream",
+      "desc": "A simple ETH stream where the beneficiary reports work via links when they withdraw.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/simple-stream",
+      "readMore": "",
+      "image": "simplestream.png"
+    },
+    {
+      "name": "🧑‍🎤 PunkWallet.io",
+      "desc": "A quick web wallet for demonstrating identity of keypairs and sending around ETH.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/punk-wallet",
+      "readMore": "https://punkwallet.io",
+      "image": "punkwallet.png"
+    },
+    {
+      "name": "👛 Streaming Meta Multi Sig",
+      "desc": "An off-chain signature based multi sig with streaming.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/streaming-meta-multi-sig",
+      "readMore": "https://bank.buidlguidl.com/streams",
+      "image": "smms.png"
+    },
+    {
+      "name": "🔴 Optimism Starter Pack",
+      "desc": "A 🏗 scaffold-eth dev stack for 🔴 Optimism",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/local-optimism",
+      "readMore": "https://azfuller20.medium.com/optimism-scaffold-eth-draft-b76d3e6849e8",
+      "image": "op.png"
+    },
+    {
+      "name": "⚖️ Uniswapper",
+      "desc": "A component for swapping erc20s on Uniswap (plus tokenlists + local forks of mainnet!)",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/uniswapper",
+      "readMore": "https://azfuller20.medium.com/swap-with-uniswap-wip-f15923349b3d",
+      "image": "uniswapper.png"
+    },
+    {
+      "name": "👨‍🎤 xNFT.io",
+      "desc": "A fork of 🎨 Nifty.ink with file uploads.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/xnft",
+      "image": "xnft.jpg"
+    },
+    {
+      "name": "👨‍👦 Minimal Proxy",
+      "desc": "A clever workaround where you can deploy the same contract thousands of times with minimal deployment costs",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/minimal_proxy",
+      "readMore": "",
+      "image": "proxy.png"
+    },
+    {
+      "name": "🍯 Honeypot",
+      "desc": "How you can catch hackers by putting bait into your \"vulnerable\" smart contract 🤭",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/honeypot-example",
+      "readMore": "",
+      "image": "honeypot.png"
+    },
+    {
+      "name": "😈 Denial of Service",
+      "desc": "Make contract unusable by exploiting external calls",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/denial-of-service-example",
+      "readMore": "",
+      "image": "dos.png"
+    },
+    {
+      "name": "⚡️ Aave Flash Loans Intro",
+      "desc": "Learn how to borrow any available amount of assets without putting up any collateral and build a simple arbitrage bot that would trade between Uniswap and Sushiswap pools.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/flash-loans-intro",
+      "readMore": "",
+      "image": "flash.png"
+    },
+    {
+      "name": "🧾 rTokens",
+      "desc": "tokens that represent redirected yield from lending",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/defi-rtokens",
+      "readMore": "",
+      "image": "rokens.png"
+    },
+    {
+      "name": "🌱 radwallet.io",
+      "desc": "A simple web wallet to send around Rad tokens (ERC20 on mainnet).",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/radwallet",
+      "readMore": "https://radwallet.io",
+      "image": "radwallet.png"
+    },
+
+    {
+      "name": "🌐 GTGS Voice Gems",
+      "desc": "NFT \"shards\" collected from original \"Voice Gems\" for the Global Technology and Governance Summit.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/gtgs-voice-gems",
+      "readMore": "https://gtgs.io",
+      "image": "gtgs.png"
+    },
+    {
+      "name": "🐊 Token Allocator",
+      "desc": "Allocator.sol distributes tokens to addresses on a ratio defined by Governor.sol",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/new-allocator",
+      "readMore": "",
+      "image": "allocator.png"
+    },
+    {
+      "name": "💎 Diamond Standard exploration",
+      "desc": "Diamond standard in 🏗 scaffold-eth?",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/diamond-standard",
+      "readMore": "",
+      "image": "diamond.png"
+    },
+    {
+      "name": "🔮 Chainlink Example",
+      "desc": "oracles and vrf",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/chainlink-tutorial-1",
+      "readMore": "",
+      "image": "vrf.png"
+    },
+    {
+      "name": "🦍 Aave Ape",
+      "desc": "A helper contract that lets you go long on the Aave asset of your choice.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/aave-ape",
+      "readMore": "https://www.youtube.com/watch?v=4uAzju3efqY",
+      "image": "ape.png"
+    },
+    {
+      "name": "🔴 Optimism 🎟 NFTs ",
+      "desc": "A \"buyer mints\" NFT gallery running on Optimism",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/optimistic-nft-dev-session",
+      "readMore": "",
+      "image": "opnfts.png"
+    },
+    {
+      "name": "🎫 Nifty Viewer",
+      "desc": "A forkable nft gallery with transfer functionality and burner wallets.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/nifty-viewer",
+      "readMore": "",
+      "image": "niftyview.png"
+    },
+
+    {
+      "name": "✍️ Signator.io",
+      "desc": "Sign a message with an Ethereum account & generate shareable proof-of-signature links.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/signatorio",
+      "readMore": "https://signator.io",
+      "image": "signatorio.png"
+    },
+    {
+      "name": "💰 Emoji Support",
+      "desc": "Funding round that uses quadratic matching (capital-constrained liberal radicalism).",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/emoji-support",
+      "readMore": "https://emoji.support",
+      "image": "emojisupport.png"
+    },
+    {
+      "name": "🏷 NFT Auction",
+      "desc": "Discover how you can build your own NFT auction where the highest bid gets an NFT!",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/nft-auction",
+      "readMore": "",
+      "image": "highestbid.png"
+    },
+    {
+      "name": "🌲 Merkle Mint NFTs",
+      "desc": "Use a Merkle tree of possible artworks and then submit a proof it is valid to mint.",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/merkle-root-buyer-mints",
+      "readMore": "",
+      "image": "merklenft.png"
+    },
+    {
+      "name": "🎲 Push The Button",
+      "desc": "A base template for multiplayer turn-based game on Ethereum",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/push-the-button-dev",
+      "readMore": "",
+      "image": "push.png"
+    },
+    {
+      "name": "🖼 Rarible Protocol Starter App",
+      "desc": "Mint, Lazy Mint, Buy, and Sell NFTs using the Rarible Protocol and Marketplace",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/rarible-starter-app",
+      "readMore": "https://docs.rarible.com/starter-app",
+      "image": "rarible.png"
+    },
+    {
+      "name": "🏭 Proxy Factory - EIP-1167 w/ OpenZeppelin",
+      "desc": "Use the EIP-1667 w/ OpenZeppelin Proxy Factory pattern to deploy low-gas contract instances",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/proxy-factory",
+      "readMore": "https://eips.ethereum.org/EIPS/eip-1167",
+      "image": "proxy.png"
+    },
+    {
+      "name": "🔓 Sign in with Ethereum - Serverless JWT Authentication",
+      "desc": "Authenticate your serverless back end with Ethereum based login and JWT tokens",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/serverless-auth/packages/react-app",
+      "readMore": "",
+      "image": "serverlessauth.png"
+    },
+    {
+      "name": "🔥 Burny Boys",
+      "desc": "Dynamic Basefee NFTs, live on Ethereum",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/burny-boy",
+      "readMore": "https://burnyboys.com",
+      "image": "burnyBoys.png"
+    }
+  ],
   "events": [
     {
       "type": "challenge.submit",
