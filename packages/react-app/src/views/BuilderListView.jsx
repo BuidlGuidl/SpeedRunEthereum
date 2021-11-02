@@ -43,7 +43,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
             <Th isNumeric>Stream</Th>
             <Th isNumeric>Allowance</Th>
             <Th isNumeric>Available</Th>
-            <Th>Role</Th>
+            <Th textAlign="center">Role</Th>
             <Th />
           </Tr>
         </Thead>

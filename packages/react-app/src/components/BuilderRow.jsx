@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Link as RouteLink } from "react-router-dom";
-import { Button, Box, Flex, Link, Progress, Td, Tr } from "@chakra-ui/react";
+import { Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 import { getAcceptedChallenges } from "../helpers/builders";
 import EthIcon from "./icons/EthIcon";
 import HeroIconBolt from "./icons/HeroIconBolt";
 import simpleStreamAbi from "../contracts/simpleStreamAbi.json";
+import { userFunctionDescription } from "../helpers/constants";
 
 const secondsPerDay = 24 * 60 * 60;
 
@@ -95,7 +96,15 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
           </Flex>
         )}
       </Td>
-      <Td whiteSpace="nowrap">{builder.role ?? "no role"}</Td>
+      <Td whiteSpace="nowrap" textAlign="center">
+        {builder.function ? (
+          <Tag colorScheme={userFunctionDescription[builder?.function].colorScheme} variant="solid">
+            {userFunctionDescription[builder?.function].label}
+          </Tag>
+        ) : (
+          "-"
+        )}
+      </Td>
       <Td>
         <Button variant="outline">
           <HeroIconBolt w={6} h={6} mr={2} color="gray.500" />
