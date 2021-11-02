@@ -18,9 +18,9 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
   }, [serverUrl]);
 
   return (
-    <Container maxW="container.lg">
+    <Container maxW="container.xl">
       <Container maxW="container.md" centerContent>
-        <Heading as="h1" mb="2">
+        <Heading as="h1" mb="4">
           All Builders
         </Heading>
         <Text color="gray.700" textAlign="center">
@@ -30,18 +30,26 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
           </Link>
           .
         </Text>
-        <Text color="gray.700" mb="6">You can fund Eth development sending Eth to any stream.</Text>
+        <Text color="gray.700" mb="10">
+          You can fund Eth development sending Eth to any stream.
+        </Text>
       </Container>
       <Table>
         <Thead>
-          <Tr>
+          <Tr color="gray.700">
             <Th>Builder</Th>
-            <Th>Challenges</Th>
+            <Th isNumeric>Builds</Th>
+            <Th isNumeric>Challenges</Th>
+            <Th isNumeric>Stream</Th>
+            <Th isNumeric>Allowance</Th>
+            <Th isNumeric>Available</Th>
+            <Th>Role</Th>
+            <Th />
           </Tr>
         </Thead>
         <Tbody>
           {builders.map(builder => (
-            <BuilderRow builder={builder} mainnetProvider={mainnetProvider} />
+            <BuilderRow key={builder.id} builder={builder} mainnetProvider={mainnetProvider} />
           ))}
         </Tbody>
       </Table>
