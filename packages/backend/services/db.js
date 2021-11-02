@@ -67,6 +67,12 @@ const findAllEvents = db.findAllEvents;
  */
 const findEventsWhere = db.findEventsWhere;
 
+/**
+ *
+ * @returns {{name: string, desc: string, branch: string, readMore: string, image: string}[]}
+ */
+const findAllBuilds = db.findAllBuilds;
+
 module.exports = {
   createUser,
   updateUser,
@@ -76,6 +82,8 @@ module.exports = {
   createEvent,
   findAllEvents,
   findEventsWhere,
+
+  findAllBuilds,
 
   __internal_database: db.__internal_database, // testing only
 };

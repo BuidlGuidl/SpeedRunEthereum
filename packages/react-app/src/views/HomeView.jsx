@@ -1,27 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { Container, Heading, Text } from "@chakra-ui/react";
-import { getAllEvents } from "../data/api";
-import { eventToString } from "../helpers/events";
+import { Container, SimpleGrid, Heading, Text } from "@chakra-ui/react";
+import BuildCard from "../components/BuildCard";
+import { getAllBuilds } from "../data/api";
 
-export default function HomeView({ serverUrl, address, userProvider }) {
-  const [eventsFeed, setEventFeeds] = useState([]);
+export default function HomeView() {
+  const [builds, setBuilds] = useState([]);
   useEffect(() => {
-    const updateEvents = async () => {
-      const events = await getAllEvents();
-      setEventFeeds(events.reverse());
+    const updateBuilds = async () => {
+      const allBuilds = await getAllBuilds();
+      setBuilds(allBuilds);
     };
 
-    updateEvents();
+    updateBuilds();
   }, []);
 
   return (
-    <Container maxW="container.md" centerContent>
-      <Heading as="h1">Welcome to Scaffold Directory!</Heading>
-      <Text color="gray.700" mb="8">Sign, build and show!</Text>
-      <Heading as="h3" size="md"  mb="2">Activity feed</Heading>
-      {eventsFeed.map(event => (
-        <Text fontSize="sm" color="gray.600">{eventToString(event)}</Text>
-      ))}
+    <Container maxW="container.xl" centerContent>
+      <Container maxW="container.md">
+        <Text color="gray.700" mb="12" fontSize="xl" textAlign="center">
+          The{" "}
+          <span role="img" aria-label="castle icon">
+            🏰
+          </span>{" "}
+          BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials with{" "}
+          <span role="img" aria-label="crane icon">
+            🏗
+          </span>
+          scaffold-eth
+        </Text>
+      </Container>
+      <Heading as="h2">All builds</Heading>
+      <Text color="gray.700" mb="6">
+        Explore all our Ethereum web3 projects.
+      </Text>
+      <SimpleGrid columns={[1, null, 2, null, 3]} spacing={6} pb={20}>
+        {builds.map(build => (
+          <BuildCard build={build} key={build.name}/>
+        ))}
+      </SimpleGrid>
     </Container>
   );
 }
