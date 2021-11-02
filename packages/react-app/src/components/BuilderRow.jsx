@@ -27,7 +27,6 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
       return;
     }
     const streamContract = new ethers.Contract(builder.streamContractAddress, simpleStreamAbi, provider);
-    // console.log("contract", streamContract);
     const readStream = async () => {
       streamContract.frequency().then(frequency => setStreamFrequencyDays(frequency / secondsPerDay));
       provider.getBalance(builder.streamContractAddress).then(balance => {
