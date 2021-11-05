@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Link as RouteLink } from "react-router-dom";
 import { Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
@@ -8,11 +8,14 @@ import EthIcon from "./icons/EthIcon";
 import HeroIconBolt from "./icons/HeroIconBolt";
 import simpleStreamAbi from "../contracts/simpleStreamAbi.json";
 import { userFunctionDescription } from "../helpers/constants";
+import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
 
 const secondsPerDay = 24 * 60 * 60;
 
-const provider = new ethers.providers.InfuraProvider("mainnet", process.env.REACT_APP_INFURA_PROJECT_ID);
 const BuilderRow = ({ builder, mainnetProvider }) => {
+  const providerData = useContext(BlockchainProvidersContext).mainnet;
+  const provider = providerData.provider;
+  const isProviderReady = providerData.isReady;
   const [streamBalance, setStreamBalance] = useState(0);
   const [streamSize, setStreamSize] = useState(0);
   const [streamFrequencyDays, setStreamFrequencyDays] = useState(0);
@@ -24,6 +27,9 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
   useEffect(() => {
     console.log("stream contract address updated!", builder?.streamContractAddress);
     if (!builder?.streamContractAddress) {
+      return;
+    }
+    if (!isProviderReady) {
       return;
     }
     const streamContract = new ethers.Contract(builder.streamContractAddress, simpleStreamAbi, provider);
@@ -46,7 +52,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
       });
     };
     readStream();
-  }, [builder?.streamContractAddress]);
+  }, [isProviderReady, builder?.streamContractAddress]);
 
   return (
     <Tr color="gray.700">

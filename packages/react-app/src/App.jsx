@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
-import { StaticJsonRpcProvider, Web3Provider } from "@ethersproject/providers";
+import { Web3Provider, StaticJsonRpcProvider, InfuraProvider } from "@ethersproject/providers";
 import "./App.css";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -8,30 +8,14 @@ import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
 import { Header } from "./components";
-import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
+import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import { BuilderListView, ChallengeDetailView, BuilderProfileView, ChallengeReviewView, HomeView } from "./views";
 import { USER_ROLES } from "./helpers/constants";
-
-/// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+import { providerPromiseWrapper } from "./helpers/blockchainProviders";
+import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
-
-// 🛰 providers
-if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
-// attempt to connect to our own scaffold eth rpc and if that fails fall back to infura...
-// Using StaticJsonRpcProvider as the chainId won't change see https://github.com/ethers-io/ethers.js/issues/901
-const scaffoldEthProvider = new StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544");
-const mainnetInfura = new StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID);
-// ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_I
-
-// 🏠 Your local provider is usually pointed at your local blockchain
-const localProviderUrl = targetNetwork.rpcUrl;
-// as you deploy to other networks you can set REACT_APP_PROVIDER=https://dai.poa.network in packages/react-app/.env
-const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REACT_APP_PROVIDER : localProviderUrl;
-if (DEBUG) console.log("🏠 Connecting to provider:", localProviderUrlFromEnv);
-const localProvider = new StaticJsonRpcProvider(localProviderUrlFromEnv);
 
 /*
   Web3 modal helps us "connect" external wallets:
@@ -57,7 +41,57 @@ const logoutOfWeb3Modal = async () => {
 };
 
 function App() {
-  const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
+  const [providers, setProviders] = useState({
+    mainnet: { provider: null, isReady: false },
+    local: { provider: null, isReady: false },
+  });
+
+  useEffect(() => {
+    // 🛰 providers
+
+    /*
+    //This code is needed if you want a local and a mainnet provider
+
+    // 📡 What chain are your contracts deployed to?
+    const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+
+    // 🏠 Your local provider is usually pointed at your local blockchain
+    const localProviderUrl = targetNetwork.rpcUrl;
+
+    // as you deploy to other networks you can set REACT_APP_PROVIDER=https://dai.poa.network in packages/react-app/.env
+    const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REACT_APP_PROVIDER : localProviderUrl;
+
+    const localProviderPromise = providerPromiseWrapper(new StaticJsonRpcProvider(localProviderUrlFromEnv));
+    */
+
+    if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
+    const scaffoldEthProviderPromise = providerPromiseWrapper(
+      new StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544"),
+    );
+
+    // attempt to connect to our own scaffold eth rpc and if that fails fall back to infura...
+    // Using StaticJsonRpcProvider as the chainId won't change see https://github.com/ethers-io/ethers.js/issues/901
+    scaffoldEthProviderPromise
+      .then(provider => {
+        if (DEBUG) console.log("📡 Connected to Mainnet Ethereum using the scaffold eth provider");
+        setProviders({ mainnet: { provider, isReady: true } });
+      })
+      .catch(err => {
+        if (DEBUG) console.log("❌ 📡 Connection to Mainnet Ethereum using the scaffold eth provider failed");
+        const mainnetInfuraProviderPromise = providerPromiseWrapper(new InfuraProvider("mainnet", INFURA_ID));
+        mainnetInfuraProviderPromise
+          .then(provider => {
+            if (DEBUG) console.log("📡 Connected to Mainnet Ethereum using the infura provider as callback");
+            setProviders({ mainnet: { provider, isReady: true } });
+          })
+          .catch(err => {
+            if (DEBUG) console.log("❌ 📡 Connection to Mainnet Ethereum using the infura provider as fallback failed");
+            // ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_ID)
+          });
+      });
+  }, []);
+
+  const mainnetProvider = providers.mainnet?.provider;
 
   const [injectedProvider, setInjectedProvider] = useState();
 
@@ -66,7 +100,6 @@ function App() {
   const address = useUserAddress(userProvider);
 
   // You can warn the user if you would like them to be on a specific network
-  const localChainId = localProvider && localProvider._network && localProvider._network.chainId;
   const selectedChainId = userProvider && userProvider._network && userProvider._network.chainId;
 
   //
@@ -76,11 +109,10 @@ function App() {
     if (DEBUG && mainnetProvider && address && selectedChainId) {
       console.log("_____________________________________ 🏗 scaffold-eth _____________________________________");
       console.log("🌎 mainnetProvider", mainnetProvider);
-      console.log("🏠 localChainId", localChainId);
       console.log("👩‍💼 selected address:", address);
       console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
     }
-  }, [mainnetProvider, address, selectedChainId, localChainId]);
+  }, [mainnetProvider, address, selectedChainId]);
 
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
@@ -114,45 +146,47 @@ function App() {
   }, [address]);
 
   return (
-    <div className="App">
-      {/* ✏️ Edit the header and change the title to your project name */}
-      <Header
-        injectedProvider={injectedProvider}
-        userRole={userRole}
-        address={address}
-        mainnetProvider={mainnetProvider}
-        userProvider={userProvider}
-        loadWeb3Modal={loadWeb3Modal}
-        logoutOfWeb3Modal={logoutOfWeb3Modal}
-        setUserRole={setUserRole}
-      />
-      <Switch>
-        <Route exact path="/">
-          <HomeView />
-        </Route>
-        <Route exact path="/my-profile">
-          {address && <Redirect to={"/builders/" + address} />}
-        </Route>
-        <Route path="/builders" exact>
-          <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
-        </Route>
-        <Route path="/builders/:builderAddress">
-          <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
-        </Route>
-        <Route path="/challenge/:challengeId">
-          <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
-        </Route>
-        {/* ToDo: Protect this route on the frontend? */}
-        <Route path="/challenge-review" exact>
-          <ChallengeReviewView
-            serverUrl={serverUrl}
-            address={address}
-            userProvider={userProvider}
-            mainnetProvider={mainnetProvider}
-          />
-        </Route>
-      </Switch>
-    </div>
+    <BlockchainProvidersContext.Provider value={providers}>
+      <div className="App">
+        {/* ✏️ Edit the header and change the title to your project name */}
+        <Header
+          injectedProvider={injectedProvider}
+          userRole={userRole}
+          address={address}
+          mainnetProvider={mainnetProvider}
+          userProvider={userProvider}
+          loadWeb3Modal={loadWeb3Modal}
+          logoutOfWeb3Modal={logoutOfWeb3Modal}
+          setUserRole={setUserRole}
+        />
+        <Switch>
+          <Route exact path="/">
+            <HomeView />
+          </Route>
+          <Route exact path="/my-profile">
+            {address && <Redirect to={"/builders/" + address} />}
+          </Route>
+          <Route path="/builders" exact>
+            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/builders/:builderAddress">
+            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
+          </Route>
+          <Route path="/challenge/:challengeId">
+            <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+          </Route>
+          {/* ToDo: Protect this route on the frontend? */}
+          <Route path="/challenge-review" exact>
+            <ChallengeReviewView
+              serverUrl={serverUrl}
+              address={address}
+              userProvider={userProvider}
+              mainnetProvider={mainnetProvider}
+            />
+          </Route>
+        </Switch>
+      </div>
+    </BlockchainProvidersContext.Provider>
   );
 }
 
