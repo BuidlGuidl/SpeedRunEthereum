@@ -18,11 +18,10 @@ export default function HomeView() {
     <Container maxW="container.xl" centerContent>
       <Container maxW="container.md">
         <Text color="gray.700" mb="12" fontSize="xl" textAlign="center">
-          The{" "}
           <span role="img" aria-label="castle icon">
-            🏰
+            🏃‍♀️
           </span>{" "}
-          BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials with{" "}
+          Speed Run Ethereum aims to provide a structured learning path for onboarding developers to Ethereum with{" "}
           <span role="img" aria-label="crane icon">
             🏗
           </span>
