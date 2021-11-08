@@ -40,6 +40,17 @@ export default function Header({
               Builders
             </NavLink>
           </chakra.li>
+          <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>
+            <NavLink
+              to="/builds"
+              exact
+              activeStyle={{
+                color: "var(--chakra-colors-gray-700)",
+              }}
+            >
+              Builds
+            </NavLink>
+          </chakra.li>
           {USER_ROLES.admin === userRole && (
             <chakra.li key="/challenge-review" color="gray.600" _hover={{ color: "gray.700" }}>
               <NavLink
