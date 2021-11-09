@@ -9,7 +9,7 @@ import axios from "axios";
 import { useUserProvider } from "./hooks";
 import { Header } from "./components";
 import { INFURA_ID, NETWORKS, SERVER_URL as serverUrl } from "./constants";
-import { BuilderListView, ChallengeDetailView, BuilderProfileView, ChallengeReviewView, HomeView } from "./views";
+import { BuilderListView, ChallengeDetailView, BuilderProfileView, ChallengeReviewView, HomeView, BuildsListView } from "./views";
 import { USER_ROLES } from "./helpers/constants";
 
 /// 📡 What chain are your contracts deployed to?
@@ -132,6 +132,9 @@ function App() {
         </Route>
         <Route exact path="/my-profile">
           {address && <Redirect to={"/builders/" + address} />}
+        </Route>
+        <Route exact path="/builds">
+          <BuildsListView />
         </Route>
         <Route path="/builders" exact>
           <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />

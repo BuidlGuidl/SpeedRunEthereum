@@ -24,9 +24,9 @@ export default function Header({
           <chakra.li key="/">
             <NavLink to="/" exact>
               <span role="img" aria-label="castle icon">
-                🏰
+                🏃‍♀️
               </span>{" "}
-              <strong>BuidlGuidl</strong>
+              <strong>Speed Run Ethereum</strong>
             </NavLink>
           </chakra.li>
           <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>
@@ -38,6 +38,17 @@ export default function Header({
               }}
             >
               Builders
+            </NavLink>
+          </chakra.li>
+          <chakra.li key="/builds" color="gray.600" _hover={{ color: "gray.700" }}>
+            <NavLink
+              to="/builds"
+              exact
+              activeStyle={{
+                color: "var(--chakra-colors-gray-700)",
+              }}
+            >
+              Builds
             </NavLink>
           </chakra.li>
           {USER_ROLES.admin === userRole && (
