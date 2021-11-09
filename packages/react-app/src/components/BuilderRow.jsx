@@ -23,19 +23,20 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
   const builderBuilds = builder?.builds?.length ?? 0;
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges)?.length ?? 0;
   const hasStream = !!builder?.streamContractAddress;
+  const builderStreamContractAddress = builder?.streamContractAddress;
 
   useEffect(() => {
-    console.log("stream contract address updated!", builder?.streamContractAddress);
-    if (!builder?.streamContractAddress) {
+    console.log("stream contract address updated!", builderStreamContractAddress);
+    if (!builderStreamContractAddress) {
       return;
     }
     if (!isProviderReady) {
       return;
     }
-    const streamContract = new ethers.Contract(builder.streamContractAddress, simpleStreamAbi, provider);
+    const streamContract = new ethers.Contract(builderStreamContractAddress, simpleStreamAbi, provider);
     const readStream = async () => {
       streamContract.frequency().then(frequency => setStreamFrequencyDays(frequency / secondsPerDay));
-      provider.getBalance(builder.streamContractAddress).then(balance => {
+      provider.getBalance(builderStreamContractAddress).then(balance => {
         const formattedBalance = ethers.utils.formatEther(balance);
         const parsedBalance = parseFloat(formattedBalance);
         setStreamBalance(Number.isNaN(parsedBalance) ? 0 : parsedBalance);
@@ -52,7 +53,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
       });
     };
     readStream();
-  }, [isProviderReady, builder?.streamContractAddress]);
+  }, [isProviderReady, builderStreamContractAddress, provider]);
 
   return (
     <Tr color="gray.700">
