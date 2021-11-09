@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   Box,
   Button,
+  Center,
   Link,
   HStack,
   Text,
@@ -26,16 +27,16 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Tag,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import BuilderProfileCard from "../components/BuilderProfileCard";
 import { challengeInfo } from "../data/challenges";
+import { CHALLENGE_SUBMISSION_STATUS, userFunctionDescription } from "../helpers/constants";
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
 import ChallengeList from "../components/ChallengeList";
 
-// TODO get the real level of challenge
-// TODO get the real number of attempts using the events
 // TODO get the real date of submission using the events
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
@@ -82,23 +83,16 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
               </Flex>
               <div>
                 <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                  --
+                  {builder?.function ? (
+                    <Tag colorScheme={userFunctionDescription[builder?.function].colorScheme} variant="solid">
+                      {userFunctionDescription[builder?.function].label}
+                    </Tag>
+                  ) : (
+                    "-"
+                  )}
                 </Text>
                 <Text fontSize="sm" color="gray.600" textAlign="right">
-                  Success rate
-                </Text>
-              </div>
-            </Flex>
-            <Flex borderRadius="lg" borderColor="gray.200" borderWidth={1} p={4} w="full" justify="space-between">
-              <Flex bg="gray.50" borderRadius="lg" w={12} h={12} justify="center" align="center">
-                <InfoOutlineIcon w={5} h={5} />
-              </Flex>
-              <div>
-                <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                  --
-                </Text>
-                <Text fontSize="sm" color="gray.600" textAlign="right">
-                  Builder role
+                  Role
                 </Text>
               </div>
             </Flex>
@@ -111,12 +105,16 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
           </Flex>
           {challenges ? (
             <Table>
-              <TableCaption><Button colorScheme="blue" onClick={onOpen}>Start a challenge</Button></TableCaption>
+              <TableCaption>
+                <Button colorScheme="blue" onClick={onOpen}>
+                  Start a challenge
+                </Button>
+              </TableCaption>
               <Thead>
                 <Tr>
                   <Th w="full">Name</Th>
-                  <Th isNumeric>Level</Th>
-                  <Th isNumeric>Attempts</Th>
+                  <Th>Code</Th>
+                  <Th>Live Demo</Th>
                   <Th>Status</Th>
                   <Th>Date</Th>
                 </Tr>
@@ -129,8 +127,34 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                         {challengeInfo[challengeId].label}
                       </Link>
                     </Td>
-                    <Td isNumeric>2</Td>
-                    <Td isNumeric>4</Td>
+                    <Td>
+                      {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
+                        <Link
+                          href={lastSubmission.branchUrl}
+                          color="teal.500"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Code
+                        </Link>
+                      ) : (
+                        <Center>-</Center>
+                      )}
+                    </Td>
+                    <Td>
+                      {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
+                        <Link
+                          href={lastSubmission.deployedUrl}
+                          color="teal.500"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Demo
+                        </Link>
+                      ) : (
+                        <Center>-</Center>
+                      )}
+                    </Td>
                     <Td>
                       <ChallengeStatusTag status={lastSubmission.status} />
                     </Td>
@@ -157,7 +181,9 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                   <Text color="gray.500" mb={4}>
                     Show off your skills. Learn everything you need to build on Ethereum!
                   </Text>
-                  <Button colorScheme="blue" onClick={onOpen}>Start a challenge</Button>
+                  <Button colorScheme="blue" onClick={onOpen}>
+                    Start a challenge
+                  </Button>
                 </Box>
               ) : (
                 <Box maxW="xs" textAlign="center">
