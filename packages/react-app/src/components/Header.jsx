@@ -40,7 +40,7 @@ export default function Header({
               Builders
             </NavLink>
           </chakra.li>
-          <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>
+          <chakra.li key="/builds" color="gray.600" _hover={{ color: "gray.700" }}>
             <NavLink
               to="/builds"
               exact
