@@ -32,7 +32,7 @@ export default function ChallengeList({ userChallenges }) {
         const challengeKey = challengeKeyOrGroup;
         return (
           <li key={challengeKey} style={{ marginTop: 8 }}>
-            <strong>Challenge {step}:{" "}</strong>
+            <strong>Challenge {step}: </strong>
             <ChallengeCard
               challengeInfo={challengeInfo[challengeKey]}
               submissionInfo={userChallenges[challengeKey]}

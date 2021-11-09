@@ -9,7 +9,14 @@ import axios from "axios";
 import { useUserProvider } from "./hooks";
 import { Header } from "./components";
 import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
-import { BuilderListView, ChallengeDetailView, BuilderProfileView, ChallengeReviewView, HomeView } from "./views";
+import {
+  BuilderListView,
+  ChallengeDetailView,
+  BuilderProfileView,
+  ChallengeReviewView,
+  HomeView,
+  BuildsListView,
+} from "./views";
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
@@ -76,7 +83,7 @@ function App() {
         if (DEBUG) console.log("📡 Connected to Mainnet Ethereum using the scaffold eth provider");
         setProviders({ mainnet: { provider, isReady: true } });
       })
-      .catch(err => {
+      .catch(() => {
         if (DEBUG) console.log("❌ 📡 Connection to Mainnet Ethereum using the scaffold eth provider failed");
         const mainnetInfuraProviderPromise = providerPromiseWrapper(new InfuraProvider("mainnet", INFURA_ID));
         mainnetInfuraProviderPromise
@@ -84,7 +91,7 @@ function App() {
             if (DEBUG) console.log("📡 Connected to Mainnet Ethereum using the infura provider as callback");
             setProviders({ mainnet: { provider, isReady: true } });
           })
-          .catch(err => {
+          .catch(() => {
             if (DEBUG) console.log("❌ 📡 Connection to Mainnet Ethereum using the infura provider as fallback failed");
             // ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_ID)
           });
@@ -165,6 +172,9 @@ function App() {
           </Route>
           <Route exact path="/my-profile">
             {address && <Redirect to={"/builders/" + address} />}
+          </Route>
+          <Route exact path="/builds">
+            <BuildsListView />
           </Route>
           <Route path="/builders" exact>
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
