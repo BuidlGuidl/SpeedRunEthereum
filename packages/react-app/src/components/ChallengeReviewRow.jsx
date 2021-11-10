@@ -7,6 +7,10 @@ import Address from "./Address";
 export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick, mainnetProvider }) {
   const [comment, setComment] = React.useState("");
 
+  if (!challengeInfo[challenge.id]) {
+    return null;
+  }
+
   return (
     <Tr key={challenge.userAddress + challenge.id}>
       <Td>

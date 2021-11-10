@@ -15,7 +15,7 @@ const ChallengeExpandedCard = ({ challengeId, challenge, challengeIndex }) => (
     </Center>
     <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
       <Text fontWeight="bold">
-        Challenge {challengeIndex + 1}: {challenge.label}
+        Challenge {challengeIndex}: {challenge.label}
       </Text>
       <Text color="gray.600" mb={4}>
         {challenge.description}
