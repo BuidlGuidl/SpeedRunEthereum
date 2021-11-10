@@ -3,8 +3,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { Button, Container, Heading } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
+import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider }) {
   const [description, setDescription] = useState("");
@@ -32,7 +34,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
 
   return (
     <Container maxW="container.lg">
-      <Container maxW="container.md" centerContent>
+      <Container maxW="container.md" centerContent mb={4}>
         <Heading as="h1" mb="2">
           {challenge.label}
         </Heading>
@@ -47,7 +49,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
           View it on Github <ExternalLinkIcon ml={1} />
         </Button>
       </Container>
-      <ReactMarkdown>{description}</ReactMarkdown>
+      <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{description}</ReactMarkdown>
       <Container maxW="container.sm" mt={10} centerContent>
         <ChallengeSubmission
           challenge={challenge}
