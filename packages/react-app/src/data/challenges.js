@@ -4,6 +4,7 @@ export const challengeInfo = {
     label: "Simple NFT Example",
     disabled: false,
     description: "Build a simple NFT example",
+    previewImage: "https://user-images.githubusercontent.com/526558/124386983-48965300-dcb3-11eb-88a7-e88ad6307976.png",
   },
   "decentralized-staking": {
     url: "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking",
