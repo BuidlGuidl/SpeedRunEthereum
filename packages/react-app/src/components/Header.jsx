@@ -29,40 +29,42 @@ export default function Header({
               <strong>Speed Run Ethereum</strong>
             </NavLink>
           </chakra.li>
-          <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>
-            <NavLink
-              to="/builders"
-              exact
-              activeStyle={{
-                color: "var(--chakra-colors-gray-700)",
-              }}
-            >
-              Builders
-            </NavLink>
-          </chakra.li>
-          <chakra.li key="/builds" color="gray.600" _hover={{ color: "gray.700" }}>
-            <NavLink
-              to="/builds"
-              exact
-              activeStyle={{
-                color: "var(--chakra-colors-gray-700)",
-              }}
-            >
-              Builds
-            </NavLink>
-          </chakra.li>
           {USER_ROLES.admin === userRole && (
-            <chakra.li key="/challenge-review" color="gray.600" _hover={{ color: "gray.700" }}>
-              <NavLink
-                to="/challenge-review"
-                exact
-                activeStyle={{
-                  color: "var(--chakra-colors-gray-700)",
-                }}
-              >
-                Review Challenges
-              </NavLink>
-            </chakra.li>
+            <>
+              <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>
+                <NavLink
+                  to="/builders"
+                  exact
+                  activeStyle={{
+                    color: "var(--chakra-colors-gray-700)",
+                  }}
+                >
+                  Builders
+                </NavLink>
+              </chakra.li>
+              <chakra.li key="/builds" color="gray.600" _hover={{ color: "gray.700" }}>
+                <NavLink
+                  to="/builds"
+                  exact
+                  activeStyle={{
+                    color: "var(--chakra-colors-gray-700)",
+                  }}
+                >
+                  Builds
+                </NavLink>
+              </chakra.li>
+              <chakra.li key="/challenge-review" color="gray.600" _hover={{ color: "gray.700" }}>
+                <NavLink
+                  to="/challenge-review"
+                  exact
+                  activeStyle={{
+                    color: "var(--chakra-colors-gray-700)",
+                  }}
+                >
+                  Review Challenges
+                </NavLink>
+              </chakra.li>
+            </>
           )}
         </HStack>
         <Spacer />
