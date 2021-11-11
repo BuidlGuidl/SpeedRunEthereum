@@ -1,6 +1,6 @@
 /* eslint react/jsx-props-no-spreading: off */
 import React from "react";
-import { chakra, Code, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { chakra, Code, Divider, Heading, Image, Link, UnorderedList, Text } from "@chakra-ui/react";
 
 export const chakraMarkdownComponents = {
   a: ({ href, children }) => (
@@ -33,9 +33,10 @@ export const chakraMarkdownComponents = {
       {children}
     </Heading>
   ),
+  hr: () => <Divider my={6} borderBottomWidth="4px" />,
   img: props => <Image {...props} mb={4} />,
   pre: ({ children }) => (
-    <chakra.pre display="block" borderRadius="md" mb={4} p={3} bg="gray.100">
+    <chakra.pre display="block" borderRadius="md" mb={4} p={3} bg="gray.100" overflowX="auto">
       {children}
     </chakra.pre>
   ),
@@ -44,4 +45,5 @@ export const chakraMarkdownComponents = {
       {children}
     </Text>
   ),
+  ul: ({ children }) => <UnorderedList mb={4}>{children}</UnorderedList>,
 };
