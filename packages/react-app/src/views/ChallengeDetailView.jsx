@@ -50,7 +50,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
         </Button>
       </Box>
       <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{description}</ReactMarkdown>
-      <Container maxW="container.sm" mt={10} centerContent>
+      <Container maxW="container.sm" my={10} centerContent>
         <ChallengeSubmission
           challenge={challenge}
           serverUrl={serverUrl}

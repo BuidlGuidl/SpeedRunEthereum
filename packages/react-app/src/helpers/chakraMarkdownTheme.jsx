@@ -19,17 +19,17 @@ export const chakraMarkdownComponents = {
     </Code>
   ),
   h1: ({ children }) => (
-    <Heading as="h1" size="2xl" mt={6} mb={4} pb={2} borderBottom="1px solid" borderColor="gray.100">
+    <Heading as="h1" size="xl" mt={6} mb={4} pb={2} borderBottom="1px solid" borderColor="gray.100">
       {children}
     </Heading>
   ),
   h2: ({ children }) => (
-    <Heading as="h2" size="xl" mt={6} mb={4}>
+    <Heading as="h2" size="lg" mt={6} mb={4}>
       {children}
     </Heading>
   ),
   h3: ({ children }) => (
-    <Heading as="h3" size="lg" mt={6} mb={4}>
+    <Heading as="h3" size="md" mt={6} mb={4}>
       {children}
     </Heading>
   ),
