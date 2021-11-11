@@ -120,47 +120,52 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                 </Tr>
               </Thead>
               <Tbody>
-                {challenges.map(([challengeId, lastSubmission]) => (
-                  <Tr>
-                    <Td w="full">
-                      <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700">
-                        {challengeInfo[challengeId].label}
-                      </Link>
-                    </Td>
-                    <Td>
-                      {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
-                        <Link
-                          href={lastSubmission.branchUrl}
-                          color="teal.500"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Code
+                {challenges.map(([challengeId, lastSubmission]) => {
+                  if (!challengeInfo[challengeId]) {
+                    return null;
+                  }
+                  return (
+                    <Tr>
+                      <Td w="full">
+                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700">
+                          {challengeInfo[challengeId].label}
                         </Link>
-                      ) : (
-                        <Center>-</Center>
-                      )}
-                    </Td>
-                    <Td>
-                      {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
-                        <Link
-                          href={lastSubmission.deployedUrl}
-                          color="teal.500"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Demo
-                        </Link>
-                      ) : (
-                        <Center>-</Center>
-                      )}
-                    </Td>
-                    <Td>
-                      <ChallengeStatusTag status={lastSubmission.status} />
-                    </Td>
-                    <Td whiteSpace="nowrap">2021 Aug 20</Td>
-                  </Tr>
-                ))}
+                      </Td>
+                      <Td>
+                        {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
+                          <Link
+                            href={lastSubmission.branchUrl}
+                            color="teal.500"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Code
+                          </Link>
+                        ) : (
+                          <Center>-</Center>
+                        )}
+                      </Td>
+                      <Td>
+                        {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
+                          <Link
+                            href={lastSubmission.deployedUrl}
+                            color="teal.500"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Demo
+                          </Link>
+                        ) : (
+                          <Center>-</Center>
+                        )}
+                      </Td>
+                      <Td>
+                        <ChallengeStatusTag status={lastSubmission.status} />
+                      </Td>
+                      <Td whiteSpace="nowrap">2021 Aug 20</Td>
+                    </Tr>
+                  );
+                })}
               </Tbody>
             </Table>
           ) : (
