@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Link as RouteLink } from "react-router-dom";
 import {
   AvatarBadge,
   Badge,
@@ -8,16 +7,12 @@ import {
   Flex,
   Link,
   Icon,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuList,
-  MenuItem,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
   Text,
+  Tooltip,
   useToast,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
@@ -75,7 +70,7 @@ export default function Account({
   const ens = useDisplayAddress(ensProvider, address);
   const shortAddress = ellipsizedAddress(address);
   const toast = useToast({ position: "top", isClosable: true });
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
   const registerButtonRef = useRef();
   const openPopover = () => setIsPopoverOpen(true);
   const closePopover = () => setIsPopoverOpen(false);
@@ -107,35 +102,16 @@ export default function Account({
     );
 
   const accountMenu = address && (
-    <Menu>
-      <MenuButton
-        p="px"
-        borderWidth="1px"
-        borderColor="gray.200"
-        borderRadius={8}
-        _focus={{ boxShadow: "none" }}
-        _hover={{ opacity: 0.8 }}
-      >
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
-      </MenuButton>
-      <MenuList color="gray.600">
-        <MenuItem as={Box} _focus={{ background: "none" }} _active={{ background: "none" }}>
-          <Flex align="center">
-            <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={14} borderRadius={6} />
-            <Box ml={4}>
-              {/* ToDo. Move to Utils */}
-              <UserDisplayName textAlign="left" />
-            </Box>
-          </Flex>
-        </MenuItem>
-        <MenuDivider />
-        <MenuItem as={RouteLink} fontWeight="normal" to="/my-profile" d="block">
-          My profile
-        </MenuItem>
-        <MenuDivider />
-        <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
-      </MenuList>
-    </Menu>
+    <Flex align="center">
+      <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
+      <Box ml={4}>
+        {/* ToDo. Move to Utils */}
+        <UserDisplayName textAlign="left" />
+      </Box>
+      <Tooltip label="Disconnect wallet">
+        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+      </Tooltip>
+    </Flex>
   );
 
   const handleSignUpSuccess = () => {
@@ -165,6 +141,9 @@ export default function Account({
           </Box>
         </Button>
       </PopoverTrigger>
+      <Tooltip label="Disconnect wallet">
+        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+      </Tooltip>
       <PopoverContent w={72}>
         <PopoverBody
           as={Flex}
