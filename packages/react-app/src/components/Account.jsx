@@ -107,31 +107,14 @@ export default function Account({
     );
 
   const accountMenu = address && (
-    <Menu>
-      <MenuButton
-        p="px"
-        borderWidth="1px"
-        borderColor="gray.200"
-        borderRadius={8}
-        _focus={{ boxShadow: "none" }}
-        _hover={{ opacity: 0.8 }}
-      >
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
-      </MenuButton>
-      <MenuList color="gray.600">
-        <MenuItem as={Box} _focus={{ background: "none" }} _active={{ background: "none" }}>
-          <Flex align="center">
-            <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={14} borderRadius={6} />
-            <Box ml={4}>
-              {/* ToDo. Move to Utils */}
-              <UserDisplayName textAlign="left" />
-            </Box>
-          </Flex>
-        </MenuItem>
-        <MenuDivider />
-        <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
-      </MenuList>
-    </Menu>
+    <Flex align="center">
+      <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
+      <Box ml={4}>
+        {/* ToDo. Move to Utils */}
+        <UserDisplayName textAlign="left" />
+      </Box>
+      <Button ml={4} title="Disconnect wallet" onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+    </Flex>
   );
 
   const handleSignUpSuccess = () => {
