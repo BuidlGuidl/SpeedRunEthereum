@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, Container, Heading } from "@chakra-ui/react";
+import { Box, Button, Container, Heading } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -24,7 +24,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
           .catch(() => setDescription(challenge.description));
       })
       .catch(() => setDescription(challenge.description));
-  }, []);
+  }, [challengeId, challenge]);
 
   if (!challenge) {
     // TODO implement a 404 page
@@ -33,8 +33,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
   }
 
   return (
-    <Container maxW="container.lg">
-      <Container maxW="container.md" centerContent mb={4}>
+    <Container maxW="container.md">
+      <Box textAlign="center" mb={6}>
         <Heading as="h1" mb="2">
           {challenge.label}
         </Heading>
@@ -48,7 +48,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
         >
           View it on Github <ExternalLinkIcon ml={1} />
         </Button>
-      </Container>
+      </Box>
       <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{description}</ReactMarkdown>
       <Container maxW="container.sm" mt={10} centerContent>
         <ChallengeSubmission
