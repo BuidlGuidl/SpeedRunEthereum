@@ -29,6 +29,19 @@ export default function Header({
               <strong>Speed Run Ethereum</strong>
             </NavLink>
           </chakra.li>
+          {USER_ROLES.anonymous !== userRole && (
+            <chakra.li key="/my-profile" color="gray.600" _hover={{ color: "gray.700" }}>
+              <NavLink
+                to="/my-profile"
+                exact
+                activeStyle={{
+                  color: "var(--chakra-colors-gray-700)",
+                }}
+              >
+                My Profile
+              </NavLink>
+            </chakra.li>
+          )}
           {USER_ROLES.admin === userRole && (
             <>
               <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>

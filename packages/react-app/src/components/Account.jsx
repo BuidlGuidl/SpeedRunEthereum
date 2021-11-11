@@ -129,10 +129,6 @@ export default function Account({
           </Flex>
         </MenuItem>
         <MenuDivider />
-        <MenuItem as={RouteLink} fontWeight="normal" to="/my-profile" d="block">
-          My profile
-        </MenuItem>
-        <MenuDivider />
         <MenuItem onClick={logoutOfWeb3Modal}>Disconnect Wallet</MenuItem>
       </MenuList>
     </Menu>
