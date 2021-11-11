@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Link as RouteLink } from "react-router-dom";
 import {
   AvatarBadge,
   Badge,
@@ -8,16 +7,12 @@ import {
   Flex,
   Link,
   Icon,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuList,
-  MenuItem,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
   Text,
+  Tooltip,
   useToast,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
@@ -75,7 +70,7 @@ export default function Account({
   const ens = useDisplayAddress(ensProvider, address);
   const shortAddress = ellipsizedAddress(address);
   const toast = useToast({ position: "top", isClosable: true });
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
   const registerButtonRef = useRef();
   const openPopover = () => setIsPopoverOpen(true);
   const closePopover = () => setIsPopoverOpen(false);
@@ -113,7 +108,9 @@ export default function Account({
         {/* ToDo. Move to Utils */}
         <UserDisplayName textAlign="left" />
       </Box>
-      <Button ml={4} title="Disconnect wallet" onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+      <Tooltip label="Disconnect wallet">
+        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+      </Tooltip>
     </Flex>
   );
 
@@ -144,6 +141,9 @@ export default function Account({
           </Box>
         </Button>
       </PopoverTrigger>
+      <Tooltip label="Disconnect wallet">
+        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+      </Tooltip>
       <PopoverContent w={72}>
         <PopoverBody
           as={Flex}
