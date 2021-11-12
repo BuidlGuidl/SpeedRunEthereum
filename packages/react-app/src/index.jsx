@@ -2,12 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import theme from "./theme";
 import App from "./App";
 
 ReactDOM.render(
   <ChakraProvider>
     <BrowserRouter>
+      {/* I think the initial color mode is not working... */}
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <App />
     </BrowserRouter>
   </ChakraProvider>,
