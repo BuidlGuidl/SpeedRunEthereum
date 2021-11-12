@@ -49,7 +49,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
     history.push("/404");
   }
 
-  const canSubmit = USER_ROLES.registered === userRole;
+  const canSubmit = USER_ROLES.anonymous !== userRole;
   const challengeActionButtons = (
     <ButtonGroup spacing={4}>
       <Button
