@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Box, Button, Container, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  SkeletonText,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -9,9 +23,10 @@ import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider }) {
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(null);
   const { challengeId } = useParams();
   const history = useHistory();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const challenge = challengeInfo[challengeId];
 
   // Fetch challenge description
@@ -32,32 +47,52 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
     history.push("/404");
   }
 
+  const challengeActionButtons = (
+    <ButtonGroup spacing={4}>
+      <Button
+        as="a"
+        colorScheme="gray"
+        variant="outline"
+        href={challenge.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View it on Github <ExternalLinkIcon ml={1} />
+      </Button>
+      <Button colorScheme="blue" onClick={onOpen}>
+        Submit challenge
+      </Button>
+    </ButtonGroup>
+  );
+
   return (
-    <Container maxW="container.md">
+    <Container maxW="container.md" mb={10}>
       <Box textAlign="center" mb={6}>
-        <Heading as="h1" mb="2">
+        <Heading as="h1" mb={4}>
           {challenge.label}
         </Heading>
-        <Button
-          as="a"
-          colorScheme="gray"
-          variant="outline"
-          href={challenge.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View it on Github <ExternalLinkIcon ml={1} />
-        </Button>
+        {challengeActionButtons}
       </Box>
+      <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={description} />
       <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{description}</ReactMarkdown>
-      <Container maxW="container.sm" my={10} centerContent>
-        <ChallengeSubmission
-          challenge={challenge}
-          serverUrl={serverUrl}
-          address={address}
-          userProvider={userProvider}
-        />
-      </Container>
+      <Box textAlign="center" my={6}>
+        {challengeActionButtons}
+      </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Submit Challenge</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody px={6} pb={8}>
+            <ChallengeSubmission
+              challenge={challenge}
+              serverUrl={serverUrl}
+              address={address}
+              userProvider={userProvider}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }

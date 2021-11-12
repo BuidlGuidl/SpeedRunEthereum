@@ -98,7 +98,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
   return (
     <div>
-      <Heading as="h2" size="md" mb={4}>Submit Challenge: {challenge.label}</Heading>
+      <Heading as="h2" size="md" mb={4}>{challenge.label}</Heading>
       {challenge.isDisabled ? (
         <Text color="orange.400" className="warning">This challenge is disabled.</Text>
       ) : (
