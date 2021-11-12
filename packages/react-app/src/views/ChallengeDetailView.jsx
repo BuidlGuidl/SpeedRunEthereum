@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Tooltip,
   SkeletonText,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -21,8 +22,9 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
+import { USER_ROLES } from "../helpers/constants"
 
-export default function ChallengeDetailView({ serverUrl, address, userProvider }) {
+export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole }) {
   const [description, setDescription] = useState(null);
   const { challengeId } = useParams();
   const history = useHistory();
@@ -47,6 +49,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
     history.push("/404");
   }
 
+  const canSubmit = USER_ROLES.registered === userRole;
   const challengeActionButtons = (
     <ButtonGroup spacing={4}>
       <Button
@@ -59,9 +62,11 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider }
       >
         View it on Github <ExternalLinkIcon ml={1} />
       </Button>
-      <Button colorScheme="blue" onClick={onOpen}>
-        Submit challenge
-      </Button>
+      <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
+        <Button colorScheme="blue" onClick={onOpen} disabled={!canSubmit}>
+          Submit challenge
+        </Button>
+      </Tooltip>
     </ButtonGroup>
   );
 

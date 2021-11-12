@@ -183,7 +183,12 @@ function App() {
             <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
           </Route>
           <Route path="/challenge/:challengeId">
-            <ChallengeDetailView serverUrl={serverUrl} address={address} userProvider={userProvider} />
+            <ChallengeDetailView
+              serverUrl={serverUrl}
+              address={address}
+              userProvider={userProvider}
+              userRole={userRole}
+            />
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/challenge-review" exact>
