@@ -14,10 +14,9 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
-  const { colorMode } = useColorMode();
-  const isLightMode = colorMode === "light";
   const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
   const borderColor = useColorModeValue("gray.200", "gray.700");
+  const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
 
@@ -34,17 +33,13 @@ export default function Header({
             </NavLink>
           </chakra.li>
           {USER_ROLES.anonymous !== userRole && (
-            <chakra.li
-              key="/portfolio"
-              color={secondaryFontColor}
-              _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
-            >
+            <chakra.li key="/portfolio" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
               <NavLink
                 to="/portfolio"
                 exact
                 activeStyle={{
                   // TODO This is broken, probably because the paths don't match after the redirect
-                  color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
+                  color: primaryColorString,
                 }}
               >
                 Portfolio
@@ -53,46 +48,34 @@ export default function Header({
           )}
           {USER_ROLES.admin === userRole && (
             <>
-              <chakra.li
-                key="/builders"
-                color={secondaryFontColor}
-                _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
-              >
+              <chakra.li key="/builders" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
                 <NavLink
                   to="/builders"
                   exact
                   activeStyle={{
-                    color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
+                    color: primaryColorString,
                   }}
                 >
                   Builders
                 </NavLink>
               </chakra.li>
-              <chakra.li
-                key="/builds"
-                color={secondaryFontColor}
-                _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
-              >
+              <chakra.li key="/builds" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
                 <NavLink
                   to="/builds"
                   exact
                   activeStyle={{
-                    color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
+                    color: primaryColorString,
                   }}
                 >
                   Builds
                 </NavLink>
               </chakra.li>
-              <chakra.li
-                key="/challenge-review"
-                color={secondaryFontColor}
-                _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
-              >
+              <chakra.li key="/challenge-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
                 <NavLink
                   to="/challenge-review"
                   exact
                   activeStyle={{
-                    color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
+                    color: primaryColorString,
                   }}
                 >
                   Review Challenges
