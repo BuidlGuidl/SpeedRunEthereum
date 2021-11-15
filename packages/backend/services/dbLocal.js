@@ -13,13 +13,21 @@ console.log("using local db");
 const DATABASE_PATH =
   process.env.NODE_ENV === "test" ? "./local_database/__testing__local_db.json" : "./local_database/local_db.json";
 const SEED_PATH = "./local_database/seed.json";
+const databaseSeed = JSON.parse(fs.readFileSync(SEED_PATH, "utf8"));
 
 if (!fs.existsSync(DATABASE_PATH)) {
   // Seed the local database if empty.
   fs.copyFileSync(SEED_PATH, DATABASE_PATH, fs.constants.COPYFILE_EXCL);
 }
 
-const database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
+let database;
+database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
+
+if (databaseSeed.version !== database.version) {
+  console.log("New local db version: overwriting exiting local_db.json file");
+  fs.copyFileSync(SEED_PATH, DATABASE_PATH);
+  database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
+}
 
 // --- Utilities
 const persist = () => {
