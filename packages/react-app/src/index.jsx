@@ -7,9 +7,8 @@ import theme from "./theme";
 import App from "./App";
 
 ReactDOM.render(
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <BrowserRouter>
-      {/* I think the initial color mode is not working... */}
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <App />
     </BrowserRouter>
