@@ -1,8 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { chakra, useColorMode, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
+import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function Header({
   injectedProvider,
@@ -14,8 +15,7 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
-  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const { secondaryFontColor, borderColor } = useCustomColorModes();
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useColorModeValue, Container, SimpleGrid, Heading, Text } from "@chakra-ui/react";
+import { Container, SimpleGrid, Heading, Text } from "@chakra-ui/react";
 import BuildCard from "../components/BuildCard";
 import { getAllBuilds } from "../data/api";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function BuildsListView() {
   const [builds, setBuilds] = useState([]);
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { secondaryFontColor } = useCustomColorModes();
   useEffect(() => {
     const updateBuilds = async () => {
       const allBuilds = await getAllBuilds();

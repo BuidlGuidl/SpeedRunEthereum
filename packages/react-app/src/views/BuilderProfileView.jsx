@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link as RouteLink, useParams } from "react-router-dom";
 import axios from "axios";
 import {
-  useColorModeValue,
   Box,
   Button,
   Center,
@@ -37,13 +36,12 @@ import { CHALLENGE_SUBMISSION_STATUS, userFunctionDescription } from "../helpers
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
 import ChallengeList from "../components/ChallengeList";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 // TODO get the real date of submission using the events
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
-  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
-  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const { primaryFontColor, secondaryFontColor, borderColor } = useCustomColorModes();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [builder, setBuilder] = useState();
   const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;

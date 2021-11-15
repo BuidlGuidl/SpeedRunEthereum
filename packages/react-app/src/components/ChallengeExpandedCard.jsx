@@ -1,10 +1,10 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { useColorModeValue, chakra, Button, Center, Image, Flex, Spacer, Text } from "@chakra-ui/react";
+import { chakra, Button, Center, Image, Flex, Spacer, Text } from "@chakra-ui/react";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const ChallengeExpandedCard = ({ challengeId, challenge, challengeIndex }) => {
-  const borderColor = useColorModeValue("gray.200", "gray.700");
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { borderColor, secondaryFontColor } = useCustomColorModes();
 
   return (
     <Flex borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>

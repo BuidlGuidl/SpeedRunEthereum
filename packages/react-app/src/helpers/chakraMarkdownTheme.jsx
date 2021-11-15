@@ -1,9 +1,10 @@
 /* eslint react/jsx-props-no-spreading: off */
 import React from "react";
-import { chakra, useColorModeValue, Code, Divider, Heading, Image, Link, UnorderedList, Text } from "@chakra-ui/react";
+import { chakra, Code, Divider, Heading, Image, Link, UnorderedList, Text } from "@chakra-ui/react";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const MdBlockQuote = ({ children }) => {
-  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const { borderColor } = useCustomColorModes();
   return (
     <Text mb={4} pl={3} borderLeft="4px solid" borderColor={borderColor} color="red.500">
       {children}
@@ -12,8 +13,7 @@ const MdBlockQuote = ({ children }) => {
 };
 
 const MdCode = ({ children }) => {
-  const codeFontColor = useColorModeValue("gray.700", "gray.200");
-  const codeBgColor = useColorModeValue("gray.100", "gray.900");
+  const { codeFontColor, codeBgColor } = useCustomColorModes();
 
   return (
     <Code borderRadius="md" px={2} py={1} color={codeFontColor} bg={codeBgColor}>
@@ -23,7 +23,7 @@ const MdCode = ({ children }) => {
 };
 
 const MdH1 = ({ children }) => {
-  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const { borderColor } = useCustomColorModes();
 
   return (
     <Heading as="h1" size="xl" mt={6} mb={4} pb={2} borderBottom="1px solid" borderColor={borderColor}>
@@ -33,7 +33,7 @@ const MdH1 = ({ children }) => {
 };
 
 const MdPre = ({ children }) => {
-  const codeBgColor = useColorModeValue("gray.100", "gray.900");
+  const { codeBgColor } = useCustomColorModes();
 
   return (
     <chakra.pre display="block" borderRadius="md" mb={4} p={3} bg={codeBgColor} overflowX="auto">
@@ -43,7 +43,7 @@ const MdPre = ({ children }) => {
 };
 
 const MdP = ({ children }) => {
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { secondaryFontColor } = useCustomColorModes();
 
   return (
     <Text color={secondaryFontColor} mb={4}>

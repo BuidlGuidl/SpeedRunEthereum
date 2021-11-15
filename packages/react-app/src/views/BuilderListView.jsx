@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useColorModeValue, Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import { Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import BuilderRow from "../components/BuilderRow";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const serverPath = "/builders";
 
 export default function BuilderListView({ serverUrl, mainnetProvider }) {
   const [builders, setBuilders] = useState([]);
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { secondaryFontColor } = useCustomColorModes();
 
   useEffect(() => {
     async function fetchBuilders() {

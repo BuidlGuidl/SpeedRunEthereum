@@ -1,9 +1,10 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { useColorModeValue, Flex, Divider, Text, Link, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Flex, Divider, Text, Link, Skeleton, SkeletonText } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import { getIconForProfileLinkType } from "../helpers/socialIcons";
 import useDisplayAddress from "../hooks/useDisplayAddress";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
@@ -13,8 +14,7 @@ const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
 // TODO get the actual join date. Should be easy getting the user.create event
 const BuilderProfileCard = ({ builder, mainnetProvider }) => {
   const ens = useDisplayAddress(mainnetProvider, builder?.id);
-  const borderColor = useColorModeValue("gray.200", "gray.700");
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { borderColor, secondaryFontColor } = useCustomColorModes();
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
 

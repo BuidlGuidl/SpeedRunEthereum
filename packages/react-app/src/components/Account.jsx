@@ -14,10 +14,10 @@ import {
   Text,
   Tooltip,
   useToast,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import useDisplayAddress from "../hooks/useDisplayAddress";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
 import { USER_ROLES } from "../helpers/constants";
 import HeroIconUser from "./icons/HeroIconUser";
@@ -75,9 +75,7 @@ export default function Account({
   const registerButtonRef = useRef();
   const openPopover = () => setIsPopoverOpen(true);
   const closePopover = () => setIsPopoverOpen(false);
-  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
-  const dividerColor = useColorModeValue("gray.200", "gray.700");
+  const { primaryFontColor, secondaryFontColor, dividerColor } = useCustomColorModes();
 
   const hasEns = ens !== shortAddress;
   const isAdmin = userRole === USER_ROLES.admin;

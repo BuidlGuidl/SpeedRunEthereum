@@ -1,11 +1,11 @@
 import React from "react";
-import { useColorModeValue, Image, Box, Flex, Button, ButtonGroup, Text, Spacer } from "@chakra-ui/react";
+import { Image, Box, Flex, Button, ButtonGroup, Text, Spacer } from "@chakra-ui/react";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const ASSETS_BASE_URL = "https://buidlguidl.com/assets";
 
 const BuildCard = ({ build }) => {
-  const borderColor = useColorModeValue("gray.200", "gray.700");
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { borderColor, secondaryFontColor } = useCustomColorModes();
   return (
     <Box borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden">
       <Box bgColor={borderColor} borderBottom="1px" borderColor={borderColor}>

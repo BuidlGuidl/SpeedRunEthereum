@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Link as RouteLink } from "react-router-dom";
-import { useColorModeValue, Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
+import { Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 import { getAcceptedChallenges } from "../helpers/builders";
 import EthIcon from "./icons/EthIcon";
@@ -9,12 +9,12 @@ import HeroIconBolt from "./icons/HeroIconBolt";
 import simpleStreamAbi from "../contracts/simpleStreamAbi.json";
 import { userFunctionDescription } from "../helpers/constants";
 import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const secondsPerDay = 24 * 60 * 60;
 
 const BuilderRow = ({ builder, mainnetProvider }) => {
-  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const { primaryFontColor, secondaryFontColor } = useCustomColorModes();
   const providerData = useContext(BlockchainProvidersContext).mainnet;
   const provider = providerData.provider;
   const isProviderReady = providerData.isReady;
