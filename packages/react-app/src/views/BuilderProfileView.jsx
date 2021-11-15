@@ -41,7 +41,7 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 // TODO get the real date of submission using the events
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
-  const { primaryFontColor, secondaryFontColor, borderColor } = useCustomColorModes();
+  const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [builder, setBuilder] = useState();
   const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
@@ -66,7 +66,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
         <GridItem colSpan={3}>
           <HStack spacing={4} mb={8}>
             <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} p={4} w="full" justify="space-between">
-              <Flex bg="gray.50" borderRadius="lg" w={12} h={12} justify="center" align="center">
+              <Flex bg={iconBgColor} borderRadius="lg" w={12} h={12} justify="center" align="center">
                 <InfoOutlineIcon w={5} h={5} />
               </Flex>
               <div>
@@ -79,7 +79,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
               </div>
             </Flex>
             <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} p={4} w="full" justify="space-between">
-              <Flex bg="gray.50" borderRadius="lg" w={12} h={12} justify="center" align="center">
+              <Flex bg={iconBgColor} borderRadius="lg" w={12} h={12} justify="center" align="center">
                 <InfoOutlineIcon w={5} h={5} />
               </Flex>
               <div>
