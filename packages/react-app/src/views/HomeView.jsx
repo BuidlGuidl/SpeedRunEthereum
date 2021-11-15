@@ -1,13 +1,15 @@
 import React from "react";
-import { Container, Box, Heading, Text } from "@chakra-ui/react";
+import { useColorModeValue, Container, Box, Heading, Text } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 // ToDo. Ignoring challenge sequence for now.
 import { challengeInfo } from "../data/challenges";
 
 export default function HomeView() {
+  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
+  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
   return (
     <Container maxW="container.md" centerContent>
-      <Text color="gray.700" mb="12" fontSize="xl" textAlign="center">
+      <Text color={primaryFontColor} mb="12" fontSize="xl" textAlign="center">
         <span role="img" aria-label="castle icon">
           🏃‍♀️
         </span>{" "}
@@ -18,7 +20,7 @@ export default function HomeView() {
         scaffold-eth
       </Text>
       <Heading as="h2">All Challenges</Heading>
-      <Text color="gray.700" mb="6">
+      <Text color={secondaryFontColor} mb="6">
         Complete all our Ethereum challenges!
       </Text>
       <Box>

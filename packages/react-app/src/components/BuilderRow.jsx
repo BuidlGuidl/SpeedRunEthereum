@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Link as RouteLink } from "react-router-dom";
-import { Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
+import { useColorModeValue, Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 import { getAcceptedChallenges } from "../helpers/builders";
 import EthIcon from "./icons/EthIcon";
@@ -13,6 +13,8 @@ import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
 const secondsPerDay = 24 * 60 * 60;
 
 const BuilderRow = ({ builder, mainnetProvider }) => {
+  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
+  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
   const providerData = useContext(BlockchainProvidersContext).mainnet;
   const provider = providerData.provider;
   const isProviderReady = providerData.isReady;
@@ -56,7 +58,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
   }, [isProviderReady, builderStreamContractAddress, provider]);
 
   return (
-    <Tr color="gray.700">
+    <Tr color={primaryFontColor}>
       <Td>
         <Link as={RouteLink} to={`/builders/${builder.id}`} pos="relative">
           <Address address={builder.id} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
@@ -113,7 +115,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
       </Td>
       <Td>
         <Button variant="outline">
-          <HeroIconBolt w={6} h={6} mr={2} color="gray.500" />
+          <HeroIconBolt w={6} h={6} mr={2} color={secondaryFontColor} />
           Fund
         </Button>
       </Td>

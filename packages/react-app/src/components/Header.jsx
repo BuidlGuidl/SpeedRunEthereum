@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { chakra, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
+import { chakra, useColorMode, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 
@@ -14,11 +14,15 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
+  const { colorMode } = useColorMode();
+  const isLightMode = colorMode === "light";
+  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const borderColor = useColorModeValue("gray.200", "gray.700");
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
 
   return (
-    <Box borderBottom="1px" borderColor="gray.200" mb={10} px={8} h={20}>
+    <Box borderBottom="1px" borderColor={borderColor} mb={10} px={8} h={20}>
       <Flex align="center" h="full" fontWeight="semibold">
         <HStack as="ul" spacing={9} style={{ listStyle: "none" }}>
           <chakra.li key="/">
@@ -30,12 +34,17 @@ export default function Header({
             </NavLink>
           </chakra.li>
           {USER_ROLES.anonymous !== userRole && (
-            <chakra.li key="/portfolio" color="gray.600" _hover={{ color: "gray.700" }}>
+            <chakra.li
+              key="/portfolio"
+              color={secondaryFontColor}
+              _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
+            >
               <NavLink
                 to="/portfolio"
                 exact
                 activeStyle={{
-                  color: "var(--chakra-colors-gray-700)",
+                  // TODO This is broken, probably because the paths don't match after the redirect
+                  color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
                 }}
               >
                 Portfolio
@@ -44,34 +53,46 @@ export default function Header({
           )}
           {USER_ROLES.admin === userRole && (
             <>
-              <chakra.li key="/builders" color="gray.600" _hover={{ color: "gray.700" }}>
+              <chakra.li
+                key="/builders"
+                color={secondaryFontColor}
+                _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
+              >
                 <NavLink
                   to="/builders"
                   exact
                   activeStyle={{
-                    color: "var(--chakra-colors-gray-700)",
+                    color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
                   }}
                 >
                   Builders
                 </NavLink>
               </chakra.li>
-              <chakra.li key="/builds" color="gray.600" _hover={{ color: "gray.700" }}>
+              <chakra.li
+                key="/builds"
+                color={secondaryFontColor}
+                _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
+              >
                 <NavLink
                   to="/builds"
                   exact
                   activeStyle={{
-                    color: "var(--chakra-colors-gray-700)",
+                    color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
                   }}
                 >
                   Builds
                 </NavLink>
               </chakra.li>
-              <chakra.li key="/challenge-review" color="gray.600" _hover={{ color: "gray.700" }}>
+              <chakra.li
+                key="/challenge-review"
+                color={secondaryFontColor}
+                _hover={{ color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)" }}
+              >
                 <NavLink
                   to="/challenge-review"
                   exact
                   activeStyle={{
-                    color: "var(--chakra-colors-gray-700)",
+                    color: isLightMode ? "var(--chakra-colors-gray-700)" : "var(--chakra-colors-gray-200)",
                   }}
                 >
                   Review Challenges

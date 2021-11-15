@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import { useColorModeValue, Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import BuilderRow from "../components/BuilderRow";
 
 const serverPath = "/builders";
 
 export default function BuilderListView({ serverUrl, mainnetProvider }) {
   const [builders, setBuilders] = useState([]);
+  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
 
   useEffect(() => {
     async function fetchBuilders() {
@@ -23,20 +24,20 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
         <Heading as="h1" mb="4">
           All Builders
         </Heading>
-        <Text color="gray.700" textAlign="center">
+        <Text color={secondaryFontColor} textAlign="center">
           List of Ethereum builders creating products, prototypes, and tutorials with{" "}
           <Link href="https://github.com/scaffold-eth/scaffold-eth" color="teal.500" isExternal>
             scaffold-eth
           </Link>
           .
         </Text>
-        <Text color="gray.700" mb="10">
+        <Text color={secondaryFontColor} mb="10">
           You can fund Eth development sending Eth to any stream.
         </Text>
       </Container>
       <Table>
         <Thead>
-          <Tr color="gray.700">
+          <Tr color={secondaryFontColor}>
             <Th>Builder</Th>
             <Th isNumeric>Builds</Th>
             <Th isNumeric>Challenges</Th>

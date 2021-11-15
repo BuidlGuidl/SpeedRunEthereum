@@ -14,6 +14,7 @@ import {
   Text,
   Tooltip,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import useDisplayAddress from "../hooks/useDisplayAddress";
@@ -74,6 +75,9 @@ export default function Account({
   const registerButtonRef = useRef();
   const openPopover = () => setIsPopoverOpen(true);
   const closePopover = () => setIsPopoverOpen(false);
+  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
+  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
+  const dividerColor = useColorModeValue("gray.200", "gray.700");
 
   const hasEns = ens !== shortAddress;
   const isAdmin = userRole === USER_ROLES.admin;
@@ -88,15 +92,15 @@ export default function Account({
   const UserDisplayName = ({ mb, textAlign }) =>
     hasEns ? (
       <>
-        <Text fontSize="md" fontWeight="bold" textAlign={textAlign} color="gray.700">
+        <Text fontSize="md" fontWeight="bold" textAlign={textAlign} color={primaryFontColor}>
           {ens}
         </Text>
-        <Text color="gray.500" fontSize="sm" fontWeight="normal" textAlign={textAlign} mb={mb}>
+        <Text color={secondaryFontColor} fontSize="sm" fontWeight="normal" textAlign={textAlign} mb={mb}>
           {shortAddress}
         </Text>
       </>
     ) : (
-      <Text fontSize="md" fontWeight="semibold" textAlign={textAlign} color="gray.700" mb={mb}>
+      <Text fontSize="md" fontWeight="semibold" textAlign={textAlign} color={primaryFontColor} mb={mb}>
         {shortAddress}
       </Text>
     );
@@ -109,7 +113,9 @@ export default function Account({
         <UserDisplayName textAlign="left" />
       </Box>
       <Tooltip label="Disconnect wallet">
-        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">
+          X
+        </Button>
       </Tooltip>
     </Flex>
   );
@@ -136,13 +142,15 @@ export default function Account({
       <PopoverTrigger>
         <Button variant="ghost" _hover={{ backgroundColor: "gray.50" }} w={9} p={0} onClick={openPopover}>
           <Box>
-            <Icon as={HeroIconUser} w={6} h={6} color="gray.500" />
+            <Icon as={HeroIconUser} w={6} h={6} color={secondaryFontColor} />
             <AvatarBadge boxSize={2} bg="red.500" borderRadius="full" top="4px" right="4px" />
           </Box>
         </Button>
       </PopoverTrigger>
       <Tooltip label="Disconnect wallet">
-        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">X</Button>
+        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">
+          X
+        </Button>
       </Tooltip>
       <PopoverContent w={72}>
         <PopoverBody
@@ -153,13 +161,13 @@ export default function Account({
           _focus={{ background: "none" }}
           _active={{ background: "none" }}
         >
-          <Text color="gray.700" fontWeight="bold" textAlign="center" mb={1}>
+          <Text color={primaryFontColor} fontWeight="bold" textAlign="center" mb={1}>
             Register as a builder
           </Text>
-          <Text color="gray.600" fontSize="sm" fontWeight="normal" textAlign="center" mb={6}>
+          <Text color={secondaryFontColor} fontSize="sm" fontWeight="normal" textAlign="center" mb={6}>
             Sign a message with your wallet to create a builder profile.
           </Text>
-          <Box m="auto" p="px" borderWidth="1px" borderColor="gray.200" borderRadius={8}>
+          <Box m="auto" p="px" borderWidth="1px" borderColor={dividerColor} borderRadius={8}>
             <QRPunkBlockie address={address} w={19} borderRadius={6} />
           </Box>
           <UserDisplayName textAlign="center" mb={6} />
