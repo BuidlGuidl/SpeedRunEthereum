@@ -170,7 +170,7 @@ function App() {
           <Route exact path="/">
             <HomeView />
           </Route>
-          <Route exact path="/my-profile">
+          <Route exact path="/portfolio">
             {address && <Redirect to={"/builders/" + address} />}
           </Route>
           <Route exact path="/builds">

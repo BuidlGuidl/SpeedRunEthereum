@@ -30,15 +30,15 @@ export default function Header({
             </NavLink>
           </chakra.li>
           {USER_ROLES.anonymous !== userRole && (
-            <chakra.li key="/my-profile" color="gray.600" _hover={{ color: "gray.700" }}>
+            <chakra.li key="/portfolio" color="gray.600" _hover={{ color: "gray.700" }}>
               <NavLink
-                to="/my-profile"
+                to="/portfolio"
                 exact
                 activeStyle={{
                   color: "var(--chakra-colors-gray-700)",
                 }}
               >
-                My Profile
+                Portfolio
               </NavLink>
             </chakra.li>
           )}

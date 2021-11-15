@@ -89,7 +89,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
       description: "Challenge submitted!",
     });
     setIsSubmitting(false);
-    history.push("/my-profile");
+    history.push("/portfolio");
   };
 
   if (!address) {
