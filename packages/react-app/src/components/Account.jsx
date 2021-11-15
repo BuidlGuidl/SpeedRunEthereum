@@ -121,8 +121,8 @@ export default function Account({
       description: (
         <>
           Visit{" "}
-          <Link href="/my-profile" textDecoration="underline">
-            your profile
+          <Link href="/portfolio" textDecoration="underline">
+            your portfolio
           </Link>{" "}
           to start building
         </>
