@@ -2,11 +2,13 @@ import React, { useCallback, useEffect } from "react";
 import axios from "axios";
 import { Container, Heading, Text, Table, Thead, Tbody, Tr, Th, useToast } from "@chakra-ui/react";
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function ChallengeReviewView({ serverUrl, address, userProvider, mainnetProvider }) {
   const [challenges, setChallenges] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const toast = useToast({ position: "top", isClosable: true });
+  const { secondaryFontColor } = useCustomColorModes();
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoading(true);
@@ -92,7 +94,9 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
     <Container maxW="container.lg">
       <Container maxW="container.md" centerContent>
         <Heading as="h1">Review Submissions</Heading>
-        <Text color="gray.700" mb="6">Pending submissions to validate.</Text>
+        <Text color={secondaryFontColor} mb="6">
+          Pending submissions to validate.
+        </Text>
       </Container>
       <Table>
         <Thead>

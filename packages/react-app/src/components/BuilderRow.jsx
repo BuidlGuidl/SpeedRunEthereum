@@ -9,10 +9,12 @@ import HeroIconBolt from "./icons/HeroIconBolt";
 import simpleStreamAbi from "../contracts/simpleStreamAbi.json";
 import { userFunctionDescription } from "../helpers/constants";
 import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const secondsPerDay = 24 * 60 * 60;
 
 const BuilderRow = ({ builder, mainnetProvider }) => {
+  const { primaryFontColor, secondaryFontColor } = useCustomColorModes();
   const providerData = useContext(BlockchainProvidersContext).mainnet;
   const provider = providerData.provider;
   const isProviderReady = providerData.isReady;
@@ -56,7 +58,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
   }, [isProviderReady, builderStreamContractAddress, provider]);
 
   return (
-    <Tr color="gray.700">
+    <Tr color={primaryFontColor}>
       <Td>
         <Link as={RouteLink} to={`/builders/${builder.id}`} pos="relative">
           <Address address={builder.id} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
@@ -113,7 +115,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
       </Td>
       <Td>
         <Button variant="outline">
-          <HeroIconBolt w={6} h={6} mr={2} color="gray.500" />
+          <HeroIconBolt w={6} h={6} mr={2} color={secondaryFontColor} />
           Fund
         </Button>
       </Td>

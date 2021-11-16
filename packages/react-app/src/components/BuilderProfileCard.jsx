@@ -4,6 +4,7 @@ import { Flex, Divider, Text, Link, Skeleton, SkeletonText } from "@chakra-ui/re
 import QRPunkBlockie from "./QrPunkBlockie";
 import { getIconForProfileLinkType } from "../helpers/socialIcons";
 import useDisplayAddress from "../hooks/useDisplayAddress";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
@@ -13,6 +14,7 @@ const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
 // TODO get the actual join date. Should be easy getting the user.create event
 const BuilderProfileCard = ({ builder, mainnetProvider }) => {
   const ens = useDisplayAddress(mainnetProvider, builder?.id);
+  const { borderColor, secondaryFontColor } = useCustomColorModes();
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
 
@@ -20,7 +22,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
   const hasProfileLinks = builder?.profileLinks ? builder.profileLinks.length !== 0 : false;
 
   return (
-    <Flex borderRadius="lg" borderColor="gray.200" borderWidth={1} justify="center" p={4} pb={6} maxW={60}>
+    <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} justify="center" p={4} pb={6} maxW={60}>
       <BuilderProfileCardSkeleton isLoaded={!!builder}>
         {() => (
           /* delay execution */
@@ -34,7 +36,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
                   <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                     {ens}
                   </Text>
-                  <Text textAlign="center" mb={8} color="gray.600">
+                  <Text textAlign="center" mb={8} color={secondaryFontColor}>
                     {shortAddress}
                   </Text>
                 </>
@@ -56,7 +58,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
                   })}
                 </Flex>
               )}
-              <Text textAlign="center" color="gray.600">
+              <Text textAlign="center" color={secondaryFontColor}>
                 Joined September 2021
               </Text>
             </Flex>

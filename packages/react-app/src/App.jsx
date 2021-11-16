@@ -7,7 +7,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
-import { Header } from "./components";
+import { Header, ColorModeSwitcher } from "./components";
 import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
@@ -200,6 +200,7 @@ function App() {
             />
           </Route>
         </Switch>
+        <ColorModeSwitcher />
       </div>
     </BlockchainProvidersContext.Provider>
   );
