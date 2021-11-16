@@ -36,9 +36,10 @@ export default function Header({
             <chakra.li key="/portfolio" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
               <NavLink
                 to="/portfolio"
-                exact
+                isActive={(match, location) => (
+                  location.pathname.includes("/builders/")
+                )}
                 activeStyle={{
-                  // TODO This is broken, probably because the paths don't match after the redirect
                   color: primaryColorString,
                 }}
               >
