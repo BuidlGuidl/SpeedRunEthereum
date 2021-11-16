@@ -11,7 +11,7 @@ Required: [Git](https://git-scm.com/downloads), [Node](https://nodejs.org/dist/l
 > clone/fork 🏗 scaffold-eth and get setup:
 
 ```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git buyer-mints-nft
+git clone https://github.com/scaffold-eth/scaffold-eth-challenges.git buyer-mints-nft
 
 cd buyer-mints-nft
 
