@@ -1,4 +1,5 @@
 {
+  "version": "1.0.0",
   "users": {
     "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266": {
       "isAdmin": true
