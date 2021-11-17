@@ -62,7 +62,7 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
 
     if (res.data) {
       onSuccess();
-      setUserRole(res.data.isAdmin ? USER_ROLES.admin : USER_ROLES.registered);
+      setUserRole(USER_ROLES[res.data.role] ?? USER_ROLES.registered);
     }
   };
 

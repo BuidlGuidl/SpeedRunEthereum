@@ -79,6 +79,7 @@ export default function Account({
 
   const hasEns = ens !== shortAddress;
   const isAdmin = userRole === USER_ROLES.admin;
+  const isBuilder = userRole === USER_ROLES.builder;
   const isAnonymous = userRole === USER_ROLES.anonymous;
 
   const connectWallet = (
@@ -188,6 +189,11 @@ export default function Account({
       {isAdmin && (
         <Badge colorScheme="red" mr={4}>
           admin
+        </Badge>
+      )}
+      {isBuilder && (
+        <Badge colorScheme="green" mr={4}>
+          builder
         </Badge>
       )}
       {isWalletConnected ? userMenu : connectWallet}

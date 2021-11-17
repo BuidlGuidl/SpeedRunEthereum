@@ -141,7 +141,7 @@ function App() {
         const fetchedUserObject = await axios.get(serverUrl + `/user`, {
           params: { address },
         });
-        setUserRole(fetchedUserObject.data.isAdmin ? USER_ROLES.admin : USER_ROLES.registered);
+        setUserRole(USER_ROLES[fetchedUserObject.data.role] ?? USER_ROLES.registered);
       } catch (e) {
         setUserRole(USER_ROLES.anonymous);
       }

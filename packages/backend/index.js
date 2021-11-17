@@ -75,14 +75,12 @@ app.post("/sign", async (request, response) => {
     // Create user.
     const event = createEvent(EVENT_TYPES.USER_CREATE, { userAddress }, signature);
     db.createEvent(event); // INFO: async, no await here
-    await db.createUser(userAddress, { creationTimestamp: new Date().getTime() });
+    await db.createUser(userAddress, { creationTimestamp: new Date().getTime(), role: "registered" });
     user = await db.findUserByAddress(userAddress);
     console.log("New user created: ", userAddress);
   }
 
-  const isAdmin = user.data.isAdmin ?? false;
-
-  response.json({ isAdmin });
+  response.json(user.data);
 });
 
 app.get("/user", async (request, response) => {
@@ -158,7 +156,16 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
   };
   const event = createEvent(EVENT_TYPES.CHALLENGE_REVIEW, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
-  await db.updateUser(userAddress, { challenges: existingChallenges });
+
+  const updateData = {
+    challenges: existingChallenges,
+  };
+
+  // ToDo. Role and Status from ENUM / constants
+  if ((!user.data.role || user.data.role === "registered") && newStatus === "ACCEPTED") {
+    updateData.role = "builder";
+  }
+  await db.updateUser(userAddress, updateData);
 }
 
 app.patch("/challenges", adminOnly, async (request, response) => {

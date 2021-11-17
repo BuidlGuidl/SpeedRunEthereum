@@ -28,7 +28,7 @@ const updateUser = db.updateUser;
 
 /**
  *
- * @returns {{id: string, challenges?: object, isAdmin?: boolean}[]}
+ * @returns {{id: string, challenges?: object, role?: string}[]}
  */
 const findAllUsers = db.findAllUsers;
 
@@ -39,7 +39,7 @@ const findAllUsers = db.findAllUsers;
  *  exists: boolean,
  *  data?: {
  *    id: string,
- *    isAdmin?: boolean
+ *    role?: string
  *  }
  * }}
  */
