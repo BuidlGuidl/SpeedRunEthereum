@@ -87,6 +87,6 @@ Submit the solution to a challenge by 1.) clicking a challenge in your profile v
 ![image](https://user-images.githubusercontent.com/2156509/135262069-7e00ad55-effe-4409-8378-5ec0afee25ff.png)
 
 Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
->In order to set an admin in the local database file, add `"isAdmin": true` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
+>In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
 
 ![image](https://user-images.githubusercontent.com/2156509/135267093-4be16c3c-ddfb-4877-8329-cc78b82dcfae.png)

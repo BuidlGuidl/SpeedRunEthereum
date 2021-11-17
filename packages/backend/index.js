@@ -80,9 +80,7 @@ app.post("/sign", async (request, response) => {
     console.log("New user created: ", userAddress);
   }
 
-  const isAdmin = user.data.isAdmin ?? false;
-
-  response.json({ isAdmin });
+  response.json(user.data);
 });
 
 app.get("/user", async (request, response) => {

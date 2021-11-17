@@ -5,9 +5,10 @@ export const CHALLENGE_SUBMISSION_STATUS = {
 };
 
 export const USER_ROLES = {
-  admin: "user_role.administrator",
   anonymous: "user_role.anonymous",
   registered: "user_role.registered",
+  builder: "user_role.builder",
+  admin: "user_role.administrator",
 };
 
 export const USER_FUNCTIONS = {
