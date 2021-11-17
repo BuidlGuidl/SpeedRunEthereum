@@ -7,11 +7,11 @@ Required: [Git](https://git-scm.com/downloads), [Node](https://nodejs.org/dist/l
 > clone/fork 🏗 scaffold-eth and get setup:
 
 ```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git create-stream
+git clone https://github.com/scaffold-eth/scaffold-eth-challenges.git create-stream
 
 cd create-stream
 
-git checkout chellenge-7-create-stream
+git checkout challenge-7-create-stream
 
 yarn
 ```
