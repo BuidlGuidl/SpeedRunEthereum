@@ -47,7 +47,8 @@ export default function Header({
               </NavLink>
             </chakra.li>
           )}
-          {USER_ROLES.admin === userRole && (
+          {/* ToDo. At least Builder */}
+          {(USER_ROLES.builder === userRole || USER_ROLES.admin === userRole) && (
             <>
               <chakra.li key="/builders" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
                 <NavLink
@@ -71,18 +72,20 @@ export default function Header({
                   Builds
                 </NavLink>
               </chakra.li>
-              <chakra.li key="/challenge-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
-                <NavLink
-                  to="/challenge-review"
-                  exact
-                  activeStyle={{
-                    color: primaryColorString,
-                  }}
-                >
-                  Review Challenges
-                </NavLink>
-              </chakra.li>
             </>
+          )}
+          {USER_ROLES.admin === userRole && (
+            <chakra.li key="/challenge-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+              <NavLink
+                to="/challenge-review"
+                exact
+                activeStyle={{
+                  color: primaryColorString,
+                }}
+              >
+                Review Challenges
+              </NavLink>
+            </chakra.li>
           )}
         </HStack>
         <Spacer />
