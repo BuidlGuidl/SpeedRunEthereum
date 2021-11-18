@@ -104,11 +104,12 @@ const createBuild = build => {
 };
 
 const findAllBuilds = (isDraft = false) => {
+  const allBuilds = database.builds.map((build, index) => ({ id: index, ...build }));
   if (isDraft) {
-    return database.builds.filter(build => build.isDraft);
+    return allBuilds.filter(build => build.isDraft);
   }
 
-  return database.builds;
+  return allBuilds;
 };
 
 module.exports = {
