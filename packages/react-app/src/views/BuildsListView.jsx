@@ -173,7 +173,7 @@ export default function BuildsListView({ userProvider }) {
               <FormErrorMessage>This field is required</FormErrorMessage>
             </FormControl>
             <FormControl mb={4} isRequired isInvalid={errors.buildUrl}>
-              <FormLabel htmlFor="buildUrl">Branch url</FormLabel>
+              <FormLabel htmlFor="buildUrl">Branch URL</FormLabel>
               <Input
                 id="buildUrl"
                 placeholder="https://..."
