@@ -182,7 +182,7 @@ export default function BuildsListView({ userProvider }) {
               <FormErrorMessage>This field is required</FormErrorMessage>
             </FormControl>
             <FormControl mb={4} isInvalid={errors.imageUrl}>
-              <FormLabel htmlFor="imageUrl">Build name</FormLabel>
+              <FormLabel htmlFor="imageUrl">Image URL</FormLabel>
               <Input
                 id="imageUrl"
                 placeholder="https://..."
