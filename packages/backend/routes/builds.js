@@ -2,6 +2,7 @@ const express = require("express");
 const db = require("../services/db");
 const { verifySignature } = require("../utils/sign");
 const { EVENT_TYPES, createEvent } = require("../utils/events");
+const { withRole } = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.get("/", async (req, res) => {
 /**
  * Create a new build in draft mode
  */
-router.post("/", async (request, response) => {
+router.post("/", withRole("builder"), async (request, response) => {
   console.log("POST /builds");
   const { buildUrl, desc, image, name, signature } = request.body;
   const address = request.address;

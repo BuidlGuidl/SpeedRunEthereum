@@ -15,24 +15,25 @@ const withAddress = (req, res, next) => {
 };
 
 /**
- * Middleware to validate admin requests.
+ * Middleware to validate role-gated requests.
  *
- * @param {Express.Request} req
- * @param {Express.Response} res
- * @param {Express.NextFunction} next
+ * @param role string
  */
-const adminOnly = (req, res, next) => {
-  withAddress(req, res, async () => {
-    const user = await db.findUserByAddress(req.address);
-    // ToDo. Role utils
-    if (user.data.role !== "admin") {
-      return res.status(401).send("Not an admin");
-    }
-    next();
-  });
+const withRole = role => {
+  return (req, res, next) => {
+    withAddress(req, res, async () => {
+      const user = await db.findUserByAddress(req.address);
+      // ToDo. Role utils: hasBuilderRoles or atLeastBuilder, etc.
+      // For now, bypassing admin
+      if (user.data.role !== "admin" && user.data.role !== role) {
+        return res.status(401).send(`Not a ${role}`);
+      }
+      next();
+    });
+  };
 };
 
 module.exports = {
   withAddress,
-  adminOnly,
+  withRole,
 };
