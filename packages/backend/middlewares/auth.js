@@ -1,3 +1,5 @@
+const db = require("../services/db");
+
 /**
  * Middleware that adds to the request the address sent in the headers.
  *
@@ -20,9 +22,12 @@ const withAddress = (req, res, next) => {
  * @param {Express.NextFunction} next
  */
 const adminOnly = (req, res, next) => {
-  withAddress(req, res, () => {
-    // should be done in #51 https://github.com/moonshotcollective/scaffold-directory/issues/51
-    console.log("!! SKIPPING ADMIN CHECKS. THIS SHOULD BE FIXED IN #51");
+  withAddress(req, res, async () => {
+    const user = await db.findUserByAddress(req.address);
+    // ToDo. Role utils
+    if (user.data.role !== "admin") {
+      return res.status(401).send("Not an admin");
+    }
     next();
   });
 };
