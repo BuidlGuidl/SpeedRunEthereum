@@ -74,7 +74,7 @@ const findEventsWhere = db.findEventsWhere;
 const createBuild = db.createBuild;
 
 /**
- *
+ * @param {boolean} isDraft
  * @returns {{name: string, desc: string, branch: string, readMore: string, image: string}[]}
  */
 const findAllBuilds = db.findAllBuilds;

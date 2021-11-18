@@ -66,9 +66,14 @@ const createBuild = build => {
   return database.collection("builds").add(build);
 };
 
-const findAllBuilds = async () => {
+const findAllBuilds = async (isDraft = false) => {
   const buildsSnapshot = await database.collection("builds").get();
-  return buildsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const allBuilds = buildsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  if (isDraft) {
+    return allBuilds.filter(build => build.isDraft);
+  }
+
+  return allBuilds;
 };
 
 module.exports = {

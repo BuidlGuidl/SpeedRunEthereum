@@ -103,7 +103,11 @@ const createBuild = build => {
   database.builds.push(build);
 };
 
-const findAllBuilds = () => {
+const findAllBuilds = (isDraft = false) => {
+  if (isDraft) {
+    return database.builds.filter(build => build.isDraft);
+  }
+
   return database.builds;
 };
 

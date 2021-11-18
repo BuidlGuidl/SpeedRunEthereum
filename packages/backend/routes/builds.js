@@ -11,7 +11,8 @@ const router = express.Router();
  */
 router.get("/", async (req, res) => {
   console.log("/builds");
-  const allBuilds = await db.findAllBuilds();
+  const isDraft = req.query.isDraft;
+  const allBuilds = await db.findAllBuilds(isDraft);
   res.json(allBuilds);
 });
 
