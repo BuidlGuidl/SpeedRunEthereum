@@ -103,12 +103,22 @@ export default function BuildsListView({ userProvider }) {
         name: buildName,
       });
     } catch (error) {
+      if (error.status === 401) {
+        toast({
+          status: "error",
+          description: "Submission Error. You don't have the required role.",
+          variant: toastVariant,
+        });
+        setIsSubmitting(false);
+        return;
+      }
       toast({
         status: "error",
         description: "Submission Error. Please try again.",
         variant: toastVariant,
       });
       setIsSubmitting(false);
+      return;
     }
 
     toast({
