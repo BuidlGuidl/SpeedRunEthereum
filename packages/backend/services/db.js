@@ -69,6 +69,12 @@ const findEventsWhere = db.findEventsWhere;
 
 /**
  *
+ * @param {object} buildData The build payload
+ */
+const createBuild = db.createBuild;
+
+/**
+ *
  * @returns {{name: string, desc: string, branch: string, readMore: string, image: string}[]}
  */
 const findAllBuilds = db.findAllBuilds;
@@ -83,6 +89,7 @@ module.exports = {
   findAllEvents,
   findEventsWhere,
 
+  createBuild,
   findAllBuilds,
 
   __internal_database: db.__internal_database, // testing only

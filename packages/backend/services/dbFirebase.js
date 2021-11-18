@@ -62,6 +62,10 @@ const findEventsWhere = async ({ conditions: conditionsArg, limit } = {}) => {
   return findAllEvents({ limit });
 };
 
+const createBuild = build => {
+  return database.collection("builds").add(build);
+};
+
 const findAllBuilds = async () => {
   const buildsSnapshot = await database.collection("builds").get();
   return buildsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -75,5 +79,6 @@ module.exports = {
   createEvent,
   findAllEvents,
   findEventsWhere,
+  createBuild,
   findAllBuilds,
 };

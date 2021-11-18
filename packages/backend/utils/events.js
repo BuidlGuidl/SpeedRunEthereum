@@ -4,6 +4,7 @@ const EVENT_TYPES = {
   CHALLENGE_CREATE: "challenge.create",
   USER_CREATE: "user.create",
   USER_UPDATE: "user.update",
+  BUILD_CREATE: "build.create",
 };
 
 // TODO we could check here if the payload is correct for the type
