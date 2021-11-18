@@ -13,7 +13,7 @@ import {
   BuilderListView,
   ChallengeDetailView,
   BuilderProfileView,
-  ChallengeReviewView,
+  SubmissionReviewView,
   HomeView,
   BuildsListView,
 } from "./views";
@@ -192,8 +192,8 @@ function App() {
             />
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
-          <Route path="/challenge-review" exact>
-            <ChallengeReviewView
+          <Route path="/submission-review" exact>
+            <SubmissionReviewView
               serverUrl={serverUrl}
               address={address}
               userProvider={userProvider}

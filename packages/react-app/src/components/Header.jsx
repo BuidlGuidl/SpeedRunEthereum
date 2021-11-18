@@ -36,9 +36,7 @@ export default function Header({
             <chakra.li key="/portfolio" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
               <NavLink
                 to="/portfolio"
-                isActive={(match, location) => (
-                  location.pathname.includes("/builders/")
-                )}
+                isActive={(match, location) => location.pathname.includes("/builders/")}
                 activeStyle={{
                   color: primaryColorString,
                 }}
@@ -75,15 +73,15 @@ export default function Header({
             </>
           )}
           {USER_ROLES.admin === userRole && (
-            <chakra.li key="/challenge-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+            <chakra.li key="/submission-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
               <NavLink
-                to="/challenge-review"
+                to="/submission-review"
                 exact
                 activeStyle={{
                   color: primaryColorString,
                 }}
               >
-                Review Challenges
+                Review Submissions
               </NavLink>
             </chakra.li>
           )}

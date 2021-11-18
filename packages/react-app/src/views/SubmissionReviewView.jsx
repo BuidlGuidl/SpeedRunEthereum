@@ -4,14 +4,14 @@ import { Container, Heading, Text, Table, Thead, Tbody, Tr, Th, useToast } from 
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-export default function ChallengeReviewView({ serverUrl, address, userProvider, mainnetProvider }) {
+export default function SubmissionReviewView({ serverUrl, address, userProvider, mainnetProvider }) {
   const [challenges, setChallenges] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
   const toast = useToast({ position: "top", isClosable: true });
   const { secondaryFontColor } = useCustomColorModes();
 
   const fetchSubmittedChallenges = useCallback(async () => {
-    setIsLoading(true);
+    setIsLoadingChallenges(true);
     console.log("getting challenges", address);
     const fetchedChallenges = await axios.get(serverUrl + `/challenges`, {
       params: { status: "SUBMITTED" },
@@ -21,14 +21,14 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
     });
     setChallenges(fetchedChallenges.data);
     console.log(fetchedChallenges.data);
-    setIsLoading(false);
+    setIsLoadingChallenges(false);
   }, [address, serverUrl]);
 
   useEffect(() => {
     fetchSubmittedChallenges();
   }, [serverUrl, address, fetchSubmittedChallenges]);
 
-  const handleSendReview = reviewType => async (userAddress, challengeId, comment) => {
+  const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
     try {
       const signMessageResponse = await axios.get(serverUrl + `/sign-message`, {
@@ -113,9 +113,9 @@ export default function ChallengeReviewView({ serverUrl, address, userProvider, 
           {challenges.map(challenge => (
             <ChallengeReviewRow
               challenge={challenge}
-              isLoading={isLoading}
-              approveClick={handleSendReview("ACCEPTED")}
-              rejectClick={handleSendReview("REJECTED")}
+              isLoading={isLoadingChallenges}
+              approveClick={handleSendChallengeReview("ACCEPTED")}
+              rejectClick={handleSendChallengeReview("REJECTED")}
               mainnetProvider={mainnetProvider}
             />
           ))}
