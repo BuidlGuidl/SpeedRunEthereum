@@ -18,6 +18,12 @@ const getSignMessageForId = (messageId, options) => {
         challengeId: options.challengeId,
         newStatus: options.newStatus,
       });
+    case "buildSubmit":
+      return JSON.stringify({
+        messageId,
+        address: options.address,
+        buildUrl: options.buildUrl,
+      });
     case "login":
     default:
       return JSON.stringify({
