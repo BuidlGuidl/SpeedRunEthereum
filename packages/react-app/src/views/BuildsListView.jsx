@@ -26,7 +26,7 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function BuildsListView({ userProvider }) {
   const [builds, setBuilds] = useState([]);
-  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(true);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [buildName, setBuildName] = useState("");
   const [description, setDescription] = useState("");
   const [buildUrl, setBuildUrl] = useState("");
