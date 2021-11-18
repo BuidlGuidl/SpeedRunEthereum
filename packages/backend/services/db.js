@@ -79,6 +79,18 @@ const createBuild = db.createBuild;
  */
 const findAllBuilds = db.findAllBuilds;
 
+/**
+ *
+ * @param {string} buildId
+ */
+const publishBuild = db.publishBuild;
+
+/**
+ *
+ * @param {string} buildId
+ */
+const removeBuild = db.removeBuild;
+
 module.exports = {
   createUser,
   updateUser,
@@ -91,6 +103,8 @@ module.exports = {
 
   createBuild,
   findAllBuilds,
+  publishBuild,
+  removeBuild,
 
   __internal_database: db.__internal_database, // testing only
 };

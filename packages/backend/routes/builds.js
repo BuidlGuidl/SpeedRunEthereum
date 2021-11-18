@@ -56,4 +56,37 @@ router.post("/", withRole("builder"), async (request, response) => {
   response.sendStatus(200);
 });
 
+/**
+ * Publish / Delete a build
+ */
+router.patch("/", withRole("admin"), async (request, response) => {
+  const { buildId, newStatus, signature } = request.body.params;
+  const address = request.address;
+
+  const verifyOptions = {
+    messageId: "buildReview",
+    address,
+    buildId,
+    newStatus
+  };
+
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
+  }
+
+  if (newStatus !== "ACCEPTED" && newStatus !== "REJECTED") {
+    response.status(400).send("Invalid status");
+    return;
+  }
+
+  if (newStatus === "ACCEPTED") {
+    await db.publishBuild(buildId);
+  } else if (newStatus === "REJECTED") {
+    await db.removeBuild(buildId);
+  }
+
+  response.sendStatus(200);
+});
+
 module.exports = router;

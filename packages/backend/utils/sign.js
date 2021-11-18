@@ -24,6 +24,13 @@ const getSignMessageForId = (messageId, options) => {
         address: options.address,
         buildUrl: options.buildUrl,
       });
+    case "buildReview":
+      return JSON.stringify({
+        messageId,
+        address: options.address,
+        buildId: options.buildId,
+        newStatus: options.newStatus,
+      });
     case "login":
     default:
       return JSON.stringify({

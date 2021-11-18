@@ -76,6 +76,15 @@ const findAllBuilds = async (isDraft = false) => {
   return allBuilds;
 };
 
+const publishBuild = buildId => {
+  const buildRef = database.collection("builds").doc(buildId);
+  return buildRef.update({ isDraft: null });
+};
+
+const removeBuild = buildId => {
+  return database.collection("builds").doc(buildId).delete();
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -86,4 +95,6 @@ module.exports = {
   findEventsWhere,
   createBuild,
   findAllBuilds,
+  publishBuild,
+  removeBuild,
 };

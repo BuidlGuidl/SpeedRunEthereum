@@ -101,6 +101,8 @@ const findEventsWhere = ({ conditions: conditionsArg, limit } = {}) => {
 
 const createBuild = build => {
   database.builds.push(build);
+
+  persist();
 };
 
 const findAllBuilds = (isDraft = false) => {
@@ -110,6 +112,20 @@ const findAllBuilds = (isDraft = false) => {
   }
 
   return allBuilds;
+};
+
+const publishBuild = buildId => {
+  const existingBuild = database.builds[buildId];
+  delete existingBuild.isDraft;
+  database.builds[buildId] = existingBuild;
+
+  persist();
+};
+
+const removeBuild = buildId => {
+  delete database.builds[buildId];
+
+  persist();
 };
 
 module.exports = {
@@ -124,6 +140,8 @@ module.exports = {
 
   createBuild,
   findAllBuilds,
+  publishBuild,
+  removeBuild,
 
   __internal_database: database, // testing only
 };
