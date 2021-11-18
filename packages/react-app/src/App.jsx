@@ -104,6 +104,7 @@ function App() {
 
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
   const userProvider = useUserProvider(injectedProvider);
+  // TODO address is derived from userProvider, so we should just send userProvider
   const address = useUserAddress(userProvider);
 
   // You can warn the user if you would like them to be on a specific network
@@ -174,7 +175,7 @@ function App() {
             {address && <Redirect to={"/builders/" + address} />}
           </Route>
           <Route exact path="/builds">
-            <BuildsListView />
+            <BuildsListView userProvider={userProvider} />
           </Route>
           <Route path="/builders" exact>
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />

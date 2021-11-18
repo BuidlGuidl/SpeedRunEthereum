@@ -21,3 +21,43 @@ export const getAllBuilds = async () => {
     return [];
   }
 };
+
+export const getBuildSubmitSignMessage = async (address, buildUrl) => {
+  try {
+    const signMessageResponse = await axios.get(serverUrl + `/sign-message`, {
+      params: {
+        messageId: "buildSubmit",
+        address,
+        buildUrl,
+      },
+    });
+
+    return JSON.stringify(signMessageResponse.data);
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Couldn't get the signature message`);
+  }
+};
+
+export const postBuildSubmit = async (address, signature, { buildUrl, desc, image, name }) => {
+  try {
+    await axios.post(
+      `${serverUrl}/builds`,
+      {
+        buildUrl,
+        desc,
+        image,
+        name,
+        signature,
+      },
+      {
+        headers: {
+          address,
+        },
+      },
+    );
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Couldn't save the build submission on the server`);
+  }
+};
