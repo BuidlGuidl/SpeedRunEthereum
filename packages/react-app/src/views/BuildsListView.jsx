@@ -3,6 +3,7 @@ import { useUserAddress } from "eth-hooks";
 import {
   useToast,
   useColorModeValue,
+  useDisclosure,
   Container,
   Button,
   Input,
@@ -26,7 +27,7 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function BuildsListView({ userProvider }) {
   const [builds, setBuilds] = useState([]);
-  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [buildName, setBuildName] = useState("");
   const [description, setDescription] = useState("");
   const [buildUrl, setBuildUrl] = useState("");
@@ -127,7 +128,7 @@ export default function BuildsListView({ userProvider }) {
       variant: toastVariant,
     });
     clearForm();
-    setIsSubmitModalOpen(false);
+    onClose();
     setIsSubmitting(false);
   };
 
@@ -137,7 +138,7 @@ export default function BuildsListView({ userProvider }) {
       <Text color={secondaryFontColor} mb="6">
         Explore all our Ethereum web3 projects.
       </Text>
-      <Button colorScheme="blue" mb={8} onClick={() => setIsSubmitModalOpen(true)}>
+      <Button colorScheme="blue" mb={8} onClick={onOpen}>
         Submit new build
       </Button>
       <SimpleGrid columns={[1, null, 2, null, 3]} spacing={6} pb={20}>
@@ -145,7 +146,7 @@ export default function BuildsListView({ userProvider }) {
           <BuildCard build={build} key={build.name} />
         ))}
       </SimpleGrid>
-      <Modal isOpen={isSubmitModalOpen} onClose={() => setIsSubmitModalOpen(false)}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>New build form</ModalHeader>
