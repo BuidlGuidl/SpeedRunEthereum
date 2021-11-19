@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
+  Spinner,
   Text,
   Tooltip,
   useToast,
@@ -76,6 +77,10 @@ export default function Account({
   const openPopover = () => setIsPopoverOpen(true);
   const closePopover = () => setIsPopoverOpen(false);
   const { primaryFontColor, secondaryFontColor, dividerColor } = useCustomColorModes();
+
+  if (!userRole && isWalletConnected) {
+    return <Spinner />;
+  }
 
   const hasEns = ens !== shortAddress;
   const isAdmin = userRole === USER_ROLES.admin;

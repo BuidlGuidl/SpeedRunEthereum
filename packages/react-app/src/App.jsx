@@ -132,7 +132,7 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  const [userRole, setUserRole] = useState(USER_ROLES.anonymous);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     async function fetchUserData() {

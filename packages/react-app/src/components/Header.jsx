@@ -97,7 +97,7 @@ export default function Header({
           loadWeb3Modal={loadWeb3Modal}
           logoutOfWeb3Modal={() => {
             logoutOfWeb3Modal();
-            setUserRole(USER_ROLES.anonymous);
+            setUserRole(null);
           }}
           setUserRole={setUserRole}
           userProvider={userProvider}
