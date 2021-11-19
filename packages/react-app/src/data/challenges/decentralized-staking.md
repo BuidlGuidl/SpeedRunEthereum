@@ -16,9 +16,9 @@
 
 ```bash
 
-git clone https://github.com/scaffold-eth/scaffold-eth-challenges.git challenge-1-decentralized-staking
+git clone https://github.com/scaffold-eth/scaffold-eth-challenges.git app
 
-cd challenge-1-decentralized-staking
+cd app
 
 git checkout challenge-1-decentralized-staking
 
@@ -36,13 +36,21 @@ You'll have three terminals up for:
 
 `yarn start` (react app frontend)
 
+![Screen Shot 2021-11-19 at 3 27 57 PM](https://user-images.githubusercontent.com/9419140/142687624-425e49dd-6606-4a46-9afb-0a9a8c34061f.png)
+
 `yarn chain` (hardhat backend)
+
+![Screen Shot 2021-11-19 at 3 26 39 PM](https://user-images.githubusercontent.com/9419140/142687526-8141f56e-d4fb-475c-afb0-5517f8e44143.png)
 
 `yarn deploy` (to compile, deploy, and publish your contracts to the frontend)
 
+![Screen Shot 2021-11-19 at 3 28 39 PM](https://user-images.githubusercontent.com/9419140/142687711-5d205eba-434e-4dae-9142-ccb6fef8bb83.png)
+
 > 💻 View your frontend at http://localhost:3000/
 
-> 👩‍💻 Rerun `yarn deploy --reset` whenever you want to deploy new contracts to the frontend.
+![Screen Shot 2021-11-19 at 3 30 09 PM](https://user-images.githubusercontent.com/9419140/142687893-154055c1-d229-46af-810d-88b476f80ccc.png)
+
+> 👩‍💻 Rerun `yarn deploy --reset` whenever you want to deploy new contracts to the frontend. `--reset` parameter makes sure you have new contracts deployed and not reusing existing ones.
 
 ---
 
@@ -59,6 +67,8 @@ uint256 public constant threshold = 1 ether;
 ```
 
 > 👩‍💻 Write your `stake()` function and test it with the `Debug Contracts` tab in the frontend
+
+![Screen Shot 2021-11-19 at 3 33 03 PM](https://user-images.githubusercontent.com/9419140/142688169-bcfcd13d-97ff-46bd-b54c-1cdc14f6c133.png)
 
 #### 🥅 Goals
 
