@@ -62,9 +62,27 @@ const findEventsWhere = async ({ conditions: conditionsArg, limit } = {}) => {
   return findAllEvents({ limit });
 };
 
-const findAllBuilds = async () => {
+const createBuild = build => {
+  return database.collection("builds").add(build);
+};
+
+const findAllBuilds = async (isDraft = false) => {
   const buildsSnapshot = await database.collection("builds").get();
-  return buildsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const allBuilds = buildsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  if (isDraft) {
+    return allBuilds.filter(build => build.isDraft);
+  }
+
+  return allBuilds;
+};
+
+const publishBuild = buildId => {
+  const buildRef = database.collection("builds").doc(buildId);
+  return buildRef.update({ isDraft: null });
+};
+
+const removeBuild = buildId => {
+  return database.collection("builds").doc(buildId).delete();
 };
 
 module.exports = {
@@ -75,5 +93,8 @@ module.exports = {
   createEvent,
   findAllEvents,
   findEventsWhere,
+  createBuild,
   findAllBuilds,
+  publishBuild,
+  removeBuild,
 };

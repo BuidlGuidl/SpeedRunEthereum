@@ -4,7 +4,7 @@ const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const db = require("./services/db");
-const { withAddress, adminOnly } = require("./middlewares/auth");
+const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
 const eventsRoutes = require("./routes/events");
@@ -168,8 +168,8 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
   await db.updateUser(userAddress, updateData);
 }
 
-app.patch("/challenges", adminOnly, async (request, response) => {
-  const { userAddress, challengeId, newStatus, comment, signature } = request.body.params;
+app.patch("/challenges", withRole("admin"), async (request, response) => {
+  const { userAddress, challengeId, newStatus, comment, signature } = request.body;
   const address = request.address;
 
   const verifyOptions = {
@@ -212,7 +212,8 @@ async function getAllChallenges() {
   return allChallenges;
 }
 
-app.get("/challenges", adminOnly, async (request, response) => {
+app.get("/challenges", withRole("admin"), async (request, response) => {
+  console.log("GET /challenges");
   const status = request.query.status;
   const allChallenges = await getAllChallenges();
   if (status == null) {
