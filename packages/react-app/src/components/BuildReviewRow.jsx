@@ -3,12 +3,12 @@ import { Link as RouteLink } from "react-router-dom";
 import { Button, HStack, Link, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 
-export default function BuildReviewRow({ build, isLoading, approveClick, rejectClick, mainnetProvider }) {
+export default function BuildReviewRow({ build, isLoading, approveClick, rejectClick }) {
   return (
     <Tr>
       <Td>
         <Link as={RouteLink} to={`/builders/${build.address}`} pos="relative">
-          <Address address={build.address} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
+          <Address address={build.address} w="12.5" fontSize="16" />
         </Link>
       </Td>
       <Td>{build.name}</Td>

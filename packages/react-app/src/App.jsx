@@ -103,6 +103,7 @@ function App() {
   const [injectedProvider, setInjectedProvider] = useState();
 
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
+  // TODO move the userProvider into the "providers" state, which is sent into the BlockchainProvidersContext
   const userProvider = useUserProvider(injectedProvider);
   // TODO address is derived from userProvider, so we should just send userProvider
   const address = useUserAddress(userProvider);
@@ -193,7 +194,7 @@ function App() {
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/submission-review" exact>
-            <SubmissionReviewView serverUrl={serverUrl} userProvider={userProvider} mainnetProvider={mainnetProvider} />
+            <SubmissionReviewView userProvider={userProvider} mainnetProvider={mainnetProvider} />
           </Route>
         </Switch>
         <ColorModeSwitcher />

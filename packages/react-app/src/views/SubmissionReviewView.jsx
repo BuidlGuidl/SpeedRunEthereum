@@ -18,12 +18,17 @@ import {
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
 import BuildReviewRow from "../components/BuildReviewRow";
 import useCustomColorModes from "../hooks/useCustomColorModes";
-import { getBuildReviewSignMessage, getDraftBuilds, patchBuildReview } from "../data/api";
+import {
+  getBuildReviewSignMessage,
+  getChallengeReviewSignMessage,
+  getDraftBuilds,
+  getSubmittedChallenges,
+  patchBuildReview,
+  patchChallengeReview,
+} from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
 
-// TODO we could remove the dependency on serverUrl by moving api calls into src/data/api.js
-// TODO we could remove the dependency on mainnetProvider by using the context (see BuilderRow.jsx)
-export default function SubmissionReviewView({ serverUrl, userProvider, mainnetProvider }) {
+export default function SubmissionReviewView({ userProvider }) {
   const address = useUserAddress(userProvider);
   const [challenges, setChallenges] = React.useState([]);
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
@@ -35,16 +40,19 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoadingChallenges(true);
-    console.log("getting challenges", address);
-    const fetchedChallenges = await axios.get(serverUrl + `/challenges`, {
-      params: { status: "SUBMITTED" },
-      headers: {
-        address,
-      },
-    });
-    setChallenges(fetchedChallenges.data);
+    let fetchedChallenges;
+    try {
+      fetchedChallenges = await getSubmittedChallenges(address);
+    } catch (error) {
+      toast({
+        description: "There was an error getting the submitted challenges. Please try again",
+        status: "error",
+        variant: toastVariant,
+      });
+    }
+    setChallenges(fetchedChallenges);
     setIsLoadingChallenges(false);
-  }, [address, serverUrl]);
+  }, [address]);
 
   const fetchSubmittedBuilds = useCallback(async () => {
     setIsLoadingDraftBuilds(true);
@@ -67,7 +75,7 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
       return;
     }
     fetchSubmittedChallenges();
-  }, [serverUrl, address, fetchSubmittedChallenges]);
+  }, [address, fetchSubmittedChallenges]);
 
   useEffect(() => {
     if (!address) {
@@ -79,24 +87,13 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
     try {
-      const signMessageResponse = await axios.get(serverUrl + `/sign-message`, {
-        params: {
-          messageId: "challengeReview",
-          address,
-          userAddress,
-          challengeId,
-          newStatus: reviewType,
-        },
-      });
-
-      signMessage = JSON.stringify(signMessageResponse.data);
+      signMessage = await getChallengeReviewSignMessage(address, userAddress, challengeId, reviewType);
     } catch (error) {
       toast({
         description: " Sorry, the server is overloaded. 🧯🚒🔥",
         status: "error",
         variant: toastVariant,
       });
-      console.error(error);
       return;
     }
 
@@ -114,22 +111,19 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
     }
 
     try {
-      await axios.patch(
-        serverUrl + `/challenges`,
-        {
-          params: { userAddress, challengeId, comment, newStatus: reviewType, signature },
-        },
-        {
-          headers: {
-            address,
-          },
-        },
-      );
+      await patchChallengeReview(address, signature, { userAddress, challengeId, newStatus: reviewType, comment });
     } catch (error) {
-      console.error(error);
+      if (error.status === 401) {
+        toast({
+          status: "error",
+          description: "Submission Error. You don't have the required role.",
+          variant: toastVariant,
+        });
+        return;
+      }
       toast({
-        description: "Can't submit the review",
         status: "error",
+        description: "Submission Error. Please try again.",
         variant: toastVariant,
       });
       return;
@@ -152,7 +146,6 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
         status: "error",
         variant: toastVariant,
       });
-      console.error(error);
       return;
     }
 
@@ -165,7 +158,6 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
         status: "error",
         variant: toastVariant,
       });
-      console.error(error);
       return;
     }
 
@@ -219,16 +211,27 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
           </Tr>
         </Thead>
         <Tbody>
-          {challenges.map(challenge => (
-            <ChallengeReviewRow
-              key={`${challenge.userAddress}_${challenge.id}`}
-              challenge={challenge}
-              isLoading={isLoadingChallenges}
-              approveClick={handleSendChallengeReview("ACCEPTED")}
-              rejectClick={handleSendChallengeReview("REJECTED")}
-              mainnetProvider={mainnetProvider}
-            />
-          ))}
+          {!challenges || challenges.length === 0 ? (
+            <Tr>
+              <Td colSpan={6}>
+                <Text color={secondaryFontColor} textAlign="center" mb={4}>
+                  <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
+                  <br />
+                  All challenges have been reviewed
+                </Text>
+              </Td>
+            </Tr>
+          ) : (
+            challenges.map(challenge => (
+              <ChallengeReviewRow
+                key={`${challenge.userAddress}_${challenge.id}`}
+                challenge={challenge}
+                isLoading={isLoadingChallenges}
+                approveClick={handleSendChallengeReview("ACCEPTED")}
+                rejectClick={handleSendChallengeReview("REJECTED")}
+              />
+            ))
+          )}
         </Tbody>
       </Table>
       <Heading as="h2" size="lg" mt={6} mb={4}>
@@ -245,9 +248,9 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
           </Tr>
         </Thead>
         <Tbody>
-          {draftBuilds.length === 0 ? (
+          {!draftBuilds || draftBuilds.length === 0 ? (
             <Tr>
-              <Td colspan={5}>
+              <Td colSpan={5}>
                 <Text color={secondaryFontColor} textAlign="center" mb={4}>
                   <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
                   <br />

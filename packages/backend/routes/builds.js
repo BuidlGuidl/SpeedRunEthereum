@@ -9,7 +9,7 @@ const router = express.Router();
 /**
  * Get all Builds.
  */
-router.get("/", async (req, res) => {
+router.get("/", withRole("admin"), async (req, res) => {
   console.log("/builds");
   const isDraft = req.query.isDraft;
   const allBuilds = await db.findAllBuilds(isDraft);

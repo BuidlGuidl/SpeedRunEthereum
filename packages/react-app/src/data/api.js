@@ -67,6 +67,68 @@ export const postBuildSubmit = async (address, signature, { buildUrl, desc, imag
   }
 };
 
+export const getSubmittedChallenges = async address => {
+  try {
+    const response = await axios.get(`${serverUrl}/challenges`, {
+      params: { status: "SUBMITTED" },
+      headers: {
+        address,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log("error fetching submitted challenges", err);
+    throw new Error("Error fetching submitted challenges");
+  }
+};
+
+export const getChallengeReviewSignMessage = async (reviewerAddress, userAddress, challengeId, reviewType) => {
+  try {
+    const signMessageResponse = await axios.get(`${serverUrl}/sign-message`, {
+      params: {
+        messageId: "challengeReview",
+        address: reviewerAddress,
+        userAddress,
+        challengeId,
+        newStatus: reviewType,
+      },
+    });
+
+    return JSON.stringify(signMessageResponse.data);
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Couldn't get the signature message`);
+  }
+};
+
+export const patchChallengeReview = async (address, signature, { userAddress, challengeId, newStatus, comment }) => {
+  try {
+    await axios.patch(
+      `${serverUrl}/challenges`,
+      {
+        userAddress,
+        challengeId,
+        comment,
+        newStatus,
+        signature,
+      },
+      {
+        headers: {
+          address,
+        },
+      },
+    );
+  } catch (error) {
+    if (error.request?.status === 401) {
+      const WrongRoleError = new Error(`User doesn't have builder role or higher`);
+      WrongRoleError.status = 401;
+      throw WrongRoleError;
+    }
+    console.error(error);
+    throw new Error(`Couldn't save the build submission on the server`);
+  }
+};
+
 export const getBuildReviewSignMessage = async (reviewerAddress, buildId, reviewType) => {
   try {
     const signMessageResponse = await axios.get(`${serverUrl}/sign-message`, {
