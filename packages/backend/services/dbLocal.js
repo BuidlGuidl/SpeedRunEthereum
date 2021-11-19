@@ -123,7 +123,7 @@ const publishBuild = buildId => {
 };
 
 const removeBuild = buildId => {
-  delete database.builds[buildId];
+  database.builds = [...database.builds.slice(0, buildId), ...database.builds.slice(buildId + 1)];
 
   persist();
 };
