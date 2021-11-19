@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react";
-import axios from "axios";
 import { useUserAddress } from "eth-hooks";
 import {
   useColorModeValue,
@@ -52,7 +51,7 @@ export default function SubmissionReviewView({ userProvider }) {
     }
     setChallenges(fetchedChallenges);
     setIsLoadingChallenges(false);
-  }, [address]);
+  }, [address, toastVariant, toast]);
 
   const fetchSubmittedBuilds = useCallback(async () => {
     setIsLoadingDraftBuilds(true);
@@ -68,7 +67,7 @@ export default function SubmissionReviewView({ userProvider }) {
     }
     setDraftBuilds(fetchedDraftBuilds);
     setIsLoadingDraftBuilds(false);
-  });
+  }, [address, toastVariant, toast]);
 
   useEffect(() => {
     if (!address) {
@@ -82,7 +81,7 @@ export default function SubmissionReviewView({ userProvider }) {
       return;
     }
     fetchSubmittedBuilds();
-  }, [address]);
+  }, [address, fetchSubmittedBuilds]);
 
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;

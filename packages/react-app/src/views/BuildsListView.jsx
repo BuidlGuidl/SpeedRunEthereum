@@ -143,7 +143,7 @@ export default function BuildsListView({ userProvider }) {
       </Button>
       <SimpleGrid columns={[1, null, 2, null, 3]} spacing={6} pb={20}>
         {builds.map(build => (
-          <BuildCard build={build} key={build.name} />
+          <BuildCard build={build} key={build.id} />
         ))}
       </SimpleGrid>
       <Modal isOpen={isOpen} onClose={onClose}>
