@@ -4,7 +4,7 @@ import { Button, HStack, Link, Td, Tr, Textarea } from "@chakra-ui/react";
 import { challengeInfo } from "../data/challenges";
 import Address from "./Address";
 
-export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick, mainnetProvider }) {
+export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick }) {
   const [comment, setComment] = React.useState("");
 
   if (!challengeInfo[challenge.id]) {
@@ -12,10 +12,10 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
   }
 
   return (
-    <Tr key={challenge.userAddress + challenge.id}>
+    <Tr>
       <Td>
         <Link as={RouteLink} to={`/builders/${challenge.userAddress}`} pos="relative">
-          <Address address={challenge.userAddress} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
+          <Address address={challenge.userAddress} w="12.5" fontSize="16" />
         </Link>
       </Td>
       <Td>

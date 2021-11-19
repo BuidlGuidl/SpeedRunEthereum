@@ -106,7 +106,7 @@ const createBuild = build => {
 };
 
 const findAllBuilds = (isDraft = false) => {
-  const allBuilds = database.builds.map((build, index) => ({ id: index, ...build }));
+  const allBuilds = database.builds.map((build, index) => ({ id: index.toString(), ...build }));
   if (isDraft) {
     return allBuilds.filter(build => build.isDraft);
   }
@@ -123,7 +123,7 @@ const publishBuild = buildId => {
 };
 
 const removeBuild = buildId => {
-  delete database.builds[buildId];
+  database.builds = [...database.builds.slice(0, buildId), ...database.builds.slice(buildId + 1)];
 
   persist();
 };

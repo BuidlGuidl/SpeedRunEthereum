@@ -60,14 +60,15 @@ router.post("/", withRole("builder"), async (request, response) => {
  * Publish / Delete a build
  */
 router.patch("/", withRole("admin"), async (request, response) => {
-  const { buildId, newStatus, signature } = request.body.params;
+  console.log("PATCH /builds");
+  const { buildId, newStatus, signature } = request.body;
   const address = request.address;
 
   const verifyOptions = {
     messageId: "buildReview",
     address,
     buildId,
-    newStatus
+    newStatus,
   };
 
   if (!verifySignature(signature, verifyOptions)) {

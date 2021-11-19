@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { HStack } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import { useLookupAddress } from "../hooks";
+import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
 
 /*
   ~ What it does? ~
@@ -26,10 +27,14 @@ import { useLookupAddress } from "../hooks";
   - Provide fontSize={fontSize} to change the size of address text
 */
 
-export default function Address(props) {
-  const address = props.value || props.address;
+// INFO: Address used to have ensProvider as prop. That's no longer needed.
+export default function Address({ value, address: sentAddress, size, w, fontSize }) {
+  const address = value || sentAddress;
 
-  const ens = useLookupAddress(props.ensProvider, address);
+  const mainnetProviderData = useContext(BlockchainProvidersContext).mainnet;
+  const mainnetProvider = mainnetProviderData.provider;
+
+  const ens = useLookupAddress(mainnetProvider, address);
 
   if (!address) {
     return <span>Loading...</span>;
@@ -39,21 +44,21 @@ export default function Address(props) {
 
   if (ens && ens.indexOf("0x") < 0) {
     displayAddress = ens;
-  } else if (props.size === "short") {
+  } else if (size === "short") {
     displayAddress += "..." + address.substr(-4);
-  } else if (props.size === "long") {
+  } else if (size === "long") {
     displayAddress = address;
   }
 
   return (
     <HStack spacing="20px">
       <span style={{ verticalAlign: "middle" }}>
-        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={props.w ?? 12.5} borderRadius="md" />
+        <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={w ?? 12.5} borderRadius="md" />
       </span>
       <span
         style={{
           verticalAlign: "middle",
-          fontSize: props.fontSize ? props.fontSize : 28,
+          fontSize: fontSize ?? 28,
           fontWeight: "bold",
         }}
       >

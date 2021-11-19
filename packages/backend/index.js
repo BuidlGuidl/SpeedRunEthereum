@@ -169,7 +169,7 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
 }
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {
-  const { userAddress, challengeId, newStatus, comment, signature } = request.body.params;
+  const { userAddress, challengeId, newStatus, comment, signature } = request.body;
   const address = request.address;
 
   const verifyOptions = {
@@ -213,6 +213,7 @@ async function getAllChallenges() {
 }
 
 app.get("/challenges", withRole("admin"), async (request, response) => {
+  console.log("GET /challenges");
   const status = request.query.status;
   const allChallenges = await getAllChallenges();
   if (status == null) {
