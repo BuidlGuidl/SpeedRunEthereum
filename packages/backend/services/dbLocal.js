@@ -106,7 +106,7 @@ const createBuild = build => {
 };
 
 const findAllBuilds = (isDraft = false) => {
-  const allBuilds = database.builds.map((build, index) => ({ id: index, ...build }));
+  const allBuilds = database.builds.map((build, index) => ({ id: index.toString(), ...build }));
   if (isDraft) {
     return allBuilds.filter(build => build.isDraft);
   }
