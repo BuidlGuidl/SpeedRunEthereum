@@ -74,14 +74,16 @@ export default function SubmissionReviewView({ userProvider }) {
       return;
     }
     fetchSubmittedChallenges();
-  }, [address, fetchSubmittedChallenges]);
+    // eslint-disable-next-line
+  }, [address]);
 
   useEffect(() => {
     if (!address) {
       return;
     }
     fetchSubmittedBuilds();
-  }, [address, fetchSubmittedBuilds]);
+    // eslint-disable-next-line
+  }, [address]);
 
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
