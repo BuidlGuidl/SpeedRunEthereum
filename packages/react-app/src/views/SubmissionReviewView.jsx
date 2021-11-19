@@ -25,6 +25,9 @@ export default function SubmissionReviewView({ serverUrl, address, userProvider,
   }, [address, serverUrl]);
 
   useEffect(() => {
+    if (!address) {
+      return;
+    }
     fetchSubmittedChallenges();
   }, [serverUrl, address, fetchSubmittedChallenges]);
 

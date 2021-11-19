@@ -25,7 +25,7 @@ const withRole = role => {
       const user = await db.findUserByAddress(req.address);
       // ToDo. Role utils: hasBuilderRoles or atLeastBuilder, etc.
       // For now, bypassing admin
-      if (user.data.role !== "admin" && user.data.role !== role) {
+      if (!user.exists || (user.data.role !== "admin" && user.data.role !== role)) {
         return res.status(401).send(`Not a ${role}`);
       }
       next();
