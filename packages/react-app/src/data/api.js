@@ -67,6 +67,46 @@ export const postBuildSubmit = async (address, signature, { buildUrl, desc, imag
   }
 };
 
+export const getBuildReviewSignMessage = async (reviewerAddress, buildId, reviewType) => {
+  try {
+    const signMessageResponse = await axios.get(`${serverUrl}/sign-message`, {
+      params: {
+        messageId: "buildReview",
+        address: reviewerAddress,
+        buildId,
+        newStatus: reviewType,
+      },
+    });
+
+    return JSON.stringify(signMessageResponse.data);
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Couldn't get the signature message`);
+  }
+};
+
+export const patchBuildReview = async (address, signature, { userAddress, buildId, newStatus }) => {
+  try {
+    await axios.patch(
+      `${serverUrl}/builds`,
+      { userAddress, buildId, newStatus, signature },
+      {
+        headers: {
+          address,
+        },
+      },
+    );
+  } catch (error) {
+    if (error.request?.status === 401) {
+      const WrongRoleError = new Error(`User doesn't have builder role or higher`);
+      WrongRoleError.status = 401;
+      throw WrongRoleError;
+    }
+    console.error(error);
+    throw new Error(`Couldn't save the build submission on the server`);
+  }
+};
+
 export const getDraftBuilds = async address => {
   try {
     const response = await axios.get(`${serverUrl}/builds`, {

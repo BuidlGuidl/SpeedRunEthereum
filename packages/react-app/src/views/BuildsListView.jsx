@@ -97,7 +97,7 @@ export default function BuildsListView({ userProvider }) {
     }
 
     try {
-      signMessage = await postBuildSubmit(address, signature, {
+      await postBuildSubmit(address, signature, {
         buildUrl,
         desc: description,
         image: imageUrl,

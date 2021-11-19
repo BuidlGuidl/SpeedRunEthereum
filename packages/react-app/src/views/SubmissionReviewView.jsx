@@ -18,7 +18,7 @@ import {
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
 import BuildReviewRow from "../components/BuildReviewRow";
 import useCustomColorModes from "../hooks/useCustomColorModes";
-import { getDraftBuilds } from "../data/api";
+import { getBuildReviewSignMessage, getDraftBuilds, patchBuildReview } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
 
 // TODO we could remove the dependency on serverUrl by moving api calls into src/data/api.js
@@ -145,16 +145,7 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
   const handleSendBuildReview = reviewType => async (userAddress, buildId) => {
     let signMessage;
     try {
-      const signMessageResponse = await axios.get(serverUrl + `/sign-message`, {
-        params: {
-          messageId: "buildReview",
-          address, // reviewer address
-          buildId,
-          newStatus: reviewType,
-        },
-      });
-
-      signMessage = JSON.stringify(signMessageResponse.data);
+      signMessage = await getBuildReviewSignMessage(address, buildId, reviewType);
     } catch (error) {
       toast({
         description: " Sorry, the server is overloaded. 🧯🚒🔥",
@@ -179,24 +170,24 @@ export default function SubmissionReviewView({ serverUrl, userProvider, mainnetP
     }
 
     try {
-      await axios.patch(
-        serverUrl + `/builds`,
-        { userAddress, buildId, newStatus: reviewType, signature },
-        {
-          headers: {
-            address,
-          },
-        },
-      );
+      await patchBuildReview(address, signature, { userAddress, buildId, newStatus: reviewType });
     } catch (error) {
-      console.error(error);
+      if (error.status === 401) {
+        toast({
+          status: "error",
+          description: "Submission Error. You don't have the required role.",
+          variant: toastVariant,
+        });
+        return;
+      }
       toast({
-        description: "Can't submit the review",
         status: "error",
+        description: "Submission Error. Please try again.",
         variant: toastVariant,
       });
       return;
     }
+
     toast({
       description: "Review submitted successfully",
       status: "success",
