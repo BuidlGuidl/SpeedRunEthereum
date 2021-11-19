@@ -20,8 +20,8 @@
 ### Checkpoint 0: 📦 install 📚
 
 ```bash
-git clone https://github.com/scaffold-eth/scaffold-eth-challenges challenge-2-token-vendor
-cd challenge-2-token-vendor
+git clone https://github.com/scaffold-eth/scaffold-eth-challenges app
+cd app
 git checkout challenge-2-token-vendor
 yarn install
 ```
@@ -36,13 +36,21 @@ You'll have three terminals up for:
 
 `yarn chain` (harthat backend)
 
+![Screen Shot 2021-11-19 at 3 27 57 PM](https://user-images.githubusercontent.com/9419140/142687624-425e49dd-6606-4a46-9afb-0a9a8c34061f.png)
+
 `yarn start` (react app frontend)
+
+![Screen Shot 2021-11-19 at 3 26 39 PM](https://user-images.githubusercontent.com/9419140/142687526-8141f56e-d4fb-475c-afb0-5517f8e44143.png)
 
 `yarn deploy` (to compile, deploy, and publish your contracts to the frontend)
 
+![Screen Shot 2021-11-19 at 3 28 39 PM](https://user-images.githubusercontent.com/9419140/142687711-5d205eba-434e-4dae-9142-ccb6fef8bb83.png)
+
 > 👀 Visit your frontend at http://localhost:3000
 
-> 👩‍💻 Rerun `yarn deploy --reset` whenever you want to deploy new contracts to the frontend.
+![Screen Shot 2021-11-19 at 4 37 15 PM](https://user-images.githubusercontent.com/9419140/142694753-68b3477e-e342-4e1e-8fb1-9de23e9af387.png)
+
+> 👩‍💻 Rerun `yarn deploy --reset` whenever you want to deploy new contracts to the frontend. `--reset` parameter makes sure you have new contracts deployed and not reusing existing ones.
 
 > ignore any warnings, we'll get to that...
 
