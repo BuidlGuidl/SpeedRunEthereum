@@ -66,3 +66,18 @@ export const postBuildSubmit = async (address, signature, { buildUrl, desc, imag
     throw new Error(`Couldn't save the build submission on the server`);
   }
 };
+
+export const getDraftBuilds = async address => {
+  try {
+    const response = await axios.get(`${serverUrl}/builds`, {
+      params: { isDraft: true },
+      headers: {
+        address,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log("error fetching draft builds", err);
+    throw new Error("Error fetching draft builds");
+  }
+};

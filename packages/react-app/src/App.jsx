@@ -193,12 +193,7 @@ function App() {
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/submission-review" exact>
-            <SubmissionReviewView
-              serverUrl={serverUrl}
-              address={address}
-              userProvider={userProvider}
-              mainnetProvider={mainnetProvider}
-            />
+            <SubmissionReviewView serverUrl={serverUrl} userProvider={userProvider} mainnetProvider={mainnetProvider} />
           </Route>
         </Switch>
         <ColorModeSwitcher />

@@ -12,7 +12,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
   }
 
   return (
-    <Tr key={challenge.userAddress + challenge.id}>
+    <Tr>
       <Td>
         <Link as={RouteLink} to={`/builders/${challenge.userAddress}`} pos="relative">
           <Address address={challenge.userAddress} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
