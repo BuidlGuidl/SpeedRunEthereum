@@ -113,8 +113,9 @@ When you have completed the challenge go ahead and select "Submit Challenge"
 You will enter the deployed url and your branch url to the code on Github.
 
 ---
+![Screen Shot 2021-11-20 at 9 56 44 AM](https://user-images.githubusercontent.com/9419140/142731012-bad28be5-9e09-43a6-8443-eb3040a22fb6.png)
 
-Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
+Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins, you will see the Admin badge). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
 >In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
 
 ![Screen Shot 2021-11-20 at 9 38 49 AM](https://user-images.githubusercontent.com/9419140/142730333-b8c618a7-673d-468f-b861-6c8530c60b4b.png)
