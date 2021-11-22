@@ -90,12 +90,12 @@ export default function BaseQRPunkBlockie({
       style={{
         width: PUNK_SIZE * scale,
         height: PUNK_SIZE * scale,
-        margin: 0,
         display: "block",
         position: "relative",
         overflow: "hidden",
         ...extraStyle,
       }}
+      margin={0}
       {...otherProps}
     >
       <div

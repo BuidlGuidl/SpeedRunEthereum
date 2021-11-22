@@ -22,50 +22,58 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
   const hasProfileLinks = builder?.profileLinks ? builder.profileLinks.length !== 0 : false;
 
   return (
-    <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} justify="center" p={4} pb={6} maxW={60}>
-      <BuilderProfileCardSkeleton isLoaded={!!builder}>
-        {() => (
-          /* delay execution */
-          <>
-            <Link as={RouteLink} to={`/builders/${builder.id}`}>
-              <QRPunkBlockie withQr={false} address={builder.id?.toLowerCase()} w={52} borderRadius="lg" />
-            </Link>
-            <Flex alignContent="center" direction="column" mt={4}>
-              {hasEns ? (
-                <>
-                  <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-                    {ens}
-                  </Text>
-                  <Text textAlign="center" mb={8} color={secondaryFontColor}>
-                    {shortAddress}
-                  </Text>
-                </>
-              ) : (
-                <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>
+    <BuilderProfileCardSkeleton isLoaded={!!builder}>
+      {() => (
+        /* delay execution */
+        <Flex
+          borderRadius="lg"
+          borderColor={borderColor}
+          borderWidth={1}
+          justify={{ base: "space-around", xl: "center" }}
+          direction={{ base: "row", xl: "column" }}
+          p={4}
+          pb={6}
+          maxW={{ base: "full", lg: "50%", "2xl": 60 }}
+          margin="auto"
+        >
+          <Link as={RouteLink} to={`/builders/${builder.id}`}>
+            <QRPunkBlockie withQr={false} address={builder.id?.toLowerCase()} w={52} borderRadius="lg" margin="auto" />
+          </Link>
+          <Flex alignContent="center" direction="column" mt={4}>
+            {hasEns ? (
+              <>
+                <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+                  {ens}
+                </Text>
+                <Text textAlign="center" mb={8} color={secondaryFontColor}>
                   {shortAddress}
                 </Text>
-              )}
-              <Divider mb={6} />
-              {hasProfileLinks && (
-                <Flex mb={4} justifyContent="space-evenly" alignItems="center">
-                  {builder.profileLinks?.map(({ type, url }) => {
-                    const Icon = getIconForProfileLinkType(type);
-                    return (
-                      <Link href={url}>
-                        <Icon />
-                      </Link>
-                    );
-                  })}
-                </Flex>
-              )}
-              <Text textAlign="center" color={secondaryFontColor}>
-                Joined September 2021
+              </>
+            ) : (
+              <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>
+                {shortAddress}
               </Text>
-            </Flex>
-          </>
-        )}
-      </BuilderProfileCardSkeleton>
-    </Flex>
+            )}
+            <Divider mb={6} />
+            {hasProfileLinks && (
+              <Flex mb={4} justifyContent="space-evenly" alignItems="center">
+                {builder.profileLinks?.map(({ type, url }) => {
+                  const Icon = getIconForProfileLinkType(type);
+                  return (
+                    <Link href={url}>
+                      <Icon />
+                    </Link>
+                  );
+                })}
+              </Flex>
+            )}
+            <Text textAlign="center" color={secondaryFontColor}>
+              Joined September 2021
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+    </BuilderProfileCardSkeleton>
   );
 };
 
