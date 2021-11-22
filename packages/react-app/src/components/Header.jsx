@@ -19,11 +19,23 @@ export default function Header({
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
+  const userIsRegistered = userRole && USER_ROLES.anonymous !== userRole;
 
   return (
-    <Box borderBottom="1px" borderColor={borderColor} mb={10} px={{ base: 4, lg: 8 }} h={{ base: "120px", lg: "80px" }}>
-      <Flex align={{ base: "start", lg: "center" }} h="full" fontWeight="semibold" pos="relative">
-        <Flex shrink={0} mr={9} mt={{ base: 5, lg: 0 }}>
+    <Box
+      borderBottom="1px"
+      borderColor={borderColor}
+      mb={10}
+      px={{ base: 4, lg: 8 }}
+      h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
+    >
+      <Flex
+        align={{ base: userIsRegistered ? "start" : "center", lg: "center" }}
+        h="full"
+        fontWeight="semibold"
+        pos="relative"
+      >
+        <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 5 : 0, lg: 0 }}>
           <NavLink to="/" exact>
             <span role="img" aria-label="castle icon">
               🏃‍♀️
@@ -42,7 +54,7 @@ export default function Header({
           top="80px"
           left={0}
         >
-          {USER_ROLES.anonymous !== userRole && (
+          {userRole && USER_ROLES.anonymous !== userRole && (
             <chakra.li key="/portfolio" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
               <NavLink
                 to="/portfolio"
@@ -97,7 +109,7 @@ export default function Header({
           )}
         </HStack>
         <Spacer />
-        <Box mt={{ base: 3, lg: 0 }}>
+        <Box mt={{ base: userIsRegistered ? 3 : 0, lg: 0 }}>
           <Account
             address={address}
             connectText="Connect Wallet"
