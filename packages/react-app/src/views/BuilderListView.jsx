@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import { Box, Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import BuilderRow from "../components/BuilderRow";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
@@ -36,25 +36,27 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
           You can fund Eth development sending Eth to any stream.
         </Text>
       </Container>
-      <Table>
-        <Thead>
-          <Tr color={secondaryFontColor}>
-            <Th>Builder</Th>
-            <Th isNumeric>Builds</Th>
-            <Th isNumeric>Challenges</Th>
-            <Th isNumeric>Stream</Th>
-            <Th isNumeric>Allowance</Th>
-            <Th isNumeric>Available</Th>
-            <Th textAlign="center">Role</Th>
-            <Th />
-          </Tr>
-        </Thead>
-        <Tbody>
-          {builders.map(builder => (
-            <BuilderRow key={builder.id} builder={builder} mainnetProvider={mainnetProvider} />
-          ))}
-        </Tbody>
-      </Table>
+      <Box overflowX="auto">
+        <Table>
+          <Thead>
+            <Tr color={secondaryFontColor}>
+              <Th>Builder</Th>
+              <Th isNumeric>Builds</Th>
+              <Th isNumeric>Challenges</Th>
+              <Th isNumeric>Stream</Th>
+              <Th isNumeric>Allowance</Th>
+              <Th isNumeric>Available</Th>
+              <Th textAlign="center">Role</Th>
+              <Th />
+            </Tr>
+          </Thead>
+          <Tbody>
+            {builders.map(builder => (
+              <BuilderRow key={builder.id} builder={builder} mainnetProvider={mainnetProvider} />
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
     </Container>
   );
 }
