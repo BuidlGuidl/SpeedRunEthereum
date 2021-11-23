@@ -59,11 +59,11 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
 
   return (
     <Container maxW="container.xl">
-      <SimpleGrid gap={14} columns={4}>
+      <SimpleGrid gap={14} columns={{ base: 1, "2xl": 4 }}>
         <GridItem colSpan={1}>
           <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} />
         </GridItem>
-        <GridItem colSpan={3}>
+        <GridItem colSpan={{ base: 1, "2xl": 3 }}>
           <HStack spacing={4} mb={8}>
             <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} p={4} w="full" justify="space-between">
               <Flex bg={iconBgColor} borderRadius="lg" w={12} h={12} justify="center" align="center">
@@ -105,70 +105,72 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
             <Spacer />
           </Flex>
           {challenges ? (
-            <Table>
-              <TableCaption>
-                <Button colorScheme="blue" onClick={onOpen}>
-                  Start a challenge
-                </Button>
-              </TableCaption>
-              <Thead>
-                <Tr>
-                  <Th w="full">Name</Th>
-                  <Th>Code</Th>
-                  <Th>Live Demo</Th>
-                  <Th>Status</Th>
-                  <Th>Date</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {challenges.map(([challengeId, lastSubmission]) => {
-                  if (!challengeInfo[challengeId]) {
-                    return null;
-                  }
-                  return (
-                    <Tr>
-                      <Td w="full">
-                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700">
-                          {challengeInfo[challengeId].label}
-                        </Link>
-                      </Td>
-                      <Td>
-                        {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
-                          <Link
-                            href={lastSubmission.branchUrl}
-                            color="teal.500"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Code
+            <Box overflowX="auto">
+              <Table>
+                <TableCaption>
+                  <Button colorScheme="blue" onClick={onOpen}>
+                    Start a challenge
+                  </Button>
+                </TableCaption>
+                <Thead>
+                  <Tr>
+                    <Th w="full">Name</Th>
+                    <Th>Code</Th>
+                    <Th>Live Demo</Th>
+                    <Th>Status</Th>
+                    <Th>Date</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {challenges.map(([challengeId, lastSubmission]) => {
+                    if (!challengeInfo[challengeId]) {
+                      return null;
+                    }
+                    return (
+                      <Tr>
+                        <Td w="full">
+                          <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700">
+                            {challengeInfo[challengeId].label}
                           </Link>
-                        ) : (
-                          <Center>-</Center>
-                        )}
-                      </Td>
-                      <Td>
-                        {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
-                          <Link
-                            href={lastSubmission.deployedUrl}
-                            color="teal.500"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Demo
-                          </Link>
-                        ) : (
-                          <Center>-</Center>
-                        )}
-                      </Td>
-                      <Td>
-                        <ChallengeStatusTag status={lastSubmission.status} />
-                      </Td>
-                      <Td whiteSpace="nowrap">2021 Aug 20</Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
+                        </Td>
+                        <Td>
+                          {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
+                            <Link
+                              href={lastSubmission.branchUrl}
+                              color="teal.500"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Code
+                            </Link>
+                          ) : (
+                            <Center>-</Center>
+                          )}
+                        </Td>
+                        <Td>
+                          {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
+                            <Link
+                              href={lastSubmission.deployedUrl}
+                              color="teal.500"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Demo
+                            </Link>
+                          ) : (
+                            <Center>-</Center>
+                          )}
+                        </Td>
+                        <Td>
+                          <ChallengeStatusTag status={lastSubmission.status} />
+                        </Td>
+                        <Td whiteSpace="nowrap">2021 Aug 20</Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </Box>
           ) : (
             <Flex
               justify="center"

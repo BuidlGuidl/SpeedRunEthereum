@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { useUserAddress } from "eth-hooks";
 import {
   useColorModeValue,
+  Box,
   Container,
   Heading,
   Icon,
@@ -200,7 +201,8 @@ export default function SubmissionReviewView({ userProvider }) {
       <Heading as="h2" size="lg" mt={6} mb={4}>
         Challenges
       </Heading>
-      <Table>
+      <Box overflowX="auto">
+        <Table>
         <Thead>
           <Tr>
             <Th>Builder</Th>
@@ -235,10 +237,12 @@ export default function SubmissionReviewView({ userProvider }) {
           )}
         </Tbody>
       </Table>
+      </Box>
       <Heading as="h2" size="lg" mt={6} mb={4}>
         Builds
       </Heading>
-      <Table mb={4}>
+      <Box overflowX="auto">
+        <Table mb={4}>
         <Thead>
           <Tr>
             <Th>Builder</Th>
@@ -272,6 +276,7 @@ export default function SubmissionReviewView({ userProvider }) {
           )}
         </Tbody>
       </Table>
+      </Box>
     </Container>
   );
 }
