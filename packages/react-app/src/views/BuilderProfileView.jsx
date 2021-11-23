@@ -59,11 +59,11 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
 
   return (
     <Container maxW="container.xl">
-      <SimpleGrid gap={14} columns={{ base: 1, "2xl": 4 }}>
+      <SimpleGrid gap={14} columns={{ base: 1, xl: 4 }}>
         <GridItem colSpan={1}>
           <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} />
         </GridItem>
-        <GridItem colSpan={{ base: 1, "2xl": 3 }}>
+        <GridItem colSpan={{ base: 1, xl: 3 }}>
           <HStack spacing={4} mb={8}>
             <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} p={4} w="full" justify="space-between">
               <Flex bg={iconBgColor} borderRadius="lg" w={12} h={12} justify="center" align="center">

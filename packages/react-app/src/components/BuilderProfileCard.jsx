@@ -33,7 +33,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
           direction={{ base: "row", xl: "column" }}
           p={4}
           pb={6}
-          maxW={{ base: "full", lg: "50%", "2xl": 60 }}
+          maxW={{ base: "full", lg: "50%", xl: 60 }}
           margin="auto"
         >
           <Link as={RouteLink} to={`/builders/${builder.id}`}>
