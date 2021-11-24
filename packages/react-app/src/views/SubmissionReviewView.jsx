@@ -28,7 +28,7 @@ import {
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
 
-export default function SubmissionReviewView({ userProvider, writeContracts, tx, injectedProvider }) {
+export default function SubmissionReviewView({ userProvider, writeContracts, tx }) {
   const address = useUserAddress(userProvider);
   const [challenges, setChallenges] = React.useState([]);
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
@@ -86,6 +86,7 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx,
     // eslint-disable-next-line
   }, [address]);
 
+  //Handle mint, to be merged into Approve...
   const handleMint = async ( userAddress, ...props) => {
     try {
       const mintTx = await tx(writeContracts.BuidlBadges.mint(userAddress, "0"));

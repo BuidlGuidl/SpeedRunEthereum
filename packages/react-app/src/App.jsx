@@ -116,6 +116,7 @@ function App() {
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
   // TODO move the userProvider into the "providers" state, which is sent into the BlockchainProvidersContext
   const userProvider = useUserProvider(injectedProvider, localProvider);
+
   // TODO address is derived from userProvider, so we should just send userProvider
   const address = useUserAddress(userProvider);
 
@@ -145,21 +146,21 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  const localChainId = localProvider && localProvider._network && localProvider._network.chainId;
-
   // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
 
+  // Gets gas price for tx
   const gasPrice = useGasPrice(targetNetwork, "fast");
 
+  // Load external Badge Contract on Matic
   const contractConfig = { deployedContracts: deployedContracts || {}, externalContracts: externalContracts || {} };
 
-  // Load in your local 📝 contract and read a value from it:
-
+  
+  // Create signer for tx
   const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
-
   const userSigner = userProviderAndSigner.signer;
 
-  useEffect(() => {
+  //Update signer... actually not sure if this is working
+  /* useEffect(() => {
     async function getAddress() {
       if (userSigner) {
         const newAddress = await userSigner.getAddress();
@@ -167,16 +168,16 @@ function App() {
       }
     }
     getAddress();
-  }, [userSigner]);
+  }, [userSigner]); */
 
   // Load in your local 📝 contract and read a value from it:
   const readContracts = useContractLoader(userProvider, contractConfig);
 
-  // If you want to make 🔐 write transactions to your contracts, use the userSigner:
+  // Use userSigner to sign our mint Tx.
   const writeContracts = useContractLoader(userSigner, contractConfig, 137);
   console.log(writeContracts)
 
-
+  // TRANSACTOOOOR
   const tx = Transactor(injectedProvider, gasPrice);
 
 
