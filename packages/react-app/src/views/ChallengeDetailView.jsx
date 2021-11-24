@@ -37,7 +37,9 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const challenge = challengeInfo[challengeId];
 
-  // Fetch challenge description
+  // Fetch challenge description from local files.
+  // In the future, this might be a fetch to the repos/branchs README
+  // (Ideally fetched at build time)
   useEffect(() => {
     import(`../data/challenges/${challengeId}.md`)
       .then(file => {
