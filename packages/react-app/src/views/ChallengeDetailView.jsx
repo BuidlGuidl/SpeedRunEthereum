@@ -22,7 +22,7 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
-import { USER_ROLES } from "../helpers/constants"
+import { USER_ROLES, JS_CHALLENGE_REPO } from "../helpers/constants";
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole }) {
   const [description, setDescription] = useState(null);
@@ -56,7 +56,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         as="a"
         colorScheme="gray"
         variant="outline"
-        href={challenge.url}
+        href={`${JS_CHALLENGE_REPO}/tree/${challenge.branchName}`}
         target="_blank"
         rel="noopener noreferrer"
       >

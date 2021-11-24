@@ -1,3 +1,5 @@
+export const JS_CHALLENGE_REPO = "https://github.com/scaffold-eth/scaffold-eth-challenges";
+
 export const CHALLENGE_SUBMISSION_STATUS = {
   ACCEPTED: "ACCEPTED",
   REJECTED: "REJECTED",
