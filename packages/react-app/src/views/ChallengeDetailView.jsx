@@ -117,9 +117,6 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
               {challengeActionButtons('TS')}
             </Box>
           </TabPanel>
-          <TabPanel>
-            <p>three!</p>
-          </TabPanel>
         </TabPanels>
       </Tabs>
       <Modal isOpen={isOpen} onClose={onClose}>
