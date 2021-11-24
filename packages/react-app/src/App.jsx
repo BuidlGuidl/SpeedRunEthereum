@@ -8,12 +8,10 @@ import {
   useUserAddress,
   //useUserProviderAndSigner,
   useBalance,
-  useContractLoader,
-  useContractReader,
-  //useGasPrice,      
+  useContractLoader,      
 } from "eth-hooks";
 import axios from "axios";
-import { useUserProvider, useContractConfig } from "./hooks";
+import { useUserProvider, useContractConfig, useGasPrice } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { NETWORKS, NETWORK, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import {
@@ -167,22 +165,29 @@ function App() {
 
   // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
 
+  const gasPrice = useGasPrice(targetNetwork, "fast");
+
   // The transactor wraps transactions and provides notificiations
-  /* const tx = Transactor(userSigner, gasPrice);
+   const tx = Transactor(userProvider, gasPrice);
 
   // Faucet Tx can be used to send funds from the faucet
-  const faucetTx = Transactor(localProvider, gasPrice); */
+  //const faucetTx = Transactor(localProvider, gasPrice);
 
   // 🏗 scaffold-eth is full of handy hooks like this one to get your balance:
-  const yourLocalBalance = useBalance(localProvider, address);
+  //const yourLocalBalance = useBalance(localProvider, address);
 
   // Just plug in different 🛰 providers to get your balance on different chains:
-  const yourMainnetBalance = useBalance(mainnetProvider, address);
+  //const yourMainnetBalance = useBalance(mainnetProvider, address);
 
   const contractConfig = useContractConfig();
 
   // Load in your local 📝 contract and read a value from it:
-  const readContracts = useContractLoader(localProvider, contractConfig);
+
+  // Load in your local 📝 contract and read a value from it:
+  const readContracts = useContractLoader(userProvider, contractConfig);
+
+  // If you want to make 🔐 write transactions to your contracts, use the userSigner:
+  const writeContracts = useContractLoader(userProvider, contractConfig, localChainId);
 
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   //const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
