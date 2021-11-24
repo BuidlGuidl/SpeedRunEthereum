@@ -67,8 +67,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   }
 
   const canSubmit = USER_ROLES.anonymous !== userRole;
-  const challengeActionButtons = (type = 'JS') => {
-    const repo = type === 'JS' ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
+  const challengeActionButtons = (type = "JS") => {
+    const repo = type === "JS" ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
     return (
       <ButtonGroup spacing={4}>
         <Button
@@ -107,14 +107,14 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
             <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
             <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
             <Box textAlign="center" my={6}>
-              {challengeActionButtons('JS')}
+              {challengeActionButtons("JS")}
             </Box>
           </TabPanel>
           <TabPanel>
             <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
             <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
             <Box textAlign="center" my={6}>
-              {challengeActionButtons('TS')}
+              {challengeActionButtons("TS")}
             </Box>
           </TabPanel>
         </TabPanels>
