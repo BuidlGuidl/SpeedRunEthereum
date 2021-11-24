@@ -86,6 +86,8 @@ export default function SubmissionReviewView({ userProvider }) {
     // eslint-disable-next-line
   }, [address]);
 
+  const handleMint = () => {};
+
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
     try {
@@ -232,6 +234,7 @@ export default function SubmissionReviewView({ userProvider }) {
                 isLoading={isLoadingChallenges}
                 approveClick={handleSendChallengeReview("ACCEPTED")}
                 rejectClick={handleSendChallengeReview("REJECTED")}
+                mintClick={handleMint}
               />
             ))
           )}
