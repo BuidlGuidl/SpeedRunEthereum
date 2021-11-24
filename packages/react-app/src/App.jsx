@@ -6,14 +6,16 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import {
   useUserAddress,
-  //useUserProviderAndSigner,
+  useUserProviderAndSigner,
   useBalance,
   useContractLoader,      
 } from "eth-hooks";
 import axios from "axios";
-import { useUserProvider, useContractConfig, useGasPrice } from "./hooks";
+import { useUserProvider, useGasPrice } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { NETWORKS, NETWORK, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
+import externalContracts from "./contracts/external_contracts";
+import deployedContracts from "./contracts/hardhat_contracts.json";
 import {
   BuilderListView,
   ChallengeDetailView,
@@ -78,7 +80,7 @@ function App() {
 
   const [injectedProvider, setInjectedProvider] = useState();
 
-  //const [signerAddress, setSignerAddress] = useState();
+  const [signerAddress, setSignerAddress] = useState();
 
   useEffect(() => {
 
@@ -117,6 +119,8 @@ function App() {
   // TODO address is derived from userProvider, so we should just send userProvider
   const address = useUserAddress(userProvider);
 
+  const maticProvider = useUserProviderAndSigner(injectedProvider, localProvider)
+
   // You can warn the user if you would like them to be on a specific network
   const selectedChainId = userProvider && userProvider._network && userProvider._network.chainId;
 
@@ -147,19 +151,6 @@ function App() {
   //const gasPrice = useGasPrice(targetNetwork, "fast");
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
 
-  //const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
-  //const userSigner = userProviderAndSigner.signer;
-
-  /* useEffect(() => {
-    async function getAddress() {
-      if (userSigner) {
-        const newAddress = await userSigner.getAddress();
-        setSignerAddress(newAddress);
-      }
-    }
-    getAddress();
-  }, [userSigner]); */
-
   // You can warn the user if you would like them to be on a specific network
   const localChainId = localProvider && localProvider._network && localProvider._network.chainId;
 
@@ -168,7 +159,7 @@ function App() {
   const gasPrice = useGasPrice(targetNetwork, "fast");
 
   // The transactor wraps transactions and provides notificiations
-   const tx = Transactor(userProvider, gasPrice);
+   
 
   // Faucet Tx can be used to send funds from the faucet
   //const faucetTx = Transactor(localProvider, gasPrice);
@@ -179,15 +170,34 @@ function App() {
   // Just plug in different 🛰 providers to get your balance on different chains:
   //const yourMainnetBalance = useBalance(mainnetProvider, address);
 
-  const contractConfig = useContractConfig();
+  const contractConfig = { deployedContracts: deployedContracts || {}, externalContracts: externalContracts || {} };
 
   // Load in your local 📝 contract and read a value from it:
+
+  const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
+
+  const userSigner = userProviderAndSigner.signer;
+
+  useEffect(() => {
+    async function getAddress() {
+      if (userSigner) {
+        const newAddress = await userSigner.getAddress();
+        setSignerAddress(newAddress);
+      }
+    }
+    getAddress();
+  }, [userSigner]);
 
   // Load in your local 📝 contract and read a value from it:
   const readContracts = useContractLoader(userProvider, contractConfig);
 
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
-  const writeContracts = useContractLoader(userProvider, contractConfig, localChainId);
+  const writeContracts = useContractLoader(userSigner, contractConfig, 137);
+  console.log(writeContracts)
+
+
+  const tx = Transactor(injectedProvider, gasPrice);
+
 
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   //const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
@@ -252,7 +262,13 @@ function App() {
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/submission-review" exact>
-            <SubmissionReviewView userProvider={userProvider} mainnetProvider={mainnetProvider} />
+            <SubmissionReviewView
+            userProvider={userProvider}
+            injectedProvider={injectedProvider}
+            mainnetProvider={mainnetProvider} 
+            writeContracts={writeContracts}
+            tx={tx}
+            />
           </Route>
         </Switch>
         <ColorModeSwitcher />

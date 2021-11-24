@@ -28,7 +28,7 @@ import {
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
 
-export default function SubmissionReviewView({ userProvider }) {
+export default function SubmissionReviewView({ userProvider, writeContracts, tx, injectedProvider }) {
   const address = useUserAddress(userProvider);
   const [challenges, setChallenges] = React.useState([]);
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
@@ -86,7 +86,13 @@ export default function SubmissionReviewView({ userProvider }) {
     // eslint-disable-next-line
   }, [address]);
 
-  const handleMint = () => {};
+  const handleMint = async (userAddress, ...props) => {
+    try {
+      const mintTx = await tx(writeContracts.BuidlBadges.mint(userAddress, "0"));
+    } catch (e) {
+      console.log("mint tx error:", e); 
+    }
+  };
 
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
