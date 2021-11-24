@@ -5,7 +5,7 @@
       "chainId": "137",
       "contracts": {
         "BuidlBadges": {
-          "address": "0x727818ab166c0cdb7ccdbda311ad7ee493a40aeb",
+          "address": "0x61629aefc6e92de94104d6c9abbfc79e463c7a59",
           "abi": [
             {
               "inputs": [
@@ -506,6 +506,30 @@
             {
               "inputs": [
                 {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "name": "hasBadge",
+              "outputs": [
+                {
+                  "internalType": "bool",
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
                   "internalType": "bytes32",
                   "name": "role",
                   "type": "bytes32"
@@ -541,30 +565,6 @@
                 }
               ],
               "name": "isApprovedForAll",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "name": "levels",
               "outputs": [
                 {
                   "internalType": "bool",

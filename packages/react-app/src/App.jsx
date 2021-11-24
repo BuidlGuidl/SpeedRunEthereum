@@ -119,8 +119,6 @@ function App() {
   // TODO address is derived from userProvider, so we should just send userProvider
   const address = useUserAddress(userProvider);
 
-  const maticProvider = useUserProviderAndSigner(injectedProvider, localProvider)
-
   // You can warn the user if you would like them to be on a specific network
   const selectedChainId = userProvider && userProvider._network && userProvider._network.chainId;
 
@@ -147,28 +145,11 @@ function App() {
     }
   }, [loadWeb3Modal]);
 
-  /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
-  //const gasPrice = useGasPrice(targetNetwork, "fast");
-  // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
-
-  // You can warn the user if you would like them to be on a specific network
   const localChainId = localProvider && localProvider._network && localProvider._network.chainId;
 
   // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
 
   const gasPrice = useGasPrice(targetNetwork, "fast");
-
-  // The transactor wraps transactions and provides notificiations
-   
-
-  // Faucet Tx can be used to send funds from the faucet
-  //const faucetTx = Transactor(localProvider, gasPrice);
-
-  // 🏗 scaffold-eth is full of handy hooks like this one to get your balance:
-  //const yourLocalBalance = useBalance(localProvider, address);
-
-  // Just plug in different 🛰 providers to get your balance on different chains:
-  //const yourMainnetBalance = useBalance(mainnetProvider, address);
 
   const contractConfig = { deployedContracts: deployedContracts || {}, externalContracts: externalContracts || {} };
 

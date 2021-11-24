@@ -86,9 +86,10 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx,
     // eslint-disable-next-line
   }, [address]);
 
-  const handleMint = async (userAddress, ...props) => {
+  const handleMint = async ( userAddress, ...props) => {
     try {
       const mintTx = await tx(writeContracts.BuidlBadges.mint(userAddress, "0"));
+      console.log(userAddress)
     } catch (e) {
       console.log("mint tx error:", e); 
     }
