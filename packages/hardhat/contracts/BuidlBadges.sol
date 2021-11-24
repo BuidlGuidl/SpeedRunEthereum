@@ -19,7 +19,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     uint256 public constant DAMAGE_DEALER = 8;
     uint256 public constant COMMUNITY_HELPER = 9;
 
-    mapping(address => mapping(uint => bool)) public levels;
+    mapping(address => mapping(uint => bool)) public hasBadge;
 
     event Minted(address recipient, uint256 tokenId);
 
@@ -64,7 +64,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         _mint(msg.sender, tokenId, 1, "");
         
         //After mint we set a bool for the tokenID to the user address.
-        levels[recipient][tokenId] = true;
+        hasBadge[recipient][tokenId] = true;
 
             emit Minted(recipient, tokenId);
     }

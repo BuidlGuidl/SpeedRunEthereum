@@ -1,6 +1,6 @@
 import { hexlify } from "@ethersproject/bytes";
 import { parseUnits } from "@ethersproject/units";
-import { notification } from "antd";
+//import { notification } from "antd";
 import { BLOCKNATIVE_DAPPID, } from "../constants";
 
 import Notify from "bnc-notify";
@@ -64,21 +64,13 @@ export default function Transactor(provider, gasPrice, etherscan) {
             };
           });
         } else {
-          notification.info({
-            message: "Local Transaction Sent",
-            description: result.hash,
-            placement: "bottomRight",
-          });
+          console.log('oopsie')
         }
 
         return result;
       } catch (e) {
         console.log(e);
-        console.log("Transaction Error:", e.message);
-        notification.error({
-          message: "Transaction Error",
-          description: e.message,
-        });
+        console.log("Transaction Error:", e.message); 
       }
     };
   }

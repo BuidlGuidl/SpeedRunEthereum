@@ -169,7 +169,7 @@ module.exports = {
 
     matic: {
       url: "https://rpc-mainnet.maticvigil.com/",
-      gasPrice: 2500000000,
+      gasPrice: 3500000000,
       accounts: {
         mnemonic: mnemonic(),
       },

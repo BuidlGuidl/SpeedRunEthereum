@@ -4,11 +4,18 @@ import { Web3Provider, StaticJsonRpcProvider, InfuraProvider } from "@ethersproj
 import "./App.css";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { useUserAddress } from "eth-hooks";
+import {
+  useUserAddress,
+  //useUserProviderAndSigner,
+  useBalance,
+  useContractLoader,
+  useContractReader,
+  //useGasPrice,      
+} from "eth-hooks";
 import axios from "axios";
-import { useUserProvider } from "./hooks";
+import { useUserProvider, useContractConfig } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
-import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
+import { NETWORKS, NETWORK, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
   ChallengeDetailView,
@@ -17,9 +24,12 @@ import {
   HomeView,
   BuildsListView,
 } from "./views";
+import { Transactor } from "./helpers";
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
+
+const { ethers } = require("ethers");
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -47,20 +57,12 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
-function App() {
-  const [providers, setProviders] = useState({
-    mainnet: { provider: null, isReady: false },
-    local: { provider: null, isReady: false },
-  });
+// 🛰 providers
 
-  useEffect(() => {
-    // 🛰 providers
-
-    /*
     //This code is needed if you want a local and a mainnet provider
 
     // 📡 What chain are your contracts deployed to?
-    const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+    const targetNetwork = NETWORKS.matic; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
     // 🏠 Your local provider is usually pointed at your local blockchain
     const localProviderUrl = targetNetwork.rpcUrl;
@@ -68,8 +70,19 @@ function App() {
     // as you deploy to other networks you can set REACT_APP_PROVIDER=https://dai.poa.network in packages/react-app/.env
     const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REACT_APP_PROVIDER : localProviderUrl;
 
-    const localProviderPromise = providerPromiseWrapper(new StaticJsonRpcProvider(localProviderUrlFromEnv));
-    */
+    const localProvider = new ethers.providers.StaticJsonRpcProvider(localProviderUrlFromEnv);
+
+function App() {
+  const [providers, setProviders] = useState({
+    mainnet: { provider: null, isReady: false },
+    local: { provider: null, isReady: false },
+  });
+
+  const [injectedProvider, setInjectedProvider] = useState();
+
+  //const [signerAddress, setSignerAddress] = useState();
+
+  useEffect(() => {
 
     if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
     const scaffoldEthProviderPromise = providerPromiseWrapper(
@@ -100,11 +113,9 @@ function App() {
 
   const mainnetProvider = providers.mainnet?.provider;
 
-  const [injectedProvider, setInjectedProvider] = useState();
-
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
   // TODO move the userProvider into the "providers" state, which is sent into the BlockchainProvidersContext
-  const userProvider = useUserProvider(injectedProvider);
+  const userProvider = useUserProvider(injectedProvider, localProvider);
   // TODO address is derived from userProvider, so we should just send userProvider
   const address = useUserAddress(userProvider);
 
@@ -133,6 +144,48 @@ function App() {
       loadWeb3Modal();
     }
   }, [loadWeb3Modal]);
+
+  /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
+  //const gasPrice = useGasPrice(targetNetwork, "fast");
+  // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
+
+  //const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
+  //const userSigner = userProviderAndSigner.signer;
+
+  /* useEffect(() => {
+    async function getAddress() {
+      if (userSigner) {
+        const newAddress = await userSigner.getAddress();
+        setSignerAddress(newAddress);
+      }
+    }
+    getAddress();
+  }, [userSigner]); */
+
+  // You can warn the user if you would like them to be on a specific network
+  const localChainId = localProvider && localProvider._network && localProvider._network.chainId;
+
+  // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
+
+  // The transactor wraps transactions and provides notificiations
+  /* const tx = Transactor(userSigner, gasPrice);
+
+  // Faucet Tx can be used to send funds from the faucet
+  const faucetTx = Transactor(localProvider, gasPrice); */
+
+  // 🏗 scaffold-eth is full of handy hooks like this one to get your balance:
+  const yourLocalBalance = useBalance(localProvider, address);
+
+  // Just plug in different 🛰 providers to get your balance on different chains:
+  const yourMainnetBalance = useBalance(mainnetProvider, address);
+
+  const contractConfig = useContractConfig();
+
+  // Load in your local 📝 contract and read a value from it:
+  const readContracts = useContractLoader(localProvider, contractConfig);
+
+  // If you want to make 🔐 write transactions to your contracts, use the userSigner:
+  //const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
 
   const [userRole, setUserRole] = useState(null);
 
