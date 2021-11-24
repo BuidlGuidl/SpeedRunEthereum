@@ -12,6 +12,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
   Tooltip,
   SkeletonText,
   useDisclosure,
@@ -22,25 +27,37 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
-import { USER_ROLES } from "../helpers/constants"
+import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/constants";
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole }) {
-  const [description, setDescription] = useState(null);
+  const [descriptionJs, setDescriptionJs] = useState(null);
+  const [descriptionTs, setDescriptionTs] = useState(null);
   const { challengeId } = useParams();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const challenge = challengeInfo[challengeId];
 
-  // Fetch challenge description
+  // Fetch challenge description from local files.
+  // In the future, this might be a fetch to the repos/branchs README
+  // (Ideally fetched at build time)
   useEffect(() => {
     import(`../data/challenges/${challengeId}.md`)
       .then(file => {
         fetch(file.default)
           .then(content => content.text())
-          .then(text => setDescription(text))
-          .catch(() => setDescription(challenge.description));
+          .then(text => setDescriptionJs(text))
+          .catch(() => setDescriptionJs(challenge.description));
       })
-      .catch(() => setDescription(challenge.description));
+      .catch(() => setDescriptionJs(challenge.description));
+
+    import(`../data/challenges/${challengeId}.ts.md`)
+      .then(file => {
+        fetch(file.default)
+          .then(content => content.text())
+          .then(text => setDescriptionTs(text))
+          .catch(() => setDescriptionTs(challenge.description));
+      })
+      .catch(() => setDescriptionTs(challenge.description));
   }, [challengeId, challenge]);
 
   if (!challenge) {
@@ -50,25 +67,28 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   }
 
   const canSubmit = USER_ROLES.anonymous !== userRole;
-  const challengeActionButtons = (
-    <ButtonGroup spacing={4}>
-      <Button
-        as="a"
-        colorScheme="gray"
-        variant="outline"
-        href={challenge.url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View it on Github <ExternalLinkIcon ml={1} />
-      </Button>
-      <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
-        <Button colorScheme="blue" onClick={onOpen} disabled={!canSubmit}>
-          Submit challenge
+  const challengeActionButtons = (type = 'JS') => {
+    const repo = type === 'JS' ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
+    return (
+      <ButtonGroup spacing={4}>
+        <Button
+          as="a"
+          colorScheme="gray"
+          variant="outline"
+          href={`${repo}/tree/${challenge.branchName}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View it on Github <ExternalLinkIcon ml={1} />
         </Button>
-      </Tooltip>
-    </ButtonGroup>
-  );
+        <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
+          <Button colorScheme="blue" onClick={onOpen} disabled={!canSubmit}>
+            Submit challenge
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
+    );
+  };
 
   return (
     <Container maxW="container.md" mb={10}>
@@ -76,13 +96,29 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         <Heading as="h1" mb={4}>
           {challenge.label}
         </Heading>
-        {challengeActionButtons}
       </Box>
-      <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={description} />
-      <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{description}</ReactMarkdown>
-      <Box textAlign="center" my={6}>
-        {challengeActionButtons}
-      </Box>
+      <Tabs variant="enclosed-colored" align="center">
+        <TabList>
+          <Tab>Javascript</Tab>
+          <Tab>Typescript</Tab>
+        </TabList>
+        <TabPanels align="left">
+          <TabPanel>
+            <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
+            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
+            <Box textAlign="center" my={6}>
+              {challengeActionButtons('JS')}
+            </Box>
+          </TabPanel>
+          <TabPanel>
+            <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
+            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
+            <Box textAlign="center" my={6}>
+              {challengeActionButtons('TS')}
+            </Box>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
