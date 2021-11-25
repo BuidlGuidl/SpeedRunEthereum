@@ -1,0 +1,410 @@
+diff --git a/node_modules/eth-hooks/lib/functions/index.d.ts b/node_modules/eth-hooks/lib/functions/index.d.ts
+new file mode 100644
+index 0000000..3eb9b8a
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/functions/index.d.ts
+@@ -0,0 +1,2 @@
++export * from './providerOrSigner';
++//# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/functions/index.d.ts.map b/node_modules/eth-hooks/lib/functions/index.d.ts.map
+new file mode 100644
+index 0000000..3ca4771
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/functions/index.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/functions/index.ts"],"names":[],"mappings":"AAAA,cAAc,oBAAoB,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/functions/index.js b/node_modules/eth-hooks/lib/functions/index.js
+new file mode 100644
+index 0000000..682b4eb
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/functions/index.js
+@@ -0,0 +1 @@
++export * from './providerOrSigner';
+diff --git a/node_modules/eth-hooks/lib/functions/providerOrSigner.d.ts b/node_modules/eth-hooks/lib/functions/providerOrSigner.d.ts
+new file mode 100644
+index 0000000..683c8f8
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/functions/providerOrSigner.d.ts
+@@ -0,0 +1,8 @@
++import { TProviderAndSigner, TEthersProviderOrSigner } from "../models";
++/**
++ * Parse TEthersProviderOrSigner to TProviderAndSigner
++ * @param providerOrSigner TEthersProviderOrSigner
++ * @returns TProviderAndSigner
++ */
++export declare const parseProviderOrSigner: (providerOrSigner: TEthersProviderOrSigner | undefined) => Promise<TProviderAndSigner>;
++//# sourceMappingURL=providerOrSigner.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/functions/providerOrSigner.d.ts.map b/node_modules/eth-hooks/lib/functions/providerOrSigner.d.ts.map
+new file mode 100644
+index 0000000..0fd404e
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/functions/providerOrSigner.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"providerOrSigner.d.ts","sourceRoot":"","sources":["../../src/functions/providerOrSigner.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,kBAAkB,EAAE,uBAAuB,EAAE,kBAAkB;AAExE;;;;GAIG;AACH,eAAO,MAAM,qBAAqB,qBACd,uBAAuB,GAAG,SAAS,KACpD,QAAQ,kBAAkB,CAqB5B,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/functions/providerOrSigner.js b/node_modules/eth-hooks/lib/functions/providerOrSigner.js
+new file mode 100644
+index 0000000..ab908a5
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/functions/providerOrSigner.js
+@@ -0,0 +1,26 @@
++import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
++import { Signer } from 'ethers';
++/**
++ * Parse TEthersProviderOrSigner to TProviderAndSigner
++ * @param providerOrSigner TEthersProviderOrSigner
++ * @returns TProviderAndSigner
++ */
++export const parseProviderOrSigner = async (providerOrSigner) => {
++    let signer = undefined;
++    let provider;
++    let providerNetwork;
++    if (providerOrSigner && (providerOrSigner instanceof JsonRpcProvider || providerOrSigner instanceof Web3Provider)) {
++        const accounts = await providerOrSigner.listAccounts();
++        if (accounts && accounts.length > 0) {
++            signer = providerOrSigner.getSigner();
++        }
++        provider = providerOrSigner;
++        providerNetwork = await providerOrSigner.getNetwork();
++    }
++    if (!signer && providerOrSigner instanceof Signer) {
++        signer = providerOrSigner;
++        provider = signer.provider;
++        providerNetwork = provider && (await provider.getNetwork());
++    }
++    return { signer, provider, providerNetwork };
++};
+diff --git a/node_modules/eth-hooks/lib/index.js b/node_modules/eth-hooks/lib/index.js
+index adb7267..6a9937c 100644
+--- a/node_modules/eth-hooks/lib/index.js
++++ b/node_modules/eth-hooks/lib/index.js
+@@ -9,3 +9,6 @@ export { default as useTimestamp } from "./Timestamp";
+ export { default as useTokenBalance } from "./TokenBalance";
+ export { default as useUserAddress } from "./UserAddress";
+ export { default as useUserProvider } from "./UserProvider";
++export { useUserProviderAndSigner } from "./useUserProviderAndSigner";
++export { useContractLoader } from "./useContractLoader";
++export { useBurnerSigner } from "./useBurnerSigner";
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useBurnerSigner.d.ts b/node_modules/eth-hooks/lib/useBurnerSigner.d.ts
+new file mode 100644
+index 0000000..d1744dc
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useBurnerSigner.d.ts
+@@ -0,0 +1,9 @@
++import { Signer } from 'ethers';
++import { TEthersProvider } from "./models/providerTypes";
++/**
++ * A hook that creates a buner address and returns a Signer
++ * @param provider (TEthersProvider)
++ * @returns (ethers.signer) :: signer of the wallet
++ */
++export declare const useBurnerSigner: (provider: TEthersProvider) => Signer | undefined;
++//# sourceMappingURL=useBurnerSigner.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useBurnerSigner.d.ts.map b/node_modules/eth-hooks/lib/useBurnerSigner.d.ts.map
+new file mode 100644
+index 0000000..1a6b237
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useBurnerSigner.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"useBurnerSigner.d.ts","sourceRoot":"","sources":["../src/useBurnerSigner.ts"],"names":[],"mappings":"AACA,OAAO,EAAqB,MAAM,EAAE,MAAM,QAAQ,CAAC;AAGnD,OAAO,EAAE,eAAe,EAAE,+BAAgC;AAE1D;;;;GAIG;AACH,eAAO,MAAM,eAAe,aAAc,eAAe,KAAG,MAAM,GAAG,SAmCpE,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useBurnerSigner.js b/node_modules/eth-hooks/lib/useBurnerSigner.js
+new file mode 100644
+index 0000000..2f4f86e
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useBurnerSigner.js
+@@ -0,0 +1,41 @@
++import { ethers } from 'ethers';
++import { useState, useEffect } from 'react';
++/**
++ * A hook that creates a buner address and returns a Signer
++ * @param provider (TEthersProvider)
++ * @returns (ethers.signer) :: signer of the wallet
++ */
++export const useBurnerSigner = (provider) => {
++    const key = 'metaPrivateKey';
++    const [signer, setSigner] = useState();
++    const [privateKeyValue, setPrivateKeyValue] = useState();
++    const setValue = (value) => {
++        try {
++            setPrivateKeyValue(value);
++            window.localStorage.setItem(key, value);
++        }
++        catch (error) {
++            console.log(error);
++        }
++    };
++    useEffect(() => {
++        const storedKey = window.localStorage.getItem(key);
++        if (!storedKey) {
++            console.log('generating a new key');
++            const newWallet = ethers.Wallet.createRandom();
++            const newKey = newWallet.privateKey;
++            setValue(newKey);
++        }
++        else {
++            setValue(storedKey);
++        }
++    }, []);
++    useEffect(() => {
++        if (privateKeyValue && provider) {
++            const wallet = new ethers.Wallet(privateKeyValue);
++            const newSigner = wallet.connect(provider);
++            setSigner(newSigner);
++        }
++    }, [privateKeyValue, provider]);
++    return signer;
++};
+diff --git a/node_modules/eth-hooks/lib/useContractLoader.d.ts b/node_modules/eth-hooks/lib/useContractLoader.d.ts
+new file mode 100644
+index 0000000..59847cc
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useContractLoader.d.ts
+@@ -0,0 +1,36 @@
++import { Contract } from '@ethersproject/contracts';
++import { TDeployedContracts, TExternalContracts, TEthersProviderOrSigner } from "./models";
++/**
++ * Configuration for useContractLoader
++ */
++export declare type TContractConfig = {
++    hardhatNetworkName?: string;
++    customAddresses?: Record<string, string>;
++    deployedContracts?: TDeployedContracts;
++    externalContracts?: TExternalContracts;
++};
++/**
++ * Loads your local contracts and gives options to read values from contracts
++  or write transactions into them
++
++   ~ Features ~
++  - localProvider enables reading values from contracts
++  - userProvider enables writing transactions into contracts
++  - Example of keeping track of "purpose" variable by loading contracts into readContracts
++    and using ContractReader.js hook:
++    const purpose = useContractReader(readContracts,"YourContract", "purpose")
++  - Example of using setPurpose function from our contract and writing transactions by Transactor.js helper:
++    tx( writeContracts.YourContract.setPurpose(newPurpose) )
++
++  config can include:
++  - chainId - to hardcode the chainId, irrespective of the providerOrSigner chainId
++  - hardhatNetworkName - to hardcode the hardhat network of interest
++  - customAddresses: { contractName: 0xCustomAddress } to hardcode the address for a given named contract
++  - hardhatContracts: object following the hardhat deploy export format (Json with chainIds as keys, which have hardhat network names as keys, which contain arrays of contracts for each)
++  - externalContracts: object with chainIds as keys, with an array of contracts for each
++ * @param providerOrSigner (TEthersProviderOrSigner)
++ * @param config (TContractConfig) :: configuration for loader
++ * @returns (Record<string, Contract>) :: a record of contractName:contract
++ */
++export declare const useContractLoader: (providerOrSigner: TEthersProviderOrSigner | undefined, config?: TContractConfig, chainId?: number | undefined) => Record<string, Contract>;
++//# sourceMappingURL=useContractLoader.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useContractLoader.d.ts.map b/node_modules/eth-hooks/lib/useContractLoader.d.ts.map
+new file mode 100644
+index 0000000..85a16cf
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useContractLoader.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"useContractLoader.d.ts","sourceRoot":"","sources":["../src/useContractLoader.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,0BAA0B,CAAC;AAKpD,OAAO,EAAE,kBAAkB,EAAE,kBAAkB,EAAE,uBAAuB,EAAE,iBAAkB;AAE5F;;GAEG;AACH,oBAAY,eAAe,GAAG;IAC5B,kBAAkB,CAAC,EAAE,MAAM,CAAC;IAC5B,eAAe,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,CAAC;IACzC,iBAAiB,CAAC,EAAE,kBAAkB,CAAC;IACvC,iBAAiB,CAAC,EAAE,kBAAkB,CAAC;CACxC,CAAC;AAEF;;;;;;;;;;;;;;;;;;;;;;GAsBG;AACH,eAAO,MAAM,iBAAiB,qBACV,uBAAuB,GAAG,SAAS,WAC7C,eAAe,mCAEtB,OAAO,MAAM,EAAE,QAAQ,CAiFzB,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useContractLoader.js b/node_modules/eth-hooks/lib/useContractLoader.js
+new file mode 100644
+index 0000000..b6abfa9
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useContractLoader.js
+@@ -0,0 +1,88 @@
++import { ethers } from 'ethers';
++import { useEffect, useMemo, useState } from 'react';
++import { parseProviderOrSigner } from "./functions/providerOrSigner";
++/**
++ * Loads your local contracts and gives options to read values from contracts
++  or write transactions into them
++
++   ~ Features ~
++  - localProvider enables reading values from contracts
++  - userProvider enables writing transactions into contracts
++  - Example of keeping track of "purpose" variable by loading contracts into readContracts
++    and using ContractReader.js hook:
++    const purpose = useContractReader(readContracts,"YourContract", "purpose")
++  - Example of using setPurpose function from our contract and writing transactions by Transactor.js helper:
++    tx( writeContracts.YourContract.setPurpose(newPurpose) )
++
++  config can include:
++  - chainId - to hardcode the chainId, irrespective of the providerOrSigner chainId
++  - hardhatNetworkName - to hardcode the hardhat network of interest
++  - customAddresses: { contractName: 0xCustomAddress } to hardcode the address for a given named contract
++  - hardhatContracts: object following the hardhat deploy export format (Json with chainIds as keys, which have hardhat network names as keys, which contain arrays of contracts for each)
++  - externalContracts: object with chainIds as keys, with an array of contracts for each
++ * @param providerOrSigner (TEthersProviderOrSigner)
++ * @param config (TContractConfig) :: configuration for loader
++ * @returns (Record<string, Contract>) :: a record of contractName:contract
++ */
++export const useContractLoader = (providerOrSigner, config = {}, chainId) => {
++    const [contracts, setContracts] = useState({});
++    const configDep = useMemo(() => JSON.stringify(config !== null && config !== void 0 ? config : {}), [config]);
++    useEffect(() => {
++        let active = true;
++        const loadContracts = async () => {
++            var _a, _b, _c, _d, _e;
++            if (providerOrSigner && typeof providerOrSigner !== 'undefined') {
++                console.log(`loading contracts`);
++                console.log(providerOrSigner, config);
++                try {
++                    // we need to check to see if this providerOrSigner has a signer or not
++                    if (typeof providerOrSigner !== 'undefined') {
++                        // we need to check to see if this providerOrSigner has a signer or not
++                        const { providerNetwork } = await parseProviderOrSigner(providerOrSigner);
++                        // find the current chainId based on this order:
++                        //  - chainId passed in or a fallback of provider chainId
++                        const currentChainId = (_a = chainId !== null && chainId !== void 0 ? chainId : providerNetwork === null || providerNetwork === void 0 ? void 0 : providerNetwork.chainId) !== null && _a !== void 0 ? _a : 0;
++                        // Type definition
++                        //  Record<string, Record<string, Contract>>
++                        //  { chainId: { contractName: Contract } }
++                        const contractList = Object.assign({}, ((_b = config.deployedContracts) !== null && _b !== void 0 ? _b : {}));
++                        const externalContractList = Object.assign({}, ((_c = config.externalContracts) !== null && _c !== void 0 ? _c : {}));
++                        let combinedContracts = {};
++                        // combine partitioned contracts based on all the available and chain id.
++                        if ((contractList === null || contractList === void 0 ? void 0 : contractList[currentChainId]) != null) {
++                            for (const hardhatNetwork in contractList[currentChainId]) {
++                                if (Object.prototype.hasOwnProperty.call(contractList[currentChainId], hardhatNetwork)) {
++                                    if (!config.hardhatNetworkName || hardhatNetwork === config.hardhatNetworkName) {
++                                        combinedContracts = Object.assign(Object.assign({}, combinedContracts), (_e = (_d = contractList === null || contractList === void 0 ? void 0 : contractList[currentChainId]) === null || _d === void 0 ? void 0 : _d[hardhatNetwork]) === null || _e === void 0 ? void 0 : _e.contracts);
++                                    }
++                                }
++                            }
++                        }
++                        if ((externalContractList === null || externalContractList === void 0 ? void 0 : externalContractList[currentChainId]) != null) {
++                            combinedContracts = Object.assign(Object.assign({}, combinedContracts), externalContractList[currentChainId].contracts);
++                        }
++                        const newContracts = Object.keys(combinedContracts).reduce((accumulator, contractName) => {
++                            const address = config.customAddresses && Object.keys(config.customAddresses).includes(contractName)
++                                ? config.customAddresses[contractName]
++                                : combinedContracts[contractName].address;
++                            accumulator[contractName] = new ethers.Contract(address, combinedContracts[contractName].abi, providerOrSigner);
++                            return accumulator;
++                        }, {});
++                        if (active)
++                            setContracts(newContracts);
++                    }
++                }
++                catch (e) {
++                    console.log('ERROR LOADING CONTRACTS!!', e);
++                }
++            }
++        };
++        void loadContracts();
++        return () => {
++            active = false;
++        };
++        // disable as configDep is used for dep instead of config
++        // eslint-disable-next-line react-hooks/exhaustive-deps
++    }, [providerOrSigner, configDep]);
++    return contracts;
++};
+diff --git a/node_modules/eth-hooks/lib/useUserProviderAndSigner.d.ts b/node_modules/eth-hooks/lib/useUserProviderAndSigner.d.ts
+new file mode 100644
+index 0000000..de1f138
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useUserProviderAndSigner.d.ts
+@@ -0,0 +1,17 @@
++import { TEthersProvider, TProviderAndSigner, TEthersProviderOrSigner } from "./models";
++/**
++ *  Gets user provider/signer from injected provider or local provider
++ *  Use your injected provider from 🦊 Metamask
++ *  If you don't have it then instantly generate a 🔥 burner wallet from a local provider
++ *
++  ~ Features ~
++  - Specify the injected provider from Metamask
++  - Specify the local provider
++  - Usage examples:
++    const tx = Transactor(userSigner, gasPrice)
++ * @param injectedProviderOrSigner (TEthersProviderOrSigner) :: injected provider/signer from metamask etc..
++ * @param localProvider (TEthersProvider) local provider to generate a burner wallet from
++ * @returns (TProviderAndSigner)
++ */
++export declare const useUserProviderAndSigner: (injectedProviderOrSigner: TEthersProviderOrSigner | undefined, localProvider: TEthersProvider) => TProviderAndSigner | undefined;
++//# sourceMappingURL=useUserProviderAndSigner.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useUserProviderAndSigner.d.ts.map b/node_modules/eth-hooks/lib/useUserProviderAndSigner.d.ts.map
+new file mode 100644
+index 0000000..1e2aaf2
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useUserProviderAndSigner.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"useUserProviderAndSigner.d.ts","sourceRoot":"","sources":["../src/useUserProviderAndSigner.ts"],"names":[],"mappings":"AAMA,OAAO,EAAE,eAAe,EAAE,kBAAkB,EAAE,uBAAuB,EAAE,iBAAkB;AAmBzF;;;;;;;;;;;;;GAaG;AACH,eAAO,MAAM,wBAAwB,6BACT,uBAAuB,GAAG,SAAS,iBAC9C,eAAe,KAC7B,kBAAkB,GAAG,SAgCvB,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/eth-hooks/lib/useUserProviderAndSigner.js b/node_modules/eth-hooks/lib/useUserProviderAndSigner.js
+new file mode 100644
+index 0000000..8feec33
+--- /dev/null
++++ b/node_modules/eth-hooks/lib/useUserProviderAndSigner.js
+@@ -0,0 +1,65 @@
++import { useMemo, useState } from 'react';
++import { useBurnerSigner } from "./";
++import { parseProviderOrSigner } from "./functions/providerOrSigner";
++const syncBurnerKeyFromStorage = () => {
++    if (window.location.pathname && window.location.pathname.includes('/pk')) {
++        const incomingPK = window.location.hash.replace('#', '');
++        if (incomingPK.length === 64 || incomingPK.length === 66) {
++            console.log('🔑 Incoming Private Key...');
++            const rawPK = incomingPK;
++            window.history.pushState({}, '', '/');
++            const currentPrivateKey = window.localStorage.getItem('metaPrivateKey');
++            if (currentPrivateKey && currentPrivateKey !== rawPK) {
++                window.localStorage.setItem(`metaPrivateKey_backup${Date.now()}`, currentPrivateKey);
++            }
++            window.localStorage.setItem('metaPrivateKey', rawPK);
++        }
++    }
++};
++/**
++ *  Gets user provider/signer from injected provider or local provider
++ *  Use your injected provider from 🦊 Metamask
++ *  If you don't have it then instantly generate a 🔥 burner wallet from a local provider
++ *
++  ~ Features ~
++  - Specify the injected provider from Metamask
++  - Specify the local provider
++  - Usage examples:
++    const tx = Transactor(userSigner, gasPrice)
++ * @param injectedProviderOrSigner (TEthersProviderOrSigner) :: injected provider/signer from metamask etc..
++ * @param localProvider (TEthersProvider) local provider to generate a burner wallet from
++ * @returns (TProviderAndSigner)
++ */
++export const useUserProviderAndSigner = (injectedProviderOrSigner, localProvider) => {
++    const [signer, setSigner] = useState();
++    const [provider, setProvider] = useState();
++    const [providerNetwork, setProviderNetwork] = useState();
++    const burnerSigner = useBurnerSigner(localProvider);
++    useMemo(() => {
++        if (injectedProviderOrSigner) {
++            console.log('🦊 Using injected provider');
++            void parseProviderOrSigner(injectedProviderOrSigner).then((result) => {
++                if (result != null)
++                    setSigner(result.signer);
++            });
++        }
++        else if (!localProvider) {
++            setSigner(undefined);
++        }
++        else {
++            syncBurnerKeyFromStorage();
++            console.log('🔥 Using burner signer', burnerSigner);
++            setSigner(burnerSigner);
++        }
++    }, [injectedProviderOrSigner, localProvider, burnerSigner]);
++    useMemo(() => {
++        if (signer) {
++            const result = parseProviderOrSigner(signer);
++            void result.then((r) => {
++                setProvider(r.provider);
++                setProviderNetwork(r.providerNetwork);
++            });
++        }
++    }, [signer]);
++    return { signer, provider, providerNetwork };
++};
