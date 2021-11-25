@@ -97,7 +97,6 @@
     "s3": "node ./scripts/s3.js",
     "ship": "yarn surge",
     "theme": "npx gulp less",
-    "watch": "node ./scripts/watch.js",
-    "postinstall": "npx patch-package" 
+    "watch": "node ./scripts/watch.js"
   }
 }
