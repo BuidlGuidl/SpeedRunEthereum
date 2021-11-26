@@ -1,3 +1,4 @@
+import { useToast} from "@chakra-ui/react"
 import Notify from "bnc-notify";
 import { BLOCKNATIVE_DAPPID } from "../constants";
 
@@ -11,6 +12,8 @@ const callbacks = {};
 const DEBUG = true;
 
 export default function Transactor(providerOrSigner, gasPrice, etherscan) {
+  const toast = useToast({ position: "top", isClosable: true });
+
   if (typeof providerOrSigner !== "undefined") {
     // eslint-disable-next-line consistent-return
     return async (tx, callback) => {
@@ -90,13 +93,11 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
             };
           });
         } else {
-          // notification.info({
-          //   message: "Local Transaction Sent",
-          //   description: result.hash,
-          //   placement: "bottomRight",
-          // });
-          // ToDo. Toast
-          console.log("Local Transaction Sent", result.hash)
+          toast({
+            title: "Local Transaction Sent",
+            description: result.hash,
+            status: "info",
+          });
 
           // on most networks BlockNative will update a transaction handler,
           // but locally we will set an interval to listen...
@@ -145,13 +146,11 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
         } catch (e) {
           //ignore
         }
-
-        // notification.error({
-        //   message: "Transaction Error",
-        //   description: message,
-        // });
-        // ToDo. Toast
-        console.log("Transaction Error", message);
+        toast({
+          title: "Transaction Error",
+          description: message,
+          status: "error",
+        });
         if (callback && typeof callback === "function") {
           callback({ ...e, error: true });
         }

@@ -6,7 +6,9 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
-import { useUserProvider, useContractLoader, useGasPrice } from "./hooks";
+import { ethers } from "ethers";
+import { Box, Button } from "@chakra-ui/react";
+import { useUserProvider, useContractLoader, useGasPrice, useBalance } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { NETWORKS, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import { Transactor } from "./helpers";
@@ -129,7 +131,42 @@ function App() {
   // Gets gas price for tx
   const gasPrice = useGasPrice(targetNetwork, "fast");
 
+  // The transactor wraps transactions and provides notificiations
   const tx = Transactor(userProvider, gasPrice);
+  // Faucet Tx can be used to send funds from the faucet
+  const faucetTx = Transactor(targetNetworkProvider, gasPrice);
+
+  // 🏗 scaffold-eth is full of handy hooks like this one to get your balance:
+  const yourLocalBalance = useBalance(targetNetworkProvider, address);
+
+  let faucetHint = null;
+  const [faucetClicked, setFaucetClicked] = useState(false);
+
+  if (
+    !faucetClicked &&
+    targetNetworkProvider &&
+    targetNetworkProvider._network &&
+    targetNetworkProvider._network.chainId === 31337 &&
+    yourLocalBalance &&
+    ethers.utils.formatEther(yourLocalBalance) <= 0
+  ) {
+    faucetHint = (
+      <Box pos="fixed" left="0" bottom="0" m={4}>
+        <Button
+          colorScheme="blue"
+          onClick={() => {
+            faucetTx({
+              to: address,
+              value: ethers.utils.parseEther("0.01"),
+            });
+            setFaucetClicked(true);
+          }}
+        >
+          💰 Grab funds from the faucet ⛽️
+        </Button>
+      </Box>
+    );
+  }
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
@@ -188,6 +225,7 @@ function App() {
           logoutOfWeb3Modal={logoutOfWeb3Modal}
           setUserRole={setUserRole}
         />
+        {faucetHint}
         <Switch>
           <Route exact path="/">
             <HomeView />
