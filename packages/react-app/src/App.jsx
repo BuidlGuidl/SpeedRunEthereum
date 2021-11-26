@@ -51,7 +51,7 @@ const logoutOfWeb3Modal = async () => {
 };
 
 // ToDo. Use and env var.
-const targetNetwork = NETWORKS.localhost;
+const targetNetwork = NETWORKS.matic;
 
 function App() {
   const [providers, setProviders] = useState({
@@ -127,6 +127,9 @@ function App() {
 
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userProvider, { chainId: targetNetworkChainId });
+
+  const readContracts = useContractLoader(targetNetworkProvider, { chainId: targetNetworkChainId });
+  //console.log(readContracts)
 
   // Gets gas price for tx
   const gasPrice = useGasPrice(targetNetwork, "fast");
@@ -246,7 +249,12 @@ function App() {
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
           </Route>
           <Route path="/builders/:builderAddress">
-            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
+            <BuilderProfileView
+            serverUrl={serverUrl}
+            mainnetProvider={mainnetProvider}
+            address={address}
+            readContracts={readContracts}
+            />
           </Route>
           <Route path="/challenge/:challengeId">
             <ChallengeDetailView

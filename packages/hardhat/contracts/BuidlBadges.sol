@@ -59,7 +59,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         address recipient,
         uint256 tokenId
     ) public adminOnly {
-        _mint(msg.sender, tokenId, 1, "");
+        _mint(recipient, tokenId, 1, "");
 
         //After mint we set a bool for the tokenID to the user address.
         hasBadge[recipient][tokenId] = true;
