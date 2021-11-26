@@ -44,7 +44,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     }
 
     /**
-   * @dev Contract uri
+   * @dev Contract urii
    */
     function uri() public pure returns (string memory) {
         return

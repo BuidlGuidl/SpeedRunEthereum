@@ -63,9 +63,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
       <SimpleGrid gap={14} columns={{ base: 1, xl: 4 }}>
         <GridItem colSpan={1}>
           <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} /> 
-        </GridItem>
-        <GridItem colSpan={1}>
-        <BuilderBadgeCard
+          <BuilderBadgeCard
         builder={builder}
         mainnetProvider={mainnetProvider}
         readContracts={readContracts}
