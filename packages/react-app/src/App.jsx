@@ -6,9 +6,10 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
-import { useUserProvider, useContractLoader } from "./hooks";
+import { useUserProvider, useContractLoader, useGasPrice } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { NETWORKS, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
+import { Transactor } from "./helpers";
 import {
   BuilderListView,
   ChallengeDetailView,
@@ -125,7 +126,10 @@ function App() {
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userProvider, { chainId: targetNetworkChainId });
 
-  console.log("writeContracts", writeContracts);
+  // Gets gas price for tx
+  const gasPrice = useGasPrice(targetNetwork, "fast");
+
+  const tx = Transactor(userProvider, gasPrice);
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
