@@ -70,7 +70,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
             colorScheme="blue"
             disabled={isLoading}
             style={{ marginRight: 10 }}
-            onClick={() => mintClick(challenge.userAddress, challenge.id, comment)}
+            onClick={() => mintClick(challenge.userAddress, challengeInfo[challenge.id].badgeId)}
             size="xs"
           >
             Mint

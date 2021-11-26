@@ -88,10 +88,10 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
 
   // Handle mint.
   // ToDo. Merge it into Approve.
-  const handleMint = async userAddress => {
+  const handleMint = async (userAddress, badgeId) => {
     try {
       // ToDo. Mint corresponding challenge ID
-      await tx(writeContracts.BuidlBadges.mint(userAddress, "0"));
+      await tx(writeContracts.BuidlBadges.mint(userAddress, badgeId));
     } catch (e) {
       console.log("mint tx error:", e);
     }
