@@ -28,7 +28,7 @@ import {
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
 
-export default function SubmissionReviewView({ userProvider }) {
+export default function SubmissionReviewView({ userProvider, writeContracts, tx }) {
   const address = useUserAddress(userProvider);
   const [challenges, setChallenges] = React.useState([]);
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
@@ -85,6 +85,17 @@ export default function SubmissionReviewView({ userProvider }) {
     fetchSubmittedBuilds();
     // eslint-disable-next-line
   }, [address]);
+
+  // Handle mint.
+  // ToDo. Merge it into Approve.
+  const handleMint = async userAddress => {
+    try {
+      // ToDo. Mint corresponding challenge ID
+      await tx(writeContracts.BuidlBadges.mint(userAddress, "0"));
+    } catch (e) {
+      console.log("mint tx error:", e);
+    }
+  };
 
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
@@ -203,79 +214,80 @@ export default function SubmissionReviewView({ userProvider }) {
       </Heading>
       <Box overflowX="auto">
         <Table>
-        <Thead>
-          <Tr>
-            <Th>Builder</Th>
-            <Th>Challenge</Th>
-            <Th>Code</Th>
-            <Th>Live demo</Th>
-            <Th>Comment</Th>
-            <Th>Actions</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {!challenges || challenges.length === 0 ? (
+          <Thead>
             <Tr>
-              <Td colSpan={6}>
-                <Text color={secondaryFontColor} textAlign="center" mb={4}>
-                  <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
-                  <br />
-                  All challenges have been reviewed
-                </Text>
-              </Td>
+              <Th>Builder</Th>
+              <Th>Challenge</Th>
+              <Th>Code</Th>
+              <Th>Live demo</Th>
+              <Th>Comment</Th>
+              <Th>Actions</Th>
             </Tr>
-          ) : (
-            challenges.map(challenge => (
-              <ChallengeReviewRow
-                key={`${challenge.userAddress}_${challenge.id}`}
-                challenge={challenge}
-                isLoading={isLoadingChallenges}
-                approveClick={handleSendChallengeReview("ACCEPTED")}
-                rejectClick={handleSendChallengeReview("REJECTED")}
-              />
-            ))
-          )}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {!challenges || challenges.length === 0 ? (
+              <Tr>
+                <Td colSpan={6}>
+                  <Text color={secondaryFontColor} textAlign="center" mb={4}>
+                    <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
+                    <br />
+                    All challenges have been reviewed
+                  </Text>
+                </Td>
+              </Tr>
+            ) : (
+              challenges.map(challenge => (
+                <ChallengeReviewRow
+                  key={`${challenge.userAddress}_${challenge.id}`}
+                  challenge={challenge}
+                  isLoading={isLoadingChallenges}
+                  approveClick={handleSendChallengeReview("ACCEPTED")}
+                  rejectClick={handleSendChallengeReview("REJECTED")}
+                  mintClick={handleMint}
+                />
+              ))
+            )}
+          </Tbody>
+        </Table>
       </Box>
       <Heading as="h2" size="lg" mt={6} mb={4}>
         Builds
       </Heading>
       <Box overflowX="auto">
         <Table mb={4}>
-        <Thead>
-          <Tr>
-            <Th>Builder</Th>
-            <Th>Build Name</Th>
-            <Th>Description</Th>
-            <Th>Branch URL</Th>
-            <Th>Actions</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {!draftBuilds || draftBuilds.length === 0 ? (
+          <Thead>
             <Tr>
-              <Td colSpan={5}>
-                <Text color={secondaryFontColor} textAlign="center" mb={4}>
-                  <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
-                  <br />
-                  All builds have been reviewed
-                </Text>
-              </Td>
+              <Th>Builder</Th>
+              <Th>Build Name</Th>
+              <Th>Description</Th>
+              <Th>Branch URL</Th>
+              <Th>Actions</Th>
             </Tr>
-          ) : (
-            draftBuilds.map(build => (
-              <BuildReviewRow
-                key={`${build.userAddress}_${build.id}`}
-                build={build}
-                isLoading={isLoadingDraftBuilds}
-                approveClick={handleSendBuildReview("ACCEPTED")}
-                rejectClick={handleSendBuildReview("REJECTED")}
-              />
-            ))
-          )}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {!draftBuilds || draftBuilds.length === 0 ? (
+              <Tr>
+                <Td colSpan={5}>
+                  <Text color={secondaryFontColor} textAlign="center" mb={4}>
+                    <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
+                    <br />
+                    All builds have been reviewed
+                  </Text>
+                </Td>
+              </Tr>
+            ) : (
+              draftBuilds.map(build => (
+                <BuildReviewRow
+                  key={`${build.userAddress}_${build.id}`}
+                  build={build}
+                  isLoading={isLoadingDraftBuilds}
+                  approveClick={handleSendBuildReview("ACCEPTED")}
+                  rejectClick={handleSendBuildReview("REJECTED")}
+                />
+              ))
+            )}
+          </Tbody>
+        </Table>
       </Box>
     </Container>
   );
