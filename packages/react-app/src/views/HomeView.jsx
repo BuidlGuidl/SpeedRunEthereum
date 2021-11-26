@@ -25,7 +25,7 @@ export default function HomeView() {
       </Text>
       <Box>
         {Object.entries(challengeInfo).map(([challengeId, challenge], index) => (
-          <ChallengeExpandedCard challengeId={challengeId} challenge={challenge} challengeIndex={index} />
+          <ChallengeExpandedCard key={challengeId} challengeId={challengeId} challenge={challenge} challengeIndex={index} />
         ))}
       </Box>
     </Container>

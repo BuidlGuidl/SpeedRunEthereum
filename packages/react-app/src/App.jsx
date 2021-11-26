@@ -162,7 +162,13 @@ function App() {
             setFaucetClicked(true);
           }}
         >
-          💰 Grab funds from the faucet ⛽️
+          <span role="img" aria-label="money bag icon">
+            💰
+          </span>{" "}
+          Grab funds from the faucet{" "}
+          <span role="img" aria-label="gas station icon">
+            ⛽️
+          </span>
         </Button>
       </Box>
     );
