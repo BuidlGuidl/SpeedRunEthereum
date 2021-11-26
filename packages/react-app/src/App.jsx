@@ -6,7 +6,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
-import { useUserProvider } from "./hooks";
+import { useUserProvider, useContractLoader } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { NETWORKS, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import {
@@ -54,6 +54,7 @@ function App() {
   const [providers, setProviders] = useState({
     mainnet: { provider: null, isReady: false },
   });
+  const [injectedProvider, setInjectedProvider] = useState();
 
   useEffect(() => {
     // 🛰 providers
@@ -109,8 +110,6 @@ function App() {
 
   const mainnetProvider = providers.mainnet?.provider;
 
-  const [injectedProvider, setInjectedProvider] = useState();
-
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
   // TODO move the userProvider into the "providers" state, which is sent into the BlockchainProvidersContext
   const userProvider = useUserProvider(injectedProvider);
@@ -118,7 +117,15 @@ function App() {
   const address = useUserAddress(userProvider);
 
   // You can warn the user if you would like them to be on a specific network
+  const targetNetworkProvider = providers[targetNetwork.name]?.provider;
+  const targetNetworkChainId =
+    targetNetworkProvider && targetNetworkProvider._network && targetNetworkProvider._network.chainId;
   const selectedChainId = userProvider && userProvider._network && userProvider._network.chainId;
+
+  // If you want to make 🔐 write transactions to your contracts, use the userSigner:
+  const writeContracts = useContractLoader(userProvider, { chainId: targetNetworkChainId });
+
+  console.log("writeContracts", writeContracts);
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
