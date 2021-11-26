@@ -8,7 +8,7 @@ import { useUserAddress } from "eth-hooks";
 import axios from "axios";
 import { useUserProvider } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
-import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
+import { NETWORKS, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import {
   BuilderListView,
   ChallengeDetailView,
@@ -47,29 +47,16 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
+// ToDo. Use and env var.
+const targetNetwork = NETWORKS.localhost;
+
 function App() {
   const [providers, setProviders] = useState({
     mainnet: { provider: null, isReady: false },
-    local: { provider: null, isReady: false },
   });
 
   useEffect(() => {
     // 🛰 providers
-
-    /*
-    //This code is needed if you want a local and a mainnet provider
-
-    // 📡 What chain are your contracts deployed to?
-    const targetNetwork = NETWORKS.mainnet; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
-
-    // 🏠 Your local provider is usually pointed at your local blockchain
-    const localProviderUrl = targetNetwork.rpcUrl;
-
-    // as you deploy to other networks you can set REACT_APP_PROVIDER=https://dai.poa.network in packages/react-app/.env
-    const localProviderUrlFromEnv = process.env.REACT_APP_PROVIDER ? process.env.REACT_APP_PROVIDER : localProviderUrl;
-
-    const localProviderPromise = providerPromiseWrapper(new StaticJsonRpcProvider(localProviderUrlFromEnv));
-    */
 
     if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
     const scaffoldEthProviderPromise = providerPromiseWrapper(
@@ -81,7 +68,10 @@ function App() {
     scaffoldEthProviderPromise
       .then(provider => {
         if (DEBUG) console.log("📡 Connected to Mainnet Ethereum using the scaffold eth provider");
-        setProviders({ mainnet: { provider, isReady: true } });
+        setProviders(prevProviders => ({
+          ...prevProviders,
+          mainnet: { provider, isReady: true },
+        }));
       })
       .catch(() => {
         if (DEBUG) console.log("❌ 📡 Connection to Mainnet Ethereum using the scaffold eth provider failed");
@@ -89,13 +79,32 @@ function App() {
         mainnetInfuraProviderPromise
           .then(provider => {
             if (DEBUG) console.log("📡 Connected to Mainnet Ethereum using the infura provider as callback");
-            setProviders({ mainnet: { provider, isReady: true } });
+            setProviders(prevProviders => ({
+              ...prevProviders,
+              mainnet: { provider, isReady: true },
+            }));
           })
           .catch(() => {
             if (DEBUG) console.log("❌ 📡 Connection to Mainnet Ethereum using the infura provider as fallback failed");
             // ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_ID)
           });
       });
+
+    if (targetNetwork.chainId !== 1) {
+      // Skip mainnet, we've already connect to it.
+      const targetNetworkProviderPromise = providerPromiseWrapper(new StaticJsonRpcProvider(targetNetwork.rpcUrl));
+      targetNetworkProviderPromise
+        .then(provider => {
+          if (DEBUG) console.log("📡 Connected to", targetNetwork.name);
+          setProviders(prevProviders => ({
+            ...prevProviders,
+            [targetNetwork.name]: { provider, isReady: true },
+          }));
+        })
+        .catch(() => {
+          if (DEBUG) console.log("❌ 📡 Connection failed to", targetNetwork.name);
+        });
+    }
   }, []);
 
   const mainnetProvider = providers.mainnet?.provider;
