@@ -5,7 +5,7 @@
       "chainId": "137",
       "contracts": {
         "BuidlBadges": {
-          "address": "0x7b5876696de7648f9169708401af99b344badcdb",
+          "address": "0xc8dcab79956103616cc664bbef8f7d89acb67c27",
           "abi": [
             {
               "inputs": [

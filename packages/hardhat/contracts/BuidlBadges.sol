@@ -59,6 +59,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         address recipient,
         uint256 tokenId
     ) public adminOnly {
+        require((balanceOf(recipient, tokenId) == 0), "Already holds badge");
         _mint(recipient, tokenId, 1, "");
 
         //After mint we set a bool for the tokenID to the user address.

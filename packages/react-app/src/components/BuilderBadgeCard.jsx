@@ -42,7 +42,7 @@ const BuilderBadgeCard = ({ builder, readContracts, address }) => {
     const tokensPromises = [];
     
     for (let i = 0; i < balances.length; i += 1) {
-      tokensPromises.push(getImageAddress(i));
+      tokensPromises.push(getImageAddress(balances[i]));
     }
 
     const tokens = await Promise.all(tokensPromises);
