@@ -30,7 +30,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
 
     constructor(address[] memory admin)
     ERC1155(
-        "https://gateway.pinata.cloud/ipfs/QmWWSZAbQNh6ynhAetWAvJkwZjjCybeTSs8zT2DqELsqiK/{id}.json"
+        "https://gateway.pinata.cloud/ipfs/QmSCkywYcmTn9A8mmPmRAbBuWrVjBDvq9FHeV7vmY9hymz/{id}.json"
     )
     {
         transferOwnership(0x34aA3F359A9D614239015126635CE7732c18fDF3);
@@ -48,7 +48,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
    */
     function uri() public pure returns (string memory) {
         return
-        "https://gateway.pinata.cloud/ipfs/QmWWSZAbQNh6ynhAetWAvJkwZjjCybeTSs8zT2DqELsqiK";
+        "https://gateway.pinata.cloud/ipfs/QmSCkywYcmTn9A8mmPmRAbBuWrVjBDvq9FHeV7vmY9hymz";
     }
 
     /**

@@ -8,7 +8,7 @@ const BuilderBadgeCardSkeleton = ({ isLoaded, children }) => (
 );
 
 // TODO get the actual join date. Should be easy getting the user.create event
-const BuilderBadgeCard = ({ builder, readContracts, address }) => {
+const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
     const [balance, setBalance] = useState({
       loading: true,
       items: [],
@@ -17,12 +17,12 @@ const BuilderBadgeCard = ({ builder, readContracts, address }) => {
     const { borderColor, secondaryFontColor } = useCustomColorModes();
 
     const getImageAddress = async ( badge ) => {
-      const metadata = await axios.get(`https://ipfs.io/ipfs/QmWWSZAbQNh6ynhAetWAvJkwZjjCybeTSs8zT2DqELsqiK/000000000000000000000000000000000000000000000000000000000000000${badge}.json`);
+      const metadata = await axios.get(`https://ipfs.io/ipfs/QmSCkywYcmTn9A8mmPmRAbBuWrVjBDvq9FHeV7vmY9hymz/000000000000000000000000000000000000000000000000000000000000000${badge}.json`);
       return metadata.data
     }
   
   const loadBadges = async () => {
-    if (!address || !readContracts) return;
+    if (!builderAddress || !readContracts) return;
     setBalance({
       loading: true,
       items: [],
@@ -30,9 +30,9 @@ const BuilderBadgeCard = ({ builder, readContracts, address }) => {
 
     var balances = [];
 
-    for (let i = 0; i < 9; i += 1) {
-      let userBalance = (await readContracts.BuidlBadges.balanceOf(address, i)).toNumber();
-      console.log(userBalance)
+    for (let i = 0; i < 10; i += 1) {
+      let userBalance = (await readContracts.BuidlBadges.balanceOf(builderAddress, i)).toNumber();
+      //console.log(userBalance)
       if (userBalance > 0) {
       balances.push(i)
       console.log(balances)
@@ -48,7 +48,7 @@ const BuilderBadgeCard = ({ builder, readContracts, address }) => {
     const tokens = await Promise.all(tokensPromises);
     console.log(tokens)
     console.log(readContracts)
-    console.log(address)
+    //console.log(address)
     setBalance({
       loading: false,
       items: tokens,
@@ -57,7 +57,7 @@ const BuilderBadgeCard = ({ builder, readContracts, address }) => {
 
   useEffect(() => {
     if (readContracts) loadBadges();
-  }, [address, readContracts]);
+  }, [builderAddress, readContracts]);
 
   return (
     <BuilderBadgeCardSkeleton isLoaded={!!builder}>
@@ -77,14 +77,13 @@ const BuilderBadgeCard = ({ builder, readContracts, address }) => {
           {/* <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>Badges:</Text> */}
           <div style={{ display: "grid", margin: "0 auto", display:"flex", flexDirection:"row", flexWrap: "wrap", justifyContent: "center" }}>
           {balance.loading == true && <p>Loading Badges</p>}
-            {balance.loading == false && balance.items.length == 0 && <p>No Badges yet!</p>}
+            {balance.loading == false && balance.items.length == 0 && <p>User has no badges yet!</p>}
             {balance.items.length > 0 &&
               balance.items.map(item => (
                 <div style={{ display: "flex", flexDirection:"row", flexWrap: "wrap", alignItems: "center", justifyContent: "center", margin: "0 auto" }}>
                   <img
                     style={{ maxWidth: "80px", display: "block", margin: "0 auto", marginRight: "20px", marginTop: "10px", borderRadius: "10px" }}
-                    src={item.image}
-                    alt="BuidlBadges"
+                    src={item.tiny}
                   />
                 </div>
                 ))}

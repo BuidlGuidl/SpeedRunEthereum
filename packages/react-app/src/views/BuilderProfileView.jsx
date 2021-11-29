@@ -67,7 +67,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
         builder={builder}
         mainnetProvider={mainnetProvider}
         readContracts={readContracts}
-        address={address}
+        builderAddress={builderAddress}
         />
         </GridItem>
         <GridItem colSpan={{ base: 1, xl: 3 }}>
