@@ -1,4 +1,4 @@
-## TS:  🚩 Challenge 0: 🎟 Simple NFT Example 🤓
+## TS: 🚩 Challenge 0: 🎟 Simple NFT Example 🤓
 
 🎫 Create a simple NFT to learn basics of 🏗 scaffold-eth. You'll use [👷‍♀️ HardHat](https://hardhat.org/getting-started/) to compile and deploy smart contracts. Then, you'll use a template React app full of important Ethereum components and hooks. Finally, you'll deploy an NFT to a public network to share with friends! 🚀
 
@@ -119,7 +119,7 @@ yarn mint
 
 ⛽️ Use a faucet like [faucet.paradigm.xyz](https://faucet.paradigm.xyz/) to fund your **deployer address**.
 
-> ⚔️ **Side Quest:** Keep a 🧑‍🎤 punkwallet.io on your phone's home screen and keep it loaded with testnet eth. 🧙‍♂️ You'll look like a wizard when you can fund your **deployer address** from your phone in seconds.
+> ⚔️ **Side Quest:** Keep a 🧑‍🎤 [punkwallet.io](https://punkwallet.io/) on your phone's home screen and keep it loaded with testnet eth. 🧙‍♂️ You'll look like a wizard when you can fund your **deployer address** from your phone in seconds.
 
 🚀 Deploy your NFT smart contract:
 
@@ -167,11 +167,6 @@ yarn surge
 ---
 
 # Checkpoint 5: 💪 Flex!
-
-> 🎖 Show off your app by pasting the surge url in the [Challenge 0 telegram channel](https://t.me/joinchat/Y2vqXZZ_pEFhMGMx)
-
----
-
 👩‍❤️‍👨 Share your public url with a friend and ask them for their address to send them a collectible :)
 
 ![nft15](https://user-images.githubusercontent.com/526558/124387205-00c3fb80-dcb4-11eb-9e2f-29585e323037.gif)
@@ -185,14 +180,23 @@ yarn surge
 
 (It can take a while before they show up, but here is an example:)
 https://testnets.opensea.io/assets/0xc2839329166d3d004aaedb94dde4173651babccf/1
+
 ## 🔍 Etherscan Contract Verification
-> run yarn flatten > flat.txt (You will need to clean up extra junk at the top and bottom of flat.txt. Sorry, rookie stuff here.)
+> Get a free [Etherscan API key](https://etherscan.io/apis) and update your hardhat.config.js file with it.
 
-> copy the contents of flat.txt to the block explorer and select compiler v0.6.7 and Yes to Optimization (200 runs if anyone asks)
+![Screen Shot 2021-11-24 at 9 13 40 AM](https://user-images.githubusercontent.com/9419140/143254420-1916d419-7477-4eec-b201-94166174d8c3.png)
 
-![nft12](https://user-images.githubusercontent.com/526558/124387153-c8bcb880-dcb3-11eb-8191-e53f87129b88.png)
+> You will need to uncomment the verify task in the deploy script to verify your contract(s). We will use your verified contract to check your work 👀
+
+![Screen Shot 2021-11-24 at 9 07 12 AM](https://user-images.githubusercontent.com/9419140/143253497-8f04b35d-89e2-4a96-b532-a8e48c99e482.png)
 
 ## 🔶 Infura
 > You will need to get a key from infura.io and paste it into constants.js in packages/react-app/src:
 
 ![nft13](https://user-images.githubusercontent.com/526558/124387174-d83c0180-dcb3-11eb-989e-d58ba15d26db.png)
+
+---
+
+> 🏰 Buidl Guidl Discord Server [Join Here](https://discord.gg/ZnFs36fbbU)
+
+> 💬 Problems, questions, comments on the stack? Post them to the [🏗 scaffold-eth developers chat](https://t.me/joinchat/F7nCRK3kI93PoCOk)
