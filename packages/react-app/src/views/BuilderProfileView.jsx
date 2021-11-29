@@ -115,7 +115,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                 <Thead>
                   <Tr>
                     <Th w="full">Name</Th>
-                    <Th>Code</Th>
+                    <Th>Contract</Th>
                     <Th>Live Demo</Th>
                     <Th>Status</Th>
                     <Th>Date</Th>
@@ -136,7 +136,8 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                         <Td>
                           {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
                             <Link
-                              href={lastSubmission.branchUrl}
+                              // Legacy branchUrl
+                              href={lastSubmission.contractUrl || lastSubmission.branchUrl}
                               color="teal.500"
                               target="_blank"
                               rel="noopener noreferrer"

@@ -26,7 +26,7 @@ const dummyPayloadsByType = {
     userAddress: dummyAddressA,
     challengeId: dummyChallengeIdA,
     deployedUrl: "https://moonshotcollective.space/",
-    branchUrl: "https://github.com/moonshotcollective/scaffold-directory",
+    contractUrl: "https://etherscan.io/token/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f",
   },
   [EVENT_TYPES.CHALLENGE_REVIEW]: {
     reviewAction: "ACCEPTED",
