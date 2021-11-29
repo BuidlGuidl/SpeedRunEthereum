@@ -1,5 +1,4 @@
-## TS:  🚩 Challenge 2: 🏵 Token Vendor 🤖
-
+## TS: 🚩 Challenge 2: 🏵 Token Vendor 🤖
 
 > 🤖 Smart contracts are kind of like "always on" *vending machines* that **anyone** can access. Let's make a decentralized, digital currency. Then, let's build an unstoppable vending machine that will buy and sell the currency. We'll learn about the "approve" pattern for ERC20s and how contract to contract interactions work.
 
@@ -175,3 +174,8 @@ at around line 258. The verify script is at the bottom of `00_deploy_your_token.
 
 🚔 Traffic to your url might break the [Infura](https://infura.io/) rate limit, edit your key: `constants.js` in `packages/ract-app/src`.
 
+---
+
+> 🏰 Buidl Guidl Discord Server [Join Here](https://discord.gg/ZnFs36fbbU)
+
+> 💬 Problems, questions, comments on the stack? Post them to the [🏗 scaffold-eth developers chat](https://t.me/joinchat/F7nCRK3kI93PoCOk)
