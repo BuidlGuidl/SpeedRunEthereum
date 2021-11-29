@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, Heading, FormControl, FormLabel, Input, Text, useToast } from "@chakra-ui/react";
+import { Button, Heading, FormControl, FormLabel, Input, Text, Tooltip, useToast } from "@chakra-ui/react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 const serverPath = "/challenges";
 
@@ -112,7 +113,12 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
       ) : (
         <form name="basic" autoComplete="off">
           <FormControl id="deployedUrl" isRequired>
-            <FormLabel>Deployed URL</FormLabel>
+            <FormLabel>
+              Deployed URL{" "}
+              <Tooltip label="Your deployed challenge URL on surge / s3 / ipfs ">
+                <QuestionOutlineIcon ml="2px" />
+              </Tooltip>
+            </FormLabel>
             <Input
               type="text"
               name="deployedUrl"
@@ -124,7 +130,12 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
           </FormControl>
 
           <FormControl id="contractUrl" isRequired mt={4}>
-            <FormLabel>Etherscan Contract URL</FormLabel>
+            <FormLabel>
+              Etherscan Contract URL{" "}
+              <Tooltip label="Your verified contract URL on Etherscan">
+                <QuestionOutlineIcon ml="2px" />
+              </Tooltip>
+            </FormLabel>
             <Input
               type="text"
               name="contractUrl"
