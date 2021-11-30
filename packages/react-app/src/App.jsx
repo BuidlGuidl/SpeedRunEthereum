@@ -50,8 +50,8 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
-// ToDo. Use and env var.
-const targetNetwork = NETWORKS.matic;
+/// 📡 What chain are your contracts deployed to?
+const targetNetwork = process.env.REACT_APP_NETWORK ? NETWORKS[process.env.REACT_APP_NETWORK] : NETWORKS.localhost;
 
 function App() {
   const [providers, setProviders] = useState({
