@@ -18,6 +18,9 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
 
+  const joinedDate = new Date(builder?.creationTimestamp);
+  const joinedDateDisplay = joinedDate.toLocaleString("default", { month: "long" }) + " " + joinedDate.getFullYear();
+
   // INFO: conditional chaining and coalescing didn't work when also checking the length
   const hasProfileLinks = builder?.profileLinks ? builder.profileLinks.length !== 0 : false;
 
@@ -68,7 +71,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
               </Flex>
             )}
             <Text textAlign="center" color={secondaryFontColor}>
-              Joined September 2021
+              Joined {joinedDateDisplay}
             </Text>
           </Flex>
         </Flex>
