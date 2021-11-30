@@ -44,17 +44,13 @@ export default function AdminListView({ serverUrl, mainnetProvider, readContract
     <Container maxW="container.xl">
       <Container maxW="container.md" centerContent>
         <Heading as="h1" mb="4">
-          All Builders
+          All Admins
         </Heading>
         <Text color={secondaryFontColor} textAlign="center">
-          List of Ethereum builders creating products, prototypes, and tutorials with{" "}
-          <Link href="https://github.com/scaffold-eth/scaffold-eth" color="teal.500" isExternal>
-            scaffold-eth
-          </Link>
-          .
+          List of SRE Contract admins. This may take a moment to load.
         </Text>
         <Text color={secondaryFontColor} mb="10">
-          You can fund Eth development sending Eth to any stream.
+          Default admins can revoke rights here.
         </Text>
       </Container>
       <Box overflowX="auto">

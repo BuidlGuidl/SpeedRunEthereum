@@ -116,10 +116,6 @@ const BuilderRow = forwardRef(({ address, userProvider, onSuccess, setUserRole, 
         )}
       </Td>
       <Td>
-        <Button variant="outline">
-          <HeroIconBolt w={6} h={6} mr={2} color={secondaryFontColor} />
-          Fund
-        </Button>
         <Button variant="outline"
         onClick={() => setUserRole(USER_ROLES[builder.id] ?? USER_ROLES.admin)}
         >
