@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Flex, Spinner, Skeleton, SkeletonText, Image } from "@chakra-ui/react";
 import axios from "axios";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
@@ -47,8 +47,6 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
       }
 
       const tokens = await Promise.all(tokensPromises);
-      console.log(tokens);
-      console.log(readContracts);
       setBalance({
         loading: false,
         items: tokens,
@@ -65,53 +63,20 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
         <Flex
           borderRadius="lg"
           borderColor={borderColor}
-          borderWidth={4}
-          justify={{ base: "space-around", xl: "center" }}
-          direction={{ base: "row", xl: "column" }}
-          p={4}
-          pb={6}
+          borderWidth={1}
+          justify="center"
           maxW={{ base: "full", lg: "50%", xl: 60 }}
-          margin="auto"
+          margin="8px auto 0"
+          px={2}
+          py={4}
+          style={{
+            flexWrap: "wrap"
+          }}
         >
-          {/* <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>Badges:</Text> */}
-          <div
-            style={{
-              margin: "0 auto",
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            {balance.loading && <p>Loading Badges</p>}
-            {!balance.loading && balance.items.length === 0 && <p>User has no badges yet!</p>}
-            {balance.items.length > 0 &&
-              balance.items.map(item => (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto",
-                  }}
-                >
-                  <img
-                    alt="Badge icon"
-                    style={{
-                      maxWidth: "80px",
-                      display: "block",
-                      margin: "0 auto",
-                      marginRight: "20px",
-                      marginTop: "10px",
-                      borderRadius: "10px",
-                    }}
-                    src={item.tiny}
-                  />
-                </div>
-              ))}
-          </div>
+          {balance.loading && <Spinner />}
+          {!balance.loading && balance.items.length === 0 && <p>User has no badges yet!</p>}
+          {balance.items.length > 0 &&
+            balance.items.map(item => <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />)}
         </Flex>
       )}
     </BuilderBadgeCardSkeleton>
