@@ -30,7 +30,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
 
     constructor(address[] memory admin)
     ERC1155(
-        "https://gateway.pinata.cloud/ipfs/QmSCkywYcmTn9A8mmPmRAbBuWrVjBDvq9FHeV7vmY9hymz/{id}.json"
+        "https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/{id}.json"
     )
     {
         transferOwnership(0x34aA3F359A9D614239015126635CE7732c18fDF3);
@@ -48,7 +48,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
    */
     function uri() public pure returns (string memory) {
         return
-        "https://gateway.pinata.cloud/ipfs/QmSCkywYcmTn9A8mmPmRAbBuWrVjBDvq9FHeV7vmY9hymz";
+        "https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg";
     }
 
     /**
@@ -68,16 +68,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         emit Minted(recipient, tokenId);
     }
 
-    /**
-     * @notice Allows original admins to add curators
-     */
-    function addAdmins(address[] memory admins) public adminOnly {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "DEFAULT_ADMIN only function");
-
-        for (uint256 i = 0; i < admins.length; ++i) {
-            grantRole(ADMINS_ROLE, admins[i]);
-        }
-    }
+    
 
     /**
      * @notice Block badge transfers

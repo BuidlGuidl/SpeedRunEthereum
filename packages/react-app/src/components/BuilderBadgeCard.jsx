@@ -17,7 +17,7 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
     const { borderColor, secondaryFontColor } = useCustomColorModes();
 
     const getImageAddress = async ( badge ) => {
-      const metadata = await axios.get(`https://ipfs.io/ipfs/QmSCkywYcmTn9A8mmPmRAbBuWrVjBDvq9FHeV7vmY9hymz/000000000000000000000000000000000000000000000000000000000000000${badge}.json`);
+      const metadata = await axios.get(`https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/000000000000000000000000000000000000000000000000000000000000000${badge}.json`);
       return metadata.data
     }
   
