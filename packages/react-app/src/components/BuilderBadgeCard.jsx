@@ -16,10 +16,14 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
 
     const { borderColor, secondaryFontColor } = useCustomColorModes();
 
-    const getImageAddress = async ( badge ) => {
-      const metadata = await axios.get(`https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/000000000000000000000000000000000000000000000000000000000000000${badge}.json`);
-      return metadata.data
-    }
+    //const tokenDatas = [];
+
+    const getTokenMetaData = async ( badges ) => {
+        //const parsed = parseInt(badges, 10);
+      const metadata = await axios.get(`https://ipfs.io/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/000000000000000000000000000000000000000000000000000000000000000${badges}.json`);
+      //tokenDatas.push(metadata.data);
+      return metadata.data;
+  }
   
   const loadBadges = async () => {
     if (!builderAddress || !readContracts) return;
@@ -28,22 +32,22 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
       items: [],
     });
 
-    var balances = [];
-
-    for (let i = 0; i < 10; i += 1) {
-      let userBalance = (await readContracts.BuidlBadges.balanceOf(builderAddress, i)).toNumber();
-      //console.log(userBalance)
-      if (userBalance > 0) {
-      balances.push(i)
-      console.log(balances)
-      }
-    }
-
     const tokensPromises = [];
-    
-    for (let i = 0; i < balances.length; i += 1) {
-      tokensPromises.push(getImageAddress(balances[i]));
+
+      let userBalance = (await readContracts.BuidlBadges.getUserBadges(builderAddress));
+      console.log(userBalance)
+      if (userBalance.length) {
+        for (let i = 0; i < userBalance.length; i += 1) {
+          tokensPromises.push(getTokenMetaData(userBalance[i]));
+        }
+        //userBalance.forEach(element => tokensPromises.push(getTokenMetaData(element)));
+        //userBalance.forEach(element => tokensPromises.push(getTokenMetaData(userBalance)))
     }
+    
+    
+    /* for (let i = 0; i < userBalance.length; i += 1) {
+      tokensPromises.push(getImageAddress(userBalance[i]));
+    } */
 
     const tokens = await Promise.all(tokensPromises);
     console.log(tokens)

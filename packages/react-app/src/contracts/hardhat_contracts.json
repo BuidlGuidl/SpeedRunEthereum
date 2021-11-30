@@ -5,7 +5,7 @@
       "chainId": "137",
       "contracts": {
         "BuidlBadges": {
-          "address": "0x83EF6bb713Cfb70b81FFf5f0306c2dE39eC534E5",
+          "address": "0x6aaecabda8caa532adf1d27ce3ae8a485599e2c1",
           "abi": [
             {
               "inputs": [
@@ -475,6 +475,25 @@
             {
               "inputs": [
                 {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                }
+              ],
+              "name": "getUserBadges",
+              "outputs": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "",
+                  "type": "uint256[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
                   "internalType": "bytes32",
                   "name": "role",
                   "type": "bytes32"
@@ -488,30 +507,6 @@
               "name": "grantRole",
               "outputs": [],
               "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "name": "hasBadge",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
               "type": "function"
             },
             {
@@ -782,6 +777,30 @@
                 }
               ],
               "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "name": "userBadges",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
               "type": "function"
             }
           ]

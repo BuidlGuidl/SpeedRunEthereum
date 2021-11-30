@@ -1,5 +1,5 @@
 pragma solidity ^0.8.0;
-// // SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
@@ -19,7 +19,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     uint256 public constant DAMAGE_DEALER = 8;
     uint256 public constant COMMUNITY_HELPER = 9;
 
-    mapping(address => mapping(uint => bool)) public hasBadge;
+    mapping(address => uint256[]) public userBadges;
 
     event Minted(address recipient, uint256 tokenId);
 
@@ -44,7 +44,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     }
 
     /**
-   * @dev Contract urii
+   * @dev Contract uri
    */
     function uri() public pure returns (string memory) {
         return
@@ -62,13 +62,18 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         require((balanceOf(recipient, tokenId) == 0), "Already holds badge");
         _mint(recipient, tokenId, 1, "");
 
-        //After mint we set a bool for the tokenID to the user address.
-        hasBadge[recipient][tokenId] = true;
+        //Set mapping so we can get an array of user badges l8r
+        userBadges[recipient].push(tokenId);
 
         emit Minted(recipient, tokenId);
     }
 
-    
+    /**
+     * @notice Gets [] of user badges 0-x
+     */
+    function getUserBadges(address user) public view returns (uint256[] memory) {
+        return userBadges[user];
+    }
 
     /**
      * @notice Block badge transfers
