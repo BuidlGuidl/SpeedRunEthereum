@@ -88,7 +88,6 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
 
   const handleSendChallengeReview = reviewType => async (badgeId, userAddress, challengeId, comment) => {
     try {
-      // ToDo. Mint corresponding challenge ID
       await tx(writeContracts.BuidlBadges.mint(userAddress, badgeId));
     } catch (e) {
       console.log("mint tx error:", e);

@@ -51,8 +51,8 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
-// ToDo. Use and env var.
-const targetNetwork = NETWORKS.matic;
+/// 📡 What chain are your contracts deployed to?
+const targetNetwork = process.env.REACT_APP_NETWORK ? NETWORKS[process.env.REACT_APP_NETWORK] : NETWORKS.localhost;
 
 function App() {
   const [providers, setProviders] = useState({
@@ -130,7 +130,6 @@ function App() {
   const writeContracts = useContractLoader(userProvider, { chainId: targetNetworkChainId });
 
   const readContracts = useContractLoader(targetNetworkProvider, { chainId: targetNetworkChainId });
-  //console.log(readContracts)
 
   // Gets gas price for tx
   const gasPrice = useGasPrice(targetNetwork, "fast");
@@ -251,10 +250,10 @@ function App() {
           </Route>
           <Route path="/builders/:builderAddress">
             <BuilderProfileView
-            serverUrl={serverUrl}
-            mainnetProvider={mainnetProvider}
-            address={address}
-            readContracts={readContracts}
+              serverUrl={serverUrl}
+              mainnetProvider={mainnetProvider}
+              address={address}
+              readContracts={readContracts}
             />
           </Route>
           <Route path="/challenge/:challengeId">

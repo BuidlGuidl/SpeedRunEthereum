@@ -6,16 +6,14 @@ import Address from "./Address";
 import { getAcceptedChallenges } from "../helpers/builders";
 import EthIcon from "./icons/EthIcon";
 import HeroIconBolt from "./icons/HeroIconBolt";
-import MoonIcon from "./icons/MoonIcon";
 import simpleStreamAbi from "../contracts/simpleStreamAbi.json";
 import { userFunctionDescription } from "../helpers/constants";
 import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
 import useCustomColorModes from "../hooks/useCustomColorModes";
-import { USER_ROLES } from "../helpers/constants";
 
 const secondsPerDay = 24 * 60 * 60;
 
-const BuilderRow = forwardRef(({ address, userProvider, onSuccess, setUserRole, builder, mainnetProvider }, ref) => {
+const BuilderRow = forwardRef(({ builder, mainnetProvider }, ref) => {
   const { primaryFontColor, secondaryFontColor } = useCustomColorModes();
   const providerData = useContext(BlockchainProvidersContext).mainnet;
   const provider = providerData.provider;
@@ -74,7 +72,6 @@ const BuilderRow = forwardRef(({ address, userProvider, onSuccess, setUserRole, 
         ) : (
           <Flex align="center" justify="end">
             <EthIcon w={4} mr={1} />
-            {console.log(builder.id)}
             {streamBalance?.toFixed(4)}
           </Flex>
         )}
@@ -119,12 +116,6 @@ const BuilderRow = forwardRef(({ address, userProvider, onSuccess, setUserRole, 
         <Button variant="outline">
           <HeroIconBolt w={6} h={6} mr={2} color={secondaryFontColor} />
           Fund
-        </Button>
-        <Button variant="outline"
-        onClick={() => setUserRole(USER_ROLES[builder.id] ?? USER_ROLES.admin)}
-        >
-          <MoonIcon w={6} h={6} mr={2} color={secondaryFontColor} />
-          +Admin
         </Button>
       </Td>
     </Tr>
