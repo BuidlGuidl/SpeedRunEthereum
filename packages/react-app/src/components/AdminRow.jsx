@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Link as RouteLink } from "react-router-dom";
-import { forwardRef, Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
+import { Button, Box, Flex, Link, Progress, Tag, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 import { getAcceptedChallenges } from "../helpers/builders";
 import EthIcon from "./icons/EthIcon";
@@ -15,7 +15,7 @@ import { USER_ROLES } from "../helpers/constants";
 
 const secondsPerDay = 24 * 60 * 60;
 
-const BuilderRow = forwardRef(({ address, userProvider, onSuccess, setUserRole, builder, mainnetProvider, readContracts }, ref) => {
+const BuilderRow = (({ address, userProvider, onSuccess, setUserRole, builder, mainnetProvider, readContracts }) => {
   const { primaryFontColor, secondaryFontColor } = useCustomColorModes();
   const providerData = useContext(BlockchainProvidersContext).mainnet;
   const provider = providerData.provider;
