@@ -9,20 +9,22 @@ const BuilderBadgeCardSkeleton = ({ isLoaded, children }) => (
 
 // TODO get the actual join date. Should be easy getting the user.create event
 const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
-    const [balance, setBalance] = useState({
-      loading: true,
-      items: [],
-    });
+  const [balance, setBalance] = useState({
+    loading: true,
+    items: [],
+  });
 
-    const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const { borderColor, secondaryFontColor } = useCustomColorModes();
 
-    const getTokenMetaData = async ( badges ) => {
-        //const parsed = parseInt(badges, 10);
-      const metadata = await axios.get(`https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/000000000000000000000000000000000000000000000000000000000000000${badges}.json`);
-      //tokenDatas.push(metadata.data);
-      return metadata.data;
-  }
-  
+  const getTokenMetaData = async badges => {
+    //const parsed = parseInt(badges, 10);
+    const metadata = await axios.get(
+      `https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/000000000000000000000000000000000000000000000000000000000000000${badges}.json`,
+    );
+    //tokenDatas.push(metadata.data);
+    return metadata.data;
+  };
+
   const loadBadges = async () => {
     if (!builderAddress || !readContracts) return;
     setBalance({
@@ -32,23 +34,23 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
 
     const tokensPromises = [];
 
-      let userBalance = (await readContracts.BuidlBadges.getUserBadges(builderAddress));
-      console.log(userBalance)
-      if (userBalance.length) {
-        for (let i = 0; i < userBalance.length; i += 1) {
-          tokensPromises.push(getTokenMetaData(userBalance[i]));
-        }
+    let userBalance = await readContracts.BuidlBadges.getUserBadges(builderAddress);
+    console.log(userBalance);
+    if (userBalance.length) {
+      for (let i = 0; i < userBalance.length; i += 1) {
+        tokensPromises.push(getTokenMetaData(userBalance[i]));
+      }
     }
 
     const tokens = await Promise.all(tokensPromises);
-    console.log(tokens)
-    console.log(readContracts)
+    console.log(tokens);
+    console.log(readContracts);
     //console.log(address)
     setBalance({
       loading: false,
       items: tokens,
     });
-  }
+  };
 
   useEffect(() => {
     if (readContracts) loadBadges();
@@ -68,13 +70,17 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
           px={2}
           py={4}
           style={{
-            flexWrap: "wrap"
+            flexWrap: "wrap",
           }}
         >
           {balance.loading && <Spinner />}
           {!balance.loading && balance.items.length === 0 && <p>User has no badges yet!</p>}
           {balance.items.length > 0 &&
-            balance.items.map(item => <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />)}
+            balance.items.map(item => (
+              <a href={item.image}>
+                <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />
+              </a>
+            ))}
         </Flex>
       )}
     </BuilderBadgeCardSkeleton>
