@@ -118,7 +118,6 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                     <Th>Contract</Th>
                     <Th>Live Demo</Th>
                     <Th>Status</Th>
-                    <Th>Date</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -165,7 +164,6 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                         <Td>
                           <ChallengeStatusTag status={lastSubmission.status} comment={lastSubmission.reviewComment} />
                         </Td>
-                        <Td whiteSpace="nowrap">2021 Aug 20</Td>
                       </Tr>
                     );
                   })}
