@@ -9,7 +9,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import { Box, Button } from "@chakra-ui/react";
 import { useUserProvider, useContractLoader, useGasPrice, useBalance } from "./hooks";
-import { Header, ColorModeSwitcher } from "./components";
+import { Header, ColorModeSwitcher, NetworkDisplay } from "./components";
 import { NETWORKS, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import { Transactor } from "./helpers";
 import {
@@ -27,6 +27,7 @@ import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
+const NETWORKCHECK = true;
 
 /*
   Web3 modal helps us "connect" external wallets:
@@ -266,19 +267,22 @@ function App() {
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/submission-review" exact>
+            <NetworkDisplay
+              NETWORKCHECK={NETWORKCHECK}
+              localChainId={targetNetworkChainId}
+              selectedChainId={selectedChainId}
+              targetNetwork={targetNetwork}
+            />
             <SubmissionReviewView
               userProvider={userProvider}
               mainnetProvider={mainnetProvider}
               writeContracts={writeContracts}
               tx={tx}
+              targetNetworkProvider={targetNetworkProvider}
             />
           </Route>
           <Route path="/admins" exact>
-            <AdminListView
-            serverUrl={serverUrl}
-            mainnetProvider={mainnetProvider}
-            readContracts={readContracts}
-            />
+            <AdminListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} readContracts={readContracts} />
           </Route>
         </Switch>
         <ColorModeSwitcher />
