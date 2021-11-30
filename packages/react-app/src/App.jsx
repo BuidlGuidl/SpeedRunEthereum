@@ -19,6 +19,7 @@ import {
   SubmissionReviewView,
   HomeView,
   BuildsListView,
+  AdminListView
 } from "./views";
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
@@ -271,6 +272,13 @@ function App() {
               mainnetProvider={mainnetProvider}
               writeContracts={writeContracts}
               tx={tx}
+            />
+          </Route>
+          <Route path="/admins" exact>
+            <AdminListView
+            serverUrl={serverUrl}
+            mainnetProvider={mainnetProvider}
+            readContracts={readContracts}
             />
           </Route>
         </Switch>
