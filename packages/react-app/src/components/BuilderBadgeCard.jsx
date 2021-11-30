@@ -33,9 +33,8 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
       const balances = [];
 
       for (let i = 0; i < 10; i += 1) {
-        const userBalance = (await readContracts.BuidlBadges.balanceOf(builderAddress, i)).toNumber();
-        // console.log(userBalance)
-        if (userBalance > 0) {
+        const userBalance = await readContracts.BuidlBadges.balanceOf(builderAddress, i);
+        if (userBalance.gt(0)) {
           balances.push(i);
           console.log(balances);
         }
