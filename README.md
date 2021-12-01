@@ -24,6 +24,100 @@ yarn install
 
 ```
 
+Ready your React .env:
+
+```bash
+
+cd packages/react-app
+cp .sample.env .env
+
+```
+
+Edit the new .env, & save changes, don't edit BACKEND_URL unless using custom backend.
+
+Next, ready your Hardhat .env:
+
+Navigating from /scaffold-directory..
+
+```bash
+
+cd packages/hardhat
+cp example.env .env
+
+```
+
+Edit this new .env, saving changes again.
+
+Admins are just comma-separated addresses like..
+
+```bash
+
+0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,0x34aA3F359A9D614239015126635CE7732c18fDF3
+
+```
+
+DEPLOY_NETWORK determines where hardhat deploys the contract
+You can find a list of networks in /packages/hardhat/hardhatconfig.js
+
+Deploy the Contract:
+If deploying locally..
+
+```bash
+
+yarn chain
+
+```
+
+And in a seperate terminal:
+
+```bash
+
+yarn deploy
+
+```
+
+If deploying to a live network:
+
+This command creates mnemonic.txt & 0x(address).txt in packages/hardhat
+You can replace the phrase with your own deployer seed-phrase.
+Or you can fund it from another account to be safe.
+
+```bash
+
+cd packages/hardhat
+yarn generate
+
+```
+
+To see the accounts balances in terminal..
+
+```bash
+
+yarn account
+
+```
+
+Once it's funded on the targeted network..
+
+```bash
+
+yarn deploy
+
+```
+
+Your contract should deploy and publish to the front-end when finished.
+If your deploy transaction is stalled, you can cancel the script in terminal &
+
+Follow --gasprice with a number like 3500000000 to replace the tx..
+
+```bash
+
+yarn deploy --gasprice
+
+```
+
+Once finished, your contract will auto-publish to the front-end.
+
 Start the backend service:
 
 ```bash
@@ -87,6 +181,7 @@ Submit the solution to a challenge by 1.) clicking a challenge in your profile v
 ![image](https://user-images.githubusercontent.com/2156509/135262069-7e00ad55-effe-4409-8378-5ec0afee25ff.png)
 
 Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
->In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
+
+> In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
 
 ![image](https://user-images.githubusercontent.com/2156509/135267093-4be16c3c-ddfb-4877-8329-cc78b82dcfae.png)
