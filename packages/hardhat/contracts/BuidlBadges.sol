@@ -37,6 +37,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
 
         for (uint256 i = 0; i < admin.length; ++i) {
             _setupRole(DEFAULT_ADMIN_ROLE, admin[i]);
+            _setupRole(ADMINS_ROLE, admin[i]);
         }
 
         _setRoleAdmin(ADMINS_ROLE, DEFAULT_ADMIN_ROLE);
