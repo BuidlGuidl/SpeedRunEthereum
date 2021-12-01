@@ -24,8 +24,14 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
         </Link>
       </Td>
       <Td>
-        <Link href={challenge.branchUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
-          Code
+        <Link
+          // Legacy branchUrl
+          href={challenge.contractUrl || challenge.branchUrl}
+          color="teal.500"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Contract
         </Link>
       </Td>
       <Td>

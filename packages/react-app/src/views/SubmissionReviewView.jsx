@@ -215,7 +215,7 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
             <Tr>
               <Th>Builder</Th>
               <Th>Challenge</Th>
-              <Th>Code</Th>
+              <Th>Contract</Th>
               <Th>Live demo</Th>
               <Th>Comment</Th>
               <Th>Actions</Th>

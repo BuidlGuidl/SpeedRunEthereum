@@ -97,9 +97,9 @@ app.get("/user", async (request, response) => {
 });
 
 app.post("/challenges", withAddress, async (request, response) => {
-  const { challengeId, deployedUrl, branchUrl, signature } = request.body;
+  const { challengeId, deployedUrl, contractUrl, signature } = request.body;
   const address = request.address;
-  console.log("POST /challenges: ", address, challengeId, deployedUrl, branchUrl);
+  console.log("POST /challenges: ", address, challengeId, deployedUrl, contractUrl);
 
   const verifyOptions = {
     messageId: "challengeSubmit",
@@ -123,14 +123,14 @@ app.post("/challenges", withAddress, async (request, response) => {
   // ToDo. Extract challenge status (ENUM)
   existingChallenges[challengeId] = {
     status: "SUBMITTED",
-    branchUrl,
+    contractUrl,
     deployedUrl,
   };
   const eventPayload = {
     userAddress: address,
     challengeId,
     deployedUrl,
-    branchUrl,
+    contractUrl,
   };
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
