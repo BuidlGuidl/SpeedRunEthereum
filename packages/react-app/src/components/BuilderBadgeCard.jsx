@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Spinner, Image, Flex, Skeleton, SkeletonText } from "@chakra-ui/react";
-import useCustomColorModes from "../hooks/useCustomColorModes";
 import axios from "axios";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const BuilderBadgeCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
@@ -14,45 +14,40 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
     items: [],
   });
 
-  const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const { borderColor } = useCustomColorModes();
 
   const getTokenMetaData = async badges => {
-    //const parsed = parseInt(badges, 10);
     const metadata = await axios.get(
       `https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/000000000000000000000000000000000000000000000000000000000000000${badges}.json`,
     );
-    //tokenDatas.push(metadata.data);
     return metadata.data;
   };
 
-  const loadBadges = async () => {
-    if (!builderAddress || !readContracts) return;
-    setBalance({
-      loading: true,
-      items: [],
-    });
-
-    const tokensPromises = [];
-
-    let userBalance = await readContracts.BuidlBadges.getUserBadges(builderAddress);
-    console.log(userBalance);
-    if (userBalance.length) {
-      for (let i = 0; i < userBalance.length; i += 1) {
-        tokensPromises.push(getTokenMetaData(userBalance[i]));
-      }
-    }
-
-    const tokens = await Promise.all(tokensPromises);
-    console.log(tokens);
-    console.log(readContracts);
-    //console.log(address)
-    setBalance({
-      loading: false,
-      items: tokens,
-    });
-  };
-
   useEffect(() => {
+    const loadBadges = async () => {
+      if (!builderAddress || !readContracts) return;
+      setBalance({
+        loading: true,
+        items: [],
+      });
+
+      const tokensPromises = [];
+
+      const userBalance = await readContracts.BuidlBadges.getUserBadges(builderAddress);
+      console.log(userBalance);
+      if (userBalance.length) {
+        for (let i = 0; i < userBalance.length; i += 1) {
+          tokensPromises.push(getTokenMetaData(userBalance[i]));
+        }
+      }
+
+      const tokens = await Promise.all(tokensPromises);
+      setBalance({
+        loading: false,
+        items: tokens,
+      });
+    };
+
     if (readContracts) loadBadges();
   }, [builderAddress, readContracts]);
 
