@@ -18,8 +18,7 @@ import {
   BuilderProfileView,
   SubmissionReviewView,
   HomeView,
-  BuildsListView,
-  AdminListView
+  BuildsListView
 } from "./views";
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
@@ -280,9 +279,6 @@ function App() {
               tx={tx}
               targetNetworkProvider={targetNetworkProvider}
             />
-          </Route>
-          <Route path="/admins" exact>
-            <AdminListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} readContracts={readContracts} />
           </Route>
         </Switch>
         <ColorModeSwitcher />
