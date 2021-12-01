@@ -31,6 +31,7 @@ import {
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import BuilderProfileCard from "../components/BuilderProfileCard";
+import BuilderBadgeCard from "../components/BuilderBadgeCard";
 import { challengeInfo } from "../data/challenges";
 import { CHALLENGE_SUBMISSION_STATUS, userFunctionDescription } from "../helpers/constants";
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
@@ -39,7 +40,7 @@ import ChallengeList from "../components/ChallengeList";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
 // TODO get the real date of submission using the events
-export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
+export default function BuilderProfileView({ serverUrl, mainnetProvider, address, readContracts }) {
   const { builderAddress } = useParams();
   const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,6 +63,12 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
       <SimpleGrid gap={14} columns={{ base: 1, xl: 4 }}>
         <GridItem colSpan={1}>
           <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} />
+          <BuilderBadgeCard
+            builder={builder}
+            mainnetProvider={mainnetProvider}
+            readContracts={readContracts}
+            builderAddress={builderAddress}
+          />
         </GridItem>
         <GridItem colSpan={{ base: 1, xl: 3 }}>
           <HStack spacing={4} mb={8}>

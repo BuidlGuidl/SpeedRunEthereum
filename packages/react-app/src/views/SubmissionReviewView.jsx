@@ -86,18 +86,12 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
     // eslint-disable-next-line
   }, [address]);
 
-  // Handle mint.
-  // ToDo. Merge it into Approve.
-  const handleMint = async userAddress => {
+  const handleSendChallengeReview = reviewType => async (badgeId, userAddress, challengeId, comment) => {
     try {
-      // ToDo. Mint corresponding challenge ID
-      await tx(writeContracts.BuidlBadges.mint(userAddress, "0"));
+      await tx(writeContracts.BuidlBadges.mint(userAddress, badgeId));
     } catch (e) {
       console.log("mint tx error:", e);
     }
-  };
-
-  const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
     try {
       signMessage = await getChallengeReviewSignMessage(address, userAddress, challengeId, reviewType);
@@ -205,8 +199,11 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
     <Container maxW="container.lg">
       <Container maxW="container.md" centerContent>
         <Heading as="h1">Review Submissions</Heading>
+        <Text color={secondaryFontColor} mb="1">
+          Pending submissions to validate. "Approve" also mints a badge, make sure you're on Polygon.
+        </Text>
         <Text color={secondaryFontColor} mb="6">
-          Pending submissions to validate.
+          You will be prompted to sign after the mint tx completes.
         </Text>
       </Container>
       <Heading as="h2" size="lg" mt={6} mb={4}>
@@ -243,7 +240,6 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
                   isLoading={isLoadingChallenges}
                   approveClick={handleSendChallengeReview("ACCEPTED")}
                   rejectClick={handleSendChallengeReview("REJECTED")}
-                  mintClick={handleMint}
                 />
               ))
             )}

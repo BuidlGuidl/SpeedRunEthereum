@@ -9,7 +9,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import { Box, Button } from "@chakra-ui/react";
 import { useUserProvider, useContractLoader, useGasPrice, useBalance } from "./hooks";
-import { Header, ColorModeSwitcher } from "./components";
+import { Header, ColorModeSwitcher, NetworkDisplay } from "./components";
 import { NETWORKS, INFURA_ID, SERVER_URL as serverUrl } from "./constants";
 import { Transactor } from "./helpers";
 import {
@@ -18,7 +18,7 @@ import {
   BuilderProfileView,
   SubmissionReviewView,
   HomeView,
-  BuildsListView,
+  BuildsListView
 } from "./views";
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
@@ -26,6 +26,7 @@ import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
+const NETWORKCHECK = true;
 
 /*
   Web3 modal helps us "connect" external wallets:
@@ -50,8 +51,8 @@ const logoutOfWeb3Modal = async () => {
   }, 1);
 };
 
-// ToDo. Use and env var.
-const targetNetwork = NETWORKS.localhost;
+/// 📡 What chain are your contracts deployed to?
+const targetNetwork = process.env.REACT_APP_NETWORK ? NETWORKS[process.env.REACT_APP_NETWORK] : NETWORKS.localhost;
 
 function App() {
   const [providers, setProviders] = useState({
@@ -127,6 +128,8 @@ function App() {
 
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userProvider, { chainId: targetNetworkChainId });
+
+  const readContracts = useContractLoader(targetNetworkProvider, { chainId: targetNetworkChainId });
 
   // Gets gas price for tx
   const gasPrice = useGasPrice(targetNetwork, "fast");
@@ -246,7 +249,12 @@ function App() {
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
           </Route>
           <Route path="/builders/:builderAddress">
-            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
+            <BuilderProfileView
+              serverUrl={serverUrl}
+              mainnetProvider={mainnetProvider}
+              address={address}
+              readContracts={readContracts}
+            />
           </Route>
           <Route path="/challenge/:challengeId">
             <ChallengeDetailView
@@ -258,11 +266,18 @@ function App() {
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/submission-review" exact>
+            <NetworkDisplay
+              NETWORKCHECK={NETWORKCHECK}
+              localChainId={targetNetworkChainId}
+              selectedChainId={selectedChainId}
+              targetNetwork={targetNetwork}
+            />
             <SubmissionReviewView
               userProvider={userProvider}
               mainnetProvider={mainnetProvider}
               writeContracts={writeContracts}
               tx={tx}
+              targetNetworkProvider={targetNetworkProvider}
             />
           </Route>
         </Switch>

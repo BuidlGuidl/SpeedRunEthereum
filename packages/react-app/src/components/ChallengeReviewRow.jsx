@@ -4,7 +4,7 @@ import { Button, HStack, Link, Td, Tr, Textarea } from "@chakra-ui/react";
 import { challengeInfo } from "../data/challenges";
 import Address from "./Address";
 
-export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick, mintClick }) {
+export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick }) {
   const [comment, setComment] = React.useState("");
 
   if (!challengeInfo[challenge.id]) {
@@ -60,20 +60,10 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
             type="button"
             colorScheme="green"
             disabled={isLoading}
-            onClick={() => approveClick(challenge.userAddress, challenge.id, comment)}
+            onClick={() => approveClick(challengeInfo[challenge.id].badgeId, challenge.userAddress, challenge.id, comment)}
             size="xs"
           >
             Approve
-          </Button>
-          <Button
-            type="button"
-            colorScheme="blue"
-            disabled={isLoading}
-            style={{ marginRight: 10 }}
-            onClick={() => mintClick(challenge.userAddress, challenge.id, comment)}
-            size="xs"
-          >
-            Mint
           </Button>
         </HStack>
       </Td>

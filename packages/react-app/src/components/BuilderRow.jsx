@@ -13,7 +13,7 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const secondsPerDay = 24 * 60 * 60;
 
-const BuilderRow = ({ builder, mainnetProvider }) => {
+const BuilderRow = (({ builder, mainnetProvider }) => {
   const { primaryFontColor, secondaryFontColor } = useCustomColorModes();
   const providerData = useContext(BlockchainProvidersContext).mainnet;
   const provider = providerData.provider;
@@ -72,7 +72,6 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
         ) : (
           <Flex align="center" justify="end">
             <EthIcon w={4} mr={1} />
-            {console.log(builder.id)}
             {streamBalance?.toFixed(4)}
           </Flex>
         )}
@@ -121,6 +120,6 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
       </Td>
     </Tr>
   );
-};
+});
 
 export default BuilderRow;

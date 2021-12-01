@@ -1,5 +1,5 @@
 pragma solidity ^0.8.0;
-// // SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
@@ -19,7 +19,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     uint256 public constant DAMAGE_DEALER = 8;
     uint256 public constant COMMUNITY_HELPER = 9;
 
-    mapping(address => mapping(uint => bool)) public hasBadge;
+    mapping(address => uint256[]) public userBadges;
 
     event Minted(address recipient, uint256 tokenId);
 
@@ -30,7 +30,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
 
     constructor(address[] memory admin)
     ERC1155(
-        "https://gateway.pinata.cloud/ipfs/QmWWSZAbQNh6ynhAetWAvJkwZjjCybeTSs8zT2DqELsqiK/{id}.json"
+        "https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg/{id}.json"
     )
     {
         transferOwnership(0x34aA3F359A9D614239015126635CE7732c18fDF3);
@@ -48,7 +48,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
    */
     function uri() public pure returns (string memory) {
         return
-        "https://gateway.pinata.cloud/ipfs/QmWWSZAbQNh6ynhAetWAvJkwZjjCybeTSs8zT2DqELsqiK";
+        "https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg";
     }
 
     /**
@@ -59,23 +59,20 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         address recipient,
         uint256 tokenId
     ) public adminOnly {
-        _mint(msg.sender, tokenId, 1, "");
+        require((balanceOf(recipient, tokenId) == 0), "Already holds badge");
+        _mint(recipient, tokenId, 1, "");
 
-        //After mint we set a bool for the tokenID to the user address.
-        hasBadge[recipient][tokenId] = true;
+        //Set mapping so we can get an array of user badges l8r
+        userBadges[recipient].push(tokenId);
 
         emit Minted(recipient, tokenId);
     }
 
     /**
-     * @notice Allows original admins to add curators
+     * @notice Gets [] of user badges 0-x
      */
-    function addAdmins(address[] memory admins) public adminOnly {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "DEFAULT_ADMIN only function");
-
-        for (uint256 i = 0; i < admins.length; ++i) {
-            grantRole(ADMINS_ROLE, admins[i]);
-        }
+    function getUserBadges(address user) public view returns (uint256[] memory) {
+        return userBadges[user];
     }
 
     /**
