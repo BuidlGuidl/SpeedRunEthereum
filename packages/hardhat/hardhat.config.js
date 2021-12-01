@@ -23,10 +23,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
       plus it will use *.args for constructor args
 */
 
-//
-// Select the network you want to deploy to here:
-//
-const defaultNetwork = "localhost";
+// Get network from .env
+const defaultNetwork = process.env.DEPLOY_NETWORK;
 
 const mainnetGwei = 21;
 
