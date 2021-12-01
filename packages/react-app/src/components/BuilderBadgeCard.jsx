@@ -7,7 +7,6 @@ const BuilderBadgeCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
 );
 
-// TODO get the actual join date. Should be easy getting the user.create event
 const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
   const [balance, setBalance] = useState({
     loading: true,
