@@ -1,6 +1,29 @@
 pragma solidity ^0.8.0;
 // SPDX-License-Identifier: MIT
 
+/*
+   ___       ___     ___      ___      ___      ___     _   _    _  _   
+  / __|     | _ \   | __|    | __|    |   \    | _ \   | | | |  | \| |  
+  \__ \     |  _/   | _|     | _|     | |) |   |   /   | |_| |  | .` |  
+  |___/    _|_|_    |___|    |___|    |___/    |_|_\    \___/   |_|\_|  
+_|"""""| _| """ | _|"""""| _|"""""| _|"""""| _|"""""| _|"""""| _|"""""| 
+"`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' 
+   ___     _____    _  _      ___      ___      ___     _   _   __  __  
+  | __|   |_   _|  | || |    | __|    | _ \    | __|   | | | | |  \/  | 
+  | _|      | |    | __ |    | _|     |   /    | _|    | |_| | | |\/| | 
+  |___|    _|_|_   |_||_|    |___|    |_|_\    |___|    \___/  |_|__|_| 
+_|"""""| _|"""""| _|"""""| _|"""""| _|"""""| _|"""""| _|"""""| _|"""""| 
+"`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' 
+                _
+              _( }
+    -=   _  <<  \
+        `.\__/`/\\
+  -=      '--'\\  `
+       -=     //
+   -=|        \)
+
+*/
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -19,6 +42,9 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     uint256 public constant DAMAGE_DEALER = 8;
     uint256 public constant COMMUNITY_HELPER = 9;
 
+    /**
+     * @dev Map user to array of badgeIds minted to them
+     */
     mapping(address => uint256[]) public userBadges;
 
     event Minted(address recipient, uint256 tokenId);
@@ -45,8 +71,8 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     }
 
     /**
-   * @dev Contract uri
-   */
+     * @dev Contract URI
+     */
     function uri() public pure returns (string memory) {
         return
         "https://forgottenbots.mypinata.cloud/ipfs/QmZesNT9tbpaNoy727fYRa7cB936dznKqFtZwNwUSbxJBg";
@@ -54,7 +80,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
 
     /**
      * @notice Mints the badge
-     * @param tokenId identifies the badge to be minted (0-9 for now)
+     * @param tokenId identifies the badge to be minted
      */
     function mint(
         address recipient,
@@ -63,7 +89,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
         require((balanceOf(recipient, tokenId) == 0), "Already holds badge");
         _mint(recipient, tokenId, 1, "");
 
-        //Set mapping so we can get an array of user badges l8r
+        //Set mapping, get an array of user badges l8r
         userBadges[recipient].push(tokenId);
 
         emit Minted(recipient, tokenId);
@@ -96,7 +122,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     }
 
     /**
-     * @notice Block badge approvals, so they can't be listed on marketplaces.
+     * @notice Block badge approvals
      */
     function setApprovalForAll(
         address operator,
@@ -110,7 +136,7 @@ contract BuidlBadges is ERC1155, Ownable, AccessControl {
     }
 
     /**
-     * @notice Override interface to use AccessControl
+     * @notice Override interface bc multiple inheritance
      */
     function supportsInterface(
         bytes4 interfaceId
