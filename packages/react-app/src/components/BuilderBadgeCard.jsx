@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Spinner, Image, Flex, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Spinner, Image, Link, Flex, Tooltip, Skeleton, SkeletonText } from "@chakra-ui/react";
 import axios from "axios";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
@@ -71,9 +71,11 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
           {!balance.loading && balance.items.length === 0 && <p>User has no badges yet!</p>}
           {balance.items.length > 0 &&
             balance.items.map(item => (
-              <a href={item.image}>
-                <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />
-              </a>
+              <Tooltip label={item.name}>
+                <Link href={item.image} isExternal>
+                  <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />
+                </Link>
+              </Tooltip>
             ))}
         </Flex>
       )}
