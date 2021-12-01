@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, Heading, FormControl, FormLabel, Input, Text, useToast } from "@chakra-ui/react";
+import { Button, Heading, FormControl, FormLabel, Input, Text, Tooltip, useToast } from "@chakra-ui/react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 const serverPath = "/challenges";
 
@@ -12,10 +13,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   const toast = useToast({ position: "top", isClosable: true });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deployedUrl, setDeployedUrl] = useState("");
-  const [branchUrl, setBranchUrl] = useState("");
+  const [contractUrl, setContractUrl] = useState("");
 
   const onFinish = async () => {
-    if (!deployedUrl || !branchUrl) {
+    if (!deployedUrl || !contractUrl) {
       toast({
         status: "error",
         description: "Can't get the message to sign. Please try again",
@@ -64,7 +65,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
         {
           challengeId,
           deployedUrl,
-          branchUrl,
+          contractUrl,
           signature,
         },
         {
@@ -93,18 +94,31 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   };
 
   if (!address) {
-    return <Text color="orange.400" className="warning" align="center">Connect your wallet to submit this Challenge.</Text>;
+    return (
+      <Text color="orange.400" className="warning" align="center">
+        Connect your wallet to submit this Challenge.
+      </Text>
+    );
   }
 
   return (
     <div>
-      <Heading as="h2" size="md" mb={4}>{challenge.label}</Heading>
+      <Heading as="h2" size="md" mb={4}>
+        {challenge.label}
+      </Heading>
       {challenge.isDisabled ? (
-        <Text color="orange.400" className="warning">This challenge is disabled.</Text>
+        <Text color="orange.400" className="warning">
+          This challenge is disabled.
+        </Text>
       ) : (
         <form name="basic" autoComplete="off">
           <FormControl id="deployedUrl" isRequired>
-            <FormLabel>Deployed URL</FormLabel>
+            <FormLabel>
+              Deployed URL{" "}
+              <Tooltip label="Your deployed challenge URL on surge / s3 / ipfs ">
+                <QuestionOutlineIcon ml="2px" />
+              </Tooltip>
+            </FormLabel>
             <Input
               type="text"
               name="deployedUrl"
@@ -115,14 +129,19 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
             />
           </FormControl>
 
-          <FormControl id="branchUrl" isRequired mt={4}>
-            <FormLabel>Branch URL</FormLabel>
+          <FormControl id="contractUrl" isRequired mt={4}>
+            <FormLabel>
+              Etherscan Contract URL{" "}
+              <Tooltip label="Your verified contract URL on Etherscan">
+                <QuestionOutlineIcon ml="2px" />
+              </Tooltip>
+            </FormLabel>
             <Input
               type="text"
-              name="branchUrl"
-              value={branchUrl}
+              name="contractUrl"
+              value={contractUrl}
               onChange={e => {
-                setBranchUrl(e.target.value);
+                setContractUrl(e.target.value);
               }}
             />
           </FormControl>

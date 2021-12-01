@@ -8,7 +8,6 @@
 
 > 🏆 The final **deliverable** is deploying a decentralized application to a public blockchain and then `yarn build` and `yarn surge` your app to a public webserver.
 
-
 🧫 Everything starts by ✏️ Editing `Staker.sol` in `packages/hardhat/contracts`
 
 ---
@@ -73,9 +72,9 @@ uint256 public constant threshold = 1 ether;
 
 > ⚙️  Think of your smart contract like a *state machine*. First, there is a **stake** period. Then, if you have gathered the `threshold` worth of ETH, there is a **success** state. Or, we go into a **withdraw** state to let users withdraw their funds.
 
-Set a `deadline` of ```now + 30 seconds```
+Set a `deadline` of ```block.timestamp + 30 seconds```
 ```solidity
-uint256 public deadline = now + 30 seconds;
+uint256 public deadline = block.timestamp + 30 seconds;
 ```
 
 👨‍🏫 Smart contracts can't execute automatically, you always need to have a transaction execute to change state. Because of this, you will need to have an `execute()` function that *anyone* can call, just once, after the `deadline` has expired.
@@ -90,7 +89,7 @@ If the balance is less than the `threshold`, you want to set a `openForWithdraw`
 
 > 👩‍💻 Create a `timeLeft()` function including ```public view returns (uint256)``` that returns how much time is left.
 
-⚠️ Be careful! if `now >= deadline` you want to ```return 0;```
+⚠️ Be careful! if `block.timestamp >= deadline` you want to ```return 0;```
 
 ⏳ The time will only update if a transaction occurs. You can see the time update by getting funds from the faucet just to trigger a new block.
 
@@ -110,6 +109,8 @@ If the balance is less than the `threshold`, you want to set a `openForWithdraw`
 🎀 To improve the user experience, set your contract up so it accepts ETH sent to it and calls `stake()`. You will use what is called the `receive()` function.
 
 > Use the [receive()](https://docs.soliditylang.org/en/v0.8.9/contracts.html?highlight=receive#receive-ether-function) function in solidity to "catch" ETH sent to the contract and call `stake()` to update `balances`.
+
+---
 
 #### 🥅 Goals
 - [ ] If you send ETH directly to the contract address does it update your `balance`?
@@ -141,6 +142,17 @@ If the balance is less than the `threshold`, you want to set a `openForWithdraw`
 
 >  🚀 Run `yarn deploy` to deploy your smart contract to a public network (selected in hardhat.config.js)
 
+---
+
+## 🔍 Etherscan Contract Verification
+> Get a free [Etherscan API key](https://etherscan.io/apis) and update your hardhat.config.js file with it.
+
+![Screen Shot 2021-11-24 at 9 13 40 AM](https://user-images.githubusercontent.com/9419140/143254420-1916d419-7477-4eec-b201-94166174d8c3.png)
+
+> You will need to uncomment the verify task in the deploy script to verify your contract(s). We will use your verified contract to check your work 👀
+
+![Screen Shot 2021-11-24 at 9 25 44 AM](https://user-images.githubusercontent.com/9419140/143256354-29675a6d-5e3e-421b-800f-7c35ced5e6f4.png)
+
  ---
 
 ### Checkpoint 6: 🎚 Frontend 🧘‍♀️
@@ -158,3 +170,9 @@ If the balance is less than the `threshold`, you want to set a `openForWithdraw`
 💽 Upload your app to surge with `yarn surge` (you could also `yarn s3` or maybe even `yarn ipfs`?)
 
 🚔 Traffic to your url might break the [Infura](https://infura.io/) rate limit, edit your key: `constants.js` in `packages/ract-app/src`.
+
+---
+
+> 👩‍🔬 Need a longer form tutorial to guide your coding? [Try this one!](https://github.com/austintgriffith/scaffold-eth/tree/staking-app-tutorial)
+
+> 💬 Problems, questions, comments on the stack? Post them to the [🏗 scaffold-eth developers chat](https://t.me/joinchat/F7nCRK3kI93PoCOk)
