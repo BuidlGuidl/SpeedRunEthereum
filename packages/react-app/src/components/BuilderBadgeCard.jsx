@@ -1,13 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Spinner, Image, Link, Flex, Tooltip, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Image, Link, Flex, Tooltip, Skeleton, HStack } from "@chakra-ui/react";
 import axios from "axios";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-const BuilderBadgeCardSkeleton = ({ isLoaded, children }) => (
-  <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
+const BuilderBadgeCardSkeleton = () => (
+  <HStack>
+    <Skeleton h="60px" w="60px" />
+    <Skeleton h="60px" w="60px" />
+  </HStack>
 );
 
-const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
+const BadgeContents = ({ isLoading, badges }) => {
+  if (isLoading) {
+    return <BuilderBadgeCardSkeleton />;
+  }
+
+  if (badges.length === 0) {
+    return <p>User has no badges yet!</p>;
+  }
+
+  return badges.map(item => (
+    <Tooltip label={item.name} key={item.name}>
+      <Link href={item.image} isExternal>
+        <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />
+      </Link>
+    </Tooltip>
+  ));
+};
+
+const BuilderBadgeCard = ({ readContracts, builderAddress }) => {
   const [balance, setBalance] = useState({
     loading: true,
     items: [],
@@ -51,35 +72,21 @@ const BuilderBadgeCard = ({ builder, readContracts, builderAddress }) => {
   }, [builderAddress, readContracts]);
 
   return (
-    <BuilderBadgeCardSkeleton isLoaded={!!builder}>
-      {() => (
-        /* delay execution */
-        <Flex
-          borderRadius="lg"
-          borderColor={borderColor}
-          borderWidth={1}
-          justify="center"
-          maxW={{ base: "full", lg: "50%", xl: 60 }}
-          margin="8px auto 0"
-          px={2}
-          py={4}
-          style={{
-            flexWrap: "wrap",
-          }}
-        >
-          {balance.loading && <Spinner />}
-          {!balance.loading && balance.items.length === 0 && <p>User has no badges yet!</p>}
-          {balance.items.length > 0 &&
-            balance.items.map(item => (
-              <Tooltip label={item.name}>
-                <Link href={item.image} isExternal>
-                  <Image d="inline-block" alt="Badge icon" maxW="60px" src={item.tiny} />
-                </Link>
-              </Tooltip>
-            ))}
-        </Flex>
-      )}
-    </BuilderBadgeCardSkeleton>
+    <Flex
+      borderRadius="lg"
+      borderColor={borderColor}
+      borderWidth={1}
+      justify="center"
+      maxW={{ base: "full", lg: "50%", xl: 60 }}
+      margin="8px auto 0"
+      px={2}
+      py={4}
+      style={{
+        flexWrap: "wrap",
+      }}
+    >
+      <BadgeContents isLoading={balance.loading} badges={balance.items} />
+    </Flex>
   );
 };
 
