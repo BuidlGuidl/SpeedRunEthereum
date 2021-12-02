@@ -101,14 +101,14 @@ export default function useContractLoader(providerOrSigner, config = {}) {
             combinedContracts = { ...combinedContracts, ...externalContractList[_chainId].contracts };
           }
 
-          const newContracts = Object.keys(combinedContracts).reduce((accumulator, contractName) => {
+          const newContracts = {}
+          Object.keys(combinedContracts).forEach(contractName => {
             const _address =
               config.customAddresses && Object.keys(config.customAddresses).includes(contractName)
                 ? config.customAddresses[contractName]
                 : combinedContracts[contractName].address;
-            accumulator[contractName] = new ethers.Contract(_address, combinedContracts[contractName].abi, signer);
-            return accumulator;
-          }, {});
+            newContracts[contractName] = new ethers.Contract(_address, combinedContracts[contractName].abi, signer);
+          });
           if (active) setContracts(newContracts);
         } catch (e) {
           console.log("ERROR LOADING CONTRACTS!!", e);
