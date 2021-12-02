@@ -66,7 +66,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
             type="button"
             colorScheme="green"
             disabled={isLoading}
-            onClick={() => approveClick(challengeInfo[challenge.id].badgeId, challenge.userAddress, challenge.id, comment)}
+            onClick={() => approveClick(challenge.userAddress, challenge.id, comment)}
             size="xs"
           >
             Approve

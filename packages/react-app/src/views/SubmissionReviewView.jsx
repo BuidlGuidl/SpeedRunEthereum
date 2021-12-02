@@ -27,6 +27,7 @@ import {
   patchChallengeReview,
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
+import { challengeInfo } from "../data/challenges";
 
 export default function SubmissionReviewView({ userProvider, writeContracts, tx }) {
   const address = useUserAddress(userProvider);
@@ -86,16 +87,19 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
     // eslint-disable-next-line
   }, [address]);
 
-  const handleSendChallengeReview = reviewType => async (badgeId, userAddress, challengeId, comment) => {
-    try {
-      await tx(writeContracts.BuidlBadges.mint(userAddress, badgeId));
-    } catch (e) {
-      toast({
-        description: "There was an error minting the badge",
-        status: "error",
-        variant: toastVariant,
-      });
-      console.log("mint tx error:", e);
+  const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
+    const badgeId = challengeInfo[challengeId].badgeId;
+    if (reviewType === "ACCEPTED") {
+      try {
+        await tx(writeContracts.BuidlBadges.mint(userAddress, badgeId));
+      } catch (e) {
+        toast({
+          description: "There was an error minting the badge",
+          status: "error",
+          variant: toastVariant,
+        });
+        console.log("mint tx error:", e);
+      }
     }
     let signMessage;
     try {
