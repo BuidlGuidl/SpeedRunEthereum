@@ -99,6 +99,7 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
           variant: toastVariant,
         });
         console.log("mint tx error:", e);
+        return;
       }
     }
     let signMessage;
