@@ -23,10 +23,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
       plus it will use *.args for constructor args
 */
 
-//
-// Select the network you want to deploy to here:
-//
-const defaultNetwork = "localhost";
+// Get network from .env
+const defaultNetwork = process.env.DEPLOY_NETWORK;
 
 const mainnetGwei = 21;
 
@@ -169,7 +167,7 @@ module.exports = {
 
     matic: {
       url: "https://rpc-mainnet.maticvigil.com/",
-      gasPrice: 1000000000,
+      gasPrice: 3000000000,
       accounts: {
         mnemonic: mnemonic(),
       },

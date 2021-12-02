@@ -24,15 +24,8 @@ yarn install
 
 ```
 
-Start the backend service:
 
-```bash
-
-yarn backend
-
-```
-
-In a new terminal, start the frontend:
+**1. Start the frontend**
 
 ```bash
 
@@ -40,7 +33,81 @@ yarn start
 
 ```
 
-At this point, you should have the app available at <http://localhost:3000>. By default, a locale JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter (check `packages/backend/services/db.js`).
+
+**2. In a new terminal, start the backend service**
+
+```bash
+
+yarn backend
+
+```
+
+**3. Configure the NFT badge contract and deploy**
+
+First, ready your Hardhat .env:
+
+```bash
+
+cd packages/hardhat
+cp .env.sample .env
+
+```
+
+Edit this new .env with the desired Contract admins addresses (comma-separated) and Network.
+
+**3.1 Deploy the Contract:**
+
+If deploying locally:
+
+```bash
+
+yarn chain
+
+```
+
+And in a seperate terminal:
+
+```bash
+
+yarn deploy
+
+```
+
+**If deploying to a live network:**
+
+This command creates mnemonic.txt & 0x(address).txt in packages/hardhat. You can replace the phrase with your own deployer seed-phrase. Or you can fund it from another account to be safe.
+
+```bash
+
+yarn generate
+
+```
+
+To see the accounts balances in terminal:
+
+```bash
+
+yarn account
+
+```
+
+Once it's funded on the targeted network:
+
+```bash
+
+yarn deploy
+
+```
+
+Your contract should deploy and publish to the front-end when finished. If your deploy transaction is stalled, you can cancel the script in terminal & use a higher gasprice to replace the tx:
+
+```bash
+
+yarn deploy --gasprice 3500000000
+
+```
+
+At this point, you should have the app available at <http://localhost:3000>. By default, a local JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter (check `packages/backend/services/db.js`).
 
 ---
 
@@ -87,6 +154,7 @@ Submit the solution to a challenge by 1.) clicking a challenge in your profile v
 ![image](https://user-images.githubusercontent.com/2156509/135262069-7e00ad55-effe-4409-8378-5ec0afee25ff.png)
 
 Admins can review challenge submissions in the "Review Challenges" tab (only visible to admins). The admin will check the check out the solution, optionally write a message to the submitter and approve or reject the submission by clicking the corresponding button and signing a message.
->In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
+
+> In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
 
 ![image](https://user-images.githubusercontent.com/2156509/135267093-4be16c3c-ddfb-4877-8329-cc78b82dcfae.png)
