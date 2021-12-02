@@ -24,43 +24,40 @@ yarn install
 
 ```
 
-Ready your React .env:
+
+**1. Start the frontend**
 
 ```bash
 
-cd packages/react-app
-cp .sample.env .env
+yarn start
 
 ```
 
-Edit the new .env, & save changes, don't edit BACKEND_URL unless using custom backend.
 
-Next, ready your Hardhat .env:
+**2. In a new terminal, start the backend service**
 
-Navigating from /scaffold-directory..
+```bash
+
+yarn backend
+
+```
+
+**3. Configure the NFT badge contract and deploy**
+
+First, ready your Hardhat .env:
 
 ```bash
 
 cd packages/hardhat
-cp example.env .env
+cp .env.sample .env
 
 ```
 
-Edit this new .env, saving changes again.
+Edit this new .env with the desired Contract admins addresses (comma-separated) and Network.
 
-Admins are just comma-separated addresses like..
+**3.1 Deploy the Contract:**
 
-```bash
-
-0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,0x34aA3F359A9D614239015126635CE7732c18fDF3
-
-```
-
-DEPLOY_NETWORK determines where hardhat deploys the contract
-You can find a list of networks in /packages/hardhat/hardhatconfig.js
-
-Deploy the Contract:
-If deploying locally..
+If deploying locally:
 
 ```bash
 
@@ -76,20 +73,17 @@ yarn deploy
 
 ```
 
-If deploying to a live network:
+**If deploying to a live network:**
 
-This command creates mnemonic.txt & 0x(address).txt in packages/hardhat
-You can replace the phrase with your own deployer seed-phrase.
-Or you can fund it from another account to be safe.
+This command creates mnemonic.txt & 0x(address).txt in packages/hardhat. You can replace the phrase with your own deployer seed-phrase. Or you can fund it from another account to be safe.
 
 ```bash
 
-cd packages/hardhat
 yarn generate
 
 ```
 
-To see the accounts balances in terminal..
+To see the accounts balances in terminal:
 
 ```bash
 
@@ -97,7 +91,7 @@ yarn account
 
 ```
 
-Once it's funded on the targeted network..
+Once it's funded on the targeted network:
 
 ```bash
 
@@ -105,36 +99,15 @@ yarn deploy
 
 ```
 
-Your contract should deploy and publish to the front-end when finished.
-If your deploy transaction is stalled, you can cancel the script in terminal &
-
-Follow --gasprice with a number like 3500000000 to replace the tx..
+Your contract should deploy and publish to the front-end when finished. If your deploy transaction is stalled, you can cancel the script in terminal & use a higher gasprice to replace the tx:
 
 ```bash
 
-yarn deploy --gasprice
+yarn deploy --gasprice 3500000000
 
 ```
 
-Once finished, your contract will auto-publish to the front-end.
-
-Start the backend service:
-
-```bash
-
-yarn backend
-
-```
-
-In a new terminal, start the frontend:
-
-```bash
-
-yarn start
-
-```
-
-At this point, you should have the app available at <http://localhost:3000>. By default, a locale JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter (check `packages/backend/services/db.js`).
+At this point, you should have the app available at <http://localhost:3000>. By default, a local JSON file (`packages/backend/local_database/local_db.json`) is used as the database. This is intended for testing and demo usage. In order to set it up for production usage, we provide a Firebase database adaptor. You can also easily create your own database adapter (check `packages/backend/services/db.js`).
 
 ---
 
