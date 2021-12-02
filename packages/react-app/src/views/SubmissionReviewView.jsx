@@ -90,6 +90,11 @@ export default function SubmissionReviewView({ userProvider, writeContracts, tx 
     try {
       await tx(writeContracts.BuidlBadges.mint(userAddress, badgeId));
     } catch (e) {
+      toast({
+        description: "There was an error minting the badge",
+        status: "error",
+        variant: toastVariant,
+      });
       console.log("mint tx error:", e);
     }
     let signMessage;
