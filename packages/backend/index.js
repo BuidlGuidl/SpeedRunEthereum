@@ -119,14 +119,20 @@ app.post("/challenges", withAddress, async (request, response) => {
   }
 
   const existingChallenges = user.data.challenges ?? {};
+  const existingReviewComment = existingChallenges[challengeId]?.reviewComment;
   // Overriding for now. We could support an array of submitted challenges.
   // ToDo. Extract challenge status (ENUM)
   existingChallenges[challengeId] = {
     status: "SUBMITTED",
     contractUrl,
     deployedUrl,
-    reviewComment: existingChallenges[challengeId]?.reviewComment
   };
+
+  if (existingReviewComment) {
+    // Keep the existing previous comment.
+    existingChallenges[challengeId].reviewComment = existingReviewComment;
+  }
+
   const eventPayload = {
     userAddress: address,
     challengeId,
