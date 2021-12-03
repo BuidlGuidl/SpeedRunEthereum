@@ -24,6 +24,8 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -43,6 +45,18 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
   // ToDo. Use the stored events.
   const isResubmitted = !!challenge.reviewComment;
 
+  const challengeReviewDisplay = (
+    <Link as={RouteLink} to={`/challenge/${challenge.id}`}>
+      {challengeInfo[challenge.id].label}
+      {isResubmitted && (
+        <>
+          <br />
+          <Text fontSize="xs">(Resubmitted)</Text>
+        </>
+      )}
+    </Link>
+  );
+
   const reviewRow = (
     <>
       <Td>
@@ -50,17 +64,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
           <Address address={challenge.userAddress} w="12.5" fontSize="16" />
         </Link>
       </Td>
-      <Td>
-        <Link as={RouteLink} to={`/challenge/${challenge.id}`}>
-          {challengeInfo[challenge.id].label}
-          {isResubmitted && (
-            <>
-              <br />
-              <Text fontSize="xs">(Resubmitted)</Text>
-            </>
-          )}
-        </Link>
-      </Td>
+      <Td>{challengeReviewDisplay}</Td>
       <Td>
         <Link
           // Legacy branchUrl
@@ -97,13 +101,38 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
             <Thead>
               <Tr>
                 <Th>Builder</Th>
-                <Th>Challenge</Th>
-                <Th>Contract</Th>
-                <Th>Live demo</Th>
+                <Th>Challenge & Links</Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>{reviewRow}</Tr>
+              <Tr>
+                <Td>
+                  <Link as={RouteLink} to={`/builders/${challenge.userAddress}`} pos="relative">
+                    <Address address={challenge.userAddress} w="12.5" fontSize="16" />
+                  </Link>
+                </Td>
+                <Td>
+                  {challengeReviewDisplay}
+                  <UnorderedList>
+                    <ListItem>
+                      <Link
+                        // Legacy branchUrl
+                        href={challenge.contractUrl || challenge.branchUrl}
+                        color="teal.500"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Contract
+                      </Link>
+                    </ListItem>
+                    <ListItem>
+                      <Link href={challenge.deployedUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
+                        Demo
+                      </Link>
+                    </ListItem>
+                  </UnorderedList>
+                </Td>
+              </Tr>
             </Tbody>
           </Table>
           <ModalBody px={6} pb={0}>
