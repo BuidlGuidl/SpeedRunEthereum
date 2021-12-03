@@ -18,10 +18,18 @@ import {
   Table,
   Thead,
   Tbody,
-  Text
+  Text,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
-import { challengeInfo } from "../data/challenges";
+import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import Address from "./Address";
+import { challengeInfo } from "../data/challenges";
+import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
 export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick }) {
   const [comment, setComment] = React.useState(challenge.reviewComment ?? "");
@@ -99,16 +107,31 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
             </Tbody>
           </Table>
           <ModalBody px={6} pb={0}>
-            <Textarea
-              onChange={e => {
-                const value = e.target.value;
-                setComment(value);
-              }}
-              placeholder="Comment"
-              style={{ marginBottom: 10 }}
-              rows={10}
-              value={comment}
-            />
+            <Tabs variant="enclosed-colored">
+              <TabList>
+                <Tab>Write</Tab>
+                <Tab>Preview</Tab>
+              </TabList>
+              <TabPanels align="left">
+                <TabPanel p={0}>
+                  <Textarea
+                    onChange={e => {
+                      const value = e.target.value;
+                      setComment(value);
+                    }}
+                    placeholder="Comment"
+                    style={{ marginBottom: 10 }}
+                    rows={10}
+                    value={comment}
+                    borderTopRadius={0}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{comment}</ReactMarkdown>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+
           </ModalBody>
           <ModalFooter>
             <Button
