@@ -7,7 +7,7 @@ const ChallengeCard = ({ challengeId, challengeInfo, submissionInfo }) => (
     {challengeInfo.disabled ? (
       <p>{challengeInfo.label}</p>
     ) : (
-      <Link as={RouteLink} to={`/challenge/${challengeId}`}>
+      <Link as={RouteLink} to={`/challenge/${challengeId}`} color="teal.500">
         {challengeInfo.label}
       </Link>
     )}
