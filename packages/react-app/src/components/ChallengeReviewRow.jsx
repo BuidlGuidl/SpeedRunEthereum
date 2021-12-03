@@ -18,17 +18,22 @@ import {
   Table,
   Thead,
   Tbody,
+  Text
 } from "@chakra-ui/react";
 import { challengeInfo } from "../data/challenges";
 import Address from "./Address";
 
 export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick }) {
-  const [comment, setComment] = React.useState("");
+  const [comment, setComment] = React.useState(challenge.reviewComment ?? "");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!challengeInfo[challenge.id]) {
     return null;
   }
+
+  // We asume that rejected challenges will always have review Comments.
+  // ToDo. Use the stored events.
+  const isResubmitted = !!challenge.reviewComment;
 
   const reviewRow = (
     <>
@@ -40,6 +45,12 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
       <Td>
         <Link as={RouteLink} to={`/challenge/${challenge.id}`}>
           {challengeInfo[challenge.id].label}
+          {isResubmitted && (
+            <>
+              <br />
+              <Text fontSize="xs">(Resubmitted)</Text>
+            </>
+          )}
         </Link>
       </Td>
       <Td>
@@ -96,6 +107,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
               placeholder="Comment"
               style={{ marginBottom: 10 }}
               rows={10}
+              value={comment}
             />
           </ModalBody>
           <ModalFooter>

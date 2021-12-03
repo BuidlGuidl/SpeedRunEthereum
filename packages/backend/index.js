@@ -125,6 +125,7 @@ app.post("/challenges", withAddress, async (request, response) => {
     status: "SUBMITTED",
     contractUrl,
     deployedUrl,
+    reviewComment: existingChallenges[challengeId]?.reviewComment
   };
   const eventPayload = {
     userAddress: address,
