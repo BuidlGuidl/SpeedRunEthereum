@@ -27,6 +27,8 @@ import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/constants";
+import { getChallengeReadme } from "../data/api";
+import { parseGithubReadme } from "../helpers/strings";
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole }) {
   const [descriptionJs, setDescriptionJs] = useState(null);
@@ -40,22 +42,12 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   // In the future, this might be a fetch to the repos/branchs README
   // (Ideally fetched at build time)
   useEffect(() => {
-    import(`../data/challenges/${challengeId}.md`)
-      .then(file => {
-        fetch(file.default)
-          .then(content => content.text())
-          .then(text => setDescriptionJs(text))
-          .catch(() => setDescriptionJs(challenge.description));
-      })
+    getChallengeReadme(challengeId, "js")
+      .then(text => setDescriptionJs(parseGithubReadme(text)))
       .catch(() => setDescriptionJs(challenge.description));
 
-    import(`../data/challenges/${challengeId}.ts.md`)
-      .then(file => {
-        fetch(file.default)
-          .then(content => content.text())
-          .then(text => setDescriptionTs(text))
-          .catch(() => setDescriptionTs(challenge.description));
-      })
+    getChallengeReadme(challengeId, "ts")
+      .then(text => setDescriptionTs(parseGithubReadme(text)))
       .catch(() => setDescriptionTs(challenge.description));
   }, [challengeId, challenge]);
 

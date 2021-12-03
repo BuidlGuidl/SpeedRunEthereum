@@ -128,12 +128,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                     return (
                       <Tr>
                         <Td w="full">
-                          <Link
-                            as={RouteLink}
-                            to={`/challenge/${challengeId}`}
-                            fontWeight="700"
-                            color="teal.500"
-                          >
+                          <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700" color="teal.500">
                             {challengeInfo[challengeId].label}
                           </Link>
                         </Td>

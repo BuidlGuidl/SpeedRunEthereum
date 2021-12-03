@@ -60,3 +60,11 @@ export const challengeSequence = [
   "buyer-mints-nft",
   "create-stream",
 ];
+
+const githubChallengesRepoBaseRawUrl = {
+  js: "https://raw.githubusercontent.com/scaffold-eth/scaffold-eth-challenges",
+  ts: "https://raw.githubusercontent.com/scaffold-eth/scaffold-eth-typescript-challenges",
+};
+
+export const getGithubChallengeReadmeUrl = (challengeId, version) =>
+  `${githubChallengesRepoBaseRawUrl[version]}/${challengeInfo[challengeId].branchName}/README.md`;
