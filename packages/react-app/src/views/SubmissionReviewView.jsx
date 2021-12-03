@@ -6,6 +6,7 @@ import {
   Container,
   Heading,
   Icon,
+  Link,
   Text,
   Table,
   Thead,
@@ -27,6 +28,8 @@ import {
   patchChallengeReview,
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
+
+const RUBRIC_URL = "https://docs.google.com/document/d/1ByXQUUg-ePq0aKkMywOHV25ZetesI2BFYoJzSez009c";
 
 export default function SubmissionReviewView({ userProvider }) {
   const address = useUserAddress(userProvider);
@@ -194,8 +197,13 @@ export default function SubmissionReviewView({ userProvider }) {
     <Container maxW="container.lg">
       <Container maxW="container.md" centerContent>
         <Heading as="h1">Review Submissions</Heading>
+        <Text color={secondaryFontColor}>Pending submissions to validate.</Text>
         <Text color={secondaryFontColor} mb="6">
-          Pending submissions to validate.
+          Check our{" "}
+          <Link href={RUBRIC_URL} color="teal.500" isExternal>
+            Grading Rubric
+          </Link>
+          .
         </Text>
       </Container>
       <Heading as="h2" size="lg" mt={6} mb={4}>
