@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { SERVER_URL as serverUrl } from "../constants";
+import { getGithubChallengeReadmeUrl } from "../data/challenges";
 
 export const getAllEvents = async () => {
   try {
@@ -181,5 +182,15 @@ export const getDraftBuilds = async address => {
   } catch (err) {
     console.log("error fetching draft builds", err);
     throw new Error("Error fetching draft builds");
+  }
+};
+
+export const getChallengeReadme = async (challengeId, version) => {
+  try {
+    const response = await axios.get(getGithubChallengeReadmeUrl(challengeId, version));
+    return response.data;
+  } catch (err) {
+    console.log("error fetching challenge README", err);
+    throw new Error("error fetching challenge README");
   }
 };
