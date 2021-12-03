@@ -3,7 +3,6 @@ import { useHistory, useParams } from "react-router-dom";
 import {
   Box,
   Button,
-  ButtonGroup,
   Container,
   Heading,
   Modal,
@@ -70,7 +69,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const challengeActionButtons = (type = "JS") => {
     const repo = type === "JS" ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
     return (
-      <ButtonGroup spacing={4}>
+      <Box>
         <Button
           as="a"
           colorScheme="gray"
@@ -81,17 +80,19 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         >
           View it on Github <ExternalLinkIcon ml={1} />
         </Button>
-        <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
-          <Button colorScheme="blue" onClick={onOpen} disabled={!canSubmit}>
-            Submit challenge
-          </Button>
-        </Tooltip>
-      </ButtonGroup>
+        <Box pos="fixed" bottom={0} p={6} left={0} right={0}>
+          <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
+            <Button colorScheme="blue" boxShadow="dark-lg" onClick={onOpen} disabled={!canSubmit}>
+              Submit challenge
+            </Button>
+          </Tooltip>
+        </Box>
+      </Box>
     );
   };
 
   return (
-    <Container maxW="container.md" mb={10}>
+    <Container maxW="container.md" mb="60px">
       <Box textAlign="center" mb={6}>
         <Heading as="h1" mb={4}>
           {challenge.label}
