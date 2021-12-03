@@ -12,11 +12,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Tooltip,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
+import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
 const ChallengeStatusTag = ({ status, comment }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,7 +68,7 @@ const ChallengeStatusTag = ({ status, comment }) => {
           <ModalHeader>Review comment</ModalHeader>
           <ModalCloseButton />
           <ModalBody p={6}>
-            <Text>{comment}</Text>
+            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{comment}</ReactMarkdown>
           </ModalBody>
         </ModalContent>
       </Modal>
