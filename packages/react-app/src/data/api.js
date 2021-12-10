@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { SERVER_URL as serverUrl } from "../constants";
-import { getGithubChallengeReadmeUrl } from "../data/challenges";
+import { getGithubChallengeReadmeUrl } from "./challenges";
 
 export const getAllEvents = async () => {
   try {
@@ -9,6 +9,16 @@ export const getAllEvents = async () => {
     return response.data;
   } catch (err) {
     console.log("error fetching events", err);
+    return [];
+  }
+};
+
+export const getChallengeEventsForUser = async userId => {
+  try {
+    const response = await axios.get(`${serverUrl}/events?user=${userId}&type=challenge.submit,challenge.review`);
+    return response.data;
+  } catch (err) {
+    console.log(`error fetching events for user ${userId}.`, err);
     return [];
   }
 };

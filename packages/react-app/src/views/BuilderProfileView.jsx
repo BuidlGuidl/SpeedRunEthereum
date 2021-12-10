@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouteLink, useParams } from "react-router-dom";
+import moment from "moment";
 import axios from "axios";
 import {
+  useToast,
+  useColorModeValue,
   Box,
   Button,
   Center,
@@ -17,6 +20,7 @@ import {
   Th,
   Td,
   TableCaption,
+  Tooltip,
   Container,
   SimpleGrid,
   GridItem,
@@ -37,6 +41,8 @@ import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
 import ChallengeList from "../components/ChallengeList";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import { getChallengeEventsForUser } from "../data/api";
+import { byTimestamp } from "../helpers/sorting";
 
 // TODO get the real date of submission using the events
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
@@ -44,6 +50,9 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
   const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [builder, setBuilder] = useState();
+  const [challengeEvents, setChallengeEvents] = useState([]);
+  const toast = useToast({ position: "top", isClosable: true });
+  const toastVariant = useColorModeValue("subtle", "solid");
   const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
   const isMyProfile = builderAddress === address;
@@ -52,10 +61,29 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
     async function fetchBuilder() {
       const fetchedBuilder = await axios.get(serverUrl + `/builders/${builderAddress}`);
       setBuilder(fetchedBuilder.data);
-      console.log(fetchedBuilder.data);
     }
     fetchBuilder();
   }, [builderAddress, serverUrl]);
+
+  useEffect(() => {
+    if (!builderAddress) {
+      return;
+    }
+
+    async function fetchChallengeEvents() {
+      try {
+        const fetchedChallengeEvents = await getChallengeEventsForUser(builderAddress);
+        setChallengeEvents(fetchedChallengeEvents.sort(byTimestamp).reverse());
+      } catch (error) {
+        toast({
+          description: "Can't get challenges metadata. Please try again",
+          status: "error",
+          variant: toastVariant,
+        });
+      }
+    }
+    fetchChallengeEvents();
+  }, [builderAddress]);
 
   return (
     <Container maxW="container.xl">
@@ -114,9 +142,10 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                 </TableCaption>
                 <Thead>
                   <Tr>
-                    <Th w="full">Name</Th>
+                    <Th>Name</Th>
                     <Th>Contract</Th>
                     <Th>Live Demo</Th>
+                    <Th>Updated</Th>
                     <Th>Status</Th>
                   </Tr>
                 </Thead>
@@ -125,9 +154,13 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                     if (!challengeInfo[challengeId]) {
                       return null;
                     }
+                    const lastEventForChallenge = challengeEvents.filter(
+                      event => event.payload.challengeId === challengeId,
+                    )[0];
+                    const lastEventMoment = moment(lastEventForChallenge?.timestamp);
                     return (
-                      <Tr>
-                        <Td w="full">
+                      <Tr key={challengeId}>
+                        <Td>
                           <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700" color="teal.500">
                             {challengeInfo[challengeId].label}
                           </Link>
@@ -160,6 +193,11 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                           ) : (
                             <Center>-</Center>
                           )}
+                        </Td>
+                        <Td>
+                          <Tooltip label={lastEventMoment.format("YYYY-MM-DD, HH:mm")}>
+                            <Box cursor="pointer">{lastEventMoment.fromNow()}</Box>
+                          </Tooltip>
                         </Td>
                         <Td>
                           <ChallengeStatusTag status={lastSubmission.status} comment={lastSubmission.reviewComment} />
