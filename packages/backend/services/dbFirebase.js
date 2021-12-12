@@ -58,8 +58,24 @@ const findAllEvents = async ({ limit: limitArg } = {}) => {
 };
 
 const findEventsWhere = async ({ conditions: conditionsArg, limit } = {}) => {
-  // ToDo. Implement this.
-  return findAllEvents({ limit });
+  let conditionChain = database.collection("events");
+  Object.entries(conditionsArg).forEach(([prop, values]) => {
+    const valuesArray = values.split(",");
+    const propName = prop.replace("/", ".");
+
+    if (valuesArray.length > 1) {
+      conditionChain = conditionChain.where(propName, "in", valuesArray);
+    } else {
+      conditionChain = conditionChain.where(propName, "==", values);
+    }
+  });
+
+  if (limit) {
+    conditionChain = conditionChain.limit(limit);
+  }
+
+  const eventsSnapshot = await conditionChain.get();
+  return eventsSnapshot.docs.map(doc => doc.data());
 };
 
 const createBuild = build => {
