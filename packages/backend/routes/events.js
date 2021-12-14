@@ -11,6 +11,7 @@ const router = express.Router();
  *  - user: to filter by the user that caused the event. It's usually going to
  *    be the builder
  *  - challengeId: to filter by a given challenge
+ *  - buildId: to filter by a given build
  *  - reviewAction: to filter by 'approve' or 'reject'. Only works when type is
  *    not present or includes challenge.review
  *  - reviewer: to filter by reviewer. Only works when type is

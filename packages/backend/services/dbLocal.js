@@ -103,6 +103,7 @@ const createBuild = build => {
   database.builds.push(build);
 
   persist();
+  return { ...build, id: String(database.builds.length - 1) };
 };
 
 const findAllBuilds = (isDraft = false) => {
