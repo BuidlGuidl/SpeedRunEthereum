@@ -83,6 +83,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
       }
     }
     fetchChallengeEvents();
+    // eslint-disable-next-line
   }, [builderAddress]);
 
   return (
