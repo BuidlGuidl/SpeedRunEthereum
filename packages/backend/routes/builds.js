@@ -41,6 +41,7 @@ router.post("/", withRole("builder"), async (request, response) => {
     image,
     name,
     address,
+    submittedTimestamp: new Date().getTime(),
     isDraft: true,
   };
 
