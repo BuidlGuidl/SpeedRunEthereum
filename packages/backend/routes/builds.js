@@ -35,24 +35,28 @@ router.post("/", withRole("builder"), async (request, response) => {
     return;
   }
 
-  const eventPayload = {
-    userAddress: address,
-    buildUrl,
-    name,
-  };
-  const event = createEvent(EVENT_TYPES.BUILD_CREATE, eventPayload, signature);
-  db.createEvent(event); // INFO: async, no await here
-
   const buildData = {
     branch: buildUrl,
     desc,
     image,
     name,
     address,
+    submittedTimestamp: new Date().getTime(),
     isDraft: true,
   };
 
-  await db.createBuild(buildData);
+  const dbResponse = await db.createBuild(buildData);
+
+  const eventPayload = {
+    userAddress: address,
+    buildUrl,
+    name,
+    buildId: dbResponse.id,
+  };
+
+  const event = createEvent(EVENT_TYPES.BUILD_CREATE, eventPayload, signature);
+  db.createEvent(event); // INFO: async, no await here
+
   response.sendStatus(200);
 });
 

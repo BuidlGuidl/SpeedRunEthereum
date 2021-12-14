@@ -70,6 +70,7 @@ const findEventsWhere = db.findEventsWhere;
 /**
  *
  * @param {object} buildData The build payload
+ * @returns {object} stored build data, including the id
  */
 const createBuild = db.createBuild;
 

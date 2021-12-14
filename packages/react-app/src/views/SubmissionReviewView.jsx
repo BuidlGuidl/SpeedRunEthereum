@@ -23,6 +23,8 @@ import {
   getBuildReviewSignMessage,
   getChallengeReviewSignMessage,
   getDraftBuilds,
+  getSubmitChallengeEventsForUserAndChallenges,
+  getDraftBuildEventsForBuildId,
   getSubmittedChallenges,
   patchBuildReview,
   patchChallengeReview,
@@ -37,6 +39,7 @@ export default function SubmissionReviewView({ userProvider }) {
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
   const [draftBuilds, setDraftBuilds] = React.useState([]);
   const [isLoadingDraftBuilds, setIsLoadingDraftBuilds] = React.useState(true);
+  const [submissionTimestamps, setSubmissionTimestamps] = React.useState({ builds: {} });
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
   const { secondaryFontColor } = useCustomColorModes();
@@ -54,6 +57,49 @@ export default function SubmissionReviewView({ userProvider }) {
       });
     }
     setChallenges(fetchedChallenges);
+
+    const userChallengesMap = {};
+    // group by user to make one query per user
+    fetchedChallenges.forEach(challenge => {
+      const builder = challenge.userAddress;
+      if (!userChallengesMap.hasOwnProperty(builder)) {
+        userChallengesMap[builder] = [];
+      }
+      userChallengesMap[builder].push(challenge.id);
+    });
+
+    try {
+      // run queries in parallel
+      Promise.all(
+        Object.entries(userChallengesMap).map(async ([user, submittedChallenges]) => {
+          const lastEvents = await getSubmitChallengeEventsForUserAndChallenges(user, submittedChallenges);
+
+          const latestSubmissions = {};
+          lastEvents.forEach(event => {
+            const challengeId = event.payload.challengeId;
+            const currentLatestForChallengeId = latestSubmissions[challengeId];
+            if (currentLatestForChallengeId === undefined || currentLatestForChallengeId < event.timestamp) {
+              latestSubmissions[challengeId] = event.timestamp;
+            }
+          });
+
+          setSubmissionTimestamps(prevSubmissionTimestamps => {
+            const nextSubmissionTimestamps = { ...prevSubmissionTimestamps };
+            if (!nextSubmissionTimestamps.hasOwnProperty(user)) {
+              nextSubmissionTimestamps[user] = {};
+            }
+
+            Object.entries(latestSubmissions).forEach(([challengeId, submissionTimestamp]) => {
+              nextSubmissionTimestamps[user][challengeId] = submissionTimestamp;
+            });
+
+            return nextSubmissionTimestamps;
+          });
+        }),
+      );
+    } catch (error) {
+      console.error("there was an error updating the challenge submission timestamps");
+    }
     setIsLoadingChallenges(false);
   }, [address, toastVariant, toast]);
 
@@ -70,6 +116,31 @@ export default function SubmissionReviewView({ userProvider }) {
       });
     }
     setDraftBuilds(fetchedDraftBuilds);
+
+    try {
+      // run queries in parallel
+      Promise.all(
+        fetchedDraftBuilds.map(async ({ id: buildId }) => {
+          const lastEvents = await getDraftBuildEventsForBuildId(buildId);
+
+          let latestSubmission = null;
+          lastEvents.forEach(event => {
+            if (latestSubmission === null || latestSubmission < event.timestamp) {
+              latestSubmission = event.timestamp;
+            }
+          });
+
+          setSubmissionTimestamps(prevSubmissionTimestamps => {
+            const nextSubmissionTimestamps = { ...prevSubmissionTimestamps };
+            nextSubmissionTimestamps.builds[buildId] = latestSubmission;
+
+            return nextSubmissionTimestamps;
+          });
+        }),
+      );
+    } catch (error) {
+      console.error("there was an error updating the build submission timestamps");
+    }
     setIsLoadingDraftBuilds(false);
   }, [address, toastVariant, toast]);
 
@@ -217,6 +288,7 @@ export default function SubmissionReviewView({ userProvider }) {
               <Th>Challenge</Th>
               <Th>Contract</Th>
               <Th>Live demo</Th>
+              <Th>Submitted time</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -236,6 +308,7 @@ export default function SubmissionReviewView({ userProvider }) {
                 <ChallengeReviewRow
                   key={`${challenge.userAddress}_${challenge.id}`}
                   challenge={challenge}
+                  submittedTimestamp={submissionTimestamps[challenge.userAddress]?.[challenge.id]}
                   isLoading={isLoadingChallenges}
                   approveClick={handleSendChallengeReview("ACCEPTED")}
                   rejectClick={handleSendChallengeReview("REJECTED")}
@@ -256,6 +329,7 @@ export default function SubmissionReviewView({ userProvider }) {
               <Th>Build Name</Th>
               <Th>Description</Th>
               <Th>Branch URL</Th>
+              <Th>Submitted time</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -275,6 +349,7 @@ export default function SubmissionReviewView({ userProvider }) {
                 <BuildReviewRow
                   key={`${build.userAddress}_${build.id}`}
                   build={build}
+                  submittedTimestamp={submissionTimestamps.builds[build.id]}
                   isLoading={isLoadingDraftBuilds}
                   approveClick={handleSendBuildReview("ACCEPTED")}
                   rejectClick={handleSendBuildReview("REJECTED")}

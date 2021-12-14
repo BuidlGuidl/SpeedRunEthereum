@@ -126,6 +126,7 @@ app.post("/challenges", withAddress, async (request, response) => {
     status: "SUBMITTED",
     contractUrl,
     deployedUrl,
+    submittedTimestamp: new Date().getTime(),
   };
 
   if (existingReviewComment) {

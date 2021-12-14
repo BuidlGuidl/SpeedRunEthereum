@@ -13,6 +13,7 @@ module.exports = {
     "react/destructuring-assignment": "off",
     "no-console": "off",
     "no-underscore-dangle": "off",
+    "no-prototype-builtins": "off",
     "jsx-a11y/accessible-emoji": ["off"],
   },
   parserOptions: {

@@ -1,6 +1,9 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
+import moment from "moment";
 import {
+  chakra,
+  Box,
   Button,
   Link,
   Td,
@@ -19,6 +22,7 @@ import {
   Thead,
   Tbody,
   Text,
+  Tooltip,
   Tabs,
   TabList,
   Tab,
@@ -33,7 +37,7 @@ import Address from "./Address";
 import { challengeInfo } from "../data/challenges";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
-export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick }) {
+export default function ChallengeReviewRow({ challenge, submittedTimestamp, isLoading, approveClick, rejectClick }) {
   const [comment, setComment] = React.useState(challenge.reviewComment ?? "");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -56,6 +60,8 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
       )}
     </Link>
   );
+
+  const submittedMoment = moment(submittedTimestamp);
 
   const reviewRow = (
     <>
@@ -80,6 +86,11 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
         <Link href={challenge.deployedUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
           Demo
         </Link>
+      </Td>
+      <Td>
+        <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
+          <Box cursor="pointer">{submittedMoment.fromNow()}</Box>
+        </Tooltip>
       </Td>
     </>
   );
@@ -130,6 +141,12 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
                         Demo
                       </Link>
                     </ListItem>
+                    <ListItem>
+                      Submitted{" "}
+                      <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
+                        <chakra.span cursor="pointer">{submittedMoment.fromNow()}</chakra.span>
+                      </Tooltip>
+                    </ListItem>
                   </UnorderedList>
                 </Td>
               </Tr>
@@ -160,7 +177,6 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
                 </TabPanel>
               </TabPanels>
             </Tabs>
-
           </ModalBody>
           <ModalFooter>
             <Button
