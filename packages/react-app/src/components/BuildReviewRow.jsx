@@ -1,9 +1,11 @@
 import React from "react";
+import moment from "moment";
 import { Link as RouteLink } from "react-router-dom";
-import { Button, HStack, Link, Td, Tr } from "@chakra-ui/react";
+import { Button, Box, HStack, Link, Td, Tr, Tooltip } from "@chakra-ui/react";
 import Address from "./Address";
 
-export default function BuildReviewRow({ build, isLoading, approveClick, rejectClick }) {
+export default function BuildReviewRow({ build, submittedTimestamp, isLoading, approveClick, rejectClick }) {
+  const submittedMoment = moment(submittedTimestamp);
   return (
     <Tr>
       <Td>
@@ -17,6 +19,11 @@ export default function BuildReviewRow({ build, isLoading, approveClick, rejectC
         <Link href={build.branch} color="teal.500" target="_blank" rel="noopener noreferrer">
           {build.branch}
         </Link>
+      </Td>
+      <Td>
+        <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
+          <Box cursor="pointer">{submittedMoment.fromNow()}</Box>
+        </Tooltip>
       </Td>
       <Td>
         <HStack spacing={3}>

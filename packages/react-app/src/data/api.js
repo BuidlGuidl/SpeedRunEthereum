@@ -23,6 +23,28 @@ export const getChallengeEventsForUser = async userId => {
   }
 };
 
+export const getSubmitChallengeEventsForUserAndChallenges = async (userId, challengeIds) => {
+  try {
+    const response = await axios.get(
+      `${serverUrl}/events?user=${userId}&type=challenge.submit&challengeId=${challengeIds.join(",")}`,
+    );
+    return response.data;
+  } catch (err) {
+    console.log(`error fetching submit challenge events for user ${userId}.`, err);
+    return [];
+  }
+};
+
+export const getDraftBuildEventsForBuildId = async buildId => {
+  try {
+    const response = await axios.get(`${serverUrl}/events?buildId=${buildId}&type=build.create`);
+    return response.data;
+  } catch (err) {
+    console.log(`error fetching draft build events for user build ${buildId}.`, err);
+    return [];
+  }
+};
+
 export const getAllBuilds = async () => {
   try {
     const response = await axios.get(`${serverUrl}/builds`);
