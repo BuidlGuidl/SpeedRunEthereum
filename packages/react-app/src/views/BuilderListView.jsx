@@ -44,7 +44,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
               <Th isNumeric>Builds</Th>
               <Th isNumeric>Challenges</Th>
               <Th isNumeric>Stream</Th>
-              <Th isNumeric>Allowance</Th>
+              <Th isNumeric>Rate</Th>
               <Th isNumeric>Available</Th>
               <Th textAlign="center">Role</Th>
               <Th />

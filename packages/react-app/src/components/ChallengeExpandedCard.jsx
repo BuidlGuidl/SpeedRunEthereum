@@ -17,16 +17,16 @@ const ChallengeExpandedCard = ({ challengeId, challenge, challengeIndex }) => {
           </Text>
         )}
       </Center>
-      <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
-        <Text fontWeight="bold">
-          Challenge {challengeIndex}: {challenge.label}
+      <Flex w={680} pt={6} pb={4} px={4} direction="column" grow={1}>
+        <Text fontWeight="bold" style={{paddingBottom:16}}>
+          {challenge.label}
         </Text>
         <Text color={secondaryFontColor} mb={4}>
           {challenge.description}
         </Text>
         <Spacer />
-        <RouteLink to={`/challenge/${challengeId}`}>
-          <Button variant="outline" isFullWidth>
+        <RouteLink to={challenge.disabled?"":`/challenge/${challengeId}`}>
+          <Button disabled={challenge.disabled} variant={challenge.disabled?"outline":"solid"} isFullWidth>
             <span role="img" aria-label="castle icon">
               ⚔️
             </span>

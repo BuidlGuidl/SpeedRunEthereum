@@ -12,7 +12,6 @@ export default function ChallengeList({ userChallenges }) {
           const challengeGroup = challengeKeyOrGroup;
           return (
             <li key={`challenge-group-step-${idx}`} style={{ marginTop: 8 }}>
-              <strong>Challenge {idx}:{" "}</strong>
               <chakra.ul listStyleType="none">
                 {challengeGroup.map(challengeKey => (
                   <li key={challengeKey}>
@@ -31,7 +30,6 @@ export default function ChallengeList({ userChallenges }) {
         const challengeKey = challengeKeyOrGroup;
         return (
           <li key={challengeKey} style={{ marginTop: 8 }}>
-            <strong>Challenge {idx}: </strong>
             <ChallengeCard
               challengeInfo={challengeInfo[challengeKey]}
               submissionInfo={userChallenges[challengeKey]}
