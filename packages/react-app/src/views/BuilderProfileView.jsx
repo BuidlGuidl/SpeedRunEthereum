@@ -24,13 +24,6 @@ import {
   Container,
   SimpleGrid,
   GridItem,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
   Tag,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
@@ -39,7 +32,6 @@ import { challengeInfo } from "../data/challenges";
 import { CHALLENGE_SUBMISSION_STATUS, userFunctionDescription } from "../helpers/constants";
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
-import ChallengeList from "../components/ChallengeList";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { getChallengeEventsForUser } from "../data/api";
 import { byTimestamp } from "../helpers/sorting";
@@ -48,7 +40,6 @@ import { byTimestamp } from "../helpers/sorting";
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
   const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [builder, setBuilder] = useState();
   const [challengeEvents, setChallengeEvents] = useState([]);
   const toast = useToast({ position: "top", isClosable: true });
@@ -137,7 +128,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
             <Box overflowX="auto">
               <Table>
                 <TableCaption>
-                  <Button colorScheme="blue" onClick={onOpen}>
+                  <Button as={RouteLink} colorScheme="blue" to="/">
                     Start a challenge
                   </Button>
                 </TableCaption>
@@ -227,7 +218,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                   <Text color={secondaryFontColor} mb={4}>
                     Show off your skills. Learn everything you need to build on Ethereum!
                   </Text>
-                  <Button colorScheme="blue" onClick={onOpen}>
+                  <Button as={RouteLink} colorScheme="blue" to="/">
                     Start a challenge
                   </Button>
                 </Box>
@@ -242,16 +233,6 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
           )}
         </GridItem>
       </SimpleGrid>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>List of challenges</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody px={8} pb={8}>
-            <ChallengeList userChallenges={builder?.challenges ?? []} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
     </Container>
   );
 }

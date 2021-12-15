@@ -30,7 +30,7 @@ import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/con
 import { getChallengeReadme } from "../data/api";
 import { parseGithubReadme } from "../helpers/strings";
 
-export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole }) {
+export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole, loadWeb3Modal }) {
   const [descriptionJs, setDescriptionJs] = useState(null);
   const [descriptionTs, setDescriptionTs] = useState(null);
   const { challengeId } = useParams();
@@ -57,7 +57,13 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
     history.push("/404");
   }
 
-  const canSubmit = USER_ROLES.anonymous !== userRole;
+  const isWalletConnected = !!userRole;
+  const isAnonymous = userRole && USER_ROLES.anonymous === userRole;
+  const connectAndOpenModal = async () => {
+    await loadWeb3Modal();
+    onOpen();
+  };
+
   const challengeActionButtons = (type = "JS") => {
     const repo = type === "JS" ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
     return (
@@ -73,8 +79,13 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
           View it on Github <ExternalLinkIcon ml={1} />
         </Button>
         <Box pos="fixed" bottom={0} p={6} left={0} right={0}>
-          <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
-            <Button colorScheme="blue" boxShadow="dark-lg" onClick={onOpen} disabled={!canSubmit}>
+          <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
+            <Button
+              colorScheme="blue"
+              boxShadow="dark-lg"
+              onClick={isWalletConnected ? onOpen : connectAndOpenModal}
+              disabled={isAnonymous}
+            >
               Submit challenge
             </Button>
           </Tooltip>
@@ -123,6 +134,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
               serverUrl={serverUrl}
               address={address}
               userProvider={userProvider}
+              loadWeb3Modal={loadWeb3Modal}
             />
           </ModalBody>
         </ModalContent>

@@ -7,7 +7,7 @@ import { QuestionOutlineIcon } from "@chakra-ui/icons";
 const serverPath = "/challenges";
 
 // ToDo. on-line form validation
-export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
+export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider, loadWeb3Modal }) {
   const { challengeId } = useParams();
   const history = useHistory();
   const toast = useToast({ position: "top", isClosable: true });
