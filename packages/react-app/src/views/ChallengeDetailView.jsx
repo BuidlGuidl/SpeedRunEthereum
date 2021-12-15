@@ -30,13 +30,17 @@ import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/con
 import { getChallengeReadme } from "../data/api";
 import { parseGithubReadme } from "../helpers/strings";
 
-export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole }) {
+export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole, loadWeb3Modal }) {
   const [descriptionJs, setDescriptionJs] = useState(null);
   const [descriptionTs, setDescriptionTs] = useState(null);
   const { challengeId } = useParams();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [openModalOnLoad, setOpenModalOnLoad] = useState(false);
+
   const challenge = challengeInfo[challengeId];
+  const isWalletConnected = !!userRole;
+  const isAnonymous = userRole && USER_ROLES.anonymous === userRole;
 
   // Fetch challenge description from local files.
   // In the future, this might be a fetch to the repos/branchs README
@@ -51,13 +55,32 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
       .catch(() => setDescriptionTs(challenge.description));
   }, [challengeId, challenge]);
 
+  useEffect(() => {
+    if (!isWalletConnected || isAnonymous) return;
+
+    if (openModalOnLoad) {
+      onOpen();
+      setOpenModalOnLoad(false);
+    }
+  }, [isAnonymous, isWalletConnected, onOpen, userRole, openModalOnLoad, setOpenModalOnLoad]);
+
   if (!challenge) {
     // TODO implement a 404 page
     // this looks good: https://ant.design/components/result/#components-result-demo-404
     history.push("/404");
   }
 
-  const canSubmit = USER_ROLES.anonymous !== userRole;
+  const handleSubmitChallengeModal = async () => {
+    if (isWalletConnected && !isAnonymous) {
+      return onOpen();
+    }
+
+    if (!isWalletConnected) {
+      await loadWeb3Modal();
+      setOpenModalOnLoad(true);
+    }
+  };
+
   const challengeActionButtons = (type = "JS") => {
     const repo = type === "JS" ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
     return (
@@ -73,8 +96,13 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
           View it on Github <ExternalLinkIcon ml={1} />
         </Button>
         <Box pos="fixed" bottom={0} p={6} left={0} right={0}>
-          <Tooltip label={canSubmit ? "Submit Challenge" : "You need to register as a builder"} shouldWrapChildren>
-            <Button colorScheme="blue" boxShadow="dark-lg" onClick={onOpen} disabled={!canSubmit}>
+          <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
+            <Button
+              colorScheme="blue"
+              boxShadow="dark-lg"
+              onClick={handleSubmitChallengeModal}
+              disabled={isAnonymous}
+            >
               Submit challenge
             </Button>
           </Tooltip>
@@ -123,6 +151,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
               serverUrl={serverUrl}
               address={address}
               userProvider={userProvider}
+              loadWeb3Modal={loadWeb3Modal}
             />
           </ModalBody>
         </ModalContent>

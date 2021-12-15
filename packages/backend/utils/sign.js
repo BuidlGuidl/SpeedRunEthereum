@@ -33,10 +33,7 @@ const getSignMessageForId = (messageId, options) => {
       });
     case "login":
     default:
-      return JSON.stringify({
-        messageId,
-        address: options.address,
-      });
+      return `I would like to register as a builder in speedrunethereum.com as ${options.address}`;
   }
 };
 
