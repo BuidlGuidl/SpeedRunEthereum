@@ -36,7 +36,11 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const { challengeId } = useParams();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [openModalOnLoad, setOpenModalOnLoad] = useState(false);
+
   const challenge = challengeInfo[challengeId];
+  const isWalletConnected = !!userRole;
+  const isAnonymous = userRole && USER_ROLES.anonymous === userRole;
 
   // Fetch challenge description from local files.
   // In the future, this might be a fetch to the repos/branchs README
@@ -51,17 +55,30 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
       .catch(() => setDescriptionTs(challenge.description));
   }, [challengeId, challenge]);
 
+  useEffect(() => {
+    if (!isWalletConnected || isAnonymous) return;
+
+    if (openModalOnLoad) {
+      onOpen();
+      setOpenModalOnLoad(false);
+    }
+  }, [userRole, openModalOnLoad, setOpenModalOnLoad]);
+
   if (!challenge) {
     // TODO implement a 404 page
     // this looks good: https://ant.design/components/result/#components-result-demo-404
     history.push("/404");
   }
 
-  const isWalletConnected = !!userRole;
-  const isAnonymous = userRole && USER_ROLES.anonymous === userRole;
-  const connectAndOpenModal = async () => {
-    await loadWeb3Modal();
-    onOpen();
+  const handleSubmitChallengeModal = async () => {
+    if (isWalletConnected && !isAnonymous) {
+      return onOpen();
+    }
+
+    if (!isWalletConnected) {
+      await loadWeb3Modal();
+      setOpenModalOnLoad(true);
+    }
   };
 
   const challengeActionButtons = (type = "JS") => {
@@ -83,7 +100,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
             <Button
               colorScheme="blue"
               boxShadow="dark-lg"
-              onClick={isWalletConnected ? onOpen : connectAndOpenModal}
+              onClick={handleSubmitChallengeModal}
               disabled={isAnonymous}
             >
               Submit challenge
