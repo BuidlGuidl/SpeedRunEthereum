@@ -8,7 +8,7 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 export default function HomeView() {
   const { primaryFontColor } = useCustomColorModes();
   return (
-    <Container maxW="container.md" centerContent>
+    <Container maxW="container.lg" centerContent>
       <Text color={primaryFontColor} mb="12" fontSize="xl" textAlign="center">
         <span role="img" aria-label="teacher icon">
           👩‍🏫
