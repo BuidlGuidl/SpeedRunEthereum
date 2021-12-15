@@ -1,12 +1,12 @@
 import React from "react";
-import { Container, Box, Heading, Text } from "@chakra-ui/react";
+import { Container, Box, Text } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 // ToDo. Ignoring challenge sequence for now.
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function HomeView() {
-  const { primaryFontColor, secondaryFontColor } = useCustomColorModes();
+  const { primaryFontColor } = useCustomColorModes();
   return (
     <Container maxW="container.md" centerContent>
       <Text color={primaryFontColor} mb="12" fontSize="xl" textAlign="center">
