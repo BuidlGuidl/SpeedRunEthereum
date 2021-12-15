@@ -190,6 +190,7 @@ function App() {
               address={address}
               userProvider={userProvider}
               userRole={userRole}
+              loadWeb3Modal={loadWeb3Modal}
             />
           </Route>
           {/* ToDo: Protect this route on the frontend? */}
