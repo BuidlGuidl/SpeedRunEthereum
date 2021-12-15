@@ -62,7 +62,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
       onOpen();
       setOpenModalOnLoad(false);
     }
-  }, [userRole, openModalOnLoad, setOpenModalOnLoad]);
+  }, [isAnonymous, isWalletConnected, onOpen, userRole, openModalOnLoad, setOpenModalOnLoad]);
 
   if (!challenge) {
     // TODO implement a 404 page
