@@ -18,7 +18,7 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
           address,
         },
       });
-      signMessage = JSON.stringify(signMessageResponse.data);
+      signMessage = signMessageResponse.data;
       console.log("signMessage", signMessage);
     } catch (e) {
       // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
