@@ -3,12 +3,12 @@ import { Link as RouteLink } from "react-router-dom";
 import { chakra, Button, Center, Image, Flex, Spacer, Text } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-const ChallengeExpandedCard = ({ challengeId, challenge, challengeIndex }) => {
+const ChallengeExpandedCard = ({ challengeId, challenge }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
 
   return (
-    <Flex borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
-      <Center bgColor={borderColor} borderBottom="1px" borderColor={borderColor} w="200px" h="200px" flexShrink={0}>
+    <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
+      <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
         {challenge.previewImage ? (
           <Image src={challenge.previewImage} objectFit="cover" />
         ) : (
@@ -18,21 +18,25 @@ const ChallengeExpandedCard = ({ challengeId, challenge, challengeIndex }) => {
         )}
       </Center>
       <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
-        <Text fontWeight="bold">
-          Challenge {challengeIndex}: {challenge.label}
+        <Text fontWeight="bold" pb={4}>
+          {challenge.label}
         </Text>
         <Text color={secondaryFontColor} mb={4}>
           {challenge.description}
         </Text>
         <Spacer />
-        <RouteLink to={`/challenge/${challengeId}`}>
-          <Button variant="outline" isFullWidth>
-            <span role="img" aria-label="castle icon">
-              ⚔️
-            </span>
-            <chakra.span ml={1}>Quest</chakra.span>
-          </Button>
-        </RouteLink>
+        <Button
+          as={RouteLink}
+          to={!challenge.disabled && `/challenge/${challengeId}`}
+          isDisabled={challenge.disabled}
+          variant={challenge.disabled ? "outline" : "solid"}
+          isFullWidth
+        >
+          <span role="img" aria-label="castle icon">
+            ⚔️
+          </span>
+          <chakra.span ml={1}>Quest</chakra.span>
+        </Button>
       </Flex>
     </Flex>
   );
