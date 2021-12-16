@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
 import BuildReviewRow from "../components/BuildReviewRow";
+import { ChallengesTableSkeleton, BuildsTableSkeleton } from "../components/skeletons/SubmissionReviewTableSkeleton";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import {
   getBuildReviewSignMessage,
@@ -55,8 +56,11 @@ export default function SubmissionReviewView({ userProvider }) {
         status: "error",
         variant: toastVariant,
       });
+      setIsLoadingChallenges(false);
+      return;
     }
     setChallenges(fetchedChallenges);
+    setIsLoadingChallenges(false);
 
     const userChallengesMap = {};
     // group by user to make one query per user
@@ -100,7 +104,6 @@ export default function SubmissionReviewView({ userProvider }) {
     } catch (error) {
       console.error("there was an error updating the challenge submission timestamps");
     }
-    setIsLoadingChallenges(false);
   }, [address, toastVariant, toast]);
 
   const fetchSubmittedBuilds = useCallback(async () => {
@@ -114,8 +117,11 @@ export default function SubmissionReviewView({ userProvider }) {
         status: "error",
         variant: toastVariant,
       });
+      setIsLoadingDraftBuilds(false);
+      return;
     }
     setDraftBuilds(fetchedDraftBuilds);
+    setIsLoadingDraftBuilds(false);
 
     try {
       // run queries in parallel
@@ -141,7 +147,6 @@ export default function SubmissionReviewView({ userProvider }) {
     } catch (error) {
       console.error("there was an error updating the build submission timestamps");
     }
-    setIsLoadingDraftBuilds(false);
   }, [address, toastVariant, toast]);
 
   useEffect(() => {
@@ -281,83 +286,91 @@ export default function SubmissionReviewView({ userProvider }) {
         Challenges
       </Heading>
       <Box overflowX="auto">
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>Builder</Th>
-              <Th>Challenge</Th>
-              <Th>Contract</Th>
-              <Th>Live demo</Th>
-              <Th>Submitted time</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {!challenges || challenges.length === 0 ? (
+        {isLoadingChallenges ? (
+          <ChallengesTableSkeleton />
+        ) : (
+          <Table>
+            <Thead>
               <Tr>
-                <Td colSpan={6}>
-                  <Text color={secondaryFontColor} textAlign="center" mb={4}>
-                    <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
-                    <br />
-                    All challenges have been reviewed
-                  </Text>
-                </Td>
+                <Th>Builder</Th>
+                <Th>Challenge</Th>
+                <Th>Contract</Th>
+                <Th>Live demo</Th>
+                <Th>Submitted time</Th>
+                <Th>Actions</Th>
               </Tr>
-            ) : (
-              challenges.map(challenge => (
-                <ChallengeReviewRow
-                  key={`${challenge.userAddress}_${challenge.id}`}
-                  challenge={challenge}
-                  submittedTimestamp={submissionTimestamps[challenge.userAddress]?.[challenge.id]}
-                  isLoading={isLoadingChallenges}
-                  approveClick={handleSendChallengeReview("ACCEPTED")}
-                  rejectClick={handleSendChallengeReview("REJECTED")}
-                />
-              ))
-            )}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {!challenges || challenges.length === 0 ? (
+                <Tr>
+                  <Td colSpan={6}>
+                    <Text color={secondaryFontColor} textAlign="center" mb={4}>
+                      <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
+                      <br />
+                      All challenges have been reviewed
+                    </Text>
+                  </Td>
+                </Tr>
+              ) : (
+                challenges.map(challenge => (
+                  <ChallengeReviewRow
+                    key={`${challenge.userAddress}_${challenge.id}`}
+                    challenge={challenge}
+                    submittedTimestamp={submissionTimestamps[challenge.userAddress]?.[challenge.id]}
+                    isLoading={isLoadingChallenges}
+                    approveClick={handleSendChallengeReview("ACCEPTED")}
+                    rejectClick={handleSendChallengeReview("REJECTED")}
+                  />
+                ))
+              )}
+            </Tbody>
+          </Table>
+        )}
       </Box>
       <Heading as="h2" size="lg" mt={6} mb={4}>
         Builds
       </Heading>
       <Box overflowX="auto">
-        <Table mb={4}>
-          <Thead>
-            <Tr>
-              <Th>Builder</Th>
-              <Th>Build Name</Th>
-              <Th>Description</Th>
-              <Th>Branch URL</Th>
-              <Th>Submitted time</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {!draftBuilds || draftBuilds.length === 0 ? (
+        {isLoadingDraftBuilds ? (
+          <BuildsTableSkeleton />
+        ) : (
+          <Table mb={4}>
+            <Thead>
               <Tr>
-                <Td colSpan={5}>
-                  <Text color={secondaryFontColor} textAlign="center" mb={4}>
-                    <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
-                    <br />
-                    All builds have been reviewed
-                  </Text>
-                </Td>
+                <Th>Builder</Th>
+                <Th>Build Name</Th>
+                <Th>Description</Th>
+                <Th>Branch URL</Th>
+                <Th>Submitted time</Th>
+                <Th>Actions</Th>
               </Tr>
-            ) : (
-              draftBuilds.map(build => (
-                <BuildReviewRow
-                  key={`${build.userAddress}_${build.id}`}
-                  build={build}
-                  submittedTimestamp={submissionTimestamps.builds[build.id]}
-                  isLoading={isLoadingDraftBuilds}
-                  approveClick={handleSendBuildReview("ACCEPTED")}
-                  rejectClick={handleSendBuildReview("REJECTED")}
-                />
-              ))
-            )}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {!draftBuilds || draftBuilds.length === 0 ? (
+                <Tr>
+                  <Td colSpan={5}>
+                    <Text color={secondaryFontColor} textAlign="center" mb={4}>
+                      <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
+                      <br />
+                      All builds have been reviewed
+                    </Text>
+                  </Td>
+                </Tr>
+              ) : (
+                draftBuilds.map(build => (
+                  <BuildReviewRow
+                    key={`${build.userAddress}_${build.id}`}
+                    build={build}
+                    submittedTimestamp={submissionTimestamps.builds[build.id]}
+                    isLoading={isLoadingDraftBuilds}
+                    approveClick={handleSendBuildReview("ACCEPTED")}
+                    rejectClick={handleSendBuildReview("REJECTED")}
+                  />
+                ))
+              )}
+            </Tbody>
+          </Table>
+        )}
       </Box>
     </Container>
   );
