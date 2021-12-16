@@ -30,6 +30,7 @@ import {
   TabPanel,
   ListItem,
   UnorderedList,
+  SkeletonText,
 } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -88,9 +89,13 @@ export default function ChallengeReviewRow({ challenge, submittedTimestamp, isLo
         </Link>
       </Td>
       <Td>
-        <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
-          <Box cursor="pointer">{submittedMoment.fromNow()}</Box>
-        </Tooltip>
+        {!submittedTimestamp ? (
+          <SkeletonText noOfLines={1} py={4} />
+        ) : (
+          <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
+            <Box cursor="pointer">{submittedMoment.fromNow()}</Box>
+          </Tooltip>
+        )}
       </Td>
     </>
   );
