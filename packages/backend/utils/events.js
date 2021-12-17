@@ -15,7 +15,7 @@ const createEvent = (type, payload, signature) => ({
   payload,
 });
 
-const validParams = ["type", "user", "challengeId", "buildId", "reviewAction", "reviewer"];
+const validParams = ["limit", "type", "user", "challengeId", "buildId", "reviewAction", "reviewer"];
 const validReviewActions = ["ACCEPTED", "REJECTED"]; // TODO this should be a shared constant
 const validTypes = Object.values(EVENT_TYPES);
 const validateEventsQueryParams = query => {

@@ -1,11 +1,10 @@
 import React from "react";
-import moment from "moment";
 import { Link as RouteLink } from "react-router-dom";
-import { Button, Box, HStack, Link, Td, Tr, Tooltip, SkeletonText } from "@chakra-ui/react";
+import { Button, HStack, Link, Td, Tr, SkeletonText } from "@chakra-ui/react";
 import Address from "./Address";
+import DateWithTooltip from "./DateWithTooltip";
 
 export default function BuildReviewRow({ build, submittedTimestamp, isLoading, approveClick, rejectClick }) {
-  const submittedMoment = moment(submittedTimestamp);
   return (
     <Tr>
       <Td>
@@ -24,9 +23,7 @@ export default function BuildReviewRow({ build, submittedTimestamp, isLoading, a
         {!submittedTimestamp ? (
           <SkeletonText noOfLines={1} py={4} />
         ) : (
-          <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
-            <Box cursor="pointer">{submittedMoment.fromNow()}</Box>
-          </Tooltip>
+          <DateWithTooltip timestamp={submittedTimestamp} />
         )}
       </Td>
       <Td>

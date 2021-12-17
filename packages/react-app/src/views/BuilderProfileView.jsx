@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouteLink, useParams } from "react-router-dom";
-import moment from "moment";
 import axios from "axios";
 import {
   useToast,
@@ -20,7 +19,6 @@ import {
   Th,
   Td,
   TableCaption,
-  Tooltip,
   Container,
   SimpleGrid,
   GridItem,
@@ -37,6 +35,7 @@ import { getAcceptedChallenges } from "../helpers/builders";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { getChallengeEventsForUser } from "../data/api";
 import { byTimestamp } from "../helpers/sorting";
+import DateWithTooltip from "../components/DateWithTooltip";
 
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address }) {
   const { builderAddress } = useParams();
@@ -160,7 +159,6 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                       const lastEventForChallenge = challengeEvents.filter(
                         event => event.payload.challengeId === challengeId,
                       )[0];
-                      const lastEventMoment = moment(lastEventForChallenge?.timestamp);
                       return (
                         <Tr key={challengeId}>
                           <Td>
@@ -201,9 +199,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                             {isLoadingTimestamps ? (
                               <SkeletonText noOfLines={1} />
                             ) : (
-                              <Tooltip label={lastEventMoment.format("YYYY-MM-DD, HH:mm")}>
-                                <Box cursor="pointer">{lastEventMoment.fromNow()}</Box>
-                              </Tooltip>
+                              <DateWithTooltip timestamp={lastEventForChallenge?.timestamp} />
                             )}
                           </Td>
                           <Td>

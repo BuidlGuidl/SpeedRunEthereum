@@ -46,14 +46,17 @@ const createEvent = event => {
   return database.collection("events").add(event);
 };
 
-const findAllEvents = async ({ limit: limitArg } = {}) => {
-  let eventsSnapshot;
-  if (limitArg) {
-    eventsSnapshot = await database.collection("events").limit(limitArg).get();
-  } else {
-    eventsSnapshot = await database.collection("events").get();
+const findAllEvents = async ({ limit } = {}) => {
+  let queryChain = database.collection("events");
+
+  if (limit) {
+    queryChain = queryChain.limit(Number(limit));
   }
 
+  // Seems like a good default for now.
+  queryChain = queryChain.orderBy("timestamp", "desc");
+
+  const eventsSnapshot = await queryChain.get();
   return eventsSnapshot.docs.map(doc => doc.data());
 };
 
@@ -71,7 +74,7 @@ const findEventsWhere = async ({ conditions: conditionsArg, limit } = {}) => {
   });
 
   if (limit) {
-    conditionChain = conditionChain.limit(limit);
+    conditionChain = conditionChain.limit(Number(limit));
   }
 
   const eventsSnapshot = await conditionChain.get();

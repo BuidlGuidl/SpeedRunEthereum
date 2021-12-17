@@ -16,6 +16,7 @@ import {
   SubmissionReviewView,
   HomeView,
   BuildsListView,
+  ActivityView,
 } from "./views";
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
@@ -196,6 +197,9 @@ function App() {
           {/* ToDo: Protect this route on the frontend? */}
           <Route path="/submission-review" exact>
             <SubmissionReviewView userProvider={userProvider} mainnetProvider={mainnetProvider} />
+          </Route>
+          <Route path="/activity" exact>
+            <ActivityView />
           </Route>
         </Switch>
         <ColorModeSwitcher />
