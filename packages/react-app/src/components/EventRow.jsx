@@ -15,7 +15,7 @@ const EventRow = ({ event }) => {
           <Address address={userAddress} w="12.5" fontSize="16" />
         </Link>
       </Td>
-      <Td>
+      <Td whiteSpace="nowrap">
         <DateWithTooltip timestamp={event.timestamp} />
       </Td>
       <Td>{eventDisplay(event)}</Td>
