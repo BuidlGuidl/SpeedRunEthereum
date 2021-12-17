@@ -1,12 +1,11 @@
 import React from "react";
-import moment from "moment";
 import { Link as RouteLink } from "react-router-dom";
-import { Box, Tr, Td, Link, Tooltip } from "@chakra-ui/react";
+import { Tr, Td, Link } from "@chakra-ui/react";
 import Address from "./Address";
 import { eventDisplay } from "../helpers/events";
+import DateWithTooltip from "./DateWithTooltip";
 
 const EventRow = ({ event }) => {
-  const timestampMoment = moment(event.timestamp);
   const userAddress = event.payload.userAddress;
 
   return (
@@ -17,9 +16,7 @@ const EventRow = ({ event }) => {
         </Link>
       </Td>
       <Td>
-        <Tooltip label={timestampMoment.format("YYYY-MM-DD, HH:mm")}>
-          <Box cursor="pointer">{timestampMoment.fromNow()}</Box>
-        </Tooltip>
+        <DateWithTooltip timestamp={event.timestamp} />
       </Td>
       <Td>{eventDisplay(event)}</Td>
     </Tr>

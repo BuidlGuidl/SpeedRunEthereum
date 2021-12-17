@@ -3,7 +3,6 @@ import { Link as RouteLink } from "react-router-dom";
 import moment from "moment";
 import {
   chakra,
-  Box,
   Button,
   Link,
   Td,
@@ -35,6 +34,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import Address from "./Address";
+import DateWithTooltip from "./DateWithTooltip";
 import { challengeInfo } from "../data/challenges";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
@@ -92,9 +92,7 @@ export default function ChallengeReviewRow({ challenge, submittedTimestamp, isLo
         {!submittedTimestamp ? (
           <SkeletonText noOfLines={1} py={4} />
         ) : (
-          <Tooltip label={submittedMoment.format("YYYY-MM-DD, HH:mm")}>
-            <Box cursor="pointer">{submittedMoment.fromNow()}</Box>
-          </Tooltip>
+          <DateWithTooltip timestamp={submittedTimestamp} />
         )}
       </Td>
     </>
