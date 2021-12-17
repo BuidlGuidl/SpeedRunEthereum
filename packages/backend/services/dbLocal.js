@@ -88,7 +88,7 @@ const createEvent = event => {
 
 const findAllEvents = ({ limit: limitArg } = {}) => {
   const limit = limitArg ?? database.events.length;
-  return database.events.slice(limit * -1);
+  return database.events.slice(limit * -1).reverse();
 };
 
 const findEventsWhere = ({ conditions: conditionsArg, limit } = {}) => {
