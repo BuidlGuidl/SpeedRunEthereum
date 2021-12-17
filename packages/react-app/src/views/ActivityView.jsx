@@ -43,7 +43,7 @@ export default function ActivityView() {
           </Thead>
           <Tbody>
             {eventsFeed.map(event => (
-              <EventRow event={event} />
+              <EventRow key={`${event.timestamp}_${event.payload.userAddress}`} event={event} />
             ))}
           </Tbody>
         </Table>

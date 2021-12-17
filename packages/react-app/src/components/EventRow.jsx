@@ -9,7 +9,7 @@ const EventRow = ({ event }) => {
   const userAddress = event.payload.userAddress;
 
   return (
-    <Tr key={`${event.timestamp}_${event.payload.userAddress}`}>
+    <Tr>
       <Td>
         <Link as={RouteLink} to={`/builders/${userAddress}`} pos="relative">
           <Address address={userAddress} w="12.5" fontSize="16" />
