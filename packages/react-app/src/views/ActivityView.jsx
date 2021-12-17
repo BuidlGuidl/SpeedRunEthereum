@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Heading, SkeletonText, Text } from "@chakra-ui/react";
+import { Box, Container, Heading, SkeletonText, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { getAllEvents } from "../data/api";
-import { eventDisplay } from "../helpers/events";
+import EventRow from "../components/EventRow";
 
 export default function ActivityView() {
   const [eventsFeed, setEventFeeds] = useState([]);
@@ -33,7 +33,20 @@ export default function ActivityView() {
           <SkeletonText mt="4" noOfLines={10} spacing="4" />
         </Box>
       ) : (
-        eventsFeed.map(event => <Box>{eventDisplay(event)}</Box>)
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Builder</Th>
+              <Th>Time</Th>
+              <Th>Action</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {eventsFeed.map(event => (
+              <EventRow event={event} />
+            ))}
+          </Tbody>
+        </Table>
       )}
     </Container>
   );
