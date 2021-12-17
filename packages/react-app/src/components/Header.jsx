@@ -95,17 +95,30 @@ export default function Header({
             </>
           )}
           {USER_ROLES.admin === userRole && (
-            <chakra.li key="/submission-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
-              <NavLink
-                to="/submission-review"
-                exact
-                activeStyle={{
-                  color: primaryColorString,
-                }}
-              >
-                Review Submissions
-              </NavLink>
-            </chakra.li>
+            <>
+              <chakra.li key="/submission-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+                <NavLink
+                  to="/submission-review"
+                  exact
+                  activeStyle={{
+                    color: primaryColorString,
+                  }}
+                >
+                  Review Submissions
+                </NavLink>
+              </chakra.li>
+              <chakra.li key="/activity" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+                <NavLink
+                  to="/activity"
+                  exact
+                  activeStyle={{
+                    color: primaryColorString,
+                  }}
+                >
+                  Activity
+                </NavLink>
+              </chakra.li>
+            </>
           )}
         </HStack>
         <Spacer />
