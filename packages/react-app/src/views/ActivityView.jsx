@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Container, Heading, SkeletonText, Text } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { getAllEvents } from "../data/api";
-import { eventToString } from "../helpers/events";
+import { eventDisplay } from "../helpers/events";
 
 export default function ActivityView() {
   const [eventsFeed, setEventFeeds] = useState([]);
@@ -33,7 +33,7 @@ export default function ActivityView() {
           <SkeletonText mt="4" noOfLines={10} spacing="4" />
         </Box>
       ) : (
-        eventsFeed.map(event => <Box>{eventToString(event)}</Box>)
+        eventsFeed.map(event => <Box>{eventDisplay(event)}</Box>)
       )}
     </Container>
   );

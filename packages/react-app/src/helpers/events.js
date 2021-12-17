@@ -7,7 +7,7 @@ const EVENT_TYPES = {
   USER_UPDATE: "user.update",
 };
 
-export const eventToString = ({ type, payload }) => {
+export const eventDisplay = ({ type, payload }) => {
   switch (type) {
     case EVENT_TYPES.CHALLENGE_SUBMIT: {
       return `${payload.userAddress.slice(0, 6)}... submitted a solution for ${payload.challengeId}`;
@@ -23,6 +23,9 @@ export const eventToString = ({ type, payload }) => {
     case EVENT_TYPES.USER_CREATE: {
       return `${payload.userAddress.slice(0, 6)}... just created a builder account. Welcome!`;
     }
+
+    // ToDo. Build events. Wait until we tackled issue #134
+    // https://github.com/moonshotcollective/scaffold-directory/issues/134
 
     default:
       // do nothing
