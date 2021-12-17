@@ -36,7 +36,13 @@ router.get("/", async (req, res) => {
 
   const conditions = queryParamsToConditions(query);
 
-  const matchingEvents = await db.findEventsWhere({ conditions });
+  let matchingEvents;
+  if (Object.keys(conditions).length) {
+    matchingEvents = await db.findEventsWhere({ conditions });
+  } else {
+    matchingEvents = await db.findAllEvents({ limit: query?.limit });
+  }
+
   res.json(matchingEvents);
 });
 

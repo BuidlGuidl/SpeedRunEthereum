@@ -12,8 +12,8 @@ export default function ActivityView() {
   useEffect(() => {
     const updateEvents = async () => {
       setIsLoadingEvents(true);
-      const events = await getAllEvents();
-      setEventFeeds(events.reverse());
+      const events = await getAllEvents(25);
+      setEventFeeds(events);
       setIsLoadingEvents(false);
     };
 
@@ -26,7 +26,7 @@ export default function ActivityView() {
         Activity feed
       </Heading>
       <Text color={secondaryFontColor} textAlign="center" mb={10}>
-        Last 15 things happening at SRE.
+        Last 25 things happening at SRE.
       </Text>
       {isLoadingEvents ? (
         <Box w="100%" maxW="500px">
