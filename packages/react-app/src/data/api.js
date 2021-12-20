@@ -37,7 +37,7 @@ export const getSubmitChallengeEventsForUserAndChallenges = async (userId, chall
 
 export const getDraftBuildEventsForBuildId = async buildId => {
   try {
-    const response = await axios.get(`${serverUrl}/events?buildId=${buildId}&type=build.create`);
+    const response = await axios.get(`${serverUrl}/events?buildId=${buildId}&type=build.submit`);
     return response.data;
   } catch (err) {
     console.log(`error fetching draft build events for user build ${buildId}.`, err);

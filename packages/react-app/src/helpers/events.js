@@ -2,9 +2,8 @@
 const EVENT_TYPES = {
   CHALLENGE_SUBMIT: "challenge.submit",
   CHALLENGE_REVIEW: "challenge.review",
-  // ToDo. Review this when #134 is done.
-  // https://github.com/moonshotcollective/scaffold-directory/issues/134
-  BUILD_SUBMIT: "build.create",
+  BUILD_SUBMIT: "build.submit",
+  BUILD_REVIEW: "build.review",
   USER_CREATE: "user.create",
   USER_UPDATE: "user.update",
 };
@@ -16,11 +15,15 @@ export const eventDisplay = ({ type, payload }) => {
     }
 
     case EVENT_TYPES.CHALLENGE_REVIEW: {
-      return `A challenge submitted has been ${payload.reviewAction.toLowerCase()}`;
+      return `A submitted challenge has been ${payload.reviewAction.toLowerCase()}`;
     }
 
     case EVENT_TYPES.BUILD_SUBMIT: {
-      return `just submitted a build!`;
+      return `just submitted a new build!`;
+    }
+
+    case EVENT_TYPES.BUILD_REVIEW: {
+      return `A submitted build has been ${payload.reviewAction.toLowerCase()}`;
     }
 
     case EVENT_TYPES.USER_CREATE: {
