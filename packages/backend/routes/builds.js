@@ -54,7 +54,7 @@ router.post("/", withRole("builder"), async (request, response) => {
     buildId: dbResponse.id,
   };
 
-  const event = createEvent(EVENT_TYPES.BUILD_CREATE, eventPayload, signature);
+  const event = createEvent(EVENT_TYPES.BUILD_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
 
   response.sendStatus(200);
@@ -65,7 +65,7 @@ router.post("/", withRole("builder"), async (request, response) => {
  */
 router.patch("/", withRole("admin"), async (request, response) => {
   console.log("PATCH /builds");
-  const { buildId, newStatus, signature } = request.body;
+  const { buildId, newStatus, signature, userAddress } = request.body;
   const address = request.address;
 
   const verifyOptions = {
@@ -90,6 +90,15 @@ router.patch("/", withRole("admin"), async (request, response) => {
   } else if (newStatus === "REJECTED") {
     await db.removeBuild(buildId);
   }
+
+  const eventPayload = {
+    reviewAction: newStatus,
+    userAddress,
+    reviewerAddress: address,
+    buildId,
+  };
+  const event = createEvent(EVENT_TYPES.BUILD_REVIEW, eventPayload, signature);
+  db.createEvent(event); // INFO: async, no await here
 
   response.sendStatus(200);
 });
