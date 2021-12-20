@@ -2,7 +2,6 @@
 const EVENT_TYPES = {
   CHALLENGE_SUBMIT: "challenge.submit",
   CHALLENGE_REVIEW: "challenge.review",
-  CHALLENGE_CREATE: "challenge.create",
   // ToDo. Review this when #134 is done.
   // https://github.com/moonshotcollective/scaffold-directory/issues/134
   BUILD_SUBMIT: "build.create",

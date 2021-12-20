@@ -1,7 +1,6 @@
 const EVENT_TYPES = {
   CHALLENGE_SUBMIT: "challenge.submit",
   CHALLENGE_REVIEW: "challenge.review",
-  CHALLENGE_CREATE: "challenge.create",
   USER_CREATE: "user.create",
   USER_UPDATE: "user.update",
   BUILD_CREATE: "build.create",
