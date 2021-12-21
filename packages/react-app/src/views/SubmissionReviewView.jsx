@@ -29,6 +29,7 @@ import {
   patchChallengeReview,
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
+import { bySubmittedTimestamp } from "../helpers/sorting";
 
 const RUBRIC_URL = "https://docs.google.com/document/d/1ByXQUUg-ePq0aKkMywOHV25ZetesI2BFYoJzSez009c";
 
@@ -56,7 +57,7 @@ export default function SubmissionReviewView({ userProvider }) {
       setIsLoadingChallenges(false);
       return;
     }
-    setChallenges(fetchedChallenges);
+    setChallenges(fetchedChallenges.sort(bySubmittedTimestamp));
     setIsLoadingChallenges(false);
   }, [address, toastVariant, toast]);
 
@@ -74,7 +75,7 @@ export default function SubmissionReviewView({ userProvider }) {
       setIsLoadingDraftBuilds(false);
       return;
     }
-    setDraftBuilds(fetchedDraftBuilds);
+    setDraftBuilds(fetchedDraftBuilds.sort(bySubmittedTimestamp));
     setIsLoadingDraftBuilds(false);
   }, [address, toastVariant, toast]);
 
