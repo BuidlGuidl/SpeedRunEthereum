@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useUserAddress } from "eth-hooks";
 import {
   useColorModeValue,
   Box,
   Container,
+  HStack,
   Heading,
   Icon,
   Link,
@@ -16,6 +17,7 @@ import {
   Td,
   useToast,
 } from "@chakra-ui/react";
+import { TriangleUpIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
 import BuildReviewRow from "../components/BuildReviewRow";
 import { ChallengesTableSkeleton, BuildsTableSkeleton } from "../components/skeletons/SubmissionReviewTableSkeleton";
@@ -29,7 +31,7 @@ import {
   patchChallengeReview,
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
-import { bySubmittedTimestamp } from "../helpers/sorting";
+import { SORTING_ORDER, bySubmittedTimestamp } from "../helpers/sorting";
 
 const RUBRIC_URL = "https://docs.google.com/document/d/1ByXQUUg-ePq0aKkMywOHV25ZetesI2BFYoJzSez009c";
 
@@ -39,9 +41,15 @@ export default function SubmissionReviewView({ userProvider }) {
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
   const [draftBuilds, setDraftBuilds] = React.useState([]);
   const [isLoadingDraftBuilds, setIsLoadingDraftBuilds] = React.useState(true);
+  const [challengesSorting, setChallengesSorting] = useState(SORTING_ORDER.ascending);
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
   const { secondaryFontColor } = useCustomColorModes();
+
+  const toggleChallengeSortingOrder = () =>
+    setChallengesSorting(prevSorting => {
+      return prevSorting === SORTING_ORDER.ascending ? SORTING_ORDER.descending : SORTING_ORDER.ascending;
+    });
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoadingChallenges(true);
@@ -57,7 +65,7 @@ export default function SubmissionReviewView({ userProvider }) {
       setIsLoadingChallenges(false);
       return;
     }
-    setChallenges(fetchedChallenges.sort(bySubmittedTimestamp));
+    setChallenges(fetchedChallenges.sort(bySubmittedTimestamp(challengesSorting)));
     setIsLoadingChallenges(false);
   }, [address, toastVariant, toast]);
 
@@ -75,7 +83,7 @@ export default function SubmissionReviewView({ userProvider }) {
       setIsLoadingDraftBuilds(false);
       return;
     }
-    setDraftBuilds(fetchedDraftBuilds.sort(bySubmittedTimestamp));
+    setDraftBuilds(fetchedDraftBuilds.sort(bySubmittedTimestamp()));
     setIsLoadingDraftBuilds(false);
   }, [address, toastVariant, toast]);
 
@@ -94,6 +102,13 @@ export default function SubmissionReviewView({ userProvider }) {
     fetchSubmittedBuilds();
     // eslint-disable-next-line
   }, [address]);
+
+  useEffect(() => {
+    setChallenges(prevChallenges => {
+      const challengesCopy = [...prevChallenges]; // sorting happens in place, don't mutate state
+      return challengesCopy.sort(bySubmittedTimestamp(challengesSorting));
+    });
+  }, [challengesSorting]);
 
   const handleSendChallengeReview = reviewType => async (userAddress, challengeId, comment) => {
     let signMessage;
@@ -226,7 +241,12 @@ export default function SubmissionReviewView({ userProvider }) {
                 <Th>Challenge</Th>
                 <Th>Contract</Th>
                 <Th>Live demo</Th>
-                <Th>Submitted time</Th>
+                <Th onClick={toggleChallengeSortingOrder} cursor="pointer">
+                  <HStack>
+                    <span>Submitted time</span>
+                    {challengesSorting === SORTING_ORDER.ascending ? <TriangleDownIcon /> : <TriangleUpIcon />}
+                  </HStack>
+                </Th>
                 <Th>Actions</Th>
               </Tr>
             </Thead>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Button, Table, Thead, Tbody, Tr, Th, Td, HStack, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { TriangleDownIcon } from "@chakra-ui/icons";
 import SkeletonAddress from "./SkeletonAddress";
 
 export const BuildsTableSkeleton = () => (
@@ -65,7 +66,12 @@ export const ChallengesTableSkeleton = () => (
           <Th>Challenge</Th>
           <Th>Contract</Th>
           <Th>Live demo</Th>
-          <Th>Submitted time</Th>
+          <Th>
+            <HStack>
+              <span>Submitted time</span>
+              <TriangleDownIcon />
+            </HStack>
+          </Th>
           <Th>Actions</Th>
         </Tr>
       </Thead>
