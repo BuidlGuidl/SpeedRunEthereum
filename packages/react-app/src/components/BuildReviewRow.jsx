@@ -1,10 +1,10 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { Button, HStack, Link, Td, Tr, SkeletonText } from "@chakra-ui/react";
+import { Button, HStack, Link, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 import DateWithTooltip from "./DateWithTooltip";
 
-export default function BuildReviewRow({ build, submittedTimestamp, isLoading, approveClick, rejectClick }) {
+export default function BuildReviewRow({ build, isLoading, approveClick, rejectClick }) {
   return (
     <Tr>
       <Td>
@@ -20,11 +20,7 @@ export default function BuildReviewRow({ build, submittedTimestamp, isLoading, a
         </Link>
       </Td>
       <Td>
-        {!submittedTimestamp ? (
-          <SkeletonText noOfLines={1} py={4} />
-        ) : (
-          <DateWithTooltip timestamp={submittedTimestamp} />
-        )}
+        <DateWithTooltip timestamp={build.submittedTimestamp} />
       </Td>
       <Td>
         <HStack spacing={3}>
