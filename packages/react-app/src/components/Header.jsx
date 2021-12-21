@@ -40,8 +40,10 @@ export default function Header({
             <span role="img" aria-label="castle icon">
               🏃‍♀️
             </span>{" "}
-            <chakra.strong display={{ base: "none", md: "inline-block" }}>Speed Run Ethereum</chakra.strong>
-            <chakra.strong display={{ base: "inline-block", md: "none" }}>SRE</chakra.strong>
+            <chakra.strong display={{ base: "none", md: "inline-block" }}>SpeedRunEthereum.com</chakra.strong>
+            <chakra.strong display={{ base: "inline-block", md: "none" }}>
+              {isSignerProviderConnected ? "SRE" : "SpeedRunEthereum.com"}
+            </chakra.strong>
           </NavLink>
         </Flex>
         <HStack
