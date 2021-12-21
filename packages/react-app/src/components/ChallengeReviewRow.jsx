@@ -72,22 +72,6 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
       </Td>
       <Td>{challengeReviewDisplay}</Td>
       <Td>
-        <Link
-          // Legacy branchUrl
-          href={challenge.contractUrl || challenge.branchUrl}
-          color="teal.500"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Contract
-        </Link>
-      </Td>
-      <Td>
-        <Link href={challenge.deployedUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
-          Demo
-        </Link>
-      </Td>
-      <Td>
         <DateWithTooltip timestamp={challenge.submittedTimestamp} />
       </Td>
     </>
@@ -98,7 +82,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
       {reviewRow}
       <Td>
         <Button type="button" colorScheme="blue" disabled={isLoading} className="danger" onClick={onOpen} size="xs">
-          Send review
+          Review
         </Button>
       </Td>
       <Modal isOpen={isOpen} onClose={onClose} size="xl">

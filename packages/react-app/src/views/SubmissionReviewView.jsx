@@ -224,8 +224,6 @@ export default function SubmissionReviewView({ userProvider }) {
               <Tr>
                 <Th>Builder</Th>
                 <Th>Challenge</Th>
-                <Th>Contract</Th>
-                <Th>Live demo</Th>
                 <Th>Submitted time</Th>
                 <Th>Actions</Th>
               </Tr>

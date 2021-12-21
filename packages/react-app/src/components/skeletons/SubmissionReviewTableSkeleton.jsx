@@ -91,7 +91,7 @@ export const ChallengesTableSkeleton = () => (
               <Td>
                 <Skeleton startColor="blue.100" endColor="blue.500">
                   <Button type="button" size="xs">
-                    Send review
+                    Review
                   </Button>
                 </Skeleton>
               </Td>
