@@ -29,7 +29,6 @@ import {
   TabPanel,
   ListItem,
   UnorderedList,
-  SkeletonText,
 } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -38,7 +37,7 @@ import DateWithTooltip from "./DateWithTooltip";
 import { challengeInfo } from "../data/challenges";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
-export default function ChallengeReviewRow({ challenge, submittedTimestamp, isLoading, approveClick, rejectClick }) {
+export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick }) {
   const [comment, setComment] = React.useState(challenge.reviewComment ?? "");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -62,7 +61,7 @@ export default function ChallengeReviewRow({ challenge, submittedTimestamp, isLo
     </Link>
   );
 
-  const submittedMoment = moment(submittedTimestamp);
+  const submittedMoment = moment(challenge.submittedTimestamp);
 
   const reviewRow = (
     <>
@@ -89,11 +88,7 @@ export default function ChallengeReviewRow({ challenge, submittedTimestamp, isLo
         </Link>
       </Td>
       <Td>
-        {!submittedTimestamp ? (
-          <SkeletonText noOfLines={1} py={4} />
-        ) : (
-          <DateWithTooltip timestamp={submittedTimestamp} />
-        )}
+        <DateWithTooltip timestamp={challenge.submittedTimestamp} />
       </Td>
     </>
   );
