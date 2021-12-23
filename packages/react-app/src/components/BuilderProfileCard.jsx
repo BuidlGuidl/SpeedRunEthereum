@@ -1,88 +1,222 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { Flex, Divider, Text, Link, Skeleton, SkeletonText, Alert } from "@chakra-ui/react";
+import { useUserAddress } from "eth-hooks";
+import {
+  Button,
+  chakra,
+  Flex,
+  Divider,
+  Text,
+  Link,
+  Skeleton,
+  SkeletonText,
+  Alert,
+  useDisclosure,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Modal,
+  FormControl,
+  FormLabel,
+  Input,
+  useToast,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import { getIconForProfileLinkType } from "../helpers/socialIcons";
 import useDisplayAddress from "../hooks/useDisplayAddress";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
+import { getUpdateSocialsSignMessage, postUpdateSocials } from "../data/api";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
 );
 
-// TODO get the actual join date. Should be easy getting the user.create event
-const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile }) => {
+// ToDo. Label, placeholder, etc.
+const allowedSocials = ["telegram", "twitter", "discord", "github", "email", "instagram"];
+
+const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvider }) => {
+  const address = useUserAddress(userProvider);
   const ens = useDisplayAddress(mainnetProvider, builder?.id);
+  const [updatedSocials, setUpdatedSocials] = useState({});
+  const [isUpdatingSocials, setIsUpdatingSocials] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { borderColor, secondaryFontColor } = useCustomColorModes();
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
+
+  const toast = useToast({ position: "top", isClosable: true });
+  const toastVariant = useColorModeValue("subtle", "solid");
 
   const joinedDate = new Date(builder?.creationTimestamp);
   const joinedDateDisplay = joinedDate.toLocaleString("default", { month: "long" }) + " " + joinedDate.getFullYear();
 
   // INFO: conditional chaining and coalescing didn't work when also checking the length
-  const hasProfileLinks = builder?.socialLinks ? builder.socialLinks.length !== 0 : false;
+  const hasProfileLinks = builder?.socialLinks ? Object.keys(builder.socialLinks).length !== 0 : false;
+
+  const handleUpdateSocials = async () => {
+    setIsUpdatingSocials(true);
+
+    // Avoid sending socials with empty strings.
+    const socialLinkCleaned = Object.fromEntries(Object.entries(updatedSocials).filter(([_, value]) => !!value));
+
+    let signMessage;
+    try {
+      signMessage = await getUpdateSocialsSignMessage(address);
+    } catch (error) {
+      toast({
+        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        status: "error",
+        variant: toastVariant,
+      });
+      return;
+    }
+
+    let signature;
+    try {
+      signature = await userProvider.send("personal_sign", [signMessage, address]);
+    } catch (error) {
+      toast({
+        description: "Couldn't get a signature from the Wallet",
+        status: "error",
+        variant: toastVariant,
+      });
+      return;
+    }
+
+    try {
+      await postUpdateSocials(address, signature, socialLinkCleaned);
+    } catch (error) {
+      if (error.status === 401) {
+        toast({
+          status: "error",
+          description: "Access error",
+          variant: toastVariant,
+        });
+        return;
+      }
+      toast({
+        status: "error",
+        description: "Can't update your socials. Please try again.",
+        variant: toastVariant,
+      });
+      return;
+    }
+
+    toast({
+      description: "Your social links have been updated",
+      status: "success",
+      variant: toastVariant,
+    });
+    setIsUpdatingSocials(false);
+  };
 
   return (
-    <BuilderProfileCardSkeleton isLoaded={!!builder}>
-      {() => (
-        /* delay execution */
-        <Flex
-          borderRadius="lg"
-          borderColor={borderColor}
-          borderWidth={1}
-          justify={{ base: "space-around", xl: "center" }}
-          direction={{ base: "row", xl: "column" }}
-          p={4}
-          pb={6}
-          maxW={{ base: "full", lg: "50%", xl: 60 }}
-          margin="auto"
-        >
-          <Link as={RouteLink} to={`/builders/${builder.id}`}>
-            <QRPunkBlockie withQr={false} address={builder.id?.toLowerCase()} w={52} borderRadius="lg" margin="auto" />
-          </Link>
-          <Flex alignContent="center" direction="column" mt={4}>
-            {hasEns ? (
-              <>
-                <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-                  {ens}
-                </Text>
-                <Text textAlign="center" mb={8} color={secondaryFontColor}>
+    <>
+      <BuilderProfileCardSkeleton isLoaded={!!builder}>
+        {() => (
+          /* delay execution */
+          <Flex
+            borderRadius="lg"
+            borderColor={borderColor}
+            borderWidth={1}
+            justify={{ base: "space-around", xl: "center" }}
+            direction={{ base: "row", xl: "column" }}
+            p={4}
+            pb={6}
+            maxW={{ base: "full", lg: "50%", xl: 60 }}
+            margin="auto"
+          >
+            <Link as={RouteLink} to={`/builders/${builder.id}`}>
+              <QRPunkBlockie
+                withQr={false}
+                address={builder.id?.toLowerCase()}
+                w={52}
+                borderRadius="lg"
+                margin="auto"
+              />
+            </Link>
+            <Flex alignContent="center" direction="column" mt={4}>
+              {hasEns ? (
+                <>
+                  <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+                    {ens}
+                  </Text>
+                  <Text textAlign="center" mb={8} color={secondaryFontColor}>
+                    {shortAddress}
+                  </Text>
+                </>
+              ) : (
+                <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>
                   {shortAddress}
                 </Text>
-              </>
-            ) : (
-              <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>
-                {shortAddress}
+              )}
+              <Divider mb={6} />
+              {hasProfileLinks ? (
+                <Flex mb={4} justifyContent="space-evenly" alignItems="center">
+                  {builder.profileLinks?.map(({ type, url }) => {
+                    const Icon = getIconForProfileLinkType(type);
+                    return (
+                      <Link href={url}>
+                        <Icon />
+                      </Link>
+                    );
+                  })}
+                </Flex>
+              ) : (
+                isMyProfile && (
+                  <Alert mb={3} status="warning">
+                    <Text fontSize="xs">You haven't set your socials yet</Text>
+                  </Alert>
+                )
+              )}
+              {isMyProfile && (
+                <Button mb={3} size="xs" variant="outline" onClick={onOpen}>
+                  Update socials
+                </Button>
+              )}
+              <Text textAlign="center" color={secondaryFontColor}>
+                Joined {joinedDateDisplay}
               </Text>
-            )}
-            <Divider mb={6} />
-            {hasProfileLinks ? (
-              <Flex mb={4} justifyContent="space-evenly" alignItems="center">
-                {builder.profileLinks?.map(({ type, url }) => {
-                  const Icon = getIconForProfileLinkType(type);
-                  return (
-                    <Link href={url}>
-                      <Icon />
-                    </Link>
-                  );
-                })}
-              </Flex>
-            ) : (
-              isMyProfile && (
-                <Alert mb={3} status="warning">
-                  <Text fontSize="xs">You haven't set your socials yet</Text>
-                </Alert>
-              )
-            )}
-            <Text textAlign="center" color={secondaryFontColor}>
-              Joined {joinedDateDisplay}
-            </Text>
+            </Flex>
           </Flex>
-        </Flex>
-      )}
-    </BuilderProfileCardSkeleton>
+        )}
+      </BuilderProfileCardSkeleton>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Update your socials</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody p={6}>
+            {allowedSocials.map(socialId => (
+              <FormControl id="socialId" key={socialId} mb={3}>
+                <FormLabel htmlFor={socialId} mb={0}>
+                  <chakra.strong textTransform="capitalize">{socialId}:</chakra.strong>
+                </FormLabel>
+                <Input
+                  type="text"
+                  name={socialId}
+                  value={updatedSocials[socialId] ?? ""}
+                  onChange={e => {
+                    const value = e.target.value;
+                    setUpdatedSocials(prevSocials => ({
+                      ...prevSocials,
+                      [socialId]: value,
+                    }));
+                  }}
+                />
+              </FormControl>
+            ))}
+            <Button colorScheme="blue" onClick={handleUpdateSocials} isLoading={isUpdatingSocials} isFullWidth mt={4}>
+              Update
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
