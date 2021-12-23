@@ -1,6 +1,6 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { Flex, Divider, Text, Link, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Flex, Divider, Text, Link, Skeleton, SkeletonText, Alert } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import { getIconForProfileLinkType } from "../helpers/socialIcons";
 import useDisplayAddress from "../hooks/useDisplayAddress";
@@ -12,7 +12,7 @@ const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
 );
 
 // TODO get the actual join date. Should be easy getting the user.create event
-const BuilderProfileCard = ({ builder, mainnetProvider }) => {
+const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile }) => {
   const ens = useDisplayAddress(mainnetProvider, builder?.id);
   const { borderColor, secondaryFontColor } = useCustomColorModes();
   const shortAddress = ellipsizedAddress(builder?.id);
@@ -22,7 +22,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
   const joinedDateDisplay = joinedDate.toLocaleString("default", { month: "long" }) + " " + joinedDate.getFullYear();
 
   // INFO: conditional chaining and coalescing didn't work when also checking the length
-  const hasProfileLinks = builder?.profileLinks ? builder.profileLinks.length !== 0 : false;
+  const hasProfileLinks = builder?.socialLinks ? builder.socialLinks.length !== 0 : false;
 
   return (
     <BuilderProfileCardSkeleton isLoaded={!!builder}>
@@ -58,7 +58,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
               </Text>
             )}
             <Divider mb={6} />
-            {hasProfileLinks && (
+            {hasProfileLinks ? (
               <Flex mb={4} justifyContent="space-evenly" alignItems="center">
                 {builder.profileLinks?.map(({ type, url }) => {
                   const Icon = getIconForProfileLinkType(type);
@@ -69,6 +69,12 @@ const BuilderProfileCard = ({ builder, mainnetProvider }) => {
                   );
                 })}
               </Flex>
+            ) : (
+              isMyProfile && (
+                <Alert mb={3} status="warning">
+                  <Text fontSize="xs">You haven't set your socials yet</Text>
+                </Alert>
+              )
             )}
             <Text textAlign="center" color={secondaryFontColor}>
               Joined {joinedDateDisplay}

@@ -87,7 +87,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
     <Container maxW="container.xl">
       <SimpleGrid gap={14} columns={{ base: 1, xl: 4 }}>
         <GridItem colSpan={1}>
-          <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} />
+          <BuilderProfileCard builder={builder} mainnetProvider={mainnetProvider} isMyProfile={isMyProfile} />
         </GridItem>
         <GridItem colSpan={{ base: 1, xl: 3 }}>
           <HStack spacing={4} mb={8}>
