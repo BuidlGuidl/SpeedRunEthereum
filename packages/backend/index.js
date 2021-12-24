@@ -9,6 +9,7 @@ const db = require("./services/db");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
+const { getChallengeIndexFromChallengeId } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
@@ -151,10 +152,11 @@ app.post("/challenges", withAddress, async (request, response) => {
     try {
       console.log("Calling auto-grading");
       // ToDo. Derive this from challengeId.
-      const challengeIndex = 0;
-      // ToDo. Get this data from contract URL
-      const network = "rinkeby";
-      const contractAddress = "0xb82cd8E292cA7F28816e90951e89FDD901AC36AE";
+      const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
+      const contractUrlObject = new URL(contractUrl);
+      // ToDo. Validation (also in the front-end, make sure they enter the correct URL)
+      const network = contractUrlObject.host.split(".")[0];
+      const contractAddress = contractUrlObject.pathname.replace("/address/", "");
       const gradingResponse = await axios.post(process.env.AUTOGRADING_SERVER, {
         challenge: challengeIndex,
         network,
