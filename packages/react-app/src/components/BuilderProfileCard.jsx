@@ -36,7 +36,32 @@ const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
 );
 
 // ToDo. Label, placeholder, etc.
-const allowedSocials = ["telegram", "twitter", "discord", "github", "email", "instagram"];
+const allowedSocials = {
+  telegram: {
+    label: "Telegram",
+    placeholder: "Your Twitter handle without the @",
+  },
+  twitter: {
+    label: "Twitter:",
+    placeholder: "Your Telegram username without the @",
+  },
+  discord: {
+    label: "Discord:",
+    placeholder: "Your Discord username#id",
+  },
+  github: {
+    label: "GitHub:",
+    placeholder: "Your GitHub username",
+  },
+  email: {
+    label: "E-mail:",
+    placeholder: "Your e-mail address",
+  },
+  instagram: {
+    label: "Instagram",
+    placeholder: "Your Instagram handle without the @",
+  },
+};
 
 const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvider }) => {
   const address = useUserAddress(userProvider);
@@ -191,15 +216,16 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
           <ModalHeader>Update your socials</ModalHeader>
           <ModalCloseButton />
           <ModalBody p={6}>
-            {allowedSocials.map(socialId => (
+            {Object.entries(allowedSocials).map(([socialId, socialData]) => (
               <FormControl id="socialId" key={socialId} mb={3}>
                 <FormLabel htmlFor={socialId} mb={0}>
-                  <chakra.strong textTransform="capitalize">{socialId}:</chakra.strong>
+                  <strong>{socialData.label}:</strong>
                 </FormLabel>
                 <Input
                   type="text"
                   name={socialId}
                   value={updatedSocials[socialId] ?? ""}
+                  placeholder={socialData.placeholder}
                   onChange={e => {
                     const value = e.target.value;
                     setUpdatedSocials(prevSocials => ({
