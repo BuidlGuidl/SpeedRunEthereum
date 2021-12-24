@@ -156,9 +156,9 @@ app.post("/challenges", withAddress, async (request, response) => {
       const network = "rinkeby";
       const contractAddress = "0xb82cd8E292cA7F28816e90951e89FDD901AC36AE";
       const gradingResponse = await axios.post(process.env.AUTOGRADING_SERVER, {
-        challengeIndex,
+        challenge: challengeIndex,
         network,
-        contractAddress,
+        contract: contractAddress,
       });
 
       const gradingResponseData = gradingResponse.data;
