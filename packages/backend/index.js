@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const axios = require("axios");
 const db = require("./services/db");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
@@ -11,6 +13,7 @@ const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
 const app = express();
+const autogradingEnabled = !!process.env.AUTOGRADING_SERVER;
 
 /*
   Uncomment this if you want to create a wallet to send ETH or something...
@@ -142,6 +145,36 @@ app.post("/challenges", withAddress, async (request, response) => {
   };
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
+
+  if (autogradingEnabled) {
+    // Auto-grading
+    try {
+      console.log("Calling auto-grading");
+      // ToDo. Derive this from challengeId.
+      const challengeIndex = 0;
+      // ToDo. Get this data from contract URL
+      const network = "rinkeby";
+      const contractAddress = "0xb82cd8E292cA7F28816e90951e89FDD901AC36AE";
+      const gradingResponse = await axios.post(process.env.AUTOGRADING_SERVER, {
+        challengeIndex,
+        network,
+        contractAddress,
+      });
+
+      const gradingResponseData = gradingResponse.data;
+      console.log("gradingResponseData", gradingResponseData);
+
+      if (gradingResponseData) {
+        existingChallenges[challengeId].status = gradingResponseData.success ? "ACCEPTED" : "REJECTED";
+        existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
+      }
+      // ToDo. auto review event?
+    } catch (error) {
+      // We kept the status as "SUBMITTED" so we can manually review
+      console.error("auto-grading failed", error);
+    }
+  }
+
   await db.updateUser(address, { challenges: existingChallenges });
   response.sendStatus(200);
 });
