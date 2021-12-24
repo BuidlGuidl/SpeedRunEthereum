@@ -24,43 +24,16 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
-import { getIconForProfileLinkType } from "../helpers/socialIcons";
+import SocialLink from "./SocialLink";
 import useDisplayAddress from "../hooks/useDisplayAddress";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
 import { getUpdateSocialsSignMessage, postUpdateSocials } from "../data/api";
+import { socials } from "../data/socials";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
 );
-
-// ToDo. Label, placeholder, etc.
-const allowedSocials = {
-  telegram: {
-    label: "Telegram",
-    placeholder: "Your Twitter handle without the @",
-  },
-  twitter: {
-    label: "Twitter:",
-    placeholder: "Your Telegram username without the @",
-  },
-  discord: {
-    label: "Discord:",
-    placeholder: "Your Discord username#id",
-  },
-  github: {
-    label: "GitHub:",
-    placeholder: "Your GitHub username",
-  },
-  email: {
-    label: "E-mail:",
-    placeholder: "Your e-mail address",
-  },
-  instagram: {
-    label: "Instagram",
-    placeholder: "Your Instagram handle without the @",
-  },
-};
 
 const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvider }) => {
   const address = useUserAddress(userProvider);
@@ -187,14 +160,9 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               <Divider mb={6} />
               {hasProfileLinks ? (
                 <Flex mb={4} justifyContent="space-evenly" alignItems="center">
-                  {builder.profileLinks?.map(({ type, url }) => {
-                    const Icon = getIconForProfileLinkType(type);
-                    return (
-                      <Link href={url}>
-                        <Icon />
-                      </Link>
-                    );
-                  })}
+                  {Object.entries(builder.socialLinks).map(([socialId, socialValue]) => (
+                    <SocialLink id={socialId} value={socialValue} />
+                  ))}
                 </Flex>
               ) : (
                 isMyProfile && (
@@ -221,7 +189,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
           <ModalHeader>Update your socials</ModalHeader>
           <ModalCloseButton />
           <ModalBody p={6}>
-            {Object.entries(allowedSocials).map(([socialId, socialData]) => (
+            {Object.entries(socials).map(([socialId, socialData]) => (
               <FormControl id="socialId" key={socialId} mb={3}>
                 <FormLabel htmlFor={socialId} mb={0}>
                   <strong>{socialData.label}:</strong>
