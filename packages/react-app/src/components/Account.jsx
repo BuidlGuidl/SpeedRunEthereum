@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   AvatarBadge,
   Badge,
@@ -15,6 +16,8 @@ import {
   Text,
   Tooltip,
   useToast,
+  LinkBox,
+  LinkOverlay,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import useDisplayAddress from "../hooks/useDisplayAddress";
@@ -110,18 +113,22 @@ export default function Account({
     );
 
   const accountMenu = address && (
-    <Flex align="center">
-      <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
-      <Box ml={4}>
-        {/* ToDo. Move to Utils */}
-        <UserDisplayName textAlign="left" />
-      </Box>
-      <Tooltip label="Disconnect wallet">
-        <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">
-          X
-        </Button>
-      </Tooltip>
-    </Flex>
+    <LinkBox>
+      <Flex align="center">
+        <LinkOverlay as={NavLink} to="/portfolio">
+          <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
+        </LinkOverlay>
+        <Box ml={4}>
+          {/* ToDo. Move to Utils */}
+          <UserDisplayName textAlign="left" />
+        </Box>
+        <Tooltip label="Disconnect wallet">
+          <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">
+            X
+          </Button>
+        </Tooltip>
+      </Flex>
+    </LinkBox>
   );
 
   const handleSignUpSuccess = () => {
