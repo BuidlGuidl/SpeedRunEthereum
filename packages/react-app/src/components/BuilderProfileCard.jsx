@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouteLink } from "react-router-dom";
 import { useUserAddress } from "eth-hooks";
 import {
   Button,
-  chakra,
   Flex,
   Divider,
   Text,
@@ -81,6 +80,12 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
 
   // INFO: conditional chaining and coalescing didn't work when also checking the length
   const hasProfileLinks = builder?.socialLinks ? Object.keys(builder.socialLinks).length !== 0 : false;
+
+  useEffect(() => {
+    if (builder) {
+      setUpdatedSocials(builder.socialLinks ?? {});
+    }
+  }, [builder]);
 
   const handleUpdateSocials = async () => {
     setIsUpdatingSocials(true);
