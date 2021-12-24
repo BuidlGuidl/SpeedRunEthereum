@@ -50,15 +50,17 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
   const isMyProfile = builderAddress === address;
 
+  const fetchBuilder = async () => {
+    setIsLoadingBuilder(true);
+    const fetchedBuilder = await axios.get(serverUrl + `/builders/${builderAddress}`);
+    setBuilder(fetchedBuilder.data);
+    setIsLoadingBuilder(false);
+  };
+
   useEffect(() => {
-    async function fetchBuilder() {
-      setIsLoadingBuilder(true);
-      const fetchedBuilder = await axios.get(serverUrl + `/builders/${builderAddress}`);
-      setBuilder(fetchedBuilder.data);
-      setIsLoadingBuilder(false);
-    }
     fetchBuilder();
-  }, [builderAddress, serverUrl]);
+    // eslint-disable-next-line
+  }, [builderAddress]);
 
   useEffect(() => {
     if (!builderAddress) {
@@ -92,6 +94,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
             mainnetProvider={mainnetProvider}
             isMyProfile={isMyProfile}
             userProvider={userProvider}
+            fetchBuilder={fetchBuilder}
           />
         </GridItem>
         <GridItem colSpan={{ base: 1, xl: 3 }}>
