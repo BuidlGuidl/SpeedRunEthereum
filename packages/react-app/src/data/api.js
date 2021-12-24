@@ -204,3 +204,41 @@ export const getChallengeReadme = async (challengeId, version) => {
     throw new Error("error fetching challenge README");
   }
 };
+
+export const getUpdateSocialsSignMessage = async userAddress => {
+  try {
+    const signMessageResponse = await axios.get(`${serverUrl}/sign-message`, {
+      params: {
+        messageId: "builderUpdateSocials",
+        address: userAddress,
+      },
+    });
+
+    return signMessageResponse.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Couldn't get the signature message`);
+  }
+};
+
+export const postUpdateSocials = async (address, signature, socialLinks) => {
+  try {
+    await axios.post(
+      `${serverUrl}/builders/update-socials`,
+      { socialLinks, signature },
+      {
+        headers: {
+          address,
+        },
+      },
+    );
+  } catch (error) {
+    if (error.request?.status === 401) {
+      const accessError = new Error(`Access denied`);
+      accessError.status = 401;
+      throw accessError;
+    }
+    console.error(error);
+    throw new Error(`Couldn't save the socials`);
+  }
+};
