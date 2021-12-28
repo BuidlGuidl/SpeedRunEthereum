@@ -169,32 +169,36 @@ app.post("/challenges", withAddress, async (request, response) => {
 
   if (autogradingEnabled) {
     // Auto-grading
-    try {
-      console.log("Calling auto-grading");
-      // ToDo. Derive this from challengeId.
-      const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
-      const contractUrlObject = new URL(contractUrl);
-      // ToDo. Validation (also in the front-end, make sure they enter the correct URL)
-      const network = contractUrlObject.host.split(".")[0];
-      const contractAddress = contractUrlObject.pathname.replace("/address/", "");
-      const gradingResponse = await axios.post(process.env.AUTOGRADING_SERVER, {
+    console.log("Calling auto-grading");
+    // ToDo. Derive this from challengeId.
+    const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
+    const contractUrlObject = new URL(contractUrl);
+    // ToDo. Validation (also in the front-end, make sure they enter the correct URL)
+    const network = contractUrlObject.host.split(".")[0];
+    const contractAddress = contractUrlObject.pathname.replace("/address/", "");
+
+    axios
+      .post(process.env.AUTOGRADING_SERVER, {
         challenge: challengeIndex,
         network,
-        contract: contractAddress,
+        address: contractAddress,
+      })
+      .then(gradingResponse => {
+        // We don't wait for the auto grading to finish to return a response.
+        const gradingResponseData = gradingResponse.data;
+        console.log("auto-grading response data", gradingResponseData);
+
+        if (gradingResponseData) {
+          existingChallenges[challengeId].status = gradingResponseData.success ? "ACCEPTED" : "REJECTED";
+          existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
+        }
+
+        db.updateUser(address, { challenges: existingChallenges });
+        // ToDo. auto review event?
+      })
+      .catch(error => {
+        console.error("auto-grading failed", error);
       });
-
-      const gradingResponseData = gradingResponse.data;
-      console.log("gradingResponseData", gradingResponseData);
-
-      if (gradingResponseData) {
-        existingChallenges[challengeId].status = gradingResponseData.success ? "ACCEPTED" : "REJECTED";
-        existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
-      }
-      // ToDo. auto review event?
-    } catch (error) {
-      // We kept the status as "SUBMITTED" so we can manually review
-      console.error("auto-grading failed", error);
-    }
   }
 
   await db.updateUser(address, { challenges: existingChallenges });
