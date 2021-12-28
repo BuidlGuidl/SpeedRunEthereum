@@ -58,6 +58,26 @@ app.get("/builders/:builderAddress", async (req, res) => {
   res.status(200).send(builder.data);
 });
 
+app.post("/builders/update-socials", withAddress, async (request, response) => {
+  const { socialLinks, signature } = request.body;
+  const address = request.address;
+  console.log("POST /builders/update-socials", address, socialLinks);
+
+  const verifyOptions = {
+    messageId: "builderUpdateSocials",
+    address,
+    socialLinks,
+  };
+
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
+  }
+
+  const updatedUser = await db.updateUser(address, { socialLinks });
+  response.status(200).send(updatedUser);
+});
+
 app.post("/sign", async (request, response) => {
   const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);

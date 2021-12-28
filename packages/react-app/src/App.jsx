@@ -183,7 +183,12 @@ function App() {
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
           </Route>
           <Route path="/builders/:builderAddress">
-            <BuilderProfileView serverUrl={serverUrl} mainnetProvider={mainnetProvider} address={address} />
+            <BuilderProfileView
+              serverUrl={serverUrl}
+              mainnetProvider={mainnetProvider}
+              address={address}
+              userProvider={userProvider}
+            />
           </Route>
           <Route path="/challenge/:challengeId">
             <ChallengeDetailView
