@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
@@ -68,7 +69,9 @@ const ChallengeStatusTag = ({ status, comment }) => {
           <ModalHeader>Review comment</ModalHeader>
           <ModalCloseButton />
           <ModalBody p={6}>
-            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{comment}</ReactMarkdown>
+            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} remarkPlugins={[remarkBreaks]}>
+              {comment}
+            </ReactMarkdown>
           </ModalBody>
         </ModalContent>
       </Modal>
