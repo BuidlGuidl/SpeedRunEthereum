@@ -9,7 +9,7 @@ const db = require("./services/db");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
-const { getChallengeIndexFromChallengeId } = require("./utils/challenges");
+const { getChallengeIndexFromChallengeId, isAutogradingEnabledForChallenge } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
@@ -167,10 +167,10 @@ app.post("/challenges", withAddress, async (request, response) => {
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
 
-  if (autogradingEnabled) {
+  if (autogradingEnabled && isAutogradingEnabledForChallenge(challengeId)) {
     // Auto-grading
     console.log("Calling auto-grading");
-    // ToDo. Derive this from challengeId.
+
     const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
     const contractUrlObject = new URL(contractUrl);
     // ToDo. Validation (also in the front-end, make sure they enter the correct URL)
@@ -191,6 +191,7 @@ app.post("/challenges", withAddress, async (request, response) => {
         if (gradingResponseData) {
           existingChallenges[challengeId].status = gradingResponseData.success ? "ACCEPTED" : "REJECTED";
           existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
+          existingChallenges[challengeId].autograding = true;
         }
 
         db.updateUser(address, { challenges: existingChallenges });

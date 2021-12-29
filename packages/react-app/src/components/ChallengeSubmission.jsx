@@ -87,8 +87,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
     toast({
       status: "success",
-      title: "Challenge submitted!",
-      description: "The auto-grader is reviewing your submission and should be finished in a few minutes.",
+      description: "Challenge submitted!",
     });
     setIsSubmitting(false);
     history.push("/portfolio");
