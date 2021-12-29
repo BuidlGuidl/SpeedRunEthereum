@@ -211,7 +211,11 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                             )}
                           </Td>
                           <Td>
-                            <ChallengeStatusTag status={lastSubmission.status} comment={lastSubmission.reviewComment} />
+                            <ChallengeStatusTag
+                              status={lastSubmission.status}
+                              comment={lastSubmission.reviewComment}
+                              autograding={lastSubmission.autograding}
+                            />
                           </Td>
                         </Tr>
                       );
