@@ -4,6 +4,7 @@ import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import { ENVIRONMENT } from "../constants";
 
 export default function Header({
   injectedProvider,
@@ -29,6 +30,11 @@ export default function Header({
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
+      {ENVIRONMENT !== "production" && (
+        <Box pos="fixed" p="2px" fontSize={14} w="100%" bgColor="yellow.200" left={0} textAlign="center">
+          Working on a {ENVIRONMENT} environment.
+        </Box>
+      )}
       <Flex
         align={{ base: userIsRegistered ? "start" : "center", lg: "center" }}
         h="full"
