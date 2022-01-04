@@ -6,3 +6,15 @@ export const parseGithubReadme = text =>
     .replace("# 🏗 scaffold-eth | 🏰 BuidlGuidl", "")
     .replace(/🏆.*?🍾/g, "")
     .replace(/🎖.*?🎖/g, "");
+
+export const isValidUrl = urlText => {
+  let url;
+
+  try {
+    url = new URL(urlText);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+};
