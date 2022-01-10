@@ -261,29 +261,10 @@ app.patch("/challenges", withRole("admin"), async (request, response) => {
   }
 });
 
-// ToDo: This is very inefficient,´. We fetch the whole database every time we call this.
-// We should create a getChallengesByStatus function that fetches the challenges by status.
-// https://github.com/moonshotcollective/scaffold-directory/pull/32#discussion_r711971355
-async function getAllChallenges() {
-  // const usersDocs = (await database.collection("users").get()).docs;
-  const usersData = await db.findAllUsers();
-  const allChallenges = usersData.reduce((challenges, userData) => {
-    const userChallenges = userData.challenges ?? {};
-    const userUnpackedChallenges = Object.keys(userChallenges).map(challengeKey => ({
-      userAddress: userData.id,
-      id: challengeKey,
-      ...userChallenges[challengeKey],
-    }));
-    return challenges.concat(userUnpackedChallenges);
-  }, []);
-
-  return allChallenges;
-}
-
 app.get("/challenges", withRole("admin"), async (request, response) => {
   console.log("GET /challenges");
   const status = request.query.status;
-  const allChallenges = await getAllChallenges();
+  const allChallenges = await db.getAllChallenges();
   if (status == null) {
     response.json(allChallenges);
   } else {
