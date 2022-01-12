@@ -1,6 +1,7 @@
 module.exports = {
   env: {
-    node: true
+    node: true,
+    jest: true,
   },
   extends: ["airbnb", "plugin:prettier/recommended", "prettier/react"],
   plugins: ["babel"],

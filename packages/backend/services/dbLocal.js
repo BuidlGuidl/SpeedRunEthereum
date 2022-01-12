@@ -17,13 +17,14 @@ const databaseSeed = JSON.parse(fs.readFileSync(SEED_PATH, "utf8"));
 
 if (!fs.existsSync(DATABASE_PATH)) {
   // Seed the local database if empty.
+  console.log("seeding the db");
   fs.copyFileSync(SEED_PATH, DATABASE_PATH, fs.constants.COPYFILE_EXCL);
 }
 
 let database;
 database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
 
-if (databaseSeed.version !== database.version) {
+if (process.env.NODE_ENV !== "test" && databaseSeed.version !== database.version) {
   console.log("New local db version: overwriting exiting local_db.json file");
   fs.copyFileSync(SEED_PATH, DATABASE_PATH);
   database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));

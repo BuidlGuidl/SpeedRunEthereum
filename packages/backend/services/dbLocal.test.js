@@ -1,4 +1,5 @@
 const fs = require("fs");
+
 fs.writeFileSync(
   "./local_database/__testing__local_db.json",
   JSON.stringify({
@@ -10,7 +11,6 @@ const { URLSearchParams } = require("url");
 
 const db = require("./dbLocal");
 const { EVENT_TYPES, createEvent, queryParamsToConditions } = require("../utils/events");
-const { database } = require("firebase-admin");
 
 const dummyAddressA = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const dummyAddressB = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
@@ -131,12 +131,9 @@ describe("The local database", () => {
       const allEventsRecorded = db.findAllEvents();
 
       expect(allEventsRecorded).toHaveLength(4);
-      expect(allEventsRecorded).toEqual([
-        userCreateEvent,
-        challengeSubmitEvent,
-        challengeReviewApproveEvent,
-        challengeReviewRejectEvent,
-      ]);
+      expect(allEventsRecorded).toEqual(
+        [userCreateEvent, challengeSubmitEvent, challengeReviewApproveEvent, challengeReviewRejectEvent].reverse(),
+      );
     });
 
     describe("querying events", () => {
@@ -146,24 +143,26 @@ describe("The local database", () => {
         const conditionsUserCreate = queryStringToConditions(queryStringUserCreate);
         const resultingEventsUserCreate = db.findEventsWhere({ conditions: conditionsUserCreate });
         expect(resultingEventsUserCreate).toHaveLength(2);
-        expect(resultingEventsUserCreate).toEqual([userCreateEventA, userCreateEventB]);
+        expect(resultingEventsUserCreate).toEqual([userCreateEventA, userCreateEventB].reverse());
 
         const queryStringChallengeSubmit = `type=${EVENT_TYPES.CHALLENGE_SUBMIT}`;
         const conditionsChallengeSubmit = queryStringToConditions(queryStringChallengeSubmit);
         const resultingEventsChallengeSubmit = db.findEventsWhere({ conditions: conditionsChallengeSubmit });
         expect(resultingEventsChallengeSubmit).toHaveLength(2);
-        expect(resultingEventsChallengeSubmit).toEqual([challengeSubmitEventA, challengeSubmitEventB]);
+        expect(resultingEventsChallengeSubmit).toEqual([challengeSubmitEventA, challengeSubmitEventB].reverse());
 
         const queryStringChallengeReview = `type=${EVENT_TYPES.CHALLENGE_REVIEW}`;
         const conditionsChallengeReview = queryStringToConditions(queryStringChallengeReview);
         const resultingEventsChallengeReview = db.findEventsWhere({ conditions: conditionsChallengeReview });
         expect(resultingEventsChallengeReview).toHaveLength(4);
-        expect(resultingEventsChallengeReview).toEqual([
-          challengeReviewApproveEventA,
-          challengeReviewApproveEventB,
-          challengeReviewRejectEventA,
-          challengeReviewRejectEventB,
-        ]);
+        expect(resultingEventsChallengeReview).toEqual(
+          [
+            challengeReviewApproveEventA,
+            challengeReviewApproveEventB,
+            challengeReviewRejectEventA,
+            challengeReviewRejectEventB,
+          ].reverse(),
+        );
       });
 
       it("by user", () => {
@@ -172,23 +171,27 @@ describe("The local database", () => {
         const conditionsA = queryStringToConditions(queryStringA);
         const resultingEventsA = db.findEventsWhere({ conditions: conditionsA });
         expect(resultingEventsA).toHaveLength(4);
-        expect(resultingEventsA).toEqual([
-          userCreateEventA,
-          challengeSubmitEventA,
-          challengeReviewApproveEventA,
-          challengeReviewRejectEventA,
-        ]);
+        expect(resultingEventsA).toEqual(
+          [
+            userCreateEventA,
+            challengeSubmitEventA,
+            challengeReviewApproveEventA,
+            challengeReviewRejectEventA,
+          ].reverse(),
+        );
 
         const queryStringB = `user=${dummyAddressB}`;
         const conditionsB = queryStringToConditions(queryStringB);
         const resultingEventsB = db.findEventsWhere({ conditions: conditionsB });
         expect(resultingEventsB).toHaveLength(4);
-        expect(resultingEventsB).toEqual([
-          userCreateEventB,
-          challengeSubmitEventB,
-          challengeReviewApproveEventB,
-          challengeReviewRejectEventB,
-        ]);
+        expect(resultingEventsB).toEqual(
+          [
+            userCreateEventB,
+            challengeSubmitEventB,
+            challengeReviewApproveEventB,
+            challengeReviewRejectEventB,
+          ].reverse(),
+        );
 
         const queryStringC = `user=${dummyAddressC}`;
         const conditionsC = queryStringToConditions(queryStringC);
@@ -202,14 +205,16 @@ describe("The local database", () => {
         const conditionsChallengeIdA = queryStringToConditions(queryStringChallengeIdA);
         const resultingEventsChallengeIdA = db.findEventsWhere({ conditions: conditionsChallengeIdA });
         expect(resultingEventsChallengeIdA).toHaveLength(6);
-        expect(resultingEventsChallengeIdA).toEqual([
-          challengeSubmitEventA,
-          challengeSubmitEventB,
-          challengeReviewApproveEventA,
-          challengeReviewApproveEventB,
-          challengeReviewRejectEventA,
-          challengeReviewRejectEventB,
-        ]);
+        expect(resultingEventsChallengeIdA).toEqual(
+          [
+            challengeSubmitEventA,
+            challengeSubmitEventB,
+            challengeReviewApproveEventA,
+            challengeReviewApproveEventB,
+            challengeReviewRejectEventA,
+            challengeReviewRejectEventB,
+          ].reverse(),
+        );
 
         const queryStringChallengeIdB = `challengeId=${dummyChallengeIdB}`;
         const conditionsChallengeIdB = queryStringToConditions(queryStringChallengeIdB);
@@ -225,10 +230,9 @@ describe("The local database", () => {
           conditions: conditionsChallengeReviewApproved,
         });
         expect(resultingEventsChallengeReviewApproved).toHaveLength(2);
-        expect(resultingEventsChallengeReviewApproved).toEqual([
-          challengeReviewApproveEventA,
-          challengeReviewApproveEventB,
-        ]);
+        expect(resultingEventsChallengeReviewApproved).toEqual(
+          [challengeReviewApproveEventA, challengeReviewApproveEventB].reverse(),
+        );
 
         const queryStringChallengeReviewRejected = `reviewAction=REJECTED`;
         const conditionsChallengeReviewRejected = queryStringToConditions(queryStringChallengeReviewRejected);
@@ -236,10 +240,9 @@ describe("The local database", () => {
           conditions: conditionsChallengeReviewRejected,
         });
         expect(resultingEventsChallengeReviewRejected).toHaveLength(2);
-        expect(resultingEventsChallengeReviewRejected).toEqual([
-          challengeReviewRejectEventA,
-          challengeReviewRejectEventB,
-        ]);
+        expect(resultingEventsChallengeReviewRejected).toEqual(
+          [challengeReviewRejectEventA, challengeReviewRejectEventB].reverse(),
+        );
       });
 
       it("by reviewer", () => {
@@ -256,12 +259,14 @@ describe("The local database", () => {
           conditions: conditionsChallengeReviewer,
         });
         expect(resultingEventsChallengeReviewer).toHaveLength(4);
-        expect(resultingEventsChallengeReviewer).toEqual([
-          challengeReviewApproveEventA,
-          challengeReviewApproveEventB,
-          challengeReviewRejectEventA,
-          challengeReviewRejectEventB,
-        ]);
+        expect(resultingEventsChallengeReviewer).toEqual(
+          [
+            challengeReviewApproveEventA,
+            challengeReviewApproveEventB,
+            challengeReviewRejectEventA,
+            challengeReviewRejectEventB,
+          ].reverse(),
+        );
 
         const queryStringChallengeDifferentReviewer = `reviewer=notDummyAddressC`;
         const conditionsChallengeDifferentReviewer = queryStringToConditions(queryStringChallengeDifferentReviewer);
@@ -287,7 +292,7 @@ describe("The local database", () => {
           conditions: conditions2,
         });
         expect(results2).toHaveLength(2);
-        expect(results2).toEqual([userCreateEventA, challengeSubmitEventA]);
+        expect(results2).toEqual([userCreateEventA, challengeSubmitEventA].reverse());
 
         const anotherUserEvent = createTestEvent(EVENT_TYPES.USER_CREATE, {
           userAddress: "anotherUser",
@@ -303,8 +308,8 @@ describe("The local database", () => {
         const resultingEventsUserCreate = db.findEventsWhere({ conditions: conditionsUserCreate });
         expect(results3).toHaveLength(2);
         expect(resultingEventsUserCreate).toHaveLength(3);
-        expect(results3).toEqual([userCreateEventA, userCreateEventB]);
-        expect(resultingEventsUserCreate).toEqual([userCreateEventA, userCreateEventB, anotherUserEvent]);
+        expect(results3).toEqual([userCreateEventA, userCreateEventB].reverse());
+        expect(resultingEventsUserCreate).toEqual([userCreateEventA, userCreateEventB, anotherUserEvent].reverse());
       });
     });
   });
