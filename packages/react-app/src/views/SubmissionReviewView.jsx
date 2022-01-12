@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useUserAddress } from "eth-hooks";
 import {
   useColorModeValue,
+  useDisclosure,
   Box,
   Container,
   HStack,
@@ -15,6 +16,10 @@ import {
   Tr,
   Th,
   Td,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   useToast,
 } from "@chakra-ui/react";
 import { TriangleUpIcon, TriangleDownIcon } from "@chakra-ui/icons";
@@ -31,6 +36,7 @@ import {
   patchChallengeReview,
 } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
+import HeroIconFilter from "../components/icons/HeroIconFilter";
 import { SORTING_ORDER, bySubmittedTimestamp } from "../helpers/sorting";
 
 const RUBRIC_URL = "https://docs.google.com/document/d/1ByXQUUg-ePq0aKkMywOHV25ZetesI2BFYoJzSez009c";
@@ -42,9 +48,10 @@ export default function SubmissionReviewView({ userProvider }) {
   const [draftBuilds, setDraftBuilds] = React.useState([]);
   const [isLoadingDraftBuilds, setIsLoadingDraftBuilds] = React.useState(true);
   const [challengesSorting, setChallengesSorting] = useState(SORTING_ORDER.ascending);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
-  const { secondaryFontColor } = useCustomColorModes();
+  const { secondaryFontColor, iconInactiveColor } = useCustomColorModes();
 
   const toggleChallengeSortingOrder = () =>
     setChallengesSorting(prevSorting => {
@@ -231,14 +238,29 @@ export default function SubmissionReviewView({ userProvider }) {
         Challenges
       </Heading>
       <Box overflowX="auto">
-        {isLoadingChallenges ? (
+        {false ? (
           <ChallengesTableSkeleton />
         ) : (
           <Table>
             <Thead>
               <Tr>
-                <Th>Builder</Th>
-                <Th>Challenge</Th>
+                <Th>User</Th>
+                <Th>
+                  <Menu as={React.Fragment}>
+                    <MenuButton as={HStack} cursor="pointer">
+                      {/* <HStack cursor="pointer"> */}
+                      <span>Country</span>
+                      <HeroIconFilter h={4} w={4} color={iconInactiveColor} />
+                      {/* </HStack> */}
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>first</MenuItem>
+                      <MenuItem>second</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Th>
+                {/* <Th onClick={onOpen} >
+                </Th> */}
                 <Th>Contract</Th>
                 <Th>Live demo</Th>
                 <Th onClick={toggleChallengeSortingOrder} cursor="pointer">
@@ -297,7 +319,7 @@ export default function SubmissionReviewView({ userProvider }) {
             <Tbody>
               {!draftBuilds || draftBuilds.length === 0 ? (
                 <Tr>
-                  <Td colSpan={5}>
+                  <Td colSpan={6}>
                     <Text color={secondaryFontColor} textAlign="center" mb={4}>
                       <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
                       <br />

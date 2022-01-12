@@ -8,6 +8,7 @@ const useCustomColorModes = () => {
   const borderColor = dividerColor;
   const codeBgColor = useColorModeValue("gray.100", "gray.900");
   const iconBgColor = codeBgColor;
+  const iconInactiveColor = useColorModeValue("gray.200", "gray.700");
 
   return {
     primaryFontColor,
@@ -17,6 +18,7 @@ const useCustomColorModes = () => {
     codeFontColor,
     codeBgColor,
     iconBgColor,
+    iconInactiveColor,
   };
 };
 
