@@ -76,7 +76,8 @@ const createBuild = db.createBuild;
 
 /**
  * @param {boolean} isDraft
- * @returns {{name: string, desc: string, branch: string, readMore: string, image: string}[]}
+ * @returns {{name: string, desc: string, branch: string, readMore: string,
+ *   image: string}[]}
  */
 const findAllBuilds = db.findAllBuilds;
 
@@ -92,6 +93,24 @@ const publishBuild = db.publishBuild;
  */
 const removeBuild = db.removeBuild;
 
+// Shared by implementations.
+// ToDo: This is very inefficient,´. We fetch the whole database every time we call this.
+// We should create a getChallengesByStatus function that fetches the challenges by status.
+// https://github.com/moonshotcollective/scaffold-directory/pull/32#discussion_r711971355
+const getAllChallenges = async () => {
+  // const usersDocs = (await database.collection("users").get()).docs;
+  const usersData = await db.findAllUsers();
+  return usersData.reduce((challenges, userData) => {
+    const userChallenges = userData.challenges ?? {};
+    const userUnpackedChallenges = Object.keys(userChallenges).map(challengeKey => ({
+      userAddress: userData.id,
+      id: challengeKey,
+      ...userChallenges[challengeKey],
+    }));
+    return challenges.concat(userUnpackedChallenges);
+  }, []);
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -106,6 +125,8 @@ module.exports = {
   findAllBuilds,
   publishBuild,
   removeBuild,
+
+  getAllChallenges,
 
   __internal_database: db.__internal_database, // testing only
 };
