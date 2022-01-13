@@ -1,59 +1,27 @@
-const fs = require("fs");
-
-fs.writeFileSync(
-  "./local_database/__testing__local_db.json",
-  JSON.stringify({
-    users: {},
-    events: [],
-  }),
-);
 const { URLSearchParams } = require("url");
 
 const db = require("./dbLocal");
-const { EVENT_TYPES, createEvent, queryParamsToConditions } = require("../utils/events");
-
-const dummyAddressA = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-const dummyAddressB = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-const dummyAddressC = "0xcccccccccccccccccccccccccccccccccccccccc";
-const dummyChallengeIdA = "dummy-challenge-a";
-const dummyChallengeIdB = "dummy-challenge-b";
-const dummyMessage = "foo bar baz";
-const dummySignature =
-  "0xcdfefbe69ddd8ab12e1977204e8386e2a269569cc3a0239d47a7a49d08b68c7725c88bd58910349ffc12710868ae7f06b94bb27aca10e2db8e3eb102f34755b41b";
-
-const dummyPayloadsByType = {
-  [EVENT_TYPES.CHALLENGE_SUBMIT]: {
-    userAddress: dummyAddressA,
-    challengeId: dummyChallengeIdA,
-    deployedUrl: "https://moonshotcollective.space/",
-    contractUrl: "https://etherscan.io/token/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f",
-  },
-  [EVENT_TYPES.CHALLENGE_REVIEW]: {
-    reviewAction: "ACCEPTED",
-    userAddress: dummyAddressA,
-    reviewerAddress: dummyAddressB,
-    challengeId: dummyChallengeIdA,
-    reviewMessage: dummyMessage,
-  },
-  [EVENT_TYPES.USER_CREATE]: {
-    userAddress: dummyAddressA,
-  },
-};
-
-const clearDb = () => {
-  db.__internal_database.events = [];
-};
-
-const createTestEvent = (type, partialPayload) => {
-  const dummyPayload = dummyPayloadsByType[type];
-
-  const payload = {
-    ...dummyPayload,
-    ...partialPayload,
-  };
-
-  return createEvent(type, payload, dummySignature);
-};
+const { EVENT_TYPES, queryParamsToConditions } = require("../utils/events");
+const {
+  createLocalTestingDbFile,
+  removeLocalTestingDbFile,
+  createTestEvent,
+  clearDb,
+  seedDb,
+  dummyAddressA,
+  dummyAddressB,
+  dummyAddressC,
+  dummyChallengeIdA,
+  dummyChallengeIdB,
+  userCreateEventA,
+  userCreateEventB,
+  challengeSubmitEventA,
+  challengeSubmitEventB,
+  challengeReviewApproveEventA,
+  challengeReviewApproveEventB,
+  challengeReviewRejectEventA,
+  challengeReviewRejectEventB,
+} = require("../utils/testingUtils");
 
 const queryStringToQueryObject = queryString => {
   const queryObject = {};
@@ -69,48 +37,16 @@ const queryStringToConditions = queryString => {
   return queryParamsToConditions(queryObject);
 };
 
-const userCreateEventA = createTestEvent(EVENT_TYPES.USER_CREATE, { userAddress: dummyAddressA });
-const userCreateEventB = createTestEvent(EVENT_TYPES.USER_CREATE, { userAddress: dummyAddressB });
-const challengeSubmitEventA = createTestEvent(EVENT_TYPES.CHALLENGE_SUBMIT, { userAddress: dummyAddressA });
-const challengeSubmitEventB = createTestEvent(EVENT_TYPES.CHALLENGE_SUBMIT, { userAddress: dummyAddressB });
-const challengeReviewApproveEventA = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  userAddress: dummyAddressA,
-  reviewerAddress: dummyAddressC,
-  reviewAction: "ACCEPTED",
+beforeAll(() => {
+  createLocalTestingDbFile();
 });
-const challengeReviewApproveEventB = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  userAddress: dummyAddressB,
-  reviewerAddress: dummyAddressC,
-  reviewAction: "ACCEPTED",
-});
-const challengeReviewRejectEventA = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  userAddress: dummyAddressA,
-  reviewerAddress: dummyAddressC,
-  reviewAction: "REJECTED",
-});
-const challengeReviewRejectEventB = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
-  userAddress: dummyAddressB,
-  reviewerAddress: dummyAddressC,
-  reviewAction: "REJECTED",
-});
-
-const seedDb = () => {
-  db.createEvent(userCreateEventA);
-  db.createEvent(userCreateEventB);
-  db.createEvent(challengeSubmitEventA);
-  db.createEvent(challengeSubmitEventB);
-  db.createEvent(challengeReviewApproveEventA);
-  db.createEvent(challengeReviewApproveEventB);
-  db.createEvent(challengeReviewRejectEventA);
-  db.createEvent(challengeReviewRejectEventB);
-};
 
 beforeEach(() => {
-  clearDb();
+  clearDb(db);
 });
 
 afterAll(() => {
-  fs.rmSync("./local_database/__testing__local_db.json");
+  removeLocalTestingDbFile();
 });
 
 describe("The local database", () => {
@@ -138,7 +74,7 @@ describe("The local database", () => {
 
     describe("querying events", () => {
       it("by type", () => {
-        seedDb();
+        seedDb(db);
         const queryStringUserCreate = `type=${EVENT_TYPES.USER_CREATE}`;
         const conditionsUserCreate = queryStringToConditions(queryStringUserCreate);
         const resultingEventsUserCreate = db.findEventsWhere({ conditions: conditionsUserCreate });
@@ -166,7 +102,7 @@ describe("The local database", () => {
       });
 
       it("by user", () => {
-        seedDb();
+        seedDb(db);
         const queryStringA = `user=${dummyAddressA}`;
         const conditionsA = queryStringToConditions(queryStringA);
         const resultingEventsA = db.findEventsWhere({ conditions: conditionsA });
@@ -200,7 +136,7 @@ describe("The local database", () => {
       });
 
       it("by challengeId", () => {
-        seedDb();
+        seedDb(db);
         const queryStringChallengeIdA = `challengeId=${dummyChallengeIdA}`;
         const conditionsChallengeIdA = queryStringToConditions(queryStringChallengeIdA);
         const resultingEventsChallengeIdA = db.findEventsWhere({ conditions: conditionsChallengeIdA });
@@ -223,7 +159,7 @@ describe("The local database", () => {
       });
 
       it("by reviewAction", () => {
-        seedDb();
+        seedDb(db);
         const queryStringChallengeReviewApproved = `reviewAction=ACCEPTED`;
         const conditionsChallengeReviewApproved = queryStringToConditions(queryStringChallengeReviewApproved);
         const resultingEventsChallengeReviewApproved = db.findEventsWhere({
@@ -246,7 +182,7 @@ describe("The local database", () => {
       });
 
       it("by reviewer", () => {
-        seedDb();
+        seedDb(db);
         const anotherReviewEvent = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW, {
           reviewAction: "ACCEPTED",
           reviewerAddress: "notDummyAddressC",
@@ -278,7 +214,7 @@ describe("The local database", () => {
       });
 
       it("by combining filters", () => {
-        seedDb();
+        seedDb(db);
         const queryExpectedNoResults = `type=${EVENT_TYPES.USER_CREATE}&reviewer=${dummyAddressC}`;
         const conditionsExpectedNoResults = queryStringToConditions(queryExpectedNoResults);
         const resultingExpectedNoResults = db.findEventsWhere({
