@@ -5,7 +5,7 @@ const challengeMapping = {
   },
   "decentralized-staking": {
     id: 1,
-    autograding: true,
+    autograding: false,
   },
   "token-vendor": {
     id: 2,
