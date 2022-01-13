@@ -259,20 +259,24 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 49832;
 
-if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
-  https
-    .createServer(
-      {
-        key: fs.readFileSync("server.key"),
-        cert: fs.readFileSync("server.cert"),
-      },
-      app,
-    )
-    .listen(PORT, () => {
-      console.log(`HTTPS Listening: ${PORT}`);
+if (process.env.NODE_ENV !== "test") {
+  if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
+    https
+      .createServer(
+        {
+          key: fs.readFileSync("server.key"),
+          cert: fs.readFileSync("server.cert"),
+        },
+        app,
+      )
+      .listen(PORT, () => {
+        console.log(`HTTPS Listening: ${PORT}`);
+      });
+  } else {
+    const server = app.listen(PORT, () => {
+      console.log("HTTP Listening on port:", server.address().port);
     });
-} else {
-  const server = app.listen(PORT, () => {
-    console.log("HTTP Listening on port:", server.address().port);
-  });
+  }
 }
+
+module.exports = app; // INFO: needed for testing

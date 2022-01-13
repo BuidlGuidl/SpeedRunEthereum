@@ -5,7 +5,8 @@ const DB_SERVICES = {
   local: "./dbLocal",
 };
 
-const selectedService = process.env.DATABASE_SERVICE ?? "local";
+const isTesting = process.env.NODE_ENV;
+const selectedService = isTesting ? "local" : process.env.DATABASE_SERVICE ?? "local";
 const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
 // eslint-disable-next-line import/no-dynamic-require
 const db = require(dbService);
