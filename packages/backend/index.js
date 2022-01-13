@@ -183,7 +183,7 @@ app.post("/challenges", withAddress, async (request, response) => {
         network,
         address: contractAddress,
       })
-      .then(gradingResponse => {
+      .then(async gradingResponse => {
         // We don't wait for the auto grading to finish to return a response.
         const gradingResponseData = gradingResponse.data;
         console.log("auto-grading response data", gradingResponseData);
@@ -194,8 +194,18 @@ app.post("/challenges", withAddress, async (request, response) => {
           existingChallenges[challengeId].autograding = true;
         }
 
-        db.updateUser(address, { challenges: existingChallenges });
-        // ToDo. auto review event?
+        await db.updateUser(address, { challenges: existingChallenges });
+
+        const autogradeEventPayload = {
+          reviewAction: existingChallenges[challengeId].status,
+          autograding: true,
+          userAddress: address,
+          challengeId,
+          reviewMessage: existingChallenges[challengeId].reviewComment,
+        };
+
+        const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
+        db.createEvent(autogradeEvent); // INFO: async, no await here
       })
       .catch(error => {
         console.error("auto-grading failed", error);

@@ -2,6 +2,7 @@
 const EVENT_TYPES = {
   CHALLENGE_SUBMIT: "challenge.submit",
   CHALLENGE_REVIEW: "challenge.review",
+  CHALLENGE_AUTOGRADE: "challenge.autograde",
   BUILD_SUBMIT: "build.submit",
   BUILD_REVIEW: "build.review",
   USER_CREATE: "user.create",
@@ -15,7 +16,13 @@ export const eventDisplay = ({ type, payload }) => {
     }
 
     case EVENT_TYPES.CHALLENGE_REVIEW: {
-      return `A submitted challenge has been ${payload.reviewAction.toLowerCase()}`;
+      return `The submitted ${payload.challengeId} challenge has been ${payload.reviewAction.toLowerCase()}`;
+    }
+
+    case EVENT_TYPES.CHALLENGE_AUTOGRADE: {
+      return `The submitted "${
+        payload.challengeId
+      }" challenge has been ${payload.reviewAction.toLowerCase()} (autograded)`;
     }
 
     case EVENT_TYPES.BUILD_SUBMIT: {
