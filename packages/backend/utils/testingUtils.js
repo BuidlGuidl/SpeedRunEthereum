@@ -1,18 +1,4 @@
-const fs = require("fs");
 const { EVENT_TYPES, createEvent } = require("./events");
-
-const createLocalTestingDbFile = () => {
-  fs.writeFileSync(
-    "./local_database/__testing__local_db.json",
-    JSON.stringify({
-      users: {},
-      events: [],
-    }),
-  );
-};
-const removeLocalTestingDbFile = () => {
-  fs.rmSync("./local_database/__testing__local_db.json");
-};
 
 const dummyAddressA = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const dummyAddressB = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
@@ -95,8 +81,6 @@ const clearDb = db => {
 };
 
 module.exports = {
-  createLocalTestingDbFile,
-  removeLocalTestingDbFile,
   createTestEvent,
   clearDb,
   seedDb,

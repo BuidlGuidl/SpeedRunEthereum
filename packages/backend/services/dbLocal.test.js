@@ -3,8 +3,6 @@ const { URLSearchParams } = require("url");
 const db = require("./dbLocal");
 const { EVENT_TYPES, queryParamsToConditions } = require("../utils/events");
 const {
-  createLocalTestingDbFile,
-  removeLocalTestingDbFile,
   createTestEvent,
   clearDb,
   seedDb,
@@ -37,16 +35,8 @@ const queryStringToConditions = queryString => {
   return queryParamsToConditions(queryObject);
 };
 
-beforeAll(() => {
-  createLocalTestingDbFile();
-});
-
 beforeEach(() => {
   clearDb(db);
-});
-
-afterAll(() => {
-  removeLocalTestingDbFile();
 });
 
 describe("The local database", () => {
