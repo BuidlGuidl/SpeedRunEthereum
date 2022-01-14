@@ -75,6 +75,11 @@ app.post("/builders/update-socials", withAddress, async (request, response) => {
 });
 
 app.post("/sign", async (request, response) => {
+  const neededBodyProps = ["address", "signature"];
+  if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
+    response.status(400).send("Missing required body properties");
+    return;
+  }
   const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
 

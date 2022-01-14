@@ -5,6 +5,8 @@ const DB_SERVICES = {
   local: "./dbLocal",
 };
 
+// we should probably make a distinction: service could be firebase-staging, firebase, etc.
+// This is more "implementation" which is only firebase or local
 const isTesting = process.env.NODE_ENV;
 const selectedService = isTesting ? "local" : process.env.DATABASE_SERVICE ?? "local";
 const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
