@@ -194,8 +194,6 @@ app.post("/challenges", withAddress, async (request, response) => {
           existingChallenges[challengeId].autograding = true;
         }
 
-        await db.updateUser(address, { challenges: existingChallenges });
-
         const autogradeEventPayload = {
           reviewAction: existingChallenges[challengeId].status,
           autograding: true,
@@ -207,8 +205,19 @@ app.post("/challenges", withAddress, async (request, response) => {
         const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
         db.createEvent(autogradeEvent); // INFO: async, no await here
       })
-      .catch(error => {
-        console.error("auto-grading failed", error);
+      .catch(gradingErrorResponse => {
+        const gradingErrorResponseData = gradingErrorResponse?.response?.data;
+
+        // We don't change the status of the submission, just leave the error for the manual graders to see.
+        if (gradingErrorResponseData) {
+          existingChallenges[challengeId].reviewComment = `Autograder: ${gradingErrorResponseData.error}`;
+          existingChallenges[challengeId].autograding = true;
+        }
+
+        console.error("auto-grading failed:", gradingErrorResponseData?.error);
+      })
+      .finally(() => {
+        db.updateUser(address, { challenges: existingChallenges }); // INFO: async, no await here.
       });
   }
 

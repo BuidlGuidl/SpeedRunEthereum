@@ -46,8 +46,9 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
   }
 
   // We asume that rejected challenges will always have review Comments.
+  const isAutograded = challenge.autograding;
   // ToDo. Use the stored events.
-  const isResubmitted = !!challenge.reviewComment;
+  const isResubmitted = !isAutograded && !!challenge.reviewComment;
 
   const challengeReviewDisplay = (
     <Link as={RouteLink} to={`/challenge/${challenge.id}`}>
@@ -56,6 +57,14 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
         <>
           <br />
           <Text fontSize="xs">(Resubmitted)</Text>
+        </>
+      )}
+      {isAutograded && (
+        <>
+          <br />
+          <Text fontSize="xs" color="orange.500">
+            (Autograded)
+          </Text>
         </>
       )}
     </Link>
