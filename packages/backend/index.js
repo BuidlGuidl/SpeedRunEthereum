@@ -189,21 +189,25 @@ app.post("/challenges", withAddress, async (request, response) => {
         console.log("auto-grading response data", gradingResponseData);
 
         if (gradingResponseData) {
-          existingChallenges[challengeId].status = gradingResponseData.success ? "ACCEPTED" : "REJECTED";
           existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
           existingChallenges[challengeId].autograding = true;
+
+          // For now just auto-grade accepted submissions, so rejections will always be manually reviewed by graders.
+          // We store the autograder feedback.
+          if (gradingResponseData.success) {
+            existingChallenges[challengeId].status = "ACCEPTED";
+            const autogradeEventPayload = {
+              reviewAction: existingChallenges[challengeId].status,
+              autograding: true,
+              userAddress: address,
+              challengeId,
+              reviewMessage: existingChallenges[challengeId].reviewComment,
+            };
+
+            const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
+            db.createEvent(autogradeEvent); // INFO: async, no await here
+          }
         }
-
-        const autogradeEventPayload = {
-          reviewAction: existingChallenges[challengeId].status,
-          autograding: true,
-          userAddress: address,
-          challengeId,
-          reviewMessage: existingChallenges[challengeId].reviewComment,
-        };
-
-        const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
-        db.createEvent(autogradeEvent); // INFO: async, no await here
       })
       .catch(gradingErrorResponse => {
         const gradingErrorResponseData = gradingErrorResponse?.response?.data;
@@ -216,7 +220,7 @@ app.post("/challenges", withAddress, async (request, response) => {
 
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
       })
-      .finally(() => {
+      .then(() => {
         db.updateUser(address, { challenges: existingChallenges }); // INFO: async, no await here.
       });
   }
