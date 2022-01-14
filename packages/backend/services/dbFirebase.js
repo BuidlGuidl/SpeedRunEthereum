@@ -2,6 +2,11 @@ require("dotenv").config();
 const firebaseAdmin = require("firebase-admin");
 
 console.log("using firebase");
+if (process.env.NODE_ENV === "test") {
+  throw new Error(
+    `This will connect to the production firestore. Make sure dbFirebase.js is updated before testing against Firebase`,
+  );
+}
 
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   firebaseAdmin.initializeApp({
