@@ -113,12 +113,6 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
           "-"
         )}
       </Td>
-      <Td>
-        <Button variant="outline">
-          <HeroIconBolt w={6} h={6} mr={2} color={secondaryFontColor} />
-          Fund
-        </Button>
-      </Td>
     </Tr>
   );
 };

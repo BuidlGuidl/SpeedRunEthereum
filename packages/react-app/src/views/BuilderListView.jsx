@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import { Box, Center, Container, Heading, Link, Text, Table, Thead, Tbody, Tr, Th, chakra } from "@chakra-ui/react";
 import BuilderRow from "../components/BuilderRow";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import BuilderListSkeleton from "../components/skeletons/BuilderListSkeleton";
@@ -44,6 +44,9 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
         <BuilderListSkeleton />
       ) : (
         <Box overflowX="auto">
+          <Center mb={5}>
+            <chakra.strong mr={2}>Total builders:</chakra.strong> {builders.length}
+          </Center>
           <Table>
             <Thead>
               <Tr color={secondaryFontColor}>
@@ -54,7 +57,6 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
                 <Th isNumeric>Rate</Th>
                 <Th isNumeric>Available</Th>
                 <Th textAlign="center">Role</Th>
-                <Th />
               </Tr>
             </Thead>
             <Tbody>

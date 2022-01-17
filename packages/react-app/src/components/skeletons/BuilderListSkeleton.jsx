@@ -14,7 +14,6 @@ const BuilderListSkeleton = () => (
           <Th isNumeric>Rate</Th>
           <Th isNumeric>Available</Th>
           <Th textAlign="center">Role</Th>
-          <Th />
         </Tr>
       </Thead>
       <Tbody>
@@ -23,9 +22,6 @@ const BuilderListSkeleton = () => (
             <Tr key={lineNumber}>
               <Td>
                 <SkeletonAddress w="12.5" fontSize="16" />
-              </Td>
-              <Td>
-                <SkeletonText noOfLines={1} py={2} />
               </Td>
               <Td>
                 <SkeletonText noOfLines={1} py={2} />
