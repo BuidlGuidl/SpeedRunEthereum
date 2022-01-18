@@ -121,8 +121,7 @@ app.get("/user", async (request, response) => {
   response.json(user.data);
 });
 
-// ToDo. Protect this route?
-app.post("/challenges/run-test", async (request, response) => {
+app.post("/challenges/run-test", withRole("admin"), async (request, response) => {
   const { challengeId, contractUrl } = request.body;
   console.log("POST /challenges/run-test:", challengeId, contractUrl);
 
