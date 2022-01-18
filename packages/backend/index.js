@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const db = require("./services/db");
+const { runTestsForChallenge } = require("./services/autograder");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
@@ -120,6 +121,18 @@ app.get("/user", async (request, response) => {
   response.json(user.data);
 });
 
+app.post("/challenges/run-test", withRole("admin"), async (request, response) => {
+  const { challengeId, contractUrl } = request.body;
+  console.log("POST /challenges/run-test:", challengeId, contractUrl);
+
+  try {
+    const testResult = await runTestsForChallenge(challengeId, contractUrl);
+    response.json(testResult);
+  } catch (e) {
+    response.json({ error: e.message });
+  }
+});
+
 app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, contractUrl, signature } = request.body;
   const address = request.address;
@@ -167,6 +180,7 @@ app.post("/challenges", withAddress, async (request, response) => {
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
 
+  // ToDo. Use services/autograder
   if (autogradingEnabled && isAutogradingEnabledForChallenge(challengeId)) {
     // Auto-grading
     console.log("Calling auto-grading");
