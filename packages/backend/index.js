@@ -46,6 +46,8 @@ app.get("/builders", async (req, res) => {
   res.status(200).send(builders);
 });
 
+// TODO It looks like this route is the same as /user,
+// but /user handles 404 better
 app.get("/builders/:builderAddress", async (req, res) => {
   const builderAddress = req.params.builderAddress;
   console.log(`/builders/${builderAddress}`);
@@ -77,7 +79,7 @@ app.post("/builders/update-socials", withAddress, async (request, response) => {
 app.post("/sign", async (request, response) => {
   const neededBodyProps = ["address", "signature"];
   if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
-    response.status(400).send("Missing required body properties");
+    response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
     return;
   }
   const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
@@ -123,7 +125,23 @@ app.get("/user", async (request, response) => {
 
 app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, contractUrl, signature } = request.body;
+  // TODO Maybe make this needed props a middleware. Same for headers
+  const neededBodyProps = ["challengeId", "deployedUrl", "contractUrl", "signature"];
+  if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
+    console.log(
+      "[400] POST /challenges",
+      Object.entries({ challengeId, deployedUrl, contractUrl, signature }).join(", "),
+    );
+    response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
+    return;
+  }
   const address = request.address;
+  const neededHeaders = ["address"];
+  if (neededHeaders.some(prop => request.headers[prop] === undefined)) {
+    console.log("[400] POST /challenges", Object.entries({ address }).join(", "));
+    response.status(400).send(`Missing required headers. Required: ${neededHeaders.join(", ")}`);
+    return;
+  }
   console.log("POST /challenges: ", address, challengeId, deployedUrl, contractUrl);
 
   const verifyOptions = {
@@ -132,7 +150,19 @@ app.post("/challenges", withAddress, async (request, response) => {
     challengeId,
   };
 
-  if (!verifySignature(signature, verifyOptions)) {
+  let isSignatureValid;
+  try {
+    isSignatureValid = verifySignature(signature, verifyOptions);
+  } catch (error) {
+    if (error.code === "INVALID_ARGUMENT" && error.argument === "signature") {
+      response.status(400).send(`Invalid signature: ${signature}`);
+      return;
+    }
+
+    isSignatureValid = false;
+  }
+
+  if (!isSignatureValid) {
     response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
     return;
   }
@@ -203,7 +233,22 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {
   const { userAddress, challengeId, newStatus, comment, signature } = request.body;
+  const neededBodyProps = ["userAddress", "challengeId", "newStatus", "comment", "signature"];
+  if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
+    console.log(
+      "[400] POST /challenges",
+      Object.entries({ userAddress, challengeId, newStatus, comment, signature }).join(", "),
+    );
+    response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
+    return;
+  }
   const address = request.address;
+  const neededHeaders = ["address"];
+  if (neededHeaders.some(prop => request.headers[prop] === undefined)) {
+    console.log("[400] POST /challenges", Object.entries({ address }).join(", "));
+    response.status(400).send(`Missing required headers. Required: ${neededHeaders.join(", ")}`);
+    return;
+  }
 
   const verifyOptions = {
     messageId: "challengeReview",

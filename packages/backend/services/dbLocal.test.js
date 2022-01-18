@@ -1,3 +1,7 @@
+const log = console.log.bind({}); // get the original console.log to use here for debugging with `log()`
+global.log = log;
+global.console.log = jest.fn(); // skip server logs
+
 const { URLSearchParams } = require("url");
 
 const db = require("./dbLocal");

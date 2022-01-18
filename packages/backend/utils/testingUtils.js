@@ -1,3 +1,4 @@
+const db = require("../services/db");
 const { EVENT_TYPES, createEvent } = require("./events");
 
 const hardhatAddress1 = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
@@ -12,6 +13,17 @@ const dummySignature =
 const hardhatSignatures = {
   login:
     "0x1db83f046ed2ab9a812f6d78e5c196492cbc18800da41bdbb42cece8bead47d77ed795cf6eb3fc81ac05883ec4731b6304791fc7ace949d5850b28113041fafd1c",
+  // challengeSubmit signature for challengeId: simple-nft-example
+  challengeSubmit:
+    "0xd4e2e7c23450e2d53e6708265dec6bb61a2bd94ea1595bc99a3b5a81fd111c6b3dcd3a459bb8a580ac6057caceb61c1c7b1b4d23fadc863f3e066876287691351c",
+  challengeReviewAccept:
+    "0x69b40c155f7a1046467f2e84ac1b40ac03f6d1ea304be5d35458fe60a8798f3c79903ab1523b294a2983434b0962e373c78f8aac33b5c9eca94aeb76143883a41c",
+  challengeReviewReject:
+    "0xd991f53e387ae22b62587ad6a44a81d7fbfb3e339552ee0789af0fabbbc6b433682d78e7e70b9cb8382a1c9f6efc4fafee89999599c7b5ab5614e071dd9bd4911c",
+};
+
+const upgradeUserToAdmin = userAddress => {
+  db.__internal_database.users[userAddress].role = "admin";
 };
 
 const dummyPayloadsByType = {
@@ -69,7 +81,7 @@ const challengeReviewRejectEventB = createTestEvent(EVENT_TYPES.CHALLENGE_REVIEW
   reviewAction: "REJECTED",
 });
 
-const seedDb = db => {
+const seedDb = () => {
   db.createEvent(userCreateEventA);
   db.createEvent(userCreateEventB);
   db.createEvent(challengeSubmitEventA);
@@ -80,8 +92,15 @@ const seedDb = db => {
   db.createEvent(challengeReviewRejectEventB);
 };
 
-const clearDb = db => {
+const clearDb = () => {
+  // IMPORTANT: clear each prop here, or we'll lose the reference to the
+  // database (the actual in-memory db, not the interface) that the app
+  // object has and updates
+
   // eslint-disable-next-line
+  db.__internal_database.version = 0;
+  db.__internal_database.builds = {};
+  db.__internal_database.users = {};
   db.__internal_database.events = [];
 };
 
@@ -89,6 +108,7 @@ module.exports = {
   createTestEvent,
   clearDb,
   seedDb,
+  upgradeUserToAdmin,
   hardhatAddress1,
   hardhatSignatures,
   dummyAddressA,
