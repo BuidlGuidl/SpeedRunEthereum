@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const db = require("./services/db");
+const { runTestsForChallenge } = require("./services/autograder");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
@@ -118,6 +119,19 @@ app.get("/user", async (request, response) => {
 
   console.log("Retrieving existing user: ", address);
   response.json(user.data);
+});
+
+// ToDo. Protect this route?
+app.post("/challenges/run-test", async (request, response) => {
+  const { challengeId, contractUrl } = request.body;
+  console.log("POST /challenges/run-test:", challengeId, contractUrl);
+
+  try {
+    const testResult = await runTestsForChallenge(challengeId, contractUrl);
+    response.json(testResult);
+  } catch (e) {
+    response.json({ error: e.message });
+  }
 });
 
 app.post("/challenges", withAddress, async (request, response) => {
