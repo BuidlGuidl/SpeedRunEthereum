@@ -18,7 +18,6 @@ const emptyTestDatabase = { version: 0, users: {}, builds: {}, events: [] };
 
 if (!fs.existsSync(DATABASE_PATH)) {
   // Seed the local database if empty.
-  console.log("seeding the db");
   fs.copyFileSync(SEED_PATH, DATABASE_PATH, fs.constants.COPYFILE_EXCL);
 }
 

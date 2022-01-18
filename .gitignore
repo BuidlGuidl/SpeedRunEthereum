@@ -26,7 +26,6 @@ tenderly.yaml
 
 # testing
 coverage
-packages/backend/local_database/__testing__local_db.json
 
 # production
 build
