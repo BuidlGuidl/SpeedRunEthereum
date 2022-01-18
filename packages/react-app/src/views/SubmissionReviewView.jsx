@@ -247,6 +247,7 @@ export default function SubmissionReviewView({ userProvider }) {
                     isLoading={isLoadingChallenges}
                     approveClick={handleSendChallengeReview("ACCEPTED")}
                     rejectClick={handleSendChallengeReview("REJECTED")}
+                    userProvider={userProvider}
                   />
                 ))
               )}

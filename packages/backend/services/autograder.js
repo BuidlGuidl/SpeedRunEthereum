@@ -33,9 +33,10 @@ const runTestsForChallenge = async (challengeId, contractUrl) => {
     })
     .catch(gradingErrorResponse => {
       const gradingErrorResponseData = gradingErrorResponse?.response?.data;
+      const error = gradingErrorResponseData?.error ?? "Unknown error";
 
-      console.error("auto-grader failed:", gradingErrorResponseData?.error);
-      throw new Error(`auto-grader failed: ${gradingErrorResponseData?.error}`);
+      console.error("auto-grader failed:", error);
+      throw new Error(`auto-grader failed: ${error}`);
     });
 };
 

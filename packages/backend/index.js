@@ -180,6 +180,7 @@ app.post("/challenges", withAddress, async (request, response) => {
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
 
+  // ToDo. Use services/autograder
   if (autogradingEnabled && isAutogradingEnabledForChallenge(challengeId)) {
     // Auto-grading
     console.log("Calling auto-grading");
