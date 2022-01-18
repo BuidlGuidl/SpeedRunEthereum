@@ -75,7 +75,6 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
       console.log("Error calling the auto-grader", e);
     } finally {
       setIsRunningTests(false);
-      setTestPassed(null);
     }
   };
 
