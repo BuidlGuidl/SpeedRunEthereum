@@ -1,15 +1,15 @@
 const challengeMapping = {
   "simple-nft-example": {
     id: 0,
-    autograding: false,
+    autograding: true,
   },
   "decentralized-staking": {
     id: 1,
-    autograding: false,
+    autograding: true,
   },
   "token-vendor": {
     id: 2,
-    autograding: false,
+    autograding: true,
   },
   "learn-multisig": {
     id: 3,
