@@ -24,7 +24,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
   }, [serverUrl]);
 
   return (
-    <Container maxW="container.xl">
+    <Container maxW="container.lg">
       <Container maxW="container.md" centerContent>
         <Heading as="h1" mb="4">
           All Builders
@@ -51,12 +51,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
             <Thead>
               <Tr color={secondaryFontColor}>
                 <Th>Builder</Th>
-                <Th isNumeric>Builds</Th>
-                <Th isNumeric>Challenges</Th>
-                <Th isNumeric>Stream</Th>
-                <Th isNumeric>Rate</Th>
-                <Th isNumeric>Available</Th>
-                <Th textAlign="center">Role</Th>
+                <Th>Challenges</Th>
               </Tr>
             </Thead>
             <Tbody>
