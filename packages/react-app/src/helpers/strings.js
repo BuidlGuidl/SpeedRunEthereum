@@ -18,3 +18,5 @@ export const isValidUrl = urlText => {
 
   return url.protocol === "http:" || url.protocol === "https:";
 };
+
+export const isBoolean = val => typeof val === "boolean";

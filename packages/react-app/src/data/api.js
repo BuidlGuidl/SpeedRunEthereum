@@ -242,3 +242,20 @@ export const postUpdateSocials = async (address, signature, socialLinks) => {
     throw new Error(`Couldn't save the socials`);
   }
 };
+
+export const runAutograderTest = async (challengeId, contractUrl, address) => {
+  try {
+    return axios.post(
+      `${serverUrl}/challenges/run-test`,
+      { challengeId, contractUrl },
+      {
+        headers: {
+          address,
+        },
+      },
+    );
+  } catch (error) {
+    console.log("Error running the tests", error);
+    throw new Error("Error running the tests");
+  }
+};
