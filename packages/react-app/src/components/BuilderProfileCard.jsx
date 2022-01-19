@@ -29,7 +29,7 @@ import useDisplayAddress from "../hooks/useDisplayAddress";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
 import { getUpdateSocialsSignMessage, postUpdateSocials } from "../data/api";
-import { socials } from "../data/socials";
+import { bySocialWeight, socials } from "../data/socials";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
@@ -162,9 +162,11 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               <Divider mb={6} />
               {hasProfileLinks ? (
                 <Flex mb={4} justifyContent="space-evenly" alignItems="center">
-                  {Object.entries(builder.socialLinks).map(([socialId, socialValue]) => (
-                    <SocialLink id={socialId} value={socialValue} />
-                  ))}
+                  {Object.entries(builder.socialLinks)
+                    .sort(bySocialWeight)
+                    .map(([socialId, socialValue]) => (
+                      <SocialLink id={socialId} value={socialValue} />
+                    ))}
                 </Flex>
               ) : (
                 isMyProfile && (

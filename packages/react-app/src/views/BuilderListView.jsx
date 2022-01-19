@@ -20,14 +20,15 @@ import {
   Flex,
   Select,
 } from "@chakra-ui/react";
+import { useTable, usePagination, useSortBy } from "react-table";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import BuilderListSkeleton from "../components/skeletons/BuilderListSkeleton";
-import { useTable, usePagination, useSortBy } from "react-table";
 import DateWithTooltip from "../components/DateWithTooltip";
 import SocialLink from "../components/SocialLink";
 import { getAcceptedChallenges } from "../helpers/builders";
 import Address from "../components/Address";
+import { bySocialWeight } from "../data/socials";
 
 const serverPath = "/builders";
 
@@ -39,24 +40,22 @@ const builderLastActivity = builder => {
   return lastChallengeUpdated ?? builder?.creationTimestamp;
 };
 
-const BuilderSocialLinksCell = ({ builder }) => {
-  const hasProfileLinks = builder?.socialLinks ? Object.keys(builder.socialLinks).length !== 0 : false;
-
-  if (!hasProfileLinks) return "-";
+const BuilderSocialLinksCell = ({ socials }) => {
+  if (!socials.length) return "-";
 
   return (
     <Flex justifyContent="space-evenly" alignItems="center">
-      {Object.entries(builder.socialLinks).map(([socialId, socialValue]) => (
+      {socials.map(([socialId, socialValue]) => (
         <SocialLink id={socialId} value={socialValue} />
       ))}
     </Flex>
   );
 };
 
-const BuilderAddressCell = ({ builder, mainnetProvider }) => {
+const BuilderAddressCell = ({ builderId, mainnetProvider }) => {
   return (
-    <Link as={RouteLink} to={`/builders/${builder.id}`} pos="relative">
-      <Address address={builder.id} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
+    <Link as={RouteLink} to={`/builders/${builderId}`} pos="relative">
+      <Address address={builderId} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
     </Link>
   );
 };
@@ -72,6 +71,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
         Header: "Builder",
         accessor: "builder",
         disableSortBy: true,
+        Cell: ({ value }) => <BuilderAddressCell builderId={value} mainnetProvider={mainnetProvider} />,
       },
       {
         Header: "Challenges",
@@ -82,13 +82,16 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
         Header: "Socials",
         accessor: "socials",
         disableSortBy: true,
+        Cell: ({ value }) => <BuilderSocialLinksCell socials={value} />,
       },
       {
         Header: "Last Activity",
         accessor: "lastActivity",
-        disableSortBy: true,
+        sortDescFirst: true,
+        Cell: ({ value }) => <DateWithTooltip timestamp={value} />,
       },
     ],
+    // eslint-disable-next-line
     [],
   );
 
@@ -98,10 +101,10 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
       const fetchedBuilders = await axios.get(serverUrl + serverPath);
 
       const processedBuilders = fetchedBuilders.data.map(builder => ({
-        builder: <BuilderAddressCell builder={builder} mainnetProvider={mainnetProvider} />,
+        builder: builder.id,
         challenges: getAcceptedChallenges(builder?.challenges)?.length ?? 0,
-        socials: <BuilderSocialLinksCell builder={builder} />,
-        lastActivity: <DateWithTooltip timestamp={builderLastActivity(builder)} />,
+        socials: Object.entries(builder.socialLinks ?? {}).sort(bySocialWeight),
+        lastActivity: builderLastActivity(builder),
       }));
 
       setBuilders(processedBuilders);
@@ -109,7 +112,6 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
     }
 
     fetchBuilders();
-    // eslint-disable-next-line
   }, [serverUrl]);
 
   const {
@@ -131,7 +133,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
     {
       columns,
       data: builders,
-      initialState: { pageIndex: 0, pageSize: 25 },
+      initialState: { pageIndex: 0, pageSize: 25, sortBy: useMemo(() => [{ id: "lastActivity", desc: true }], []) },
     },
     useSortBy,
     usePagination,
@@ -188,7 +190,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
                 return (
                   <Tr {...row.getRowProps()}>
                     {row.cells.map(cell => (
-                      <Td {...cell.getCellProps()}>{cell.value}</Td>
+                      <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
                     ))}
                   </Tr>
                 );
