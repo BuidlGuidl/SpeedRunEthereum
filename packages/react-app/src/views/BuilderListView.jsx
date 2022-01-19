@@ -53,6 +53,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
                 <Th>Builder</Th>
                 <Th>Challenges</Th>
                 <Th>Socials</Th>
+                <Th>Last Activity</Th>
               </Tr>
             </Thead>
             <Tbody>

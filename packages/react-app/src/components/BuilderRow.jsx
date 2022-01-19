@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouteLink } from "react-router-dom";
 import { Flex, Link, Td, Tr } from "@chakra-ui/react";
 import Address from "./Address";
 import { getAcceptedChallenges } from "../helpers/builders";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import SocialLink from "./SocialLink";
+import DateWithTooltip from "./DateWithTooltip";
 
 const BuilderRow = ({ builder, mainnetProvider }) => {
+  const [lastActivity, setLastActivity] = useState(null);
   const { primaryFontColor } = useCustomColorModes();
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges)?.length ?? 0;
   const hasProfileLinks = builder?.socialLinks ? Object.keys(builder.socialLinks).length !== 0 : false;
+
+  useEffect(() => {
+    const lastChallengeUpdated = Object.values(builder?.challenges ?? {})
+      .map(challenge => challenge.submittedTimestamp)
+      .sort((t1, t2) => t2 - t1)?.[0];
+    setLastActivity(lastChallengeUpdated ?? builder?.creationTimestamp);
+    console.log("repainting for", builder.id);
+  }, [builder]);
 
   return (
     <Tr color={primaryFontColor}>
@@ -30,6 +40,7 @@ const BuilderRow = ({ builder, mainnetProvider }) => {
           "-"
         )}
       </Td>
+      <Td>{lastActivity ? <DateWithTooltip timestamp={lastActivity} /> : "-"}</Td>
     </Tr>
   );
 };
