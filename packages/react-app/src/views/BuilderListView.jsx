@@ -52,6 +52,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
               <Tr color={secondaryFontColor}>
                 <Th>Builder</Th>
                 <Th>Challenges</Th>
+                <Th>Socials</Th>
               </Tr>
             </Thead>
             <Tbody>
