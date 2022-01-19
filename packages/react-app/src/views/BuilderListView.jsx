@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { Link as RouteLink } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
+  Button,
+  ButtonGroup,
   Center,
   Container,
   Heading,
@@ -15,16 +18,16 @@ import {
   Td,
   chakra,
   Flex,
+  Select,
 } from "@chakra-ui/react";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import BuilderListSkeleton from "../components/skeletons/BuilderListSkeleton";
 import { useTable, usePagination, useSortBy } from "react-table";
 import DateWithTooltip from "../components/DateWithTooltip";
 import SocialLink from "../components/SocialLink";
 import { getAcceptedChallenges } from "../helpers/builders";
-import { Link as RouteLink } from "react-router-dom";
 import Address from "../components/Address";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 const serverPath = "/builders";
 
@@ -128,7 +131,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
     {
       columns,
       data: builders,
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0, pageSize: 25 },
     },
     useSortBy,
     usePagination,
@@ -154,7 +157,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
       {isLoadingBuilders ? (
         <BuilderListSkeleton />
       ) : (
-        <Box overflowX="auto">
+        <Box overflowX="auto" mb={8}>
           <Center mb={5}>
             <chakra.strong mr={2}>Total builders:</chakra.strong> {builders.length}
           </Center>
@@ -193,50 +196,45 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
             </Tbody>
           </Table>
 
-          <div className="pagination">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              {"<<"}
-            </button>{" "}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              {"<"}
-            </button>{" "}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              {">"}
-            </button>{" "}
-            <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-              {">>"}
-            </button>{" "}
-            <span>
+          <Center mt={4}>
+            <ButtonGroup>
+              <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {"<<"}
+              </Button>
+              <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                {"<"}
+              </Button>
+              <Button onClick={() => nextPage()} disabled={!canNextPage}>
+                {">"}
+              </Button>
+              <Button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                {">>"}
+              </Button>
+            </ButtonGroup>
+          </Center>
+          <Center mt={4}>
+            <Text mr={4}>
               Page{" "}
               <strong>
                 {pageIndex + 1} of {pageOptions.length}
               </strong>{" "}
-            </span>
-            <span>
-              | Go to page:{" "}
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
+            </Text>
+            <Box>
+              <Select
+                isFullWidth={false}
+                value={pageSize}
                 onChange={e => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  gotoPage(page);
+                  setPageSize(Number(e.target.value));
                 }}
-                style={{ width: "100px" }}
-              />
-            </span>{" "}
-            <select
-              value={pageSize}
-              onChange={e => {
-                setPageSize(Number(e.target.value));
-              }}
-            >
-              {[10, 20, 30, 40, 50].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select>
-          </div>
+              >
+                {[25, 50, 100].map(pageSizeOption => (
+                  <option key={pageSizeOption} value={pageSizeOption}>
+                    Show {pageSizeOption}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+          </Center>
         </Box>
       )}
     </Container>
