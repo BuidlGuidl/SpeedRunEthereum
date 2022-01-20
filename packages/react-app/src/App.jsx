@@ -180,13 +180,14 @@ function App() {
             <BuildsListView userProvider={userProvider} />
           </Route>
           <Route path="/builders" exact>
-            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} />
+            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} userRole={userRole} />
           </Route>
           <Route path="/builders/:builderAddress">
             <BuilderProfileView
               serverUrl={serverUrl}
               mainnetProvider={mainnetProvider}
               address={address}
+              userRole={userRole}
               userProvider={userProvider}
             />
           </Route>

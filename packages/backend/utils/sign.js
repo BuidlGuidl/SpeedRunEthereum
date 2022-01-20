@@ -33,6 +33,10 @@ const getSignMessageForId = (messageId, options) => {
       });
     case "builderUpdateSocials":
       return `I want to update my social links as ${options.address}`;
+    case "builderUpdateReachedOut":
+      return `I want to mark builder ${options.builderAddress} as ${
+        options.reachedOut ? "reached out" : "not reached out"
+      }`;
     case "login":
     default:
       return `I would like to register as a builder in speedrunethereum.com as ${options.address}`;

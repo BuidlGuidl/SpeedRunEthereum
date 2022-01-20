@@ -243,6 +243,45 @@ export const postUpdateSocials = async (address, signature, socialLinks) => {
   }
 };
 
+export const getUpdateReachedOutFlagSignMessage = async (builderAddress, reachedOut) => {
+  try {
+    const signMessageResponse = await axios.get(`${serverUrl}/sign-message`, {
+      params: {
+        messageId: "builderUpdateReachedOut",
+        builderAddress,
+        reachedOut,
+      },
+    });
+
+    return signMessageResponse.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Couldn't get the signature message`);
+  }
+};
+
+export const postUpdateReachedOutFlag = async (address, builderAddress, reachedOut, signature) => {
+  try {
+    await axios.post(
+      `${serverUrl}/builders/update-reached-out`,
+      { builderAddress, reachedOut, signature },
+      {
+        headers: {
+          address,
+        },
+      },
+    );
+  } catch (error) {
+    if (error.request?.status === 401) {
+      const accessError = new Error(`Access denied`);
+      accessError.status = 401;
+      throw accessError;
+    }
+    console.error(error);
+    throw new Error(`Couldn't update the reached out flag`);
+  }
+};
+
 export const runAutograderTest = async (challengeId, contractUrl, address) => {
   try {
     return axios.post(

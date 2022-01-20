@@ -37,7 +37,7 @@ import { getChallengeEventsForUser } from "../data/api";
 import { byTimestamp } from "../helpers/sorting";
 import DateWithTooltip from "../components/DateWithTooltip";
 
-export default function BuilderProfileView({ serverUrl, mainnetProvider, address, userProvider }) {
+export default function BuilderProfileView({ serverUrl, mainnetProvider, address, userProvider, userRole }) {
   const { builderAddress } = useParams();
   const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
   const [builder, setBuilder] = useState();
@@ -95,6 +95,7 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
             isMyProfile={isMyProfile}
             userProvider={userProvider}
             fetchBuilder={fetchBuilder}
+            userRole={userRole}
           />
         </GridItem>
         <GridItem colSpan={{ base: 1, xl: 3 }}>
