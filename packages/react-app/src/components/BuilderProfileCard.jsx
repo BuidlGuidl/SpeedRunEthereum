@@ -4,6 +4,7 @@ import { useUserAddress } from "eth-hooks";
 import {
   Button,
   Flex,
+  Center,
   Divider,
   Text,
   Link,
@@ -22,23 +23,31 @@ import {
   Input,
   useToast,
   useColorModeValue,
+  Badge,
 } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import SocialLink from "./SocialLink";
 import useDisplayAddress from "../hooks/useDisplayAddress";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ellipsizedAddress } from "../helpers/strings";
-import { getUpdateSocialsSignMessage, postUpdateSocials } from "../data/api";
+import {
+  getUpdateReachedOutFlagSignMessage,
+  getUpdateSocialsSignMessage,
+  postUpdateReachedOutFlag,
+  postUpdateSocials,
+} from "../data/api";
 import { bySocialWeight, socials } from "../data/socials";
+import { USER_ROLES } from "../helpers/constants";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
 );
 
-const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvider, fetchBuilder }) => {
+const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvider, fetchBuilder, userRole }) => {
   const address = useUserAddress(userProvider);
   const ens = useDisplayAddress(mainnetProvider, builder?.id);
   const [updatedSocials, setUpdatedSocials] = useState({});
+  const [isUpdatingReachedOutFlag, setIsUpdatingReachedOutFlag] = useState(false);
   const [isUpdatingSocials, setIsUpdatingSocials] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { borderColor, secondaryFontColor } = useCustomColorModes();
@@ -53,6 +62,8 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
 
   // INFO: conditional chaining and coalescing didn't work when also checking the length
   const hasProfileLinks = builder?.socialLinks ? Object.keys(builder.socialLinks).length !== 0 : false;
+
+  const isAdmin = userRole === USER_ROLES.admin;
 
   useEffect(() => {
     if (builder) {
@@ -75,6 +86,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
         status: "error",
         variant: toastVariant,
       });
+      setIsUpdatingSocials(false);
       return;
     }
 
@@ -87,6 +99,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
         status: "error",
         variant: toastVariant,
       });
+      setIsUpdatingSocials(false);
       return;
     }
 
@@ -99,6 +112,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
           description: "Access error",
           variant: toastVariant,
         });
+        setIsUpdatingSocials(false);
         return;
       }
       toast({
@@ -106,6 +120,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
         description: "Can't update your socials. Please try again.",
         variant: toastVariant,
       });
+      setIsUpdatingSocials(false);
       return;
     }
 
@@ -117,6 +132,65 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
     fetchBuilder();
     setIsUpdatingSocials(false);
     onClose();
+  };
+
+  const handleUpdateReachedOutFlag = async reachedOut => {
+    setIsUpdatingReachedOutFlag(true);
+
+    let signMessage;
+    try {
+      signMessage = await getUpdateReachedOutFlagSignMessage(builder.id, reachedOut);
+    } catch (error) {
+      toast({
+        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        status: "error",
+        variant: toastVariant,
+      });
+      setIsUpdatingReachedOutFlag(false);
+      return;
+    }
+
+    let signature;
+    try {
+      signature = await userProvider.send("personal_sign", [signMessage, address]);
+    } catch (error) {
+      toast({
+        description: "Couldn't get a signature from the Wallet",
+        status: "error",
+        variant: toastVariant,
+      });
+      setIsUpdatingReachedOutFlag(false);
+      return;
+    }
+
+    try {
+      await postUpdateReachedOutFlag(address, builder.id, reachedOut, signature);
+    } catch (error) {
+      if (error.status === 401) {
+        toast({
+          status: "error",
+          description: "Access error",
+          variant: toastVariant,
+        });
+        setIsUpdatingReachedOutFlag(false);
+        return;
+      }
+      toast({
+        status: "error",
+        description: "Can't update the reached out flag. Please try again.",
+        variant: toastVariant,
+      });
+      setIsUpdatingReachedOutFlag(false);
+      return;
+    }
+
+    toast({
+      description: 'Updated "reached out" flag successfully',
+      status: "success",
+      variant: toastVariant,
+    });
+    fetchBuilder();
+    setIsUpdatingReachedOutFlag(false);
   };
 
   return (
@@ -150,7 +224,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
                   <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                     {ens}
                   </Text>
-                  <Text textAlign="center" mb={8} color={secondaryFontColor}>
+                  <Text textAlign="center" mb={4} color={secondaryFontColor}>
                     {shortAddress}
                   </Text>
                 </>
@@ -158,6 +232,25 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
                 <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>
                   {shortAddress}
                 </Text>
+              )}
+              {isAdmin && (
+                <Center mb={4}>
+                  {builder.reachedOut ? (
+                    <Badge variant="outline" colorScheme="green" alignSelf="center">
+                      Reached Out
+                    </Badge>
+                  ) : (
+                    <Button
+                      colorScheme="green"
+                      size="xs"
+                      onClick={() => handleUpdateReachedOutFlag(true)}
+                      isLoading={isUpdatingReachedOutFlag}
+                      alignSelf="center"
+                    >
+                      Mark as reached out
+                    </Button>
+                  )}
+                </Center>
               )}
               <Divider mb={6} />
               {hasProfileLinks ? (

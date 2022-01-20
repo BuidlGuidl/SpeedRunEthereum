@@ -19,6 +19,7 @@ import {
   chakra,
   Flex,
   Select,
+  Badge,
 } from "@chakra-ui/react";
 import { useTable, usePagination, useSortBy } from "react-table";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
@@ -29,6 +30,7 @@ import SocialLink from "../components/SocialLink";
 import { getAcceptedChallenges } from "../helpers/builders";
 import Address from "../components/Address";
 import { bySocialWeight } from "../data/socials";
+import { USER_ROLES } from "../helpers/constants";
 
 const serverPath = "/builders";
 
@@ -40,14 +42,22 @@ const builderLastActivity = builder => {
   return lastChallengeUpdated ?? builder?.creationTimestamp;
 };
 
-const BuilderSocialLinksCell = ({ socials }) => {
+const BuilderSocialLinksCell = ({ builder, isAdmin }) => {
+  const socials = Object.entries(builder.socialLinks ?? {}).sort(bySocialWeight);
   if (!socials.length) return "-";
 
   return (
-    <Flex justifyContent="space-evenly" alignItems="center">
-      {socials.map(([socialId, socialValue]) => (
-        <SocialLink id={socialId} value={socialValue} />
-      ))}
+    <Flex direction="column">
+      <Flex justifyContent="space-evenly" alignItems="center">
+        {socials.map(([socialId, socialValue]) => (
+          <SocialLink id={socialId} value={socialValue} />
+        ))}
+      </Flex>
+      {isAdmin && builder.reachedOut && (
+        <Badge variant="outline" colorScheme="green" alignSelf="center" mt={2}>
+          Reached Out
+        </Badge>
+      )}
     </Flex>
   );
 };
@@ -60,10 +70,11 @@ const BuilderAddressCell = ({ builderId, mainnetProvider }) => {
   );
 };
 
-export default function BuilderListView({ serverUrl, mainnetProvider }) {
+export default function BuilderListView({ serverUrl, mainnetProvider, userRole }) {
   const [builders, setBuilders] = useState([]);
   const [isLoadingBuilders, setIsLoadingBuilders] = useState(false);
   const { secondaryFontColor } = useCustomColorModes();
+  const isAdmin = userRole === USER_ROLES.admin;
 
   const columns = useMemo(
     () => [
@@ -82,7 +93,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
         Header: "Socials",
         accessor: "socials",
         disableSortBy: true,
-        Cell: ({ value }) => <BuilderSocialLinksCell socials={value} />,
+        Cell: ({ value }) => <BuilderSocialLinksCell builder={value} isAdmin={isAdmin} />,
       },
       {
         Header: "Last Activity",
@@ -92,7 +103,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
       },
     ],
     // eslint-disable-next-line
-    [],
+    [userRole],
   );
 
   useEffect(() => {
@@ -103,7 +114,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider }) {
       const processedBuilders = fetchedBuilders.data.map(builder => ({
         builder: builder.id,
         challenges: getAcceptedChallenges(builder?.challenges)?.length ?? 0,
-        socials: Object.entries(builder.socialLinks ?? {}).sort(bySocialWeight),
+        socials: builder,
         lastActivity: builderLastActivity(builder),
       }));
 

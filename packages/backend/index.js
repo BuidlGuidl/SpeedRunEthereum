@@ -79,6 +79,27 @@ app.post("/builders/update-socials", withAddress, async (request, response) => {
   response.status(200).send(updatedUser);
 });
 
+app.post("/builders/update-reached-out", withRole("admin"), async (request, response) => {
+  const { reachedOut, builderAddress, signature } = request.body;
+  const address = request.address;
+  console.log("POST /builders/update-reached-out", address, reachedOut);
+
+  const verifyOptions = {
+    messageId: "builderUpdateReachedOut",
+    address,
+    reachedOut,
+    builderAddress,
+  };
+
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
+  }
+
+  const updatedUser = await db.updateUser(address, { reachedOut });
+  response.status(200).send(updatedUser);
+});
+
 app.post("/sign", async (request, response) => {
   const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
