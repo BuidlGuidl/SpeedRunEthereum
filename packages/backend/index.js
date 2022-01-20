@@ -96,7 +96,7 @@ app.post("/builders/update-reached-out", withRole("admin"), async (request, resp
     return;
   }
 
-  const updatedUser = await db.updateUser(address, { reachedOut });
+  const updatedUser = await db.updateUser(builderAddress, { reachedOut });
   response.status(200).send(updatedUser);
 });
 
