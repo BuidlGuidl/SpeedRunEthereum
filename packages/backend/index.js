@@ -1,16 +1,21 @@
+require("dotenv").config();
 const express = require("express");
 const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const axios = require("axios");
 const db = require("./services/db");
+const { runTestsForChallenge } = require("./services/autograder");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
+const { getChallengeIndexFromChallengeId, isAutogradingEnabledForChallenge } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
 const app = express();
+const autogradingEnabled = !!process.env.AUTOGRADING_SERVER;
 
 /*
   Uncomment this if you want to create a wallet to send ETH or something...
@@ -76,6 +81,27 @@ app.post("/builders/update-socials", withAddress, async (request, response) => {
   response.status(200).send(updatedUser);
 });
 
+app.post("/builders/update-reached-out", withRole("admin"), async (request, response) => {
+  const { reachedOut, builderAddress, signature } = request.body;
+  const address = request.address;
+  console.log("POST /builders/update-reached-out", address, reachedOut);
+
+  const verifyOptions = {
+    messageId: "builderUpdateReachedOut",
+    address,
+    reachedOut,
+    builderAddress,
+  };
+
+  if (!verifySignature(signature, verifyOptions)) {
+    response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
+    return;
+  }
+
+  const updatedUser = await db.updateUser(builderAddress, { reachedOut });
+  response.status(200).send(updatedUser);
+});
+
 app.post("/sign", async (request, response) => {
   const neededBodyProps = ["address", "signature"];
   if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
@@ -121,6 +147,18 @@ app.get("/user", async (request, response) => {
 
   console.log("Retrieving existing user: ", address);
   response.json(user.data);
+});
+
+app.post("/challenges/run-test", withRole("admin"), async (request, response) => {
+  const { challengeId, contractUrl } = request.body;
+  console.log("POST /challenges/run-test:", challengeId, contractUrl);
+
+  try {
+    const testResult = await runTestsForChallenge(challengeId, contractUrl);
+    response.json(testResult);
+  } catch (e) {
+    response.json({ error: e.message });
+  }
 });
 
 app.post("/challenges", withAddress, async (request, response) => {
@@ -197,6 +235,66 @@ app.post("/challenges", withAddress, async (request, response) => {
   };
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
+
+  // ToDo. Use services/autograder
+  if (autogradingEnabled && isAutogradingEnabledForChallenge(challengeId)) {
+    // Auto-grading
+    console.log("Calling auto-grading");
+
+    const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
+    const contractUrlObject = new URL(contractUrl);
+    // ToDo. Validation (also in the front-end, make sure they enter the correct URL)
+    const network = contractUrlObject.host.split(".")[0];
+    const contractAddress = contractUrlObject.pathname.replace("/address/", "");
+
+    axios
+      .post(process.env.AUTOGRADING_SERVER, {
+        challenge: challengeIndex,
+        network,
+        address: contractAddress,
+      })
+      .then(async gradingResponse => {
+        // We don't wait for the auto grading to finish to return a response.
+        const gradingResponseData = gradingResponse.data;
+        console.log("auto-grading response data", gradingResponseData);
+
+        if (gradingResponseData) {
+          existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
+          existingChallenges[challengeId].autograding = true;
+
+          // For now just auto-grade accepted submissions, so rejections will always be manually reviewed by graders.
+          // We store the autograder feedback.
+          if (gradingResponseData.success) {
+            existingChallenges[challengeId].status = "ACCEPTED";
+            const autogradeEventPayload = {
+              reviewAction: existingChallenges[challengeId].status,
+              autograding: true,
+              userAddress: address,
+              challengeId,
+              reviewMessage: existingChallenges[challengeId].reviewComment,
+            };
+
+            const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
+            db.createEvent(autogradeEvent); // INFO: async, no await here
+          }
+        }
+      })
+      .catch(gradingErrorResponse => {
+        const gradingErrorResponseData = gradingErrorResponse?.response?.data;
+
+        // We don't change the status of the submission, just leave the error for the manual graders to see.
+        if (gradingErrorResponseData) {
+          existingChallenges[challengeId].reviewComment = `Autograder: ${gradingErrorResponseData.error}`;
+          existingChallenges[challengeId].autograding = true;
+        }
+
+        console.error("auto-grading failed:", gradingErrorResponseData?.error);
+      })
+      .then(() => {
+        db.updateUser(address, { challenges: existingChallenges }); // INFO: async, no await here.
+      });
+  }
+
   await db.updateUser(address, { challenges: existingChallenges });
   response.sendStatus(200);
 });
@@ -271,29 +369,10 @@ app.patch("/challenges", withRole("admin"), async (request, response) => {
   }
 });
 
-// ToDo: This is very inefficient,´. We fetch the whole database every time we call this.
-// We should create a getChallengesByStatus function that fetches the challenges by status.
-// https://github.com/moonshotcollective/scaffold-directory/pull/32#discussion_r711971355
-async function getAllChallenges() {
-  // const usersDocs = (await database.collection("users").get()).docs;
-  const usersData = await db.findAllUsers();
-  const allChallenges = usersData.reduce((challenges, userData) => {
-    const userChallenges = userData.challenges ?? {};
-    const userUnpackedChallenges = Object.keys(userChallenges).map(challengeKey => ({
-      userAddress: userData.id,
-      id: challengeKey,
-      ...userChallenges[challengeKey],
-    }));
-    return challenges.concat(userUnpackedChallenges);
-  }, []);
-
-  return allChallenges;
-}
-
 app.get("/challenges", withRole("admin"), async (request, response) => {
   console.log("GET /challenges");
   const status = request.query.status;
-  const allChallenges = await getAllChallenges();
+  const allChallenges = await db.getAllChallenges();
   if (status == null) {
     response.json(allChallenges);
   } else {

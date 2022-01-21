@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  chakra,
   Badge,
   Box,
   Button,
@@ -16,11 +17,12 @@ import {
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
-const ChallengeStatusTag = ({ status, comment }) => {
+const ChallengeStatusTag = ({ status, comment, autograding }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   let colorScheme;
@@ -64,11 +66,17 @@ const ChallengeStatusTag = ({ status, comment }) => {
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Review comment</ModalHeader>
+        <ModalContent maxW="56rem">
+          <ModalHeader>Review feedback</ModalHeader>
           <ModalCloseButton />
-          <ModalBody p={6}>
-            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{comment}</ReactMarkdown>
+          <ModalBody p={6} overflowX="auto">
+            {autograding ? (
+              <chakra.pre fontSize={14}>{comment}</chakra.pre>
+            ) : (
+              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} remarkPlugins={[remarkBreaks]}>
+                {comment}
+              </ReactMarkdown>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
