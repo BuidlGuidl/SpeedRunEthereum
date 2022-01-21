@@ -15,7 +15,7 @@ const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
 const app = express();
-const autogradingEnabled = !!process.env.AUTOGRADING_SERVER;
+const autogradingEnabled = process.env.NODE_ENV !== "test" && !!process.env.AUTOGRADING_SERVER;
 
 /*
   Uncomment this if you want to create a wallet to send ETH or something...

@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest --watch --verbose"
+    "test": "jest --verbose"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
