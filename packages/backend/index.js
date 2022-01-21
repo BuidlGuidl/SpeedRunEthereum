@@ -102,6 +102,7 @@ app.post("/builders/update-reached-out", withRole("admin"), async (request, resp
   response.status(200).send(updatedUser);
 });
 
+// Builder login.
 app.post("/sign", async (request, response) => {
   const neededBodyProps = ["address", "signature"];
   if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
@@ -166,17 +167,12 @@ app.post("/challenges", withAddress, async (request, response) => {
   // TODO Maybe make this needed props a middleware. Same for headers
   const neededBodyProps = ["challengeId", "deployedUrl", "contractUrl", "signature"];
   if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
-    console.log(
-      "[400] POST /challenges",
-      Object.entries({ challengeId, deployedUrl, contractUrl, signature }).join(", "),
-    );
     response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
     return;
   }
   const address = request.address;
   const neededHeaders = ["address"];
   if (neededHeaders.some(prop => request.headers[prop] === undefined)) {
-    console.log("[400] POST /challenges", Object.entries({ address }).join(", "));
     response.status(400).send(`Missing required headers. Required: ${neededHeaders.join(", ")}`);
     return;
   }
@@ -343,7 +339,6 @@ app.patch("/challenges", withRole("admin"), async (request, response) => {
   const address = request.address;
   const neededHeaders = ["address"];
   if (neededHeaders.some(prop => request.headers[prop] === undefined)) {
-    console.log("[400] POST /challenges", Object.entries({ address }).join(", "));
     response.status(400).send(`Missing required headers. Required: ${neededHeaders.join(", ")}`);
     return;
   }
