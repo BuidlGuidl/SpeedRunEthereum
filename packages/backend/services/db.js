@@ -5,7 +5,10 @@ const DB_SERVICES = {
   local: "./dbLocal",
 };
 
-const selectedService = process.env.DATABASE_SERVICE ?? "local";
+// we should probably make a distinction: service could be firebase-staging, firebase, etc.
+// This is more "implementation" which is only firebase or local
+const isTesting = process.env.NODE_ENV === "test";
+const selectedService = isTesting ? "local" : process.env.DATABASE_SERVICE ?? "local";
 const dbService = DB_SERVICES[selectedService] ?? DB_SERVICES.local;
 // eslint-disable-next-line import/no-dynamic-require
 const db = require(dbService);

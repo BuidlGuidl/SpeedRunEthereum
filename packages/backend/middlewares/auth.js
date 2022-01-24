@@ -11,6 +11,7 @@ const withAddress = (req, res, next) => {
   const { address } = req.headers;
   req.address = address;
 
+  // TODO maybe return a 400 if the address is undefined
   next();
 };
 

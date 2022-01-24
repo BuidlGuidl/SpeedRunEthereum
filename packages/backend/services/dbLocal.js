@@ -10,27 +10,35 @@ const { getProp } = require("../utils/object");
 
 console.log("using local db");
 
-const DATABASE_PATH =
-  process.env.NODE_ENV === "test" ? "./local_database/__testing__local_db.json" : "./local_database/local_db.json";
+const DATABASE_PATH = "./local_database/local_db.json";
 const SEED_PATH = "./local_database/seed.json";
 const databaseSeed = JSON.parse(fs.readFileSync(SEED_PATH, "utf8"));
+const currentDatabase = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
+const emptyTestDatabase = { version: 0, users: {}, builds: {}, events: [] };
 
 if (!fs.existsSync(DATABASE_PATH)) {
   // Seed the local database if empty.
   fs.copyFileSync(SEED_PATH, DATABASE_PATH, fs.constants.COPYFILE_EXCL);
 }
 
-let database;
-database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
-
-if (databaseSeed.version !== database.version) {
+const needsToUpdateDbVersion = databaseSeed.version !== currentDatabase.version;
+if (needsToUpdateDbVersion) {
   console.log("New local db version: overwriting exiting local_db.json file");
   fs.copyFileSync(SEED_PATH, DATABASE_PATH);
-  database = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
+}
+let database;
+if (process.env.NODE_ENV === "test") {
+  database = emptyTestDatabase;
+} else {
+  database = needsToUpdateDbVersion ? databaseSeed : currentDatabase;
 }
 
 // --- Utilities
 const persist = () => {
+  if (process.env.NODE_ENV === "test") {
+    // don't persist during tests
+    return;
+  }
   const file = fs.openSync(DATABASE_PATH, "w");
   fs.writeFileSync(file, JSON.stringify(database, null, 2));
   fs.closeSync(file);

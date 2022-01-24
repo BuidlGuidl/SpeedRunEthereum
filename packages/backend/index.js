@@ -15,7 +15,7 @@ const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
 const app = express();
-const autogradingEnabled = !!process.env.AUTOGRADING_SERVER;
+const autogradingEnabled = process.env.NODE_ENV !== "test" && !!process.env.AUTOGRADING_SERVER;
 
 /*
   Uncomment this if you want to create a wallet to send ETH or something...
@@ -51,6 +51,8 @@ app.get("/builders", async (req, res) => {
   res.status(200).send(builders);
 });
 
+// TODO It looks like this route is the same as /user,
+// but /user handles 404 better
 app.get("/builders/:builderAddress", async (req, res) => {
   const builderAddress = req.params.builderAddress;
   console.log(`/builders/${builderAddress}`);
@@ -100,7 +102,13 @@ app.post("/builders/update-reached-out", withRole("admin"), async (request, resp
   response.status(200).send(updatedUser);
 });
 
+// Builder login.
 app.post("/sign", async (request, response) => {
+  const neededBodyProps = ["address", "signature"];
+  if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
+    response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
+    return;
+  }
   const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
   console.log("POST from ip address:", ip, request.body.message);
 
@@ -156,7 +164,18 @@ app.post("/challenges/run-test", withRole("admin"), async (request, response) =>
 
 app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, contractUrl, signature } = request.body;
+  // TODO Maybe make this needed props a middleware. Same for headers
+  const neededBodyProps = ["challengeId", "deployedUrl", "contractUrl", "signature"];
+  if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
+    response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
+    return;
+  }
   const address = request.address;
+  const neededHeaders = ["address"];
+  if (neededHeaders.some(prop => request.headers[prop] === undefined)) {
+    response.status(400).send(`Missing required headers. Required: ${neededHeaders.join(", ")}`);
+    return;
+  }
   console.log("POST /challenges: ", address, challengeId, deployedUrl, contractUrl);
 
   const verifyOptions = {
@@ -165,7 +184,19 @@ app.post("/challenges", withAddress, async (request, response) => {
     challengeId,
   };
 
-  if (!verifySignature(signature, verifyOptions)) {
+  let isSignatureValid;
+  try {
+    isSignatureValid = verifySignature(signature, verifyOptions);
+  } catch (error) {
+    if (error.code === "INVALID_ARGUMENT" && error.argument === "signature") {
+      response.status(400).send(`Invalid signature: ${signature}`);
+      return;
+    }
+
+    isSignatureValid = false;
+  }
+
+  if (!isSignatureValid) {
     response.status(401).send(" 🚫 Signature verification failed! Please reload and try again. Sorry! 😅");
     return;
   }
@@ -301,7 +332,21 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {
   const { userAddress, challengeId, newStatus, comment, signature } = request.body;
+  const neededBodyProps = ["userAddress", "challengeId", "newStatus", "comment", "signature"];
+  if (neededBodyProps.some(prop => request.body[prop] === undefined)) {
+    console.log(
+      "[400] POST /challenges",
+      Object.entries({ userAddress, challengeId, newStatus, comment, signature }).join(", "),
+    );
+    response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
+    return;
+  }
   const address = request.address;
+  const neededHeaders = ["address"];
+  if (neededHeaders.some(prop => request.headers[prop] === undefined)) {
+    response.status(400).send(`Missing required headers. Required: ${neededHeaders.join(", ")}`);
+    return;
+  }
 
   const verifyOptions = {
     messageId: "challengeReview",
@@ -343,20 +388,24 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 49832;
 
-if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
-  https
-    .createServer(
-      {
-        key: fs.readFileSync("server.key"),
-        cert: fs.readFileSync("server.cert"),
-      },
-      app,
-    )
-    .listen(PORT, () => {
-      console.log(`HTTPS Listening: ${PORT}`);
+if (process.env.NODE_ENV !== "test") {
+  if (fs.existsSync("server.key") && fs.existsSync("server.cert")) {
+    https
+      .createServer(
+        {
+          key: fs.readFileSync("server.key"),
+          cert: fs.readFileSync("server.cert"),
+        },
+        app,
+      )
+      .listen(PORT, () => {
+        console.log(`HTTPS Listening: ${PORT}`);
+      });
+  } else {
+    const server = app.listen(PORT, () => {
+      console.log("HTTP Listening on port:", server.address().port);
     });
-} else {
-  const server = app.listen(PORT, () => {
-    console.log("HTTP Listening on port:", server.address().port);
-  });
+  }
 }
+
+module.exports = app; // INFO: needed for testing
