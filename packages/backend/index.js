@@ -275,7 +275,9 @@ app.post("/challenges", withAddress, async (request, response) => {
             db.createEvent(autogradeEvent); // INFO: async, no await here
           } else {
             // Append feedback on rejection
-            existingChallenges[challengeId].reviewComment += gradingResponseData.feedback;
+            existingChallenges[challengeId].reviewComment = existingChallenges[challengeId].reviewComment
+              ? existingChallenges[challengeId].reviewComment + gradingResponseData.feedback
+              : gradingResponseData.feedback;
           }
         }
       })
@@ -284,9 +286,12 @@ app.post("/challenges", withAddress, async (request, response) => {
 
         // We don't change the status of the submission, just leave the error for the manual graders to see.
         if (gradingErrorResponseData) {
+          const errorMsg = `Autograder: ${gradingErrorResponseData.error}`;
           existingChallenges[challengeId].autograding = true;
           // Append feedback on error
-          existingChallenges[challengeId].reviewComment += `Autograder: ${gradingErrorResponseData.error}`;
+          existingChallenges[challengeId].reviewComment = existingChallenges[challengeId].reviewComment
+            ? existingChallenges[challengeId].reviewComment + errorMsg
+            : errorMsg;
         }
 
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
