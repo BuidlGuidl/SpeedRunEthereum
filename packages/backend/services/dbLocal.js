@@ -13,7 +13,6 @@ console.log("using local db");
 const DATABASE_PATH = "./local_database/local_db.json";
 const SEED_PATH = "./local_database/seed.json";
 const databaseSeed = JSON.parse(fs.readFileSync(SEED_PATH, "utf8"));
-const currentDatabase = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
 const emptyTestDatabase = { version: 0, users: {}, builds: {}, events: [] };
 
 if (!fs.existsSync(DATABASE_PATH)) {
@@ -21,6 +20,7 @@ if (!fs.existsSync(DATABASE_PATH)) {
   fs.copyFileSync(SEED_PATH, DATABASE_PATH, fs.constants.COPYFILE_EXCL);
 }
 
+const currentDatabase = JSON.parse(fs.readFileSync(DATABASE_PATH, "utf8"));
 const needsToUpdateDbVersion = databaseSeed.version !== currentDatabase.version;
 if (needsToUpdateDbVersion) {
   console.log("New local db version: overwriting exiting local_db.json file");
