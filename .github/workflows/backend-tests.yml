@@ -2,7 +2,9 @@ name: SRE Backend tests
 
 on:
   pull_request:
-    branches: [ $default-branch, "github-actions-test" ]
+    branches:
+     - master
+     - github-actions-test
 
 jobs:
   build:
