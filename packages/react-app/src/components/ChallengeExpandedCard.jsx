@@ -3,8 +3,11 @@ import { Link as RouteLink } from "react-router-dom";
 import { chakra, Button, Center, Image, Flex, Spacer, Text } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-const ChallengeExpandedCard = ({ challengeId, challenge }) => {
+const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallenges }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id =>
+    builderCompletedChallenges.includes(id),
+  );
 
   return (
     <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
@@ -28,14 +31,25 @@ const ChallengeExpandedCard = ({ challengeId, challenge }) => {
         <Button
           as={RouteLink}
           to={!challenge.disabled && `/challenge/${challengeId}`}
-          isDisabled={challenge.disabled}
+          isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
           variant={challenge.disabled ? "outline" : "solid"}
           isFullWidth
         >
-          <span role="img" aria-label="castle icon">
-            ⚔️
-          </span>
-          <chakra.span ml={1}>Quest</chakra.span>
+          {builderHasCompletedDependenciesChallenges ? (
+            <>
+              <span role="img" aria-label="castle icon">
+                ⚔️
+              </span>
+              <chakra.span ml={1}>Quest</chakra.span>
+            </>
+          ) : (
+            <>
+              <span role="img" aria-label="lock icon">
+                🔒
+              </span>
+              <chakra.span ml={1}>Locked</chakra.span>
+            </>
+          )}
         </Button>
       </Flex>
     </Flex>
