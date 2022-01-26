@@ -136,6 +136,7 @@ function App() {
   }, [loadWeb3Modal]);
 
   const [userRole, setUserRole] = useState(null);
+  const [connectedBuilder, setConnectedBuilder] = useState(null);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -145,6 +146,7 @@ function App() {
           params: { address },
         });
         setUserRole(USER_ROLES[fetchedUserObject.data.role] ?? USER_ROLES.registered);
+        setConnectedBuilder(fetchedUserObject.data);
       } catch (e) {
         setUserRole(USER_ROLES.anonymous);
       }
@@ -171,7 +173,7 @@ function App() {
         />
         <Switch>
           <Route exact path="/">
-            <HomeView />
+            <HomeView connectedBuilder={connectedBuilder} />
           </Route>
           <Route exact path="/portfolio">
             {address && <Redirect to={"/builders/" + address} />}

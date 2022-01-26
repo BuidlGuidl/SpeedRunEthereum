@@ -1,10 +1,13 @@
 import React from "react";
 import { Link as RouteLink } from "react-router-dom";
-import { chakra, Button, Center, Image, Flex, Spacer, Text } from "@chakra-ui/react";
+import { chakra, Button, Center, Image, Flex, Spacer, Text, Link } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-const ChallengeExpandedCard = ({ challengeId, challenge }) => {
+const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallenges }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id =>
+    builderCompletedChallenges.includes(id),
+  );
 
   return (
     <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
@@ -25,18 +28,53 @@ const ChallengeExpandedCard = ({ challengeId, challenge }) => {
           {challenge.description}
         </Text>
         <Spacer />
-        <Button
-          as={RouteLink}
-          to={!challenge.disabled && `/challenge/${challengeId}`}
-          isDisabled={challenge.disabled}
-          variant={challenge.disabled ? "outline" : "solid"}
-          isFullWidth
-        >
-          <span role="img" aria-label="castle icon">
-            ⚔️
-          </span>
-          <chakra.span ml={1}>Quest</chakra.span>
-        </Button>
+        {challenge.telegram?.link ? (
+          // Redirect to telegram channel if set (instead of challenge detail view)
+          <Button
+            as={Link}
+            href={challenge.telegram?.link}
+            isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
+            variant={challenge.disabled ? "outline" : "solid"}
+            isFullWidth
+            isExternal
+          >
+            {builderHasCompletedDependenciesChallenges ? (
+              <chakra.span>{challenge.telegram.claim}</chakra.span>
+            ) : (
+              <>
+                <span role="img" aria-label="lock icon">
+                  🔒
+                </span>
+                <chakra.span ml={1}>Locked</chakra.span>
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button
+            as={RouteLink}
+            to={!challenge.disabled && `/challenge/${challengeId}`}
+            isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
+            variant={challenge.disabled ? "outline" : "solid"}
+            isFullWidth
+          >
+            {builderHasCompletedDependenciesChallenges ? (
+              <>
+                {" "}
+                <span role="img" aria-label="castle icon">
+                  ⚔️
+                </span>
+                <chakra.span ml={1}>Quest</chakra.span>
+              </>
+            ) : (
+              <>
+                <span role="img" aria-label="lock icon">
+                  🔒
+                </span>
+                <chakra.span ml={1}>Locked</chakra.span>
+              </>
+            )}
+          </Button>
+        )}
       </Flex>
     </Flex>
   );
