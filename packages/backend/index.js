@@ -10,7 +10,11 @@ const { runTestsForChallenge } = require("./services/autograder");
 const { withAddress, withRole } = require("./middlewares/auth");
 const { getSignMessageForId, verifySignature } = require("./utils/sign");
 const { EVENT_TYPES, createEvent } = require("./utils/events");
-const { getChallengeIndexFromChallengeId, isAutogradingEnabledForChallenge } = require("./utils/challenges");
+const {
+  getChallengeIndexFromChallengeId,
+  getChallengeSuccessMessageFromChallengeId,
+  isAutogradingEnabledForChallenge,
+} = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 
@@ -262,7 +266,8 @@ app.post("/challenges", withAddress, async (request, response) => {
           if (gradingResponseData.success) {
             existingChallenges[challengeId].status = "ACCEPTED";
             // Override comment
-            existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
+            existingChallenges[challengeId].reviewComment =
+              getChallengeSuccessMessageFromChallengeId(challengeId) + gradingResponseData.feedback;
             const autogradeEventPayload = {
               reviewAction: existingChallenges[challengeId].status,
               autograding: true,
