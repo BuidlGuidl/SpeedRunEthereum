@@ -15,7 +15,7 @@ export const challengeInfo = {
     label: "🚩 Challenge 1: 🥩 Decentralized Staking App ",
     disabled: false,
     description:
-      "🦸 A super power of Ethereum is allowing you, the builder, to create a simple set of rules that an adversarial group of players can use to work together. In this challenge, you create a decentralized application where users can coordinate a group funding effort. The users only have to trust the code.",
+      "🦸 A superpower of Ethereum is allowing you, the builder, to create a simple set of rules that an adversarial group of players can use to work together. In this challenge, you create a decentralized application where users can coordinate a group funding effort. The users only have to trust the code.",
     previewImage: "assets/1.png",
     dependencies: [],
   },
