@@ -38,7 +38,7 @@ export default function HomeView({ connectedBuilder }) {
 
       <Text color={primaryFontColor} mb="8" fontSize="xl" textAlign="center">
         <div>
-          <a href="https://docs.soliditylang.org/en/v0.6.6/units-and-global-variables.html" target="_blank">global units</a>, <a href="https://solidity-by-example.org/primitives/">primitives</a>, <a href="https://solidity-by-example.org/mapping/">mappings</a>,
+          <a href="https://docs.soliditylang.org/en/v0.6.6/units-and-global-variables.html" target="_blank">global units</a>, <a target="_blank" href="https://solidity-by-example.org/primitives/">primitives</a>, <a target="_blank" href="https://solidity-by-example.org/mapping/">mappings</a>,
          {" "}<a href="https://solidity-by-example.org/structs/" target="_blank">structs</a>, <a href="https://solidity-by-example.org/function-modifier/" target="_blank">modifiers</a>, <a href="https://solidity-by-example.org/events/" target="_blank">events</a>,</div> <a href="https://solidity-by-example.org/inheritance/" target="_blank">inheritance</a>, <a href="https://solidity-by-example.org/sending-ether/" target="_blank">sending eth</a>, and <a href="https://solidity-by-example.org/payable/" target="_blank">payable</a>/<a href="https://solidity-by-example.org/fallback/" target="_blank">fallback</a> functions.
       </Text>
       <Text color={primaryFontColor} mb="0" fontSize="xl" textAlign="center">

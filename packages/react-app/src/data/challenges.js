@@ -59,10 +59,26 @@ export const challengeInfo = {
       claim: "Join the ⚖️ DEX builder study group",
     },
   },
-  "learn-oracles": {
+  "nft-cohort": {
     id: 5,
+    branchName: "challenge-5-svg-nft-cohort",
+    label: "🚩 Challenge 5: 🎁 SVG NFT 🎫 Building Cohort",
+    disabled: false,
+    description:
+      '🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!'  ,
+    previewImage: "assets/nfts.png",
+    // Challenge locked until the builder completed these challenges
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+    // This will make the challenge to link to the Telegram channel, instead of the challenge detail view.
+    telegram: {
+      link: "https://t.me/+mUeITJ5u7Ig0ZWJh",
+      claim: "Join the 🎁 SVG NFT 🎫 Building Cohort",
+    },
+  },
+  "learn-oracles": {
+    id: 6,
     branchName: "challenge-4-oracle",
-    label: "🚩 Challenge 5: 🔮 Oracles",
+    label: "🚩 Challenge 6: 🔮 Oracles",
     disabled: true,
     description:
       "🛰 Off-chain information can be critical for on-chain logic but it's complicated! 🎲 Random numbers are also tricky on a deterministic public blockchain... ",
@@ -75,6 +91,7 @@ export const challengeInfo = {
       "minimum-viable-exchange",
     ],
   },
+
 };
 
 const githubChallengesRepoBaseRawUrl = {
