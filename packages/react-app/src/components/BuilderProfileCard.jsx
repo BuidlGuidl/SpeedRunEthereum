@@ -264,7 +264,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               ) : (
                 isMyProfile && (
                   <Alert mb={3} status="warning">
-                    <Text fontSize="xs">You haven't set your socials yet</Text>
+                    <Text style={{fontSize:11}}>You haven't set your socials yet</Text>
                   </Alert>
                 )
               )}
