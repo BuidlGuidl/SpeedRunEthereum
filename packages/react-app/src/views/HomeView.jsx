@@ -28,9 +28,16 @@ export default function HomeView({ connectedBuilder }) {
         Learn how to build on Ethereum; the superpowers and the gotchas.
       </Text>
 
+      <Text color={primaryFontColor} mb="6" fontSize="xl" textAlign="center">
+        <span role="img" aria-label="teacher icon">
+          🎥
+        </span>{" "}
+        Watch this quick video as an <a href="https://www.youtube.com/watch?v=MlJPjJQZtC8" target="_blank" style={{textDecoration:"underline"}}>Intro to Ethereum Development</a>.
+      </Text>
+
       <Text color={primaryFontColor} mb="2" fontSize="xl" textAlign="center">
-        Use {" "}
-        <a href="https://github.com/scaffold-eth/scaffold-eth#-scaffold-eth" target="_blank"><span role="img" aria-label="teacher icon">
+        Then use {" "}
+        <a style={{textDecoration:"underline"}} href="https://github.com/scaffold-eth/scaffold-eth#-scaffold-eth" target="_blank"><span role="img" aria-label="teacher icon">
           🏗
         </span>{" "}
         Scaffold-ETH</a> to copy/paste each Solidity concept and tinker:
