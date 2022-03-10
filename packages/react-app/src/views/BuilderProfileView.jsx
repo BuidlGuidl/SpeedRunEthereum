@@ -176,33 +176,25 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
                             </Link>
                           </Td>
                           <Td>
-                            {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
-                              <Link
-                                // Legacy branchUrl
-                                href={lastSubmission.contractUrl || lastSubmission.branchUrl}
-                                color="teal.500"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Code
-                              </Link>
-                            ) : (
-                              <Center>-</Center>
-                            )}
+                            <Link
+                              // Legacy branchUrl
+                              href={lastSubmission.contractUrl || lastSubmission.branchUrl}
+                              color="teal.500"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Code
+                            </Link>
                           </Td>
                           <Td>
-                            {lastSubmission.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED ? (
-                              <Link
-                                href={lastSubmission.deployedUrl}
-                                color="teal.500"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Demo
-                              </Link>
-                            ) : (
-                              <Center>-</Center>
-                            )}
+                            <Link
+                              href={lastSubmission.deployedUrl}
+                              color="teal.500"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Demo
+                            </Link>
                           </Td>
                           <Td>
                             {isLoadingTimestamps ? (
