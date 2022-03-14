@@ -24,7 +24,10 @@ import {
   useToast,
   useColorModeValue,
   Badge,
+  Tooltip,
+  useClipboard,
 } from "@chakra-ui/react";
+import { CopyIcon } from "@chakra-ui/icons";
 import QRPunkBlockie from "./QrPunkBlockie";
 import SocialLink from "./SocialLink";
 import useDisplayAddress from "../hooks/useDisplayAddress";
@@ -50,6 +53,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
   const [isUpdatingReachedOutFlag, setIsUpdatingReachedOutFlag] = useState(false);
   const [isUpdatingSocials, setIsUpdatingSocials] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { hasCopied, onCopy } = useClipboard(builder?.id);
   const { borderColor, secondaryFontColor } = useCustomColorModes();
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
@@ -225,12 +229,18 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
                     {ens}
                   </Text>
                   <Text textAlign="center" mb={4} color={secondaryFontColor}>
-                    {shortAddress}
+                    {shortAddress}{" "}
+                    <Tooltip label={hasCopied ? "Copied!" : "Copy"} closeOnClick={false}>
+                      <CopyIcon cursor="pointer" onClick={onCopy} />
+                    </Tooltip>
                   </Text>
                 </>
               ) : (
                 <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={8}>
-                  {shortAddress}
+                  {shortAddress}{" "}
+                  <Tooltip label={hasCopied ? "Copied!" : "Copy"} closeOnClick={false}>
+                    <CopyIcon cursor="pointer" onClick={onCopy} />
+                  </Tooltip>
                 </Text>
               )}
               {isAdmin && (
@@ -264,7 +274,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               ) : (
                 isMyProfile && (
                   <Alert mb={3} status="warning">
-                    <Text style={{fontSize:11}}>You haven't set your socials yet</Text>
+                    <Text style={{ fontSize: 11 }}>You haven't set your socials yet</Text>
                   </Alert>
                 )
               )}
