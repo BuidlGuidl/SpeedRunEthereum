@@ -28,18 +28,18 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallen
           {challenge.description}
         </Text>
         <Spacer />
-        {challenge.telegram?.link ? (
-          // Redirect to telegram channel if set (instead of challenge detail view)
+        {challenge.externalLink?.link ? (
+          // Redirect to externalLink if set (instead of challenge detail view)
           <Button
             as={Link}
-            href={challenge.telegram?.link}
+            href={challenge.externalLink?.link}
             isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
             variant={challenge.disabled ? "outline" : "solid"}
             isFullWidth
             isExternal
           >
             {builderHasCompletedDependenciesChallenges ? (
-              <chakra.span>{challenge.telegram.claim}</chakra.span>
+              <chakra.span>{challenge.externalLink.claim}</chakra.span>
             ) : (
               <>
                 <span role="img" aria-label="lock icon">
