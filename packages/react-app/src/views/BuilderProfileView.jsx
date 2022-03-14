@@ -6,7 +6,6 @@ import {
   useColorModeValue,
   Box,
   Button,
-  Center,
   Link,
   HStack,
   Text,
@@ -29,7 +28,7 @@ import { InfoOutlineIcon } from "@chakra-ui/icons";
 import BuilderProfileCard from "../components/BuilderProfileCard";
 import BuilderProfileChallengesTableSkeleton from "../components/skeletons/BuilderProfileChallengesTableSkeleton";
 import { challengeInfo } from "../data/challenges";
-import { CHALLENGE_SUBMISSION_STATUS, userFunctionDescription } from "../helpers/constants";
+import { userFunctionDescription } from "../helpers/constants";
 import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
 import useCustomColorModes from "../hooks/useCustomColorModes";
