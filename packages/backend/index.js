@@ -166,6 +166,13 @@ app.post("/challenges/run-test", withRole("admin"), async (request, response) =>
   }
 });
 
+/**
+ * Update the user challenges while checking trigger logic.
+ */
+const updateUserChallenges = async (user, challengeData) => {
+  await db.updateUser(user.data.id, challengeData);
+};
+
 app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, contractUrl, signature } = request.body;
   // TODO Maybe make this needed props a middleware. Same for headers
@@ -302,11 +309,11 @@ app.post("/challenges", withAddress, async (request, response) => {
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
       })
       .then(() => {
-        db.updateUser(address, { challenges: existingChallenges }); // INFO: async, no await here.
+        updateUserChallenges(user, { challenges: existingChallenges }); // INFO: async, no await here.
       });
   }
 
-  await db.updateUser(address, { challenges: existingChallenges });
+  await updateUserChallenges(user, { challenges: existingChallenges });
   response.sendStatus(200);
 });
 
@@ -337,7 +344,8 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
   if ((!user.data.role || user.data.role === "registered") && newStatus === "ACCEPTED") {
     updateData.role = "builder";
   }
-  await db.updateUser(userAddress, updateData);
+
+  await updateUserChallenges(user, updateData);
 }
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {
