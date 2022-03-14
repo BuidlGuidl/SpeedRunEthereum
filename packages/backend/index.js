@@ -17,6 +17,7 @@ const {
 } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
+const { createUserOnBG } = require("./services/buidlguidl");
 
 const app = express();
 const autogradingEnabled = process.env.NODE_ENV !== "test" && !!process.env.AUTOGRADING_SERVER;
@@ -169,8 +170,12 @@ app.post("/challenges/run-test", withRole("admin"), async (request, response) =>
 /**
  * Update the user challenges while checking trigger logic.
  */
-const updateUserChallenges = async (user, challengeData) => {
+const updateUserChallenges = async (user, challengeData, updatedChallengeId) => {
   await db.updateUser(user.data.id, challengeData);
+
+  if (updatedChallengeId === "token-vendor" && challengeData.challenges["token-vendor"].status === "ACCEPTED") {
+    createUserOnBG(user.data.id); // INFO: async, no await here
+  }
 };
 
 app.post("/challenges", withAddress, async (request, response) => {
@@ -309,11 +314,11 @@ app.post("/challenges", withAddress, async (request, response) => {
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
       })
       .then(() => {
-        updateUserChallenges(user, { challenges: existingChallenges }); // INFO: async, no await here.
+        updateUserChallenges(user, { challenges: existingChallenges }, challengeId); // INFO: async, no await here.
       });
   }
 
-  await updateUserChallenges(user, { challenges: existingChallenges });
+  await updateUserChallenges(user, { challenges: existingChallenges }, challengeId);
   response.sendStatus(200);
 });
 
@@ -345,7 +350,7 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
     updateData.role = "builder";
   }
 
-  await updateUserChallenges(user, updateData);
+  await updateUserChallenges(user, updateData, challengeId);
 }
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {
