@@ -5,6 +5,7 @@ entrypoint: node index.js
 env_variables:
   DATABASE_SERVICE: "firebase"
   AUTOGRADING_SERVER: "https://grader.speedrunethereum.com:54727"
+  BG_BACKEND: "https://buidlguidl-v3.ew.r.appspot.com"
 handlers:
   - url: /.*
     secure: always
