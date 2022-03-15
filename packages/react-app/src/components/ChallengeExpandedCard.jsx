@@ -5,9 +5,19 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallenges }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
-  const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id =>
-    builderCompletedChallenges.includes(id),
-  );
+
+  const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
+    if (!builderCompletedChallenges[id]) {
+      return false;
+    }
+    if (challenge.lockedTimestamp) {
+      return (
+        new Date().getTime() - builderCompletedChallenges[id].submittedTimestamp > challenge.lockedTimestamp * 60 * 1000
+      );
+    }
+
+    return true;
+  });
 
   return (
     <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
@@ -28,18 +38,18 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallen
           {challenge.description}
         </Text>
         <Spacer />
-        {challenge.telegram?.link ? (
-          // Redirect to telegram channel if set (instead of challenge detail view)
+        {challenge.externalLink?.link ? (
+          // Redirect to externalLink if set (instead of challenge detail view)
           <Button
             as={Link}
-            href={challenge.telegram?.link}
+            href={challenge.externalLink?.link}
             isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
             variant={challenge.disabled ? "outline" : "solid"}
             isFullWidth
             isExternal
           >
             {builderHasCompletedDependenciesChallenges ? (
-              <chakra.span>{challenge.telegram.claim}</chakra.span>
+              <chakra.span>{challenge.externalLink.claim}</chakra.span>
             ) : (
               <>
                 <span role="img" aria-label="lock icon">

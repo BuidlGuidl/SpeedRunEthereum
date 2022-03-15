@@ -17,6 +17,7 @@ const {
 } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
+const { createUserOnBG } = require("./services/buidlguidl");
 
 const app = express();
 const autogradingEnabled = process.env.NODE_ENV !== "test" && !!process.env.AUTOGRADING_SERVER;
@@ -166,6 +167,17 @@ app.post("/challenges/run-test", withRole("admin"), async (request, response) =>
   }
 });
 
+/**
+ * Update the user challenges while checking trigger logic.
+ */
+const updateUserChallenges = async (user, challengeData, updatedChallengeId) => {
+  await db.updateUser(user.data.id, challengeData);
+
+  if (updatedChallengeId === "token-vendor" && challengeData.challenges["token-vendor"].status === "ACCEPTED") {
+    createUserOnBG(user.data.id); // INFO: async, no await here
+  }
+};
+
 app.post("/challenges", withAddress, async (request, response) => {
   const { challengeId, deployedUrl, contractUrl, signature } = request.body;
   // TODO Maybe make this needed props a middleware. Same for headers
@@ -302,11 +314,11 @@ app.post("/challenges", withAddress, async (request, response) => {
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
       })
       .then(() => {
-        db.updateUser(address, { challenges: existingChallenges }); // INFO: async, no await here.
+        updateUserChallenges(user, { challenges: existingChallenges }, challengeId); // INFO: async, no await here.
       });
   }
 
-  await db.updateUser(address, { challenges: existingChallenges });
+  await updateUserChallenges(user, { challenges: existingChallenges }, challengeId);
   response.sendStatus(200);
 });
 
@@ -316,6 +328,7 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
   existingChallenges[challengeId] = {
     ...existingChallenges[challengeId],
     status: newStatus,
+    submittedTimestamp: new Date().getTime(),
     reviewComment: comment != null ? comment : "",
   };
 
@@ -337,7 +350,8 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
   if ((!user.data.role || user.data.role === "registered") && newStatus === "ACCEPTED") {
     updateData.role = "builder";
   }
-  await db.updateUser(userAddress, updateData);
+
+  await updateUserChallenges(user, updateData, challengeId);
 }
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {

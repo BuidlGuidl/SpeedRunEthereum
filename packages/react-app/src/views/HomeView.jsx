@@ -13,8 +13,10 @@ export default function HomeView({ connectedBuilder }) {
       return [];
     }
 
-    return Object.keys(connectedBuilder.challenges).filter(
-      challengeId => connectedBuilder.challenges[challengeId].status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED,
+    return Object.fromEntries(
+      Object.entries(connectedBuilder.challenges).filter(
+        ([_, challengeData]) => challengeData.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED,
+      ),
     );
   }, [connectedBuilder]);
 

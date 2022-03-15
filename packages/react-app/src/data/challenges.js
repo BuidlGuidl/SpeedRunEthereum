@@ -29,56 +29,76 @@ export const challengeInfo = {
     previewImage: "assets/2.png",
     dependencies: [],
   },
-  "learn-multisig": {
+  "minimum-viable-exchange": {
     id: 3,
+    branchName: "",
+    label: "🚩 Challenge 3: ⚖️ Build a DEX",
+    disabled: false,
+    description:
+      "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
+    previewImage: "assets/4.png",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+    externalLink: {
+      link: "https://t.me/+q4WzoxX88nwzZmQx",
+      claim: "Join the ⚖️ DEX builder study group",
+    },
+  },
+  "buidl-guidl": {
+    id: 4,
+    branchName: "",
+    label: "🚩 Challenge 4: 🏰️ BG 🏤 Bazaar",
+    disabled: false,
+    description:
+      "Now you are a member of BuidlGuidl Bazaar!!! – The Bazaar is a place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
+    previewImage: "assets/bg.png",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+    externalLink: {
+      link: "https://bazaar.buidlguidl.com/",
+      claim: "Join the 🏰️ BG 🏤 Bazaar",
+    },
+  },
+  "learn-multisig": {
+    id: 5,
     branchName: "challenge-3-multi-sig",
-    label: "🚩 Challenge 3: 👛 Multisig Wallet",
+    label: "🚩 Challenge 5: 👛 Multisig Wallet",
     disabled: false,
     description:
       '👩‍👩‍👧‍👧 Using a smart contract as a wallet we can secure assets by requiring multiple accounts to "vote" on transactions. The contract will keep track of transactions in an array of structs and owners will confirm or reject each one. Any transaction with enough confirmations can "execute".',
     previewImage: "assets/3.png",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
-    // This will make the challenge to link to the Telegram channel, instead of the challenge detail view.
-    telegram: {
+    // Once the dependencies are completed, lock the challenge until
+    // "lockedTimestamp" minutes have elapsed
+    lockedTimestamp: 1440,
+    // This will make the challenge to link to the externalLink, instead of the challenge detail view.
+    externalLink: {
       link: "https://t.me/+zKllN8OlGuxmYzFh",
       claim: "Join the 👛 Multisig Build cohort",
     },
   },
-  "minimum-viable-exchange": {
-    id: 4,
-    branchName: "",
-    label: "🚩 Challenge 4: ⚖️ Build a DEX",
-    disabled: false,
-    description:
-      "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
-    previewImage: "assets/4.png",
-    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
-    telegram: {
-      link: "https://t.me/+q4WzoxX88nwzZmQx",
-      claim: "Join the ⚖️ DEX builder study group",
-    },
-  },
   "nft-cohort": {
-    id: 5,
+    id: 6,
     branchName: "challenge-5-svg-nft-cohort",
-    label: "🚩 Challenge 5: 🎁 SVG NFT 🎫 Building Cohort",
+    label: "🚩 Challenge 6: 🎁 SVG NFT 🎫 Building Cohort",
     disabled: false,
     description:
-      '🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!'  ,
+      "🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!",
     previewImage: "assets/nfts.png",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
-    // This will make the challenge to link to the Telegram channel, instead of the challenge detail view.
-    telegram: {
+    // Once the dependencies are completed, lock the challenge until
+    // "lockedTimestamp" minutes have is elapsed
+    lockedTimestamp: 1440,
+    // This will make the challenge to link to the externalLink, instead of the challenge detail view.
+    externalLink: {
       link: "https://t.me/+mUeITJ5u7Ig0ZWJh",
       claim: "Join the 🎁 SVG NFT 🎫 Building Cohort",
     },
   },
   "learn-oracles": {
-    id: 6,
+    id: 7,
     branchName: "challenge-4-oracle",
-    label: "🚩 Challenge 6: 🔮 Oracles",
+    label: "🚩 Challenge 7: 🔮 Oracles",
     disabled: true,
     description:
       "🛰 Off-chain information can be critical for on-chain logic but it's complicated! 🎲 Random numbers are also tricky on a deterministic public blockchain... ",
@@ -91,7 +111,6 @@ export const challengeInfo = {
       "minimum-viable-exchange",
     ],
   },
-
 };
 
 const githubChallengesRepoBaseRawUrl = {
