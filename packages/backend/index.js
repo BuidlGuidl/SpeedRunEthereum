@@ -328,6 +328,7 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
   existingChallenges[challengeId] = {
     ...existingChallenges[challengeId],
     status: newStatus,
+    submittedTimestamp: new Date().getTime(),
     reviewComment: comment != null ? comment : "",
   };
 

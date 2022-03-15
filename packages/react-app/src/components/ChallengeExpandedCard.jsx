@@ -5,9 +5,19 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallenges }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
-  const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id =>
-    builderCompletedChallenges.includes(id),
-  );
+
+  const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
+    if (!builderCompletedChallenges[id]) {
+      return false;
+    }
+    if (challenge.lockedTimestamp) {
+      return (
+        new Date().getTime() - builderCompletedChallenges[id].submittedTimestamp > challenge.lockedTimestamp * 60 * 1000
+      );
+    }
+
+    return true;
+  });
 
   return (
     <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>

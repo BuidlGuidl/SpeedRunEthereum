@@ -67,6 +67,9 @@ export const challengeInfo = {
     previewImage: "assets/3.png",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+    // Once the dependencies are completed, lock the challenge until
+    // "lockedTimestamp" minutes have elapsed
+    lockedTimestamp: 1440,
     // This will make the challenge to link to the externalLink, instead of the challenge detail view.
     externalLink: {
       link: "https://t.me/+zKllN8OlGuxmYzFh",
@@ -83,6 +86,9 @@ export const challengeInfo = {
     previewImage: "assets/nfts.png",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+    // Once the dependencies are completed, lock the challenge until
+    // "lockedTimestamp" minutes have is elapsed
+    lockedTimestamp: 1440,
     // This will make the challenge to link to the externalLink, instead of the challenge detail view.
     externalLink: {
       link: "https://t.me/+mUeITJ5u7Ig0ZWJh",
