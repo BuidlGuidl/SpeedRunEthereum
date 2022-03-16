@@ -19,8 +19,12 @@ const createUserOnBG = async userAddress => {
         },
       },
     )
-    .then(() => {
-      console.log("User created on BGv3!");
+    .then(response => {
+      if (response.status === 204) {
+        console.log(`User ${userAddress} already existed on BGv3`);
+      } else {
+        console.log(`User ${userAddress} created on BGv3!`);
+      }
     })
     .catch(e => {
       console.error("BG user creation failed:", e);
