@@ -174,7 +174,7 @@ const updateUserChallenges = async (user, challengeData, updatedChallengeId) => 
   await db.updateUser(user.data.id, challengeData);
 
   if (updatedChallengeId === "token-vendor" && challengeData.challenges["token-vendor"].status === "ACCEPTED") {
-    createUserOnBG(user.data.id); // INFO: async, no await here
+    createUserOnBG(user.data); // INFO: async, no await here
   }
 };
 
