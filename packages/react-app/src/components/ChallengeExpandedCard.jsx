@@ -19,6 +19,8 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallen
     return true;
   });
 
+  const isChallengeLocked = challenge.disabled || !builderHasCompletedDependenciesChallenges;
+
   return (
     <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
       <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
@@ -41,10 +43,10 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallen
         {challenge.externalLink?.link ? (
           // Redirect to externalLink if set (instead of challenge detail view)
           <Button
-            as={Link}
-            href={challenge.externalLink?.link}
-            isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
-            variant={challenge.disabled ? "outline" : "solid"}
+            as={isChallengeLocked ? Button : Link}
+            href={isChallengeLocked ? null : challenge.externalLink?.link}
+            isDisabled={isChallengeLocked}
+            variant={isChallengeLocked ? "outline" : "solid"}
             isFullWidth
             isExternal
           >
@@ -62,12 +64,12 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderCompletedChallen
         ) : (
           <Button
             as={RouteLink}
-            to={!challenge.disabled && `/challenge/${challengeId}`}
-            isDisabled={challenge.disabled || !builderHasCompletedDependenciesChallenges}
-            variant={challenge.disabled ? "outline" : "solid"}
+            to={!isChallengeLocked && `/challenge/${challengeId}`}
+            isDisabled={isChallengeLocked}
+            variant={isChallengeLocked ? "outline" : "solid"}
             isFullWidth
           >
-            {builderHasCompletedDependenciesChallenges ? (
+            {!isChallengeLocked ? (
               <>
                 {" "}
                 <span role="img" aria-label="castle icon">
