@@ -97,12 +97,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         </Button>
         <Box pos="fixed" bottom={0} p={6} left={0} right={0}>
           <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
-            <Button
-              colorScheme="blue"
-              boxShadow="dark-lg"
-              onClick={handleSubmitChallengeModal}
-              disabled={isAnonymous}
-            >
+            <Button colorScheme="blue" boxShadow="dark-lg" onClick={handleSubmitChallengeModal} disabled={isAnonymous}>
               Submit challenge
             </Button>
           </Tooltip>
@@ -112,7 +107,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   };
 
   return (
-    <Container maxW="container.md" mb="60px">
+    // Magic number for maxW to match GitHub
+    <Container maxW="894px" mb="60px">
       <Box textAlign="center" mb={6}>
         <Heading as="h1" mb={4}>
           {challenge.label}
