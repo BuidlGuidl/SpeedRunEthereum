@@ -71,7 +71,14 @@ const ChallengeStatusTag = ({ status, comment, autograding }) => {
           <ModalCloseButton />
           <ModalBody p={6} overflowX="auto">
             {autograding ? (
-              <chakra.pre fontSize={14}>{comment}</chakra.pre>
+              <Box className="autograding-feedback">
+                <style>
+                  {`
+                    .autograding-feedback a { text-decoration: underline; color: var(--chakra-colors-teal-500) }
+                  `}
+                </style>
+                <chakra.pre fontSize={14} whiteSpace="pre-wrap" dangerouslySetInnerHTML={{ __html: comment }} />
+              </Box>
             ) : (
               <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} remarkPlugins={[remarkBreaks]}>
                 {comment}
