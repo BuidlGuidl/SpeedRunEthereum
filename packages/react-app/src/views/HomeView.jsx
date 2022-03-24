@@ -22,7 +22,7 @@ export default function HomeView({ connectedBuilder }) {
 
   return (
     <Container maxW="container.lg" centerContent>
-      <div style={{ width: 740, margin: "auto", border: "1px solid #DDDDDD", padding: 32, marginBottom: 64 }}>
+      <div style={{ maxWidth: 740, margin: "auto", border: "1px solid #DDDDDD", padding: 32, marginBottom: 64 }}>
         <Text color={primaryFontColor} mb="6" fontSize="xl" textAlign="center">
           <span role="img" aria-label="teacher icon">
             👩‍🏫
