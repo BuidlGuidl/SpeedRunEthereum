@@ -63,6 +63,11 @@ app.get("/builders/:builderAddress", async (req, res) => {
   console.log(`/builders/${builderAddress}`);
 
   const builder = await db.findUserByAddress(builderAddress);
+  if (!builder.exists) {
+    res.status(404).send("User doesn't exist");
+    return;
+  }
+
   res.status(200).send(builder.data);
 });
 
