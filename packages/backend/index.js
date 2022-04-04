@@ -175,10 +175,15 @@ app.post("/challenges/run-test", withRole("admin"), async (request, response) =>
 /**
  * Update the user challenges while checking trigger logic.
  */
-const updateUserChallenges = async (user, challengeData, updatedChallengeId) => {
+const updateUserChallenges = async (user, challengeData) => {
   await db.updateUser(user.data.id, challengeData);
 
-  if (updatedChallengeId === "token-vendor" && challengeData.challenges["token-vendor"].status === "ACCEPTED") {
+  const requiredChallengesToEnterBG = ["simple-nft-example", "decentralized-staking", "token-vendor"];
+  const arePendingChallenges = requiredChallengesToEnterBG.some(
+    challengeId => challengeData.challenges[challengeId].status !== "ACCEPTED",
+  );
+
+  if (!arePendingChallenges) {
     createUserOnBG(user.data); // INFO: async, no await here
   }
 };
@@ -319,11 +324,11 @@ app.post("/challenges", withAddress, async (request, response) => {
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
       })
       .then(() => {
-        updateUserChallenges(user, { challenges: existingChallenges }, challengeId); // INFO: async, no await here.
+        updateUserChallenges(user, { challenges: existingChallenges }); // INFO: async, no await here.
       });
   }
 
-  await updateUserChallenges(user, { challenges: existingChallenges }, challengeId);
+  await updateUserChallenges(user, { challenges: existingChallenges });
   response.sendStatus(200);
 });
 
@@ -356,7 +361,7 @@ async function setChallengeStatus(userAddress, reviewerAddress, challengeId, new
     updateData.role = "builder";
   }
 
-  await updateUserChallenges(user, updateData, challengeId);
+  await updateUserChallenges(user, updateData);
 }
 
 app.patch("/challenges", withRole("admin"), async (request, response) => {
