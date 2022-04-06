@@ -41,6 +41,7 @@ import {
 } from "../data/api";
 import { bySocialWeight, socials } from "../data/socials";
 import { USER_ROLES } from "../helpers/constants";
+import { validateSocials } from "../helpers/validators";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
@@ -80,6 +81,19 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
 
     // Avoid sending socials with empty strings.
     const socialLinkCleaned = Object.fromEntries(Object.entries(updatedSocials).filter(([_, value]) => !!value));
+
+    const invalidSocials = validateSocials(socialLinkCleaned);
+    if (invalidSocials.length !== 0) {
+      toast({
+        description: `The usernames for the following socials are not correct: ${invalidSocials
+          .map(([social]) => social)
+          .join(", ")}`,
+        status: "error",
+        variant: toastVariant,
+      });
+      setIsUpdatingSocials(false);
+      return;
+    }
 
     let signMessage;
     try {
