@@ -26,6 +26,7 @@ export const socials = {
     icon: DiscordIcon,
     getLink: _ => null,
     weight: 2,
+    validator: "discord",
   },
   github: {
     label: "GitHub",
@@ -40,6 +41,7 @@ export const socials = {
     icon: EmailIcon,
     getLink: value => `mailto:${value}`,
     weight: 4,
+    validator: "email",
   },
   instagram: {
     label: "Instagram",
