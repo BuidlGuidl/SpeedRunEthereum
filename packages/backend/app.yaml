@@ -2,6 +2,8 @@
 runtime: nodejs14
 env: standard
 entrypoint: node index.js
+automatic_scaling:
+  max_instances: 3
 env_variables:
   DATABASE_SERVICE: "firebase"
   AUTOGRADING_SERVER: "https://grader.speedrunethereum.com:54727"
