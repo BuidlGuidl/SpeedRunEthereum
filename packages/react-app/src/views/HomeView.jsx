@@ -3,20 +3,17 @@ import { Container, Box, Text } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
-import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 
 export default function HomeView({ connectedBuilder }) {
   const { primaryFontColor } = useCustomColorModes();
 
-  const builderCompletedChallenges = useMemo(() => {
+  const builderAttemptedChallenges = useMemo(() => {
     if (!connectedBuilder?.challenges) {
       return [];
     }
 
     return Object.fromEntries(
-      Object.entries(connectedBuilder.challenges).filter(
-        ([_, challengeData]) => challengeData.status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED,
-      ),
+      Object.entries(connectedBuilder.challenges).filter(([_, challengeData]) => challengeData?.status),
     );
   }, [connectedBuilder]);
 
@@ -124,7 +121,7 @@ export default function HomeView({ connectedBuilder }) {
             challengeId={challengeId}
             challenge={challenge}
             challengeIndex={index}
-            builderCompletedChallenges={builderCompletedChallenges}
+            builderAttemptedChallenges={builderAttemptedChallenges}
           />
         ))}
       </Box>
