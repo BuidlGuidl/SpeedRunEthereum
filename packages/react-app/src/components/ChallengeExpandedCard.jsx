@@ -26,7 +26,7 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
     if (!builderAttemptedChallenges[id]) {
       return false;
     }
-    if (!builderAttemptedChallenges[id].status !== CHALLENGE_SUBMISSION_STATUS.ACCEPTED) {
+    if (!(builderAttemptedChallenges[id].status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED)) {
       return false;
     }
     if (challenge.lockedTimestamp) {
