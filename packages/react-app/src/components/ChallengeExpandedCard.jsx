@@ -38,12 +38,15 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
     return true;
   });
 
-  const pendingDepenciesChallenges = challenge.dependencies?.filter(dependency => {
-    return !builderAttemptedChallenges[dependency];
+  const pendingDependenciesChallenges = challenge.dependencies?.filter(dependency => {
+    return (
+      !builderAttemptedChallenges[dependency] ||
+      builderAttemptedChallenges[dependency].status !== CHALLENGE_SUBMISSION_STATUS.ACCEPTED
+    );
   });
 
   let lockReasonToolTip = "following not approved:";
-  pendingDepenciesChallenges.forEach(dependency => {
+  pendingDependenciesChallenges.forEach(dependency => {
     lockReasonToolTip += " " + dependency;
   });
 
