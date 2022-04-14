@@ -13,6 +13,7 @@ import {
   Text,
   Link,
   Tag,
+  Badge,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
@@ -45,13 +46,31 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
     );
   });
 
-  let lockReasonToolTip = "following not approved:";
-  pendingDependenciesChallenges.forEach(dependency => {
-    lockReasonToolTip += " " + dependency;
-  });
+  const lockReasonToolTip = "The following challenges are not completed: " + pendingDependenciesChallenges.join(", ");
 
-  const isRampUpChallenge = challenge.dependencies?.length <= 0;
+  const isRampUpChallenge = challenge.dependencies?.length === 0;
   const challengeStatus = builderAttemptedChallenges[challengeId]?.status;
+
+  let colorScheme;
+  let label;
+  switch (challengeStatus) {
+    case CHALLENGE_SUBMISSION_STATUS.ACCEPTED: {
+      colorScheme = "green";
+      label = "Accepted";
+      break;
+    }
+    case CHALLENGE_SUBMISSION_STATUS.REJECTED: {
+      colorScheme = "red";
+      label = "Rejected";
+      break;
+    }
+    case CHALLENGE_SUBMISSION_STATUS.SUBMITTED: {
+      label = "Submitted";
+      break;
+    }
+    default:
+    // do nothing
+  }
 
   const isChallengeLocked = challenge.disabled || !builderHasCompletedDependenciesChallenges;
 
@@ -70,9 +89,9 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
         <Flex justify="space-between" pb={4}>
           <Text fontWeight="bold">{challenge.label}</Text>
           {isRampUpChallenge && challengeStatus && (
-            <Tag size="sm" key="sm" variant="outline">
-              {challengeStatus}
-            </Tag>
+            <Badge borderRadius="xl" colorScheme={colorScheme} textTransform="none" py={0.5} px={2.5}>
+              {label}
+            </Badge>
           )}
         </Flex>
         <Text color={secondaryFontColor} mb={4}>
