@@ -12,7 +12,6 @@ import {
   Spacer,
   Text,
   Link,
-  Tag,
   Badge,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
