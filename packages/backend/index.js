@@ -180,7 +180,7 @@ const updateUserChallenges = async (user, challengeData) => {
 
   const requiredChallengesToEnterBG = ["simple-nft-example", "decentralized-staking", "token-vendor"];
   const arePendingChallenges = requiredChallengesToEnterBG.some(
-    challengeId => challengeData.challenges[challengeId].status !== "ACCEPTED",
+    challengeId => challengeData.challenges?.[challengeId]?.status !== "ACCEPTED",
   );
 
   if (!arePendingChallenges) {
