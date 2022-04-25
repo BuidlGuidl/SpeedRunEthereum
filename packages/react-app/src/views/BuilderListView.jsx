@@ -156,15 +156,12 @@ export default function BuilderListView({ serverUrl, mainnetProvider, userRole }
         <Heading as="h1" mb="4">
           All Builders
         </Heading>
-        <Text color={secondaryFontColor} textAlign="center">
+        <Text color={secondaryFontColor} textAlign="center" mb="10">
           List of Ethereum builders creating products, prototypes, and tutorials with{" "}
           <Link href="https://github.com/scaffold-eth/scaffold-eth" color="teal.500" isExternal>
             scaffold-eth
           </Link>
           .
-        </Text>
-        <Text color={secondaryFontColor} mb="10">
-          You can fund Eth development sending Eth to any stream.
         </Text>
       </Container>
       {isLoadingBuilders ? (
