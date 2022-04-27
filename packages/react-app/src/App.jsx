@@ -15,7 +15,6 @@ import {
   BuilderProfileView,
   SubmissionReviewView,
   HomeView,
-  BuildsListView,
   ActivityView,
 } from "./views";
 import { USER_ROLES } from "./helpers/constants";
@@ -177,9 +176,6 @@ function App() {
           </Route>
           <Route exact path="/portfolio">
             {address && <Redirect to={"/builders/" + address} />}
-          </Route>
-          <Route exact path="/builds">
-            <BuildsListView userProvider={userProvider} />
           </Route>
           <Route path="/builders" exact>
             <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} userRole={userRole} />
