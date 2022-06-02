@@ -29,10 +29,24 @@ export const challengeInfo = {
     previewImage: "assets/2.png",
     dependencies: [],
   },
-  "minimum-viable-exchange": {
+  "dice-game": {
     id: 3,
     branchName: "",
-    label: "🚩 Challenge 3: ⚖️ Build a DEX",
+    label: "🚩 Challenge 3: 🎲 Dice Game",
+    disabled: false,
+    description:
+      "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
+    previewImage: "assets/dice.png",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+    externalLink: {
+      link: "https://t.me/+a_fzV0rOdYc5YzAx",
+      claim: "Join the 🎲️ Dice Game study group",
+    },
+  },
+  "minimum-viable-exchange": {
+    id: 4,
+    branchName: "",
+    label: "🚩 Challenge 4: ⚖️ Build a DEX",
     disabled: false,
     description:
       "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
@@ -44,9 +58,9 @@ export const challengeInfo = {
     },
   },
   "buidl-guidl": {
-    id: 4,
+    id: 5,
     branchName: "",
-    label: "🚩 Challenge 4: 🏰️ BG 🏤 Bazaar",
+    label: "🚩 Challenge 5: 🏰️ BG 🏤 Bazaar",
     disabled: false,
     description:
       "Now you are a member of BuidlGuidl Bazaar!!! – The Bazaar is a place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
@@ -58,9 +72,9 @@ export const challengeInfo = {
     },
   },
   "learn-multisig": {
-    id: 5,
+    id: 6,
     branchName: "challenge-3-multi-sig",
-    label: "🚩 Challenge 5: 👛 Multisig Wallet",
+    label: "🚩 Challenge 6: 👛 Multisig Wallet",
     disabled: false,
     description:
       '👩‍👩‍👧‍👧 Using a smart contract as a wallet we can secure assets by requiring multiple accounts to "vote" on transactions. The contract will keep track of transactions in an array of structs and owners will confirm or reject each one. Any transaction with enough confirmations can "execute".',
@@ -77,9 +91,9 @@ export const challengeInfo = {
     },
   },
   "nft-cohort": {
-    id: 6,
+    id: 7,
     branchName: "challenge-5-svg-nft-cohort",
-    label: "🚩 Challenge 6: 🎁 SVG NFT 🎫 Building Cohort",
+    label: "🚩 Challenge 7: 🎁 SVG NFT 🎫 Building Cohort",
     disabled: false,
     description:
       "🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!",
@@ -96,9 +110,9 @@ export const challengeInfo = {
     },
   },
   "learn-oracles": {
-    id: 7,
+    id: 8,
     branchName: "challenge-4-oracle",
-    label: "🚩 Challenge 7: 🔮 Oracles",
+    label: "🚩 Challenge 8: 🔮 Oracles",
     disabled: true,
     description:
       "🛰 Off-chain information can be critical for on-chain logic but it's complicated! 🎲 Random numbers are also tricky on a deterministic public blockchain... ",
