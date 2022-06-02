@@ -39,7 +39,7 @@ export const challengeInfo = {
     previewImage: "assets/dice.png",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
-      link: "https://t.me/+a_fzV0rOdYc5YzAx",
+      link: "https://t.me/+3StA0aBSArFjNjUx",
       claim: "Join the 🎲️ Dice Game study group",
     },
   },
