@@ -13,6 +13,7 @@ import {
   Text,
   Link,
   Badge,
+  Box,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
@@ -72,6 +73,55 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
   }
 
   const isChallengeLocked = challenge.disabled || !builderHasCompletedDependenciesChallenges;
+
+  if (challenge.checkpoint) {
+    return (
+      <Box bg="#f9f9f9">
+        <Flex maxW={500} overflow="hidden" m="0 auto 24px" opacity={isChallengeLocked ? "0.5" : "1"}>
+          <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
+            <Flex alignItems="center" pb={4} direction="column">
+              <Text fontWeight="bold" fontSize="lg">
+                {challenge.label}
+              </Text>
+              <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
+                <Image src={challenge.previewImage} objectFit="cover" />
+              </Center>
+            </Flex>
+            <Text color={secondaryFontColor} mb={4} textAlign="center">
+              {challenge.description}
+            </Text>
+            <Spacer />
+            <ButtonGroup>
+              <Button
+                as={isChallengeLocked ? Button : Link}
+                href={isChallengeLocked ? null : challenge.externalLink?.link}
+                isDisabled={isChallengeLocked}
+                variant={isChallengeLocked ? "outline" : "solid"}
+                isFullWidth
+                isExternal
+              >
+                {builderHasCompletedDependenciesChallenges ? (
+                  <chakra.span>{challenge.externalLink.claim}</chakra.span>
+                ) : (
+                  <>
+                    <span role="img" aria-label="lock icon">
+                      🔒
+                    </span>
+                    <chakra.span ml={1}>Locked</chakra.span>
+                  </>
+                )}
+              </Button>
+              {!builderHasCompletedDependenciesChallenges && (
+                <Tooltip label={lockReasonToolTip}>
+                  <IconButton icon={<QuestionOutlineIcon />} />
+                </Tooltip>
+              )}
+            </ButtonGroup>
+          </Flex>
+        </Flex>
+      </Box>
+    );
+  }
 
   return (
     <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>

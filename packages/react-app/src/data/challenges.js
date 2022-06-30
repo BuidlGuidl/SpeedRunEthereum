@@ -60,21 +60,23 @@ export const challengeInfo = {
   "buidl-guidl": {
     id: 5,
     branchName: "",
-    label: "🚩 Challenge 5: 🏰️ BG 🏤 Bazaar",
+    label: "Welcome to the 🏰️ BuidlGuidl",
+    // Not a challenge, just a checkpoint in the Challenge timeline.
+    checkpoint: true,
     disabled: false,
     description:
-      "Now you are a member of BuidlGuidl Bazaar!!! – The Bazaar is a place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
+      "Now you are a member of BuidlGuidl!!! – The BG is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
     previewImage: "assets/bg.png",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
       link: "https://bazaar.buidlguidl.com/",
-      claim: "Join the 🏰️ BG 🏤 Bazaar",
+      claim: "Visit the 🏰️ BuidlGuidl",
     },
   },
   "learn-multisig": {
     id: 6,
     branchName: "challenge-3-multi-sig",
-    label: "🚩 Challenge 6: 👛 Multisig Wallet",
+    label: "🚩 Challenge 5: 👛 Multisig Wallet",
     disabled: false,
     description:
       '👩‍👩‍👧‍👧 Using a smart contract as a wallet we can secure assets by requiring multiple accounts to "vote" on transactions. The contract will keep track of transactions in an array of structs and owners will confirm or reject each one. Any transaction with enough confirmations can "execute".',
@@ -93,7 +95,7 @@ export const challengeInfo = {
   "nft-cohort": {
     id: 7,
     branchName: "challenge-5-svg-nft-cohort",
-    label: "🚩 Challenge 7: 🎁 SVG NFT 🎫 Building Cohort",
+    label: "🚩 Challenge 6: 🎁 SVG NFT 🎫 Building Cohort",
     disabled: false,
     description:
       "🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!",
@@ -112,7 +114,7 @@ export const challengeInfo = {
   "learn-oracles": {
     id: 8,
     branchName: "challenge-4-oracle",
-    label: "🚩 Challenge 8: 🔮 Oracles",
+    label: "🚩 Challenge 7: 🔮 Oracles",
     disabled: true,
     description:
       "🛰 Off-chain information can be critical for on-chain logic but it's complicated! 🎲 Random numbers are also tricky on a deterministic public blockchain... ",
