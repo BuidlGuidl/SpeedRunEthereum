@@ -80,7 +80,7 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
         <Flex maxW={500} overflow="hidden" m="0 auto 24px" opacity={isChallengeLocked ? "0.5" : "1"}>
           <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
             <Flex alignItems="center" pb={4} direction="column">
-              <Text fontWeight="bold" fontSize="lg">
+              <Text fontWeight="bold" fontSize="lg" mb={2}>
                 {challenge.label}
               </Text>
               <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>

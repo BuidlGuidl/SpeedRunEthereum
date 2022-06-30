@@ -60,12 +60,12 @@ export const challengeInfo = {
   "buidl-guidl": {
     id: 5,
     branchName: "",
-    label: "Welcome to the 🏰️ BuidlGuidl",
+    label: "Eligible to join 🏰️ BuidlGuidl",
     // Not a challenge, just a checkpoint in the Challenge timeline.
     checkpoint: true,
     disabled: false,
     description:
-      "Now you are a member of BuidlGuidl!!! – The BG is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
+      "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
     previewImage: "assets/bg.png",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
