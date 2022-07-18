@@ -48,11 +48,11 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   useEffect(() => {
     getChallengeReadme(challengeId, "js")
       .then(text => setDescriptionJs(parseGithubReadme(text)))
-      .catch(() => setDescriptionJs(challenge.description));
+      .catch(() => setDescriptionJs(null));
 
     getChallengeReadme(challengeId, "ts")
       .then(text => setDescriptionTs(parseGithubReadme(text)))
-      .catch(() => setDescriptionTs(challenge.description));
+      .catch(() => setDescriptionTs(null));
   }, [challengeId, challenge]);
 
   useEffect(() => {
@@ -116,8 +116,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
       </Box>
       <Tabs variant="enclosed-colored" align="center">
         <TabList>
-          <Tab>Javascript</Tab>
-          <Tab>Typescript</Tab>
+          {descriptionJs && <Tab>Javascript</Tab>}
+          {descriptionTs && <Tab>Typescript</Tab>}
         </TabList>
         <TabPanels align="left">
           <TabPanel>
