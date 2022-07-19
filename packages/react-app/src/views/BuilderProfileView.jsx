@@ -38,7 +38,7 @@ import { getChallengeEventsForUser } from "../data/api";
 import { byTimestamp } from "../helpers/sorting";
 import DateWithTooltip from "../components/DateWithTooltip";
 
-const BG_FRONTEND_URL = "https://bazaar.buidlguidl.com";
+const BG_FRONTEND_URL = "https://buidlguidl.com";
 
 export default function BuilderProfileView({ serverUrl, mainnetProvider, address, userProvider, userRole }) {
   const { builderAddress } = useParams();

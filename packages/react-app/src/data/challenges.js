@@ -65,7 +65,7 @@ export const challengeInfo = {
     previewImage: "assets/bg.png",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
-      link: "https://bazaar.buidlguidl.com/",
+      link: "https://buidlguidl.com/",
       claim: "Visit the 🏰️ BuidlGuidl",
     },
   },
