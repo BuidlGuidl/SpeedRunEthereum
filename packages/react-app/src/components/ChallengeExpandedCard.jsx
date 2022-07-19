@@ -48,7 +48,6 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
 
   const lockReasonToolTip = "The following challenges are not completed: " + pendingDependenciesChallenges.join(", ");
 
-  const isRampUpChallenge = challenge.dependencies?.length === 0;
   const challengeStatus = builderAttemptedChallenges[challengeId]?.status;
 
   let colorScheme;
@@ -137,7 +136,7 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
       <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
         <Flex justify="space-between" pb={4}>
           <Text fontWeight="bold">{challenge.label}</Text>
-          {isRampUpChallenge && challengeStatus && (
+          {challengeStatus && (
             <Badge borderRadius="xl" colorScheme={colorScheme} textTransform="none" py={0.5} px={2.5}>
               {label}
             </Badge>
