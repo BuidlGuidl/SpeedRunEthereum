@@ -50,7 +50,14 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
   const [isLoadingTimestamps, setIsLoadingTimestamps] = useState(false);
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
-  const challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
+  let challenges = builder?.challenges ? Object.entries(builder.challenges) : undefined;
+  if (challenges) {
+    challenges = challenges.sort((a, b) => {
+      const [aChallenge] = a;
+      const [bChallenge] = b;
+      return challengeInfo[aChallenge].id > challengeInfo[bChallenge].id ? 1 : -1;
+    });
+  }
   const acceptedChallenges = getAcceptedChallenges(builder?.challenges);
   const isMyProfile = builderAddress === address;
 
