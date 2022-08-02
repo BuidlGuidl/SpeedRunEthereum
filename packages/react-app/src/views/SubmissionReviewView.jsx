@@ -17,17 +17,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ChallengeReviewRow from "../components/ChallengeReviewRow";
-import BuildReviewRow from "../components/BuildReviewRow";
-import { ChallengesTableSkeleton, BuildsTableSkeleton } from "../components/skeletons/SubmissionReviewTableSkeleton";
+import { ChallengesTableSkeleton } from "../components/skeletons/SubmissionReviewTableSkeleton";
 import useCustomColorModes from "../hooks/useCustomColorModes";
-import {
-  getBuildReviewSignMessage,
-  getChallengeReviewSignMessage,
-  getDraftBuilds,
-  getSubmittedChallenges,
-  patchBuildReview,
-  patchChallengeReview,
-} from "../data/api";
+import { getChallengeReviewSignMessage, getSubmittedChallenges, patchChallengeReview } from "../data/api";
 import HeroIconInbox from "../components/icons/HeroIconInbox";
 import { bySubmittedTimestamp } from "../helpers/sorting";
 
@@ -37,8 +29,6 @@ export default function SubmissionReviewView({ userProvider }) {
   const address = useUserAddress(userProvider);
   const [challenges, setChallenges] = React.useState([]);
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
-  const [draftBuilds, setDraftBuilds] = React.useState([]);
-  const [isLoadingDraftBuilds, setIsLoadingDraftBuilds] = React.useState(true);
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
   const { secondaryFontColor } = useCustomColorModes();
@@ -61,37 +51,11 @@ export default function SubmissionReviewView({ userProvider }) {
     setIsLoadingChallenges(false);
   }, [address, toastVariant, toast]);
 
-  const fetchSubmittedBuilds = useCallback(async () => {
-    setIsLoadingDraftBuilds(true);
-    let fetchedDraftBuilds;
-    try {
-      fetchedDraftBuilds = await getDraftBuilds(address);
-    } catch (error) {
-      toast({
-        description: "There was an error getting the draft builds. Please try again",
-        status: "error",
-        variant: toastVariant,
-      });
-      setIsLoadingDraftBuilds(false);
-      return;
-    }
-    setDraftBuilds(fetchedDraftBuilds.sort(bySubmittedTimestamp));
-    setIsLoadingDraftBuilds(false);
-  }, [address, toastVariant, toast]);
-
   useEffect(() => {
     if (!address) {
       return;
     }
     fetchSubmittedChallenges();
-    // eslint-disable-next-line
-  }, [address]);
-
-  useEffect(() => {
-    if (!address) {
-      return;
-    }
-    fetchSubmittedBuilds();
     // eslint-disable-next-line
   }, [address]);
 
@@ -147,58 +111,6 @@ export default function SubmissionReviewView({ userProvider }) {
     fetchSubmittedChallenges();
   };
 
-  const handleSendBuildReview = reviewType => async (userAddress, buildId) => {
-    let signMessage;
-    try {
-      signMessage = await getBuildReviewSignMessage(address, buildId, reviewType);
-    } catch (error) {
-      toast({
-        description: " Sorry, the server is overloaded. 🧯🚒🔥",
-        status: "error",
-        variant: toastVariant,
-      });
-      return;
-    }
-
-    let signature;
-    try {
-      signature = await userProvider.send("personal_sign", [signMessage, address]);
-    } catch (error) {
-      toast({
-        description: "Couldn't get a signature from the Wallet",
-        status: "error",
-        variant: toastVariant,
-      });
-      return;
-    }
-
-    try {
-      await patchBuildReview(address, signature, { userAddress, buildId, newStatus: reviewType });
-    } catch (error) {
-      if (error.status === 401) {
-        toast({
-          status: "error",
-          description: "Submission Error. You don't have the required role.",
-          variant: toastVariant,
-        });
-        return;
-      }
-      toast({
-        status: "error",
-        description: "Submission Error. Please try again.",
-        variant: toastVariant,
-      });
-      return;
-    }
-
-    toast({
-      description: "Review submitted successfully",
-      status: "success",
-      variant: toastVariant,
-    });
-    fetchSubmittedBuilds();
-  };
-
   return (
     <Container maxW="container.lg">
       <Container maxW="container.md" centerContent>
@@ -248,50 +160,6 @@ export default function SubmissionReviewView({ userProvider }) {
                     approveClick={handleSendChallengeReview("ACCEPTED")}
                     rejectClick={handleSendChallengeReview("REJECTED")}
                     userProvider={userProvider}
-                  />
-                ))
-              )}
-            </Tbody>
-          </Table>
-        )}
-      </Box>
-      <Heading as="h2" size="lg" mt={6} mb={4}>
-        Builds
-      </Heading>
-      <Box overflowX="auto">
-        {isLoadingDraftBuilds ? (
-          <BuildsTableSkeleton />
-        ) : (
-          <Table mb={4}>
-            <Thead>
-              <Tr>
-                <Th>Builder</Th>
-                <Th>Build Name</Th>
-                <Th>Description</Th>
-                <Th>Branch URL</Th>
-                <Th>Submitted time</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {!draftBuilds || draftBuilds.length === 0 ? (
-                <Tr>
-                  <Td colSpan={5}>
-                    <Text color={secondaryFontColor} textAlign="center" mb={4}>
-                      <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
-                      <br />
-                      All builds have been reviewed
-                    </Text>
-                  </Td>
-                </Tr>
-              ) : (
-                draftBuilds.map(build => (
-                  <BuildReviewRow
-                    key={`${build.userAddress}_${build.id}`}
-                    build={build}
-                    isLoading={isLoadingDraftBuilds}
-                    approveClick={handleSendBuildReview("ACCEPTED")}
-                    rejectClick={handleSendBuildReview("REJECTED")}
                   />
                 ))
               )}
