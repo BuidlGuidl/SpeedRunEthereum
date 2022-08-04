@@ -24,6 +24,7 @@ import HeroIconInbox from "../components/icons/HeroIconInbox";
 import { bySubmittedTimestamp } from "../helpers/sorting";
 
 const RUBRIC_URL = "https://docs.google.com/document/d/1ByXQUUg-ePq0aKkMywOHV25ZetesI2BFYoJzSez009c";
+const SRE_GRADING_HELPER_URL = "https://docs.google.com/document/d/1cKG4ArQqP3YuQnClC5vTGHspUCxxhixjN194ohbcaXs";
 
 export default function SubmissionReviewView({ userProvider }) {
   const address = useUserAddress(userProvider);
@@ -120,6 +121,10 @@ export default function SubmissionReviewView({ userProvider }) {
           Check our{" "}
           <Link href={RUBRIC_URL} color="teal.500" isExternal>
             Grading Rubric
+          </Link>{" "}
+          and the{" "}
+          <Link href={SRE_GRADING_HELPER_URL} color="teal.500" isExternal>
+            SRE Grading helper
           </Link>
           .
         </Text>
