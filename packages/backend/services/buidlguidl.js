@@ -20,7 +20,7 @@ const createUserOnBG = async userAddress => {
   await db.markAsBuidlGuidlMember(userAddress);
 
   const userData = user.data;
-  const requiredChallengesToEnterBG = ["simple-nft-example", "decentralized-staking", "token-vendor"];
+  const requiredChallengesToEnterBG = ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"];
   const arePendingChallenges = requiredChallengesToEnterBG.some(
     challengeId => userData.challenges?.[challengeId]?.status !== "ACCEPTED",
   );
