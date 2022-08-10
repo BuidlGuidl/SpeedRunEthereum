@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { chakra, useToast, Button } from "@chakra-ui/react";
+import { chakra, useToast, Button, Link } from "@chakra-ui/react";
 import { SERVER_URL as serverUrl } from "../constants";
 
 const serverPath = "/bg/join";
@@ -13,6 +13,26 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, addr
 
   const onJoin = async () => {
     setIsJoining(true);
+
+    if (!connectedBuilder.socialLinks || Object.keys(connectedBuilder?.socialLinks ?? {}).length === 0) {
+      toast({
+        title: "Can't join the BuidlGuidl",
+        duration: 10000,
+        description: (
+          <>
+            In order to join the BuildGuidl you need to set your socials in{" "}
+            <Link href="/portfolio" textDecoration="underline">
+              your portfolio
+            </Link>
+            . It's our way to contact you.
+          </>
+        ),
+
+        status: "error",
+      });
+      setIsJoining(false);
+      return;
+    }
 
     let signMessage;
     try {
@@ -71,7 +91,17 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, addr
 
     toast({
       status: "success",
-      description: "You are now a member of the BuidlGuidl :)",
+      duration: 10000,
+      title: "Welcome to the BuildGuidl :)",
+      description: (
+        <>
+          Visit{" "}
+          <Link href="https://buidlguidl.com" textDecoration="underline" isExternal>
+            BuidlGuidl
+          </Link>{" "}
+          and start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.
+        </>
+      ),
     });
     setIsJoining(false);
     setJoined(true);

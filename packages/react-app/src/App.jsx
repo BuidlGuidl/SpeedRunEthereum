@@ -140,24 +140,24 @@ function App() {
   const [userRole, setUserRole] = useState(null);
   const [connectedBuilder, setConnectedBuilder] = useState(null);
 
-  useEffect(() => {
-    async function fetchUserData() {
-      console.log("getting user data");
-      try {
-        const fetchedUserObject = await axios.get(serverUrl + `/user`, {
-          params: { address },
-        });
-        setUserRole(USER_ROLES[fetchedUserObject.data.role] ?? USER_ROLES.registered);
-        setConnectedBuilder(fetchedUserObject.data);
-      } catch (e) {
-        setUserRole(USER_ROLES.anonymous);
-      }
+  const fetchUserData = useCallback(async () => {
+    console.log("getting user data");
+    try {
+      const fetchedUserObject = await axios.get(serverUrl + `/user`, {
+        params: { address },
+      });
+      setUserRole(USER_ROLES[fetchedUserObject.data.role] ?? USER_ROLES.registered);
+      setConnectedBuilder(fetchedUserObject.data);
+    } catch (e) {
+      setUserRole(USER_ROLES.anonymous);
     }
+  }, [address]);
 
+  useEffect(() => {
     if (address) {
       fetchUserData();
     }
-  }, [address]);
+  }, [address, fetchUserData]);
 
   return (
     <BlockchainProvidersContext.Provider value={providers}>
@@ -190,6 +190,7 @@ function App() {
               address={address}
               userRole={userRole}
               userProvider={userProvider}
+              fetchUserData={fetchUserData}
             />
           </Route>
           <Route path="/challenge/:challengeId">

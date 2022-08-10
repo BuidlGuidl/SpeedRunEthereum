@@ -40,7 +40,14 @@ import DateWithTooltip from "../components/DateWithTooltip";
 
 const BG_FRONTEND_URL = "https://buidlguidl.com";
 
-export default function BuilderProfileView({ serverUrl, mainnetProvider, address, userProvider, userRole }) {
+export default function BuilderProfileView({
+  serverUrl,
+  mainnetProvider,
+  address,
+  userProvider,
+  userRole,
+  fetchUserData,
+}) {
   const { builderAddress } = useParams();
   const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
   const [builder, setBuilder] = useState();
@@ -115,7 +122,10 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
             mainnetProvider={mainnetProvider}
             isMyProfile={isMyProfile}
             userProvider={userProvider}
-            fetchBuilder={fetchBuilder}
+            fetchBuilder={() => {
+              fetchBuilder();
+              fetchUserData();
+            }}
             userRole={userRole}
           />
         </GridItem>
