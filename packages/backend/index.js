@@ -17,6 +17,7 @@ const {
 } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
+const bgRoutes = require("./routes/bg");
 const { createUserOnBG } = require("./services/buidlguidl");
 
 const app = express();
@@ -41,6 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/events", eventsRoutes);
 app.use("/builds", buildsRoutes);
+app.use("/bg", bgRoutes);
 
 app.get("/sign-message", (req, res) => {
   const messageId = req.query.messageId ?? "login";
@@ -177,15 +179,7 @@ app.post("/challenges/run-test", withRole("admin"), async (request, response) =>
  */
 const updateUserChallenges = async (user, challengeData) => {
   await db.updateUser(user.data.id, challengeData);
-
-  const requiredChallengesToEnterBG = ["simple-nft-example", "decentralized-staking", "token-vendor"];
-  const arePendingChallenges = requiredChallengesToEnterBG.some(
-    challengeId => challengeData.challenges?.[challengeId]?.status !== "ACCEPTED",
-  );
-
-  if (!arePendingChallenges) {
-    createUserOnBG(user.data); // INFO: async, no await here
-  }
+  // Trigger logic. Previous (Join the BG automation) => Now manual.
 };
 
 app.post("/challenges", withAddress, async (request, response) => {

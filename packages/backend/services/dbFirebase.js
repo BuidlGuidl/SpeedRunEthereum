@@ -111,6 +111,11 @@ const removeBuild = buildId => {
   return database.collection("builds").doc(buildId).delete();
 };
 
+const markAsBuidlGuidlMember = address => {
+  const userDoc = getUserDoc(address);
+  return userDoc.update({ joinedBg: true });
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -123,4 +128,5 @@ module.exports = {
   findAllBuilds,
   publishBuild,
   removeBuild,
+  markAsBuidlGuidlMember,
 };

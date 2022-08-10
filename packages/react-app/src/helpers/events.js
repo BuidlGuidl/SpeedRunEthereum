@@ -7,6 +7,7 @@ const EVENT_TYPES = {
   BUILD_REVIEW: "build.review",
   USER_CREATE: "user.create",
   USER_UPDATE: "user.update",
+  BG_JOIN: "bg.join",
 };
 
 export const eventDisplay = ({ type, payload }) => {
@@ -35,6 +36,10 @@ export const eventDisplay = ({ type, payload }) => {
 
     case EVENT_TYPES.USER_CREATE: {
       return `just created a builder account. Welcome!`;
+    }
+
+    case EVENT_TYPES.BG_JOIN: {
+      return `is now a member of the BuidlGuidl`;
     }
 
     // ToDo. Build events. Wait until we tackled issue #134

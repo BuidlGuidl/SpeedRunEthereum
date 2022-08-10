@@ -61,12 +61,12 @@ export const challengeInfo = {
     checkpoint: true,
     disabled: false,
     description:
-      "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX build.",
+      "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.",
     previewImage: "assets/bg.png",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
       link: "https://buidlguidl.com/",
-      claim: "Visit the 🏰️ BuidlGuidl",
+      claim: "Join the 🏰️ BuidlGuidl",
     },
   },
   "learn-multisig": {

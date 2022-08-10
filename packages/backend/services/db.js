@@ -96,6 +96,13 @@ const publishBuild = db.publishBuild;
  */
 const removeBuild = db.removeBuild;
 
+/**
+ *
+ * @param {Address} builderAddress
+ * @returns boolean
+ */
+const markAsBuidlGuidlMember = db.markAsBuidlGuidlMember;
+
 // Shared by implementations.
 // ToDo: This is very inefficient,´. We fetch the whole database every time we call this.
 // We should create a getChallengesByStatus function that fetches the challenges by status.
@@ -128,6 +135,8 @@ module.exports = {
   findAllBuilds,
   publishBuild,
   removeBuild,
+
+  markAsBuidlGuidlMember,
 
   getAllChallenges,
 
