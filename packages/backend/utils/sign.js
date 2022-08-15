@@ -37,6 +37,8 @@ const getSignMessageForId = (messageId, options) => {
       return `I want to mark builder ${options.builderAddress} as ${
         options.reachedOut ? "reached out" : "not reached out"
       }`;
+    case "bgJoin":
+      return `I want to join the BuidlGuidl as ${options.address}`;
     case "login":
     default:
       return `I would like to register as a builder in speedrunethereum.com as ${options.address}`;

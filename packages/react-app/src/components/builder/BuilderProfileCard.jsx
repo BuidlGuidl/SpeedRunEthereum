@@ -28,20 +28,20 @@ import {
   useClipboard,
 } from "@chakra-ui/react";
 import { CopyIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
-import QRPunkBlockie from "./QrPunkBlockie";
-import SocialLink from "./SocialLink";
-import useDisplayAddress from "../hooks/useDisplayAddress";
-import useCustomColorModes from "../hooks/useCustomColorModes";
-import { ellipsizedAddress } from "../helpers/strings";
+import QRPunkBlockie from "../QrPunkBlockie";
+import SocialLink from "../SocialLink";
+import useDisplayAddress from "../../hooks/useDisplayAddress";
+import useCustomColorModes from "../../hooks/useCustomColorModes";
+import { ellipsizedAddress } from "../../helpers/strings";
 import {
   getUpdateReachedOutFlagSignMessage,
   getUpdateSocialsSignMessage,
   postUpdateReachedOutFlag,
   postUpdateSocials,
-} from "../data/api";
-import { bySocialWeight, socials } from "../data/socials";
-import { USER_ROLES } from "../helpers/constants";
-import { validateSocials } from "../helpers/validators";
+} from "../../data/api";
+import { bySocialWeight, socials } from "../../data/socials";
+import { USER_ROLES } from "../../helpers/constants";
+import { validateSocials } from "../../helpers/validators";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>

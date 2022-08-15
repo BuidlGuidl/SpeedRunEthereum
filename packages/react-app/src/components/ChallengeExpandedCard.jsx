@@ -19,8 +19,15 @@ import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
+import JoinBG from "./JoinBG";
 
-const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallenges }) => {
+const ChallengeExpandedCard = ({
+  challengeId,
+  challenge,
+  connectedBuilder,
+  builderAttemptedChallenges,
+  userProvider,
+}) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
 
   const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
@@ -91,25 +98,27 @@ const ChallengeExpandedCard = ({ challengeId, challenge, builderAttemptedChallen
             </Text>
             <Spacer />
             <ButtonGroup>
-              <Button
-                as={isChallengeLocked ? Button : Link}
-                href={isChallengeLocked ? null : challenge.externalLink?.link}
-                isDisabled={isChallengeLocked}
-                variant={isChallengeLocked ? "outline" : "solid"}
-                isFullWidth
-                isExternal
-              >
-                {builderHasCompletedDependenciesChallenges ? (
-                  <chakra.span>{challenge.externalLink.claim}</chakra.span>
-                ) : (
-                  <>
-                    <span role="img" aria-label="lock icon">
-                      🔒
-                    </span>
-                    <chakra.span ml={1}>Locked</chakra.span>
-                  </>
-                )}
-              </Button>
+              {builderHasCompletedDependenciesChallenges ? (
+                <JoinBG
+                  text={challenge.externalLink.claim}
+                  isChallengeLocked={isChallengeLocked}
+                  userProvider={userProvider}
+                  connectedBuilder={connectedBuilder}
+                />
+              ) : (
+                <Button
+                  isDisabled={isChallengeLocked}
+                  variant={isChallengeLocked ? "outline" : "solid"}
+                  isFullWidth
+                  isExternal
+                >
+                  <span role="img" aria-label="lock icon">
+                    🔒
+                  </span>
+                  <chakra.span ml={1}>Locked</chakra.span>
+                </Button>
+              )}
+
               {!builderHasCompletedDependenciesChallenges && (
                 <Tooltip label={lockReasonToolTip}>
                   <IconButton icon={<QuestionOutlineIcon />} />

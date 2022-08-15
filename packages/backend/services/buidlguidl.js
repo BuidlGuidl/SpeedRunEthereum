@@ -1,11 +1,33 @@
 require("dotenv").config();
 const axios = require("axios");
+const db = require("./db");
 
 const BG_SERVER = process.env.BG_BACKEND;
 const BG_API_KEY = process.env.BG_API_KEY;
 
-const createUserOnBG = async userData => {
-  console.log("Creating user on BG", userData.id);
+const createUserOnBG = async userAddress => {
+  console.log("Creating user on BG", userAddress);
+
+  const user = await db.findUserByAddress(userAddress);
+  if (!user.exists) {
+    throw new Error("Builder doesn't exist");
+  }
+
+  if (user.joinedBg) {
+    throw new Error("Builder already on BuidlGuidl");
+  }
+
+  await db.markAsBuidlGuidlMember(userAddress);
+
+  const userData = user.data;
+  const requiredChallengesToEnterBG = ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"];
+  const arePendingChallenges = requiredChallengesToEnterBG.some(
+    challengeId => userData.challenges?.[challengeId]?.status !== "ACCEPTED",
+  );
+
+  if (arePendingChallenges) {
+    throw new Error("Builder has pending challenges");
+  }
 
   const payload = {
     builderAddress: userData.id,

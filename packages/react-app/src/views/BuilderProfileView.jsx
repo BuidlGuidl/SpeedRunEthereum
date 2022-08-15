@@ -1,48 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Link as RouteLink, useParams } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import {
-  useToast,
-  useColorModeValue,
-  Box,
-  Button,
-  Link,
-  HStack,
-  Text,
-  Flex,
-  Spacer,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  Container,
-  SimpleGrid,
-  GridItem,
-  Tag,
-  SkeletonText,
-  Image,
-} from "@chakra-ui/react";
-import { InfoOutlineIcon } from "@chakra-ui/icons";
-import BuilderProfileCard from "../components/BuilderProfileCard";
-import BuilderProfileChallengesTableSkeleton from "../components/skeletons/BuilderProfileChallengesTableSkeleton";
+import { useToast, useColorModeValue, Container, SimpleGrid, GridItem } from "@chakra-ui/react";
+import BuilderProfileCard from "../components/builder/BuilderProfileCard";
 import { challengeInfo } from "../data/challenges";
-import { userFunctionDescription } from "../helpers/constants";
 import { BG_BACKEND_URL as bgBackendUrl } from "../constants";
-import ChallengeStatusTag from "../components/ChallengeStatusTag";
 import { getAcceptedChallenges } from "../helpers/builders";
-import useCustomColorModes from "../hooks/useCustomColorModes";
 import { getChallengeEventsForUser } from "../data/api";
 import { byTimestamp } from "../helpers/sorting";
-import DateWithTooltip from "../components/DateWithTooltip";
+import { JoinedBuidlGuidlBanner } from "../components/builder/JoinedBuidlGuidlBanner";
+import { BuilderProfileHeader } from "../components/builder/BuilderProfileHeader";
+import { BuilderChallenges } from "../components/builder/BuilderChallenges";
+import { JoinBuidlGuidlBanner } from "../components/builder/JoinBuidlGuidlBanner";
+import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 
-const BG_FRONTEND_URL = "https://buidlguidl.com";
-
-export default function BuilderProfileView({ serverUrl, mainnetProvider, address, userProvider, userRole }) {
+export default function BuilderProfileView({
+  serverUrl,
+  mainnetProvider,
+  address,
+  userProvider,
+  userRole,
+  fetchUserData,
+  connectedBuilder,
+}) {
   const { builderAddress } = useParams();
-  const { primaryFontColor, secondaryFontColor, borderColor, iconBgColor } = useCustomColorModes();
   const [builder, setBuilder] = useState();
   const [challengeEvents, setChallengeEvents] = useState([]);
   const [isLoadingBuilder, setIsLoadingBuilder] = useState(false);
@@ -106,6 +87,28 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
     // eslint-disable-next-line
   }, [builderAddress]);
 
+  const builderAttemptedChallenges = useMemo(() => {
+    if (!connectedBuilder?.challenges) {
+      return [];
+    }
+
+    return Object.fromEntries(
+      Object.entries(connectedBuilder.challenges).filter(([_, challengeData]) => challengeData?.status),
+    );
+  }, [connectedBuilder]);
+
+  const bgChallenge = challengeInfo["buidl-guidl"];
+  const isAllowedToJoinBg = bgChallenge.dependencies?.every(id => {
+    if (!builderAttemptedChallenges[id]) {
+      return false;
+    }
+    if (!(builderAttemptedChallenges[id].status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED)) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <Container maxW="container.xl">
       <SimpleGrid gap={14} columns={{ base: 1, xl: 4 }}>
@@ -115,174 +118,35 @@ export default function BuilderProfileView({ serverUrl, mainnetProvider, address
             mainnetProvider={mainnetProvider}
             isMyProfile={isMyProfile}
             userProvider={userProvider}
-            fetchBuilder={fetchBuilder}
+            fetchBuilder={() => {
+              fetchBuilder();
+              fetchUserData();
+            }}
             userRole={userRole}
           />
         </GridItem>
         {isBuilderOnBg ? (
           <GridItem colSpan={{ base: 1, xl: 3 }}>
-            <Box borderColor={borderColor} borderWidth={1} p={5}>
-              <Flex direction="column" align="center" justify="center">
-                <Image src="/assets/bg.png" mb={3} />
-                <Text mb={3} fontSize="lg" fontWeight="bold">
-                  This builder has upgraded to BuidlGuidl.
-                </Text>
-                <Button as={Link} href={`${BG_FRONTEND_URL}/builders/${builderAddress}`} isExternal colorScheme="blue">
-                  View their profile on Buidlguidl
-                </Button>
-              </Flex>
-            </Box>
+            <JoinedBuidlGuidlBanner builderAddress={builderAddress} />
           </GridItem>
         ) : (
           <GridItem colSpan={{ base: 1, xl: 3 }}>
-            <HStack spacing={4} mb={8}>
-              <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} p={4} w="full" justify="space-between">
-                <Flex bg={iconBgColor} borderRadius="lg" w={12} h={12} justify="center" align="center">
-                  <InfoOutlineIcon w={5} h={5} />
-                </Flex>
-                <div>
-                  <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                    {acceptedChallenges.length}
-                  </Text>
-                  <Text fontSize="sm" color={secondaryFontColor} textAlign="right">
-                    challenges completed
-                  </Text>
-                </div>
-              </Flex>
-              <Flex borderRadius="lg" borderColor={borderColor} borderWidth={1} p={4} w="full" justify="space-between">
-                <Flex bg={iconBgColor} borderRadius="lg" w={12} h={12} justify="center" align="center">
-                  <InfoOutlineIcon w={5} h={5} />
-                </Flex>
-                <div>
-                  <Text fontSize="xl" fontWeight="medium" textAlign="right">
-                    {builder?.function ? (
-                      <Tag colorScheme={userFunctionDescription[builder?.function].colorScheme} variant="solid">
-                        {userFunctionDescription[builder?.function].label}
-                      </Tag>
-                    ) : (
-                      "-"
-                    )}
-                  </Text>
-                  <Text fontSize="sm" color={secondaryFontColor} textAlign="right">
-                    Role
-                  </Text>
-                </div>
-              </Flex>
-            </HStack>
-            <Flex mb={4}>
-              <Text fontSize="2xl" fontWeight="bold">
-                Challenges
-              </Text>
-              <Spacer />
-            </Flex>
-            {isLoadingBuilder && <BuilderProfileChallengesTableSkeleton />}
-            {!isLoadingBuilder &&
-              (challenges ? (
-                <Box overflowX="auto">
-                  <Table>
-                    {isMyProfile && (
-                      <TableCaption>
-                        <Button as={RouteLink} colorScheme="blue" to="/">
-                          Start a challenge
-                        </Button>
-                      </TableCaption>
-                    )}
-                    <Thead>
-                      <Tr>
-                        <Th>Name</Th>
-                        <Th>Contract</Th>
-                        <Th>Live Demo</Th>
-                        <Th>Updated</Th>
-                        <Th>Status</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {challenges.map(([challengeId, lastSubmission]) => {
-                        if (!challengeInfo[challengeId]) {
-                          return null;
-                        }
-                        const lastEventForChallenge = challengeEvents.filter(
-                          event => event.payload.challengeId === challengeId,
-                        )[0];
-                        return (
-                          <Tr key={challengeId}>
-                            <Td>
-                              <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700" color="teal.500">
-                                {challengeInfo[challengeId].label}
-                              </Link>
-                            </Td>
-                            <Td>
-                              <Link
-                                // Legacy branchUrl
-                                href={lastSubmission.contractUrl || lastSubmission.branchUrl}
-                                color="teal.500"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Code
-                              </Link>
-                            </Td>
-                            <Td>
-                              <Link
-                                href={lastSubmission.deployedUrl}
-                                color="teal.500"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Demo
-                              </Link>
-                            </Td>
-                            <Td>
-                              {isLoadingTimestamps ? (
-                                <SkeletonText noOfLines={1} />
-                              ) : (
-                                <DateWithTooltip timestamp={lastEventForChallenge?.timestamp} />
-                              )}
-                            </Td>
-                            <Td>
-                              <ChallengeStatusTag
-                                status={lastSubmission.status}
-                                comment={lastSubmission.reviewComment}
-                                autograding={lastSubmission.autograding}
-                              />
-                            </Td>
-                          </Tr>
-                        );
-                      })}
-                    </Tbody>
-                  </Table>
-                </Box>
-              ) : (
-                <Flex
-                  justify="center"
-                  align="center"
-                  borderRadius="lg"
-                  borderColor={borderColor}
-                  borderWidth={1}
-                  py={36}
-                  w="full"
-                >
-                  {isMyProfile ? (
-                    <Box maxW="xs" textAlign="center">
-                      <Text fontWeight="medium" color={primaryFontColor} mb={2}>
-                        Start a new challenge
-                      </Text>
-                      <Text color={secondaryFontColor} mb={4}>
-                        Show off your skills. Learn everything you need to build on Ethereum!
-                      </Text>
-                      <Button as={RouteLink} colorScheme="blue" to="/">
-                        Start a challenge
-                      </Button>
-                    </Box>
-                  ) : (
-                    <Box maxW="xs" textAlign="center">
-                      <Text color={secondaryFontColor} mb={4}>
-                        This builder hasn't completed any challenges.
-                      </Text>
-                    </Box>
-                  )}
-                </Flex>
-              ))}
+            <BuilderProfileHeader acceptedChallenges={acceptedChallenges} builder={builder} />
+            {isMyProfile && isAllowedToJoinBg && (
+              <JoinBuidlGuidlBanner
+                challenge={bgChallenge}
+                connectedBuilder={connectedBuilder}
+                userProvider={userProvider}
+                onJoinCallback={fetchBuilder}
+              />
+            )}
+            <BuilderChallenges
+              challenges={challenges}
+              challengesEvents={challengeEvents}
+              isMyProfile={isMyProfile}
+              isLoadingBuilder={isLoadingBuilder}
+              isLoadingTimestamps={isLoadingTimestamps}
+            />
           </GridItem>
         )}
       </SimpleGrid>

@@ -137,6 +137,17 @@ const removeBuild = buildId => {
   persist();
 };
 
+const markAsBuidlGuidlMember = address => {
+  const { id, ...existingUserData } = findUserByAddress(address).data;
+
+  database.users[address] = {
+    ...existingUserData,
+    joinedBg: true,
+  };
+
+  persist();
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -151,6 +162,8 @@ module.exports = {
   findAllBuilds,
   publishBuild,
   removeBuild,
+
+  markAsBuidlGuidlMember,
 
   __internal_database: database, // testing only
 };
