@@ -26,7 +26,6 @@ const ChallengeExpandedCard = ({
   challenge,
   connectedBuilder,
   builderAttemptedChallenges,
-  address,
   userProvider,
 }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
@@ -104,7 +103,6 @@ const ChallengeExpandedCard = ({
                   text={challenge.externalLink.claim}
                   isChallengeLocked={isChallengeLocked}
                   userProvider={userProvider}
-                  address={address}
                   connectedBuilder={connectedBuilder}
                 />
               ) : (

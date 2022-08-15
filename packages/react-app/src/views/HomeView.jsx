@@ -4,7 +4,7 @@ import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-export default function HomeView({ connectedBuilder, userProvider, address }) {
+export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor } = useCustomColorModes();
 
   const builderAttemptedChallenges = useMemo(() => {
@@ -123,7 +123,6 @@ export default function HomeView({ connectedBuilder, userProvider, address }) {
             challengeIndex={index}
             builderAttemptedChallenges={builderAttemptedChallenges}
             userProvider={userProvider}
-            address={address}
             connectedBuilder={connectedBuilder}
           />
         ))}

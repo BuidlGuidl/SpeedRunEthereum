@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useToast, useColorModeValue, Container, SimpleGrid, GridItem } from "@chakra-ui/react";
@@ -11,6 +11,8 @@ import { byTimestamp } from "../helpers/sorting";
 import { JoinedBuidlGuidlBanner } from "../components/builder/JoinedBuidlGuidlBanner";
 import { BuilderProfileHeader } from "../components/builder/BuilderProfileHeader";
 import { BuilderChallenges } from "../components/builder/BuilderChallenges";
+import { JoinBuidlGuidlBanner } from "../components/builder/JoinBuidlGuidlBanner";
+import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 
 export default function BuilderProfileView({
   serverUrl,
@@ -19,6 +21,7 @@ export default function BuilderProfileView({
   userProvider,
   userRole,
   fetchUserData,
+  connectedBuilder,
 }) {
   const { builderAddress } = useParams();
   const [builder, setBuilder] = useState();
@@ -84,6 +87,28 @@ export default function BuilderProfileView({
     // eslint-disable-next-line
   }, [builderAddress]);
 
+  const builderAttemptedChallenges = useMemo(() => {
+    if (!connectedBuilder?.challenges) {
+      return [];
+    }
+
+    return Object.fromEntries(
+      Object.entries(connectedBuilder.challenges).filter(([_, challengeData]) => challengeData?.status),
+    );
+  }, [connectedBuilder]);
+
+  const bgChallenge = challengeInfo["buidl-guidl"];
+  const isAllowedToJoinBg = bgChallenge.dependencies?.every(id => {
+    if (!builderAttemptedChallenges[id]) {
+      return false;
+    }
+    if (!(builderAttemptedChallenges[id].status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED)) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <Container maxW="container.xl">
       <SimpleGrid gap={14} columns={{ base: 1, xl: 4 }}>
@@ -107,6 +132,14 @@ export default function BuilderProfileView({
         ) : (
           <GridItem colSpan={{ base: 1, xl: 3 }}>
             <BuilderProfileHeader acceptedChallenges={acceptedChallenges} builder={builder} />
+            {isMyProfile && isAllowedToJoinBg && (
+              <JoinBuidlGuidlBanner
+                challenge={bgChallenge}
+                connectedBuilder={connectedBuilder}
+                userProvider={userProvider}
+                onJoinCallback={fetchBuilder}
+              />
+            )}
             <BuilderChallenges
               challenges={challenges}
               challengesEvents={challengeEvents}

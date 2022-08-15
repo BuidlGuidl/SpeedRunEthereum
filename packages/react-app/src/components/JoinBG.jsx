@@ -5,11 +5,13 @@ import { SERVER_URL as serverUrl } from "../constants";
 
 const serverPath = "/bg/join";
 
-export default function JoinBG({ text, connectedBuilder, isChallengeLocked, address, userProvider }) {
+export default function JoinBG({ text, connectedBuilder, isChallengeLocked, userProvider, onJoinCallback }) {
   const [isJoining, setIsJoining] = useState(false);
   // Optimistic update.
   const [joined, setJoined] = useState(false);
   const toast = useToast({ position: "top", isClosable: true });
+
+  const address = connectedBuilder?.id;
 
   const onJoin = async () => {
     setIsJoining(true);
@@ -105,6 +107,10 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, addr
     });
     setIsJoining(false);
     setJoined(true);
+
+    if (typeof onJoinCallback === "function") {
+      onJoinCallback();
+    }
   };
 
   const builderAlreadyJoined = !!connectedBuilder?.joinedBg;
