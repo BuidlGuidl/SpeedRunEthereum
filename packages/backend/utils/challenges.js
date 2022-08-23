@@ -16,7 +16,9 @@ const challengeMapping = {
   },
   "dice-game": {
     id: 3,
-    autograding: false,
+    autograding: true,
+    successMessage:
+      "This looks good! Demo site and contract code are solid and the dice only roll when it’s a winner!\n\nYou have passed the first four challenges on SpeedRunEthereum and can now join the BuildGuidl! Head to your profile on SpeedRunEthereum.com and use the link to join. This will also unlock the more challenging Decentralized Exchange, Multisig, and SVG NFT challenges. These are more open ended which, once complete, can be submitted as a build on your buidlguidl.com portfolio to show off your web3 knowledge!\n\nJoin the next challenge’s Telegram channel on SpeedRunEthereum to get started.  This channel includes other builders and BuidlGuild members to guide you along the way\n\n--\n\n",
   },
   "learn-multisig": {
     id: 4,
