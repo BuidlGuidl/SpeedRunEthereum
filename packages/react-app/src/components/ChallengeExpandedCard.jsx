@@ -13,7 +13,7 @@ import {
   Text,
   Link,
   Badge,
-  Box,
+  Box, useColorModeValue,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
@@ -29,6 +29,7 @@ const ChallengeExpandedCard = ({
   userProvider,
 }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const checkpointBgColor = useColorModeValue("#f9f9f9", "#000000");
 
   const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
     if (!builderAttemptedChallenges[id]) {
@@ -82,7 +83,7 @@ const ChallengeExpandedCard = ({
 
   if (challenge.checkpoint) {
     return (
-      <Box bg="#f9f9f9">
+      <Box bg={checkpointBgColor}>
         <Flex maxW={500} overflow="hidden" m="0 auto 24px" opacity={isChallengeLocked ? "0.5" : "1"}>
           <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
             <Flex alignItems="center" pb={4} direction="column">

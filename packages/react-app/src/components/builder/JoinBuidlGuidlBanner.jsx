@@ -1,13 +1,23 @@
 import React from "react";
-import { Box, ButtonGroup, Center, Flex, Image, Spacer, Text } from "@chakra-ui/react";
+import {
+  Box,
+  ButtonGroup,
+  Center,
+  Flex,
+  Image,
+  Spacer,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import useCustomColorModes from "../../hooks/useCustomColorModes";
 import JoinBG from "../JoinBG";
 
 export const JoinBuidlGuidlBanner = ({ challenge, userProvider, connectedBuilder, onJoinCallback }) => {
   const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const bgColor = useColorModeValue("#f9f9f9", "#000000");
 
   return (
-    <Box bg="#f9f9f9">
+    <Box bg={bgColor}>
       <Flex maxW={500} overflow="hidden" m="0 auto 24px">
         <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
           <Flex alignItems="center" pb={4} direction="column">
