@@ -3,13 +3,14 @@ const db = require("../services/db");
 const { verifySignature } = require("../utils/sign");
 const { EVENT_TYPES, createEvent } = require("../utils/events");
 const { createUserOnBG } = require("../services/buidlguidl");
+const { withAddress } = require("../middlewares/auth");
 
 const router = express.Router();
 
 /**
  * Join the BG
  */
-router.post("/join", async (request, response) => {
+router.post("/join", withAddress, async (request, response) => {
   console.log("POST /bg/join");
   const { signature } = request.body;
   const address = request.address;
