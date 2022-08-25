@@ -142,7 +142,7 @@ export default function BuilderProfileView({
             )}
             <BuilderChallenges
               challenges={challenges}
-              challengesEvents={challengeEvents}
+              challengeEvents={challengeEvents}
               isMyProfile={isMyProfile}
               isLoadingBuilder={isLoadingBuilder}
               isLoadingTimestamps={isLoadingTimestamps}

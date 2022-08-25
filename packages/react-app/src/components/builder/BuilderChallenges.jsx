@@ -68,6 +68,7 @@ export const BuilderChallenges = ({
                   const lastEventForChallenge = challengeEvents?.filter(
                     event => event.payload.challengeId === challengeId,
                   )[0];
+
                   return (
                     <Tr key={challengeId}>
                       <Td>
