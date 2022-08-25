@@ -2,7 +2,6 @@ const express = require("express");
 const db = require("../services/db");
 const { verifySignature } = require("../utils/sign");
 const { EVENT_TYPES, createEvent } = require("../utils/events");
-const { withRole } = require("../middlewares/auth");
 const { createUserOnBG } = require("../services/buidlguidl");
 
 const router = express.Router();
@@ -10,7 +9,7 @@ const router = express.Router();
 /**
  * Join the BG
  */
-router.post("/join", withRole("builder"), async (request, response) => {
+router.post("/join", async (request, response) => {
   console.log("POST /bg/join");
   const { signature } = request.body;
   const address = request.address;
