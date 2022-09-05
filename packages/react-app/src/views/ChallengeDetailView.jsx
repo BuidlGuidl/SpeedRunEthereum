@@ -136,7 +136,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Submit Challenge</ModalHeader>

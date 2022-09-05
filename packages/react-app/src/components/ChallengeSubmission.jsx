@@ -3,11 +3,10 @@ import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import { Button, Heading, FormControl, FormLabel, Input, Text, Tooltip, useToast } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { isValidUrl } from "../helpers/strings";
+import { isValidEtherscanTestnetUrl, isValidUrl } from "../helpers/strings";
 
 const serverPath = "/challenges";
 
-// ToDo. on-line form validation
 export default function ChallengeSubmission({ challenge, serverUrl, address, userProvider }) {
   const { challengeId } = useParams();
   const history = useHistory();
@@ -36,6 +35,21 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
       setHasErrorField({
         deployedUrl: !isValidUrl(deployedUrl),
         contractUrl: !isValidUrl(contractUrl),
+      });
+
+      return;
+    }
+
+    if (!isValidEtherscanTestnetUrl(contractUrl)) {
+      toast({
+        status: "error",
+        title: "Incorrect Etherscan Contract URL",
+        description:
+          "Please submit your verified contract’s address on a valid testnet. e.g. https://goerli.etherscan.io/address/**Your Contract Address**",
+      });
+
+      setHasErrorField({
+        contractUrl: true,
       });
 
       return;
@@ -165,7 +179,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
               type="text"
               name="contractUrl"
               value={contractUrl}
-              placeholder="https://etherscan.io/address/your-contract-address"
+              placeholder="https://goerli.etherscan.io/address/**YourContractAddress**"
               onChange={e => {
                 setContractUrl(e.target.value);
                 if (hasErrorField.contractUrl) {
