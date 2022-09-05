@@ -14,6 +14,7 @@ const {
   getChallengeIndexFromChallengeId,
   getChallengeSuccessMessageFromChallengeId,
   isAutogradingEnabledForChallenge,
+  getChallengeTelegramChannel,
 } = require("./utils/challenges");
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
@@ -255,11 +256,10 @@ app.post("/challenges", withAddress, async (request, response) => {
   // ToDo. Use services/autograder
   if (autogradingEnabled && isAutogradingEnabledForChallenge(challengeId)) {
     // Auto-grading
-    console.log("Calling auto-grading");
+    console.log("Calling auto-grader");
 
     const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
     const contractUrlObject = new URL(contractUrl);
-    // ToDo. Validation (also in the front-end, make sure they enter the correct URL)
     const network = contractUrlObject.host.split(".")[0];
     const contractAddress = contractUrlObject.pathname.replace("/address/", "");
 
@@ -296,9 +296,15 @@ app.post("/challenges", withAddress, async (request, response) => {
             db.createEvent(autogradeEvent); // INFO: async, no await here
           } else {
             // Append feedback on rejection
-            existingChallenges[challengeId].reviewComment = existingChallenges[challengeId].reviewComment
-              ? existingChallenges[challengeId].reviewComment + gradingResponseData.feedback
-              : gradingResponseData.feedback;
+            const rejectionMessage =
+              "This submission did not pass all tests. Review the output below to see which tests failed and why. " +
+              `You can compare the output to _packages/hardhat/test/challenge_${challengeIndex}.js_ to find the exact` +
+              "section in which the test failed. After fixing the issues please resubmit the challenge.\n\n" +
+              `If you are still having issues, join the challenge [Telegram channel](${getChallengeTelegramChannel(
+                challengeId,
+              )})`;
+            existingChallenges[challengeId].reviewComment =
+              rejectionMessage + "\n\n--\n\n" + gradingResponseData.feedback;
           }
         }
       })
@@ -307,12 +313,8 @@ app.post("/challenges", withAddress, async (request, response) => {
 
         // We don't change the status of the submission, just leave the error for the manual graders to see.
         if (gradingErrorResponseData) {
-          const errorMsg = `Autograder: ${gradingErrorResponseData.error}`;
           existingChallenges[challengeId].autograding = true;
-          // Append feedback on error
-          existingChallenges[challengeId].reviewComment = existingChallenges[challengeId].reviewComment
-            ? existingChallenges[challengeId].reviewComment + errorMsg
-            : errorMsg;
+          existingChallenges[challengeId].reviewComment = "Autograder response: " + gradingErrorResponseData?.error;
         }
 
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
