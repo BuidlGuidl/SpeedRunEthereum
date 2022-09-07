@@ -298,11 +298,11 @@ app.post("/challenges", withAddress, async (request, response) => {
             // Append feedback on rejection
             const rejectionMessage =
               "This submission did not pass all tests. Review the output below to see which tests failed and why. " +
-              `You can compare the output to _packages/hardhat/test/challenge_${challengeIndex}.js_ to find the exact` +
-              "section in which the test failed. After fixing the issues please resubmit the challenge.\n\n" +
-              `If you are still having issues, join the challenge [Telegram channel](${getChallengeTelegramChannel(
+              `Viewing the file that is used for testing (packages/hardhat/test/challenge_${challengeIndex}.js) ` +
+              "may help you find the exact section in which the tests failed. After fixing the issues please resubmit the challenge.\n\n" +
+              `If you are still having issues, join the challenge <a href="${getChallengeTelegramChannel(
                 challengeId,
-              )})`;
+              )}" target="_blank">Telegram channel</a>.`;
             existingChallenges[challengeId].reviewComment =
               rejectionMessage + "\n\n--\n\n" + gradingResponseData.feedback;
           }
