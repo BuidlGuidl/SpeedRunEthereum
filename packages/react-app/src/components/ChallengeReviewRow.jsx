@@ -31,6 +31,7 @@ import {
   TabPanel,
   ListItem,
   UnorderedList,
+  Box,
 } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -188,6 +189,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
               <TabList>
                 <Tab>Write</Tab>
                 <Tab>Preview</Tab>
+                <Tab>Preview HTML</Tab>
               </TabList>
               <TabPanels align="left">
                 <TabPanel p={0}>
@@ -205,6 +207,16 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
                 </TabPanel>
                 <TabPanel>
                   <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{comment}</ReactMarkdown>
+                </TabPanel>
+                <TabPanel>
+                  <Box className="autograding-feedback">
+                    <style>
+                      {`
+                    .autograding-feedback a { text-decoration: underline; color: var(--chakra-colors-teal-500) }
+                  `}
+                    </style>
+                    <chakra.pre fontSize={14} whiteSpace="pre-wrap" dangerouslySetInnerHTML={{ __html: comment }} />
+                  </Box>
                 </TabPanel>
               </TabPanels>
             </Tabs>

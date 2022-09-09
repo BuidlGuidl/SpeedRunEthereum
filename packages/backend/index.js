@@ -314,7 +314,14 @@ app.post("/challenges", withAddress, async (request, response) => {
         // We don't change the status of the submission, just leave the error for the manual graders to see.
         if (gradingErrorResponseData) {
           existingChallenges[challengeId].autograding = true;
-          existingChallenges[challengeId].reviewComment = "Autograder response: " + gradingErrorResponseData?.error;
+          existingChallenges[challengeId].reviewComment =
+            "Autograder response: " +
+            gradingErrorResponseData?.error +
+            "\n\n" +
+            "After fixing the issues please resubmit the challenge.\n\n" +
+            `If you are still having issues, join the challenge <a href="${getChallengeTelegramChannel(
+              challengeId,
+            )}" target="_blank">Telegram channel</a>.`;
         }
 
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
