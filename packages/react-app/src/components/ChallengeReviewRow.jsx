@@ -212,10 +212,12 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
                   <Box className="autograding-feedback">
                     <style>
                       {`
-                    .autograding-feedback a { text-decoration: underline; color: var(--chakra-colors-teal-500) }
-                  `}
+                        .autograding-feedback a { text-decoration: underline; color: var(--chakra-colors-teal-500) }
+                        .autograding-feedback p { margin-bottom: 10px; }
+                        .autograding-feedback pre { white-space: pre-wrap; font-size: 12px; }
+                      `}
                     </style>
-                    <chakra.pre fontSize={14} whiteSpace="pre-wrap" dangerouslySetInnerHTML={{ __html: comment }} />
+                    <Box fontSize={14} dangerouslySetInnerHTML={{ __html: comment }} />
                   </Box>
                 </TabPanel>
               </TabPanels>

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  chakra,
   Badge,
   Box,
   Button,
@@ -75,9 +74,11 @@ const ChallengeStatusTag = ({ status, comment, autograding }) => {
                 <style>
                   {`
                     .autograding-feedback a { text-decoration: underline; color: var(--chakra-colors-teal-500) }
+                    .autograding-feedback p { margin-bottom: 10px; }
+                    .autograding-feedback pre { white-space: pre-wrap; font-size: 12px; }
                   `}
                 </style>
-                <chakra.pre fontSize={14} whiteSpace="pre-wrap" dangerouslySetInnerHTML={{ __html: comment }} />
+                <Box fontSize={14} whiteSpace="pre-wrap" dangerouslySetInnerHTML={{ __html: comment }} />
               </Box>
             ) : (
               <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} remarkPlugins={[remarkBreaks]}>
