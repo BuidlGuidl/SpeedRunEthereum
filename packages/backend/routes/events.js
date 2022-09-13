@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
 
   let matchingEvents;
   if (Object.keys(conditions).length) {
-    matchingEvents = await db.findEventsWhere({ conditions });
+    matchingEvents = await db.findEventsWhere({ conditions, limit: query?.limit });
   } else {
     matchingEvents = await db.findAllEvents({ limit: query?.limit });
   }

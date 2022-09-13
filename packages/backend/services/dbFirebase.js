@@ -80,6 +80,9 @@ const findEventsWhere = async ({ conditions: conditionsArg, limit } = {}) => {
     }
   });
 
+  // Seems like a good default for now.
+  conditionChain = conditionChain.orderBy("timestamp", "desc");
+
   if (limit) {
     conditionChain = conditionChain.limit(Number(limit));
   }

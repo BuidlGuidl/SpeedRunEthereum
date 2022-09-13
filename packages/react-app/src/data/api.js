@@ -3,9 +3,11 @@ import axios from "axios";
 import { SERVER_URL as serverUrl } from "../constants";
 import { getGithubChallengeReadmeUrl } from "./challenges";
 
-export const getAllEvents = async (limit = null) => {
+export const getAllEvents = async (type, limit = null) => {
   try {
-    const response = await axios.get(`${serverUrl}/events?limit=${limit}`);
+    const response = await axios.get(
+      `${serverUrl}/events?${type ? `type=${type}&` : ""}${limit ? `limit=${limit}` : ""}`,
+    );
     return response.data;
   } catch (err) {
     console.log("error fetching events", err);

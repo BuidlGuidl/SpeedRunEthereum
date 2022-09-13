@@ -1,5 +1,5 @@
 // TODO PR: how do we keep just one instance of this enum? Like a commons library
-const EVENT_TYPES = {
+export const EVENT_TYPES = {
   CHALLENGE_SUBMIT: "challenge.submit",
   CHALLENGE_REVIEW: "challenge.review",
   CHALLENGE_AUTOGRADE: "challenge.autograde",
