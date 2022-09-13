@@ -270,33 +270,15 @@ app.post("/challenges", withAddress, async (request, response) => {
 
         if (gradingResponseData) {
           existingChallenges[challengeId].autograding = true;
-
-          // For now just auto-grade accepted submissions, so rejections will always be manually reviewed by graders.
-          // We store the autograder feedback.
-          if (gradingResponseData.success) {
-            existingChallenges[challengeId].status = "ACCEPTED";
-            // Override comment
-            existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
-            const autogradeEventPayload = {
-              reviewAction: existingChallenges[challengeId].status,
-              autograding: true,
-              userAddress: address,
-              challengeId,
-              reviewMessage: existingChallenges[challengeId].reviewComment,
-            };
-
-            const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
-            db.createEvent(autogradeEvent); // INFO: async, no await here
-          } else {
-            existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
-          }
+          existingChallenges[challengeId].status = gradingResponseData.success ? "ACCEPTED" : "REJECTED";
+          existingChallenges[challengeId].reviewComment = gradingResponseData.feedback;
         }
       })
       .catch(gradingErrorResponse => {
         const gradingErrorResponseData = gradingErrorResponse?.response?.data;
 
-        // We don't change the status of the submission, just leave the error for the manual graders to see.
         if (gradingErrorResponseData) {
+          existingChallenges[challengeId].status = "REJECTED";
           existingChallenges[challengeId].autograding = true;
           existingChallenges[challengeId].reviewComment = gradingErrorResponseData?.error;
         }
@@ -304,6 +286,18 @@ app.post("/challenges", withAddress, async (request, response) => {
         console.error("auto-grading failed:", gradingErrorResponseData?.error);
       })
       .then(() => {
+        const autogradeEventPayload = {
+          reviewAction: existingChallenges[challengeId].status,
+          autograding: true,
+          userAddress: address,
+          challengeId,
+          reviewMessage: existingChallenges[challengeId].reviewComment,
+        };
+
+        const autogradeEvent = createEvent(EVENT_TYPES.CHALLENGE_AUTOGRADE, autogradeEventPayload, signature);
+        db.createEvent(autogradeEvent); // INFO: async, no await here
+
+        console.log("saving", user, existingChallenges);
         updateUserChallenges(user, { challenges: existingChallenges }); // INFO: async, no await here.
       });
   }

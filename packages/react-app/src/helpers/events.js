@@ -1,3 +1,6 @@
+import React from "react";
+import { chakra } from "@chakra-ui/react";
+
 // TODO PR: how do we keep just one instance of this enum? Like a commons library
 export const EVENT_TYPES = {
   CHALLENGE_SUBMIT: "challenge.submit",
@@ -21,9 +24,13 @@ export const eventDisplay = ({ type, payload }) => {
     }
 
     case EVENT_TYPES.CHALLENGE_AUTOGRADE: {
-      return `The submitted "${
-        payload.challengeId
-      }" challenge has been ${payload.reviewAction.toLowerCase()} (autograded)`;
+      const resultColor = payload.reviewAction === "ACCEPTED" ? "green.500" : "red.500";
+      return (
+        <>
+          The submitted "{payload.challengeId}" challenge has been{" "}
+          <chakra.span color={resultColor}>{payload.reviewAction.toLowerCase()}</chakra.span> (autograded)
+        </>
+      );
     }
 
     case EVENT_TYPES.BUILD_SUBMIT: {
