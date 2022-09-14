@@ -27,7 +27,7 @@ router.post("/join", withAddress, async (request, response) => {
 
   // Check
   try {
-    await createUserOnBG(address);
+    await createUserOnBG(address, request);
   } catch (e) {
     console.log("Builder cant join the BG", e);
     response.status(403).send(e.toString());

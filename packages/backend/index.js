@@ -14,6 +14,7 @@ const { getChallengeIndexFromChallengeId, isAutogradingEnabledForChallenge } = r
 const eventsRoutes = require("./routes/events");
 const buildsRoutes = require("./routes/builds");
 const bgRoutes = require("./routes/bg");
+const { trackPlausibleEvent } = require("./services/plausible");
 
 const app = express();
 const autogradingEnabled = process.env.NODE_ENV !== "test" && !!process.env.AUTOGRADING_SERVER;
@@ -246,6 +247,7 @@ app.post("/challenges", withAddress, async (request, response) => {
   };
   const event = createEvent(EVENT_TYPES.CHALLENGE_SUBMIT, eventPayload, signature);
   db.createEvent(event); // INFO: async, no await here
+  trackPlausibleEvent("challengeSubmission", { challengeId }, request); // INFO: async, no await here
 
   // ToDo. Use services/autograder
   if (autogradingEnabled && isAutogradingEnabledForChallenge(challengeId)) {
