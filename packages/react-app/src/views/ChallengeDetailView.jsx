@@ -84,25 +84,27 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const challengeActionButtons = (type = "JS") => {
     const repo = type === "JS" ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
     return (
-      <Box>
-        <Button
-          as="a"
-          colorScheme="gray"
-          variant="outline"
-          href={`${repo}/tree/${challenge.branchName}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View it on Github <ExternalLinkIcon ml={1} />
-        </Button>
-        <Box pos="fixed" bottom={0} p={6} left={0} right={0}>
+      <>
+        <Box textAlign="center">
+          <Button
+            as="a"
+            colorScheme="gray"
+            variant="outline"
+            href={`${repo}/tree/${challenge.branchName}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View it on Github <ExternalLinkIcon ml={1} />
+          </Button>
+        </Box>
+        <Box pos="sticky" bottom={0} p={6} left={0} right={0} textAlign="center">
           <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
             <Button colorScheme="blue" boxShadow="dark-lg" onClick={handleSubmitChallengeModal} disabled={isAnonymous}>
               Submit challenge
             </Button>
           </Tooltip>
         </Box>
-      </Box>
+      </>
     );
   };
 
@@ -123,16 +125,12 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
           <TabPanel>
             <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
             <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
-            <Box textAlign="center" my={6}>
-              {challengeActionButtons("JS")}
-            </Box>
+            {challengeActionButtons("JS")}
           </TabPanel>
           <TabPanel>
             <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
             <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
-            <Box textAlign="center" my={6}>
-              {challengeActionButtons("TS")}
-            </Box>
+            {challengeActionButtons("TS")}
           </TabPanel>
         </TabPanels>
       </Tabs>

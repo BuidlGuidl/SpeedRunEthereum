@@ -20,6 +20,7 @@ import {
 import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
+import SiteFooter from "./components/SiteFooter";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -213,6 +214,7 @@ function App() {
         </Switch>
         <ColorModeSwitcher />
       </div>
+      <SiteFooter />
     </BlockchainProvidersContext.Provider>
   );
 }
