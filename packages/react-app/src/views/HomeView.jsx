@@ -19,12 +19,12 @@ export default function HomeView({ connectedBuilder, userProvider }) {
 
   return (
     <Container maxW="container.lg" centerContent>
-      <div style={{ maxWidth: 740, margin: "auto", border: "1px solid #DDDDDD", padding: 32, marginBottom: 64 }}>
+      <div style={{ maxWidth: 780, margin: "auto", border: "1px solid #DDDDDD", padding: 32, marginBottom: 64 }}>
         <Text color={primaryFontColor} mb="6" fontSize="xl" textAlign="center">
           <span role="img" aria-label="teacher icon">
             👩‍🏫
           </span>{" "}
-          Learn how to build on Ethereum; the superpowers and the gotchas.
+          Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
         </Text>
 
         <Text color={primaryFontColor} mb="6" fontSize="xl" textAlign="center">
@@ -107,6 +107,22 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           </a>{" "}
           functions.
         </Text>
+        <Text color={primaryFontColor} mb="8" fontSize="xl" textAlign="center">
+          <span role="img" aria-label="film icon">
+            🎞
+          </span>{" "}
+          Watch this{" "}
+          <a
+            href="https://www.youtube.com/playlist?list=PLJz1HruEnenAf80uOfDwBPqaliJkjKg69"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "underline" }}
+          >
+            getting started playlist
+          </a>{" "}
+          to become a power user and eth scripter.
+        </Text>
+
         <Text color={primaryFontColor} mb="0" fontSize="xl" textAlign="center">
           <span role="img" aria-label="teacher icon">
             🧑‍🚀
