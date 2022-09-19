@@ -17,6 +17,7 @@ export default function Header({
   setUserRole,
 }) {
   const { secondaryFontColor } = useCustomColorModes();
+  const headerBgColor = useColorModeValue("#C8F5FF", "gray.800");
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
@@ -26,7 +27,7 @@ export default function Header({
     <Box
       borderBottom="1px"
       borderColor="#088484"
-      backgroundColor="#C8F5FF"
+      backgroundColor={headerBgColor}
       mb={10}
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
