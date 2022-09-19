@@ -123,7 +123,7 @@ export default function Account({
           <UserDisplayName textAlign="left" />
         </Box>
         <Tooltip label="Disconnect wallet">
-          <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm">
+          <Button ml={4} onClick={logoutOfWeb3Modal} variant="outline" size="sm" borderColor="#088484">
             X
           </Button>
         </Tooltip>

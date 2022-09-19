@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
+import { chakra, useColorModeValue, Box, Flex, HStack, Spacer, Image } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import useCustomColorModes from "../hooks/useCustomColorModes";
@@ -16,7 +16,7 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
-  const { secondaryFontColor, borderColor } = useCustomColorModes();
+  const { secondaryFontColor } = useCustomColorModes();
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
@@ -25,7 +25,8 @@ export default function Header({
   return (
     <Box
       borderBottom="1px"
-      borderColor={borderColor}
+      borderColor="#088484"
+      backgroundColor="#C8F5FF"
       mb={10}
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
@@ -41,20 +42,15 @@ export default function Header({
         fontWeight="semibold"
         pos="relative"
       >
-        <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 5 : 0, lg: 0 }}>
+        <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
           <NavLink to="/" exact>
-            <span role="img" aria-label="castle icon">
-              🏃‍♀️
-            </span>{" "}
-            <chakra.strong display={{ base: "none", md: "inline-block" }}>SpeedRunEthereum.com</chakra.strong>
-            <chakra.strong display={{ base: "inline-block", md: "none" }}>
-              {isSignerProviderConnected ? "SRE" : "SpeedRunEthereum.com"}
-            </chakra.strong>
+            <Image src="/logo.svg" w="205px" />
           </NavLink>
         </Flex>
         <HStack
           as="ul"
           mr={{ base: 0, lg: 6 }}
+          mt={{ base: "7px", lg: 0 }}
           style={{ listStyle: "none" }}
           spacing={{ base: 6, lg: 9 }}
           pos={{ base: "absolute", lg: "static" }}
