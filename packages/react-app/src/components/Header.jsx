@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { chakra, useColorModeValue, Box, Flex, HStack, Spacer, Image } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
-import useCustomColorModes from "../hooks/useCustomColorModes";
 import { ENVIRONMENT } from "../constants";
 
 export default function Header({
@@ -16,9 +15,10 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
-  const { secondaryFontColor } = useCustomColorModes();
   const headerBgColor = useColorModeValue("#C8F5FF", "gray.800");
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
+  const linkColor = useColorModeValue("#088484", "#C8F5FF");
+
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
   const userIsRegistered = userRole && USER_ROLES.anonymous !== userRole;
@@ -60,7 +60,7 @@ export default function Header({
           left={0}
         >
           {userRole && USER_ROLES.anonymous !== userRole && (
-            <chakra.li key="/portfolio" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+            <chakra.li key="/portfolio" color={linkColor} _hover={{ color: primaryColorString }}>
               <NavLink
                 to="/portfolio"
                 isActive={(match, location) => location.pathname.includes("/builders/")}
@@ -75,7 +75,7 @@ export default function Header({
           {/* ToDo. At least Builder */}
           {(USER_ROLES.builder === userRole || USER_ROLES.admin === userRole) && (
             <>
-              <chakra.li key="/builders" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+              <chakra.li key="/builders" color={linkColor} _hover={{ color: primaryColorString }}>
                 <NavLink
                   to="/builders"
                   exact
@@ -90,7 +90,7 @@ export default function Header({
           )}
           {USER_ROLES.admin === userRole && (
             <>
-              <chakra.li key="/submission-review" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+              <chakra.li key="/submission-review" color={linkColor} _hover={{ color: primaryColorString }}>
                 <NavLink
                   to="/submission-review"
                   exact
@@ -101,7 +101,7 @@ export default function Header({
                   Review Submissions
                 </NavLink>
               </chakra.li>
-              <chakra.li key="/activity" color={secondaryFontColor} _hover={{ color: primaryColorString }}>
+              <chakra.li key="/activity" color={linkColor} _hover={{ color: primaryColorString }}>
                 <NavLink
                   to="/activity"
                   exact
