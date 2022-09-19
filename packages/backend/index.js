@@ -117,8 +117,6 @@ app.post("/sign", async (request, response) => {
     response.status(400).send(`Missing required body property. Required: ${neededBodyProps.join(", ")}`);
     return;
   }
-  const ip = request.headers["x-forwarded-for"] || request.connection.remoteAddress;
-  console.log("POST from ip address:", ip, request.body.message);
 
   const signature = request.body.signature;
   const userAddress = request.body.address;
@@ -139,6 +137,8 @@ app.post("/sign", async (request, response) => {
     db.createEvent(event); // INFO: async, no await here
     await db.createUser(userAddress, { creationTimestamp: new Date().getTime(), role: "registered" });
     user = await db.findUserByAddress(userAddress);
+
+    trackPlausibleEvent("signupSRE", {}, request); // INFO: async, no await here
     console.log("New user created: ", userAddress);
   }
 
