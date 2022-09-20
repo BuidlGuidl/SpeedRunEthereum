@@ -4,6 +4,7 @@ import { chakra, useColorModeValue, Box, Flex, HStack, Spacer, Image } from "@ch
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function Header({
   injectedProvider,
@@ -15,9 +16,9 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
+  const { linkColor } = useCustomColorModes();
   const headerBgColor = useColorModeValue("#C8F5FF", "gray.800");
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
-  const linkColor = useColorModeValue("#088484", "#C8F5FF");
 
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;

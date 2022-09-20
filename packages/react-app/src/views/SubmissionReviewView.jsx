@@ -32,7 +32,7 @@ export default function SubmissionReviewView({ userProvider }) {
   const [isLoadingChallenges, setIsLoadingChallenges] = React.useState(true);
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
-  const { secondaryFontColor } = useCustomColorModes();
+  const { secondaryFontColor, linkColor } = useCustomColorModes();
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoadingChallenges(true);
@@ -119,11 +119,11 @@ export default function SubmissionReviewView({ userProvider }) {
         <Text color={secondaryFontColor}>Pending submissions to validate.</Text>
         <Text color={secondaryFontColor} mb="6">
           Check our{" "}
-          <Link href={RUBRIC_URL} color="teal.500" isExternal>
+          <Link href={RUBRIC_URL} color={linkColor} isExternal>
             Grading Rubric
           </Link>{" "}
           and the{" "}
-          <Link href={SRE_GRADING_HELPER_URL} color="teal.500" isExternal>
+          <Link href={SRE_GRADING_HELPER_URL} color={linkColor} isExternal>
             SRE Grading helper
           </Link>
           .

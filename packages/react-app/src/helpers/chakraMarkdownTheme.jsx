@@ -54,7 +54,7 @@ const MdP = ({ children }) => {
 
 export const chakraMarkdownComponents = {
   a: ({ href, children }) => (
-    <Link href={href} color="blue.500">
+    <Link href={href} color="#088484">
       {children}
     </Link>
   ),

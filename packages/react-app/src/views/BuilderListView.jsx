@@ -73,7 +73,7 @@ const BuilderAddressCell = ({ builderId, mainnetProvider }) => {
 export default function BuilderListView({ serverUrl, mainnetProvider, userRole }) {
   const [builders, setBuilders] = useState([]);
   const [isLoadingBuilders, setIsLoadingBuilders] = useState(false);
-  const { secondaryFontColor } = useCustomColorModes();
+  const { secondaryFontColor, linkColor } = useCustomColorModes();
   const isAdmin = userRole === USER_ROLES.admin;
 
   const columns = useMemo(
@@ -158,7 +158,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider, userRole }
         </Heading>
         <Text color={secondaryFontColor} textAlign="center" mb="10">
           List of Ethereum builders creating products, prototypes, and tutorials with{" "}
-          <Link href="https://github.com/scaffold-eth/scaffold-eth" color="teal.500" isExternal>
+          <Link href="https://github.com/scaffold-eth/scaffold-eth" color={linkColor} isExternal>
             scaffold-eth
           </Link>
           .

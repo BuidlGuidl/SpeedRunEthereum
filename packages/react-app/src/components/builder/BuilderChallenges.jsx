@@ -29,7 +29,7 @@ export const BuilderChallenges = ({
   isLoadingBuilder,
   isLoadingTimestamps,
 }) => {
-  const { primaryFontColor, secondaryFontColor, borderColor } = useCustomColorModes();
+  const { primaryFontColor, secondaryFontColor, borderColor, linkColor } = useCustomColorModes();
 
   return (
     <>
@@ -72,7 +72,7 @@ export const BuilderChallenges = ({
                   return (
                     <Tr key={challengeId}>
                       <Td>
-                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700" color="teal.500">
+                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700" color={linkColor}>
                           {challengeInfo[challengeId].label}
                         </Link>
                       </Td>
@@ -80,7 +80,7 @@ export const BuilderChallenges = ({
                         <Link
                           // Legacy branchUrl
                           href={lastSubmission.contractUrl || lastSubmission.branchUrl}
-                          color="teal.500"
+                          color={linkColor}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -90,7 +90,7 @@ export const BuilderChallenges = ({
                       <Td>
                         <Link
                           href={lastSubmission.deployedUrl}
-                          color="teal.500"
+                          color={linkColor}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

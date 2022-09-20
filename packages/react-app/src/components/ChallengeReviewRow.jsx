@@ -33,6 +33,7 @@ import {
   UnorderedList,
   Box,
 } from "@chakra-ui/react";
+import { useUserAddress } from "eth-hooks";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import Address from "./Address";
@@ -40,8 +41,8 @@ import DateWithTooltip from "./DateWithTooltip";
 import { challengeInfo } from "../data/challenges";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 import { runAutograderTest } from "../data/api";
-import { useUserAddress } from "eth-hooks";
 import { isBoolean } from "../helpers/strings";
+import useCustomColorModes from "../hooks/useCustomColorModes";
 
 export default function ChallengeReviewRow({ challenge, isLoading, approveClick, rejectClick, userProvider }) {
   const [comment, setComment] = useState(challenge.reviewComment ?? "");
@@ -49,6 +50,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
   const [isRunningTests, setIsRunningTests] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const address = useUserAddress(userProvider);
+  const { linkColor } = useCustomColorModes();
 
   if (!challengeInfo[challenge.id]) {
     return null;
@@ -149,7 +151,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
                       <Link
                         // Legacy branchUrl
                         href={challenge.contractUrl || challenge.branchUrl}
-                        color="teal.500"
+                        color={linkColor}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -157,7 +159,7 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
                       </Link>
                     </ListItem>
                     <ListItem>
-                      <Link href={challenge.deployedUrl} color="teal.500" target="_blank" rel="noopener noreferrer">
+                      <Link href={challenge.deployedUrl} color={linkColor} target="_blank" rel="noopener noreferrer">
                         Demo
                       </Link>
                     </ListItem>
