@@ -55,16 +55,6 @@ export const challengeInfo = {
       claim: "Join the 🏰️ BuidlGuidl",
     },
   },
-  "state-channels": {
-    id: 9,
-    branchName: "challenge-9-state-channels",
-    label: "📺 A State Channel Application Challenge",
-    disabled: false,
-    description:
-      "🛣️ The Ethereum blockchain has great decentralization & security properties but these properties come at a price: transaction throughput is low, and transactions can be expensive. This makes many traditional web applications infeasible on a blockchain... or does it?  State channels look to solve these problems by allowing participants to securely transact off-chain while keeping interaction with Ethereum Mainnet at a minimum.",
-    previewImage: "assets/9.png",
-    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
-  },
   "minimum-viable-exchange": {
     id: 5,
     branchName: "",
@@ -78,6 +68,16 @@ export const challengeInfo = {
       link: "https://t.me/+q4WzoxX88nwzZmQx",
       claim: "Join the ⚖️ DEX builder study group",
     },
+  },
+  "state-channels": {
+    id: 9,
+    branchName: "challenge-9-state-channels",
+    label: "📺 A State Channel Application Challenge",
+    disabled: false,
+    description:
+      "🛣️ The Ethereum blockchain has great decentralization & security properties but these properties come at a price: transaction throughput is low, and transactions can be expensive. This makes many traditional web applications infeasible on a blockchain... or does it?  State channels look to solve these problems by allowing participants to securely transact off-chain while keeping interaction with Ethereum Mainnet at a minimum.",
+    previewImage: "assets/9.png",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
   },
   "learn-multisig": {
     id: 6,
