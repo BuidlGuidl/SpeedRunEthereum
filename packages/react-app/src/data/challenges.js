@@ -55,10 +55,20 @@ export const challengeInfo = {
       claim: "Join the 🏰️ BuidlGuidl",
     },
   },
+  "state-channels": {
+    id: 9,
+    branchName: "challenge-9-state-channels",
+    label: "📺 A State Channel Application Challenge",
+    disabled: false,
+    description:
+      "🛣️ The Ethereum blockchain has great decentralization & security properties but these properties come at a price: transaction throughput is low, and transactions can be expensive. This makes many traditional web applications infeasible on a blockchain... or does it?  State channels look to solve these problems by allowing participants to securely transact off-chain while keeping interaction with Ethereum Mainnet at a minimum.",
+    previewImage: "assets/9.png",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
+  },
   "minimum-viable-exchange": {
     id: 5,
     branchName: "",
-    label: "🚩 Challenge 4: ⚖️ Build a DEX",
+    label: "⚖️ Build a DEX Challenge",
     disabled: false,
     description:
       "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
@@ -72,7 +82,7 @@ export const challengeInfo = {
   "learn-multisig": {
     id: 6,
     branchName: "challenge-3-multi-sig",
-    label: "🚩 Challenge 5: 👛 Multisig Wallet",
+    label: "👛 Multisig Wallet Challenge",
     disabled: false,
     description:
       '👩‍👩‍👧‍👧 Using a smart contract as a wallet we can secure assets by requiring multiple accounts to "vote" on transactions. The contract will keep track of transactions in an array of structs and owners will confirm or reject each one. Any transaction with enough confirmations can "execute".',
@@ -89,7 +99,7 @@ export const challengeInfo = {
   "nft-cohort": {
     id: 7,
     branchName: "challenge-5-svg-nft-cohort",
-    label: "🚩 Challenge 6: 🎁 SVG NFT 🎫 Building Cohort",
+    label: "🎁 SVG NFT 🎫 Building Cohort Challenge",
     disabled: false,
     description:
       "🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!",
@@ -102,23 +112,6 @@ export const challengeInfo = {
       link: "https://t.me/+mUeITJ5u7Ig0ZWJh",
       claim: "Join the 🎁 SVG NFT 🎫 Building Cohort",
     },
-  },
-  "learn-oracles": {
-    id: 8,
-    branchName: "challenge-4-oracle",
-    label: "🚩 Challenge 7: 🔮 Oracles",
-    disabled: true,
-    description:
-      "🛰 Off-chain information can be critical for on-chain logic but it's complicated! 🎲 Random numbers are also tricky on a deterministic public blockchain... ",
-    previewImage: "assets/soon.png",
-    dependencies: [
-      "simple-nft-example",
-      "decentralized-staking",
-      "token-vendor",
-      "dice-game",
-      "learn-multisig",
-      "minimum-viable-exchange",
-    ],
   },
 };
 
