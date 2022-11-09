@@ -11,7 +11,7 @@ const SiteFooter = () => {
       <HStack justifyContent="center" spacing="10px">
         <HStack alignItems="center" spacing="7px">
           <GithubFilled />{" "}
-          <Link color={linkColor} href="https://github.com/moonshotcollective/scaffold-directory" isExternal>
+          <Link color={linkColor} href="https://github.com/BuidlGuidl/SpeedRunEthereum" isExternal>
             Fork me
           </Link>
         </HStack>

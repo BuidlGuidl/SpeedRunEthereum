@@ -12,7 +12,7 @@ Speed Run Ethereum aims to provide a structured learning path for onboarding dev
 Get the project code:
 
 ```bash
-git clone git@github.com:moonshotcollective/scaffold-directory.git
+git clone git@github.com:BuidlGuidl/SpeedRunEthereum.git
 
 cd scaffold-directory
 ```
