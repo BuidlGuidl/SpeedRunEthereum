@@ -3,6 +3,7 @@ import { Container, Box, Text } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import { FormattedMessage } from "react-intl";
 
 export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor } = useCustomColorModes();
@@ -24,7 +25,13 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           <span role="img" aria-label="teacher icon">
             👩‍🏫
           </span>{" "}
-          Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
+          <FormattedMessage
+            id="index.learn-ethereum"
+            defaultMessage="Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas."
+            values={{
+              strong: chunks => <b>{chunks}</b>,
+            }}
+          />
         </Text>
 
         <Text color={primaryFontColor} mb="6" fontSize="xl" textAlign="center">

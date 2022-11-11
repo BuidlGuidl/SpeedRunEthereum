@@ -91,3 +91,11 @@ Admins can review challenge submissions in the "Review Challenges" tab (only vis
 >In order to set an admin in the local database file, add `"role": "admin"` to the user objects in `packages/backend/local_database/local_db.json` and re-run `yarn backend`.
 
 ![image](https://user-images.githubusercontent.com/2156509/135267093-4be16c3c-ddfb-4877-8329-cc78b82dcfae.png)
+
+### Translations
+
+Extract (run in react-app folder):
+
+```
+yarn translations-extract 'src/**/*.js*' --ignore='**/*.json' --format='src/lang/format.js' --out-file src/lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+```

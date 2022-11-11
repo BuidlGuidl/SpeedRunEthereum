@@ -26,6 +26,7 @@ import { ellipsizedAddress } from "../helpers/strings";
 import { USER_ROLES } from "../helpers/constants";
 import HeroIconUser from "./icons/HeroIconUser";
 import SignatureSignUp from "./SignatureSignUp";
+import { FormattedMessage } from "react-intl";
 
 /*
   ~ What it does? ~
@@ -63,7 +64,6 @@ import SignatureSignUp from "./SignatureSignUp";
 
 export default function Account({
   address,
-  connectText,
   ensProvider,
   isWalletConnected,
   loadWeb3Modal,
@@ -92,7 +92,7 @@ export default function Account({
 
   const connectWallet = (
     <Button colorScheme="green" key="loginbutton" onClick={loadWeb3Modal}>
-      {connectText || "connect"}
+      <FormattedMessage id="account.connect-wallet" defaultMessage="Connect Wallet" />
     </Button>
   );
 
