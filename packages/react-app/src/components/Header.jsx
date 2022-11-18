@@ -24,12 +24,14 @@ export default function Header({
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
   const userIsRegistered = userRole && USER_ROLES.anonymous !== userRole;
 
+  const isHomepage = location.pathname === "/";
+
   return (
     <Box
-      borderBottom="1px"
+      borderBottom={isHomepage ? 0 : "1px"}
       borderColor="#088484"
       backgroundColor={bgColor}
-      mb={location.pathname === "/" ? 0 : 10}
+      mb={isHomepage ? 0 : 10}
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
@@ -44,11 +46,13 @@ export default function Header({
         fontWeight="semibold"
         pos="relative"
       >
-        <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
-          <NavLink to="/" exact>
-            <Image src="/logo.svg" w="205px" />
-          </NavLink>
-        </Flex>
+        {!isHomepage && (
+          <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
+            <NavLink to="/" exact>
+              <Image src="/logo.svg" w="205px" />
+            </NavLink>
+          </Flex>
+        )}
         <HStack
           as="ul"
           mr={{ base: 0, lg: 6 }}
