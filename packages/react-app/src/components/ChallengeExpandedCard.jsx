@@ -159,57 +159,110 @@ const ChallengeExpandedCard = ({
           }
         }
       >
-        <VStack alignItems="start" maxWidth="40%" spacing={16}>
+        <VStack alignItems="start" maxWidth="40%" spacing={isFirst ? 32 : 24}>
           <VStack alignItems="start" spacing={0}>
+            {challengeStatus && (
+              <Badge borderRadius="xl" colorScheme={colorScheme} textTransform="none" py={0.5} px={2.5}>
+                {label}
+              </Badge>
+            )}
+
             <Text color={primaryFontColor} fontSize="xl">
-              Challenge #0
+              Challenge #{challenge.id}
             </Text>
             <Text fontSize="3xl" color={primaryFontColor} mt={0}>
-              Simple NFT Example
+              {/* {challenge.label} */} Simple NFT Example
             </Text>
           </VStack>
           <VStack alignItems="start" spacing={8}>
             <Text color={primaryFontColor} fontSize="lg">
-              🎫 Create a simple NFT to learn basics of 🏗 scaffold-eth. You'll use 👷‍♀️ HardHat to compile and deploy
-              smart contracts. Then, you'll use a template React app full of important Ethereum components and hooks.
-              Finally, you'll deploy an NFT to a public network to share with friends! 🚀
+              {challenge.description}
             </Text>
-            <Button
-              as={RouteLink}
-              to={!isChallengeLocked && `/challenge/${challengeId}`}
-              isDisabled={isChallengeLocked}
-              variant={isChallengeLocked ? "outline" : "solid"}
-              backgroundColor={bgColor}
-              borderRadius="3xl"
-              fontSize="xl"
-              border="2px"
-              borderColor={borderColor}
-            >
-              {!isChallengeLocked ? (
-                <>
-                  {" "}
-                  <span role="img" aria-label="castle icon">
-                    ⚔️
-                  </span>
-                  <chakra.span ml={1} color={primaryFontColor}>
-                    Quest
-                  </chakra.span>
-                </>
-              ) : (
-                <>
-                  <span role="img" aria-label="lock icon">
-                    🔒
-                  </span>
-                  <chakra.span ml={1} color={primaryFontColor}>
-                    Locked
-                  </chakra.span>
-                </>
-              )}
-            </Button>
+            {challenge.externalLink?.link ? (
+              // Redirect to externalLink if set (instead of challenge detail view)
+              <ButtonGroup>
+                <Button
+                  as={isChallengeLocked ? Button : Link}
+                  href={isChallengeLocked ? null : challenge.externalLink?.link}
+                  isDisabled={isChallengeLocked}
+                  variant={isChallengeLocked ? "outline" : "solid"}
+                  borderRadius="3xl"
+                  fontSize="xl"
+                  border="2px"
+                  backgroundColor={bgColor}
+                  borderColor={borderColor}
+                  isExternal
+                >
+                  {builderHasCompletedDependenciesChallenges ? (
+                    <chakra.span color={primaryFontColor}>{challenge.externalLink.claim}</chakra.span>
+                  ) : (
+                    <>
+                      <span role="img" aria-label="lock icon">
+                        🔒
+                      </span>
+                      <chakra.span color={primaryFontColor} ml={1}>
+                        Locked
+                      </chakra.span>
+                    </>
+                  )}
+                </Button>
+                {!builderHasCompletedDependenciesChallenges && (
+                  <Tooltip label={lockReasonToolTip}>
+                    <IconButton bgColor={bgColor} icon={<QuestionOutlineIcon />} />
+                  </Tooltip>
+                )}
+              </ButtonGroup>
+            ) : (
+              <ButtonGroup>
+                <Button
+                  as={RouteLink}
+                  to={!isChallengeLocked && `/challenge/${challengeId}`}
+                  isDisabled={isChallengeLocked}
+                  variant={isChallengeLocked ? "outline" : "solid"}
+                  borderRadius="3xl"
+                  fontSize="xl"
+                  border="2px"
+                  backgroundColor={bgColor}
+                  borderColor={borderColor}
+                >
+                  {!isChallengeLocked ? (
+                    <>
+                      {" "}
+                      <span role="img" aria-label="castle icon">
+                        ⚔️
+                      </span>
+                      <chakra.span color={primaryFontColor} ml={1}>
+                        Quest
+                      </chakra.span>
+                    </>
+                  ) : (
+                    <>
+                      <span role="img" aria-label="lock icon">
+                        🔒
+                      </span>
+                      <chakra.span color={primaryFontColor} ml={1}>
+                        Locked
+                      </chakra.span>
+                    </>
+                  )}
+                </Button>
+                {!builderHasCompletedDependenciesChallenges && (
+                  <Tooltip label={lockReasonToolTip}>
+                    <IconButton bgColor={bgColor} icon={<QuestionOutlineIcon />} />
+                  </Tooltip>
+                )}
+              </ButtonGroup>
+            )}
           </VStack>
         </VStack>
         <Box>
-          <Image src="/assets/challenges/simpleNFT.svg" alt="simpleNFT" h="20.5rem" />
+          {challenge.previewImage ? (
+            <Image src={challenge.previewImage} alt="simpleNFT" />
+          ) : (
+            <Text p={3} textAlign="center">
+              {challengeId} image
+            </Text>
+          )}
         </Box>
         <chakra.span
           h={8}
@@ -228,92 +281,3 @@ const ChallengeExpandedCard = ({
 };
 
 export default ChallengeExpandedCard;
-
-{
-  /* <Flex borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
-      <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
-        {challenge.previewImage ? (
-          <Image src={challenge.previewImage} objectFit="cover" />
-        ) : (
-          <Text p={3} textAlign="center">
-            {challengeId} image
-          </Text>
-        )}
-      </Center>
-      <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
-        <Flex justify="space-between" pb={4}>
-          <Text fontWeight="bold">{challenge.label}</Text>
-          {challengeStatus && (
-            <Badge borderRadius="xl" colorScheme={colorScheme} textTransform="none" py={0.5} px={2.5}>
-              {label}
-            </Badge>
-          )}
-        </Flex>
-        <Text color={secondaryFontColor} mb={4}>
-          {challenge.description}
-        </Text>
-        <Spacer />
-        {challenge.externalLink?.link ? (
-          // Redirect to externalLink if set (instead of challenge detail view)
-          <ButtonGroup>
-            <Button
-              as={isChallengeLocked ? Button : Link}
-              href={isChallengeLocked ? null : challenge.externalLink?.link}
-              isDisabled={isChallengeLocked}
-              variant={isChallengeLocked ? "outline" : "solid"}
-              isFullWidth
-              isExternal
-            >
-              {builderHasCompletedDependenciesChallenges ? (
-                <chakra.span>{challenge.externalLink.claim}</chakra.span>
-              ) : (
-                <>
-                  <span role="img" aria-label="lock icon">
-                    🔒
-                  </span>
-                  <chakra.span ml={1}>Locked</chakra.span>
-                </>
-              )}
-            </Button>
-            {!builderHasCompletedDependenciesChallenges && (
-              <Tooltip label={lockReasonToolTip}>
-                <IconButton icon={<QuestionOutlineIcon />} />
-              </Tooltip>
-            )}
-          </ButtonGroup>
-        ) : (
-          <ButtonGroup>
-            <Button
-              as={RouteLink}
-              to={!isChallengeLocked && `/challenge/${challengeId}`}
-              isDisabled={isChallengeLocked}
-              variant={isChallengeLocked ? "outline" : "solid"}
-              isFullWidth
-            >
-              {!isChallengeLocked ? (
-                <>
-                  {" "}
-                  <span role="img" aria-label="castle icon">
-                    ⚔️
-                  </span>
-                  <chakra.span ml={1}>Quest</chakra.span>
-                </>
-              ) : (
-                <>
-                  <span role="img" aria-label="lock icon">
-                    🔒
-                  </span>
-                  <chakra.span ml={1}>Locked</chakra.span>
-                </>
-              )}
-            </Button>
-            {!builderHasCompletedDependenciesChallenges && (
-              <Tooltip label={lockReasonToolTip}>
-                <IconButton icon={<QuestionOutlineIcon />} />
-              </Tooltip>
-            )}
-          </ButtonGroup>
-        )}
-      </Flex>
-    </Flex> */
-}
