@@ -29,6 +29,7 @@ const ChallengeExpandedCard = ({
   connectedBuilder,
   builderAttemptedChallenges,
   userProvider,
+  isFirst = false,
 }) => {
   const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
   const checkpointBgColor = useColorModeValue("#f9f9f9", "#000000");
@@ -145,6 +146,18 @@ const ChallengeExpandedCard = ({
         borderLeft="4px"
         borderColor={borderColor}
         position="relative"
+        _after={
+          isFirst && {
+            content: `""`,
+            position: "absolute",
+            left: "-4px",
+            zIndex: "100",
+            top: "0",
+            width: "4px",
+            height: "50%",
+            background: cardBgColor,
+          }
+        }
       >
         <VStack alignItems="start" maxWidth="40%" spacing={24}>
           <VStack alignItems="start" spacing={0}>

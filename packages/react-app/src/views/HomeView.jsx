@@ -133,16 +133,28 @@ export default function HomeView({ connectedBuilder, userProvider }) {
         </div>
       </Container>
       <Box>
-        {Object.entries(challengeInfo).map(([challengeId, challenge], index) => (
-          <ChallengeExpandedCard
-            challengeId={challengeId}
-            challenge={challenge}
-            challengeIndex={index}
-            builderAttemptedChallenges={builderAttemptedChallenges}
-            userProvider={userProvider}
-            connectedBuilder={connectedBuilder}
-          />
-        ))}
+        {Object.entries(challengeInfo).map(([challengeId, challenge], index) =>
+          index === 0 ? (
+            <ChallengeExpandedCard
+              challengeId={challengeId}
+              challenge={challenge}
+              challengeIndex={index}
+              builderAttemptedChallenges={builderAttemptedChallenges}
+              userProvider={userProvider}
+              connectedBuilder={connectedBuilder}
+              isFirst
+            />
+          ) : (
+            <ChallengeExpandedCard
+              challengeId={challengeId}
+              challenge={challenge}
+              challengeIndex={index}
+              builderAttemptedChallenges={builderAttemptedChallenges}
+              userProvider={userProvider}
+              connectedBuilder={connectedBuilder}
+            />
+          ),
+        )}
       </Box>
     </>
   );
