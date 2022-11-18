@@ -159,7 +159,7 @@ const ChallengeExpandedCard = ({
           }
         }
       >
-        <VStack alignItems="start" maxWidth="40%" spacing={24}>
+        <VStack alignItems="start" maxWidth="40%" spacing={16}>
           <VStack alignItems="start" spacing={0}>
             <Text color={primaryFontColor} fontSize="xl">
               Challenge #0
@@ -209,7 +209,7 @@ const ChallengeExpandedCard = ({
           </VStack>
         </VStack>
         <Box>
-          <img src="/assets/challenges/simpleNFT.svg" alt="simpleNFT" />
+          <Image src="/assets/challenges/simpleNFT.svg" alt="simpleNFT" h="20.5rem" />
         </Box>
         <chakra.span
           h={8}
