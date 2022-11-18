@@ -87,8 +87,8 @@ const ChallengeExpandedCard = ({
 
   if (challenge.checkpoint) {
     return (
-      <Box bg={checkpointBgColor}>
-        <Flex maxW={500} overflow="hidden" m="0 auto 24px" opacity={isChallengeLocked ? "0.5" : "1"}>
+      <Box bg={bgColor} borderBottom="2px" borderColor={borderColor}>
+        <Flex maxW={500} overflow="hidden" m="0 auto" opacity={isChallengeLocked ? "0.5" : "1"}>
           <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
             <Flex alignItems="center" pb={4} direction="column">
               <Text fontWeight="bold" fontSize="lg" mb={2}>
