@@ -14,7 +14,7 @@ Get the project code:
 ```bash
 git clone git@github.com:BuidlGuidl/SpeedRunEthereum.git
 
-cd scaffold-directory
+cd SpeedRunEthereum
 ```
 
 Install dependencies:
