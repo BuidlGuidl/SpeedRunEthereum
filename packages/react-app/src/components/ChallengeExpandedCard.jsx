@@ -13,7 +13,9 @@ import {
   Text,
   Link,
   Badge,
-  Box, useColorModeValue,
+  Box,
+  useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
@@ -28,8 +30,9 @@ const ChallengeExpandedCard = ({
   builderAttemptedChallenges,
   userProvider,
 }) => {
-  const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
   const checkpointBgColor = useColorModeValue("#f9f9f9", "#000000");
+  const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
   const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
     if (!builderAttemptedChallenges[id]) {
@@ -133,7 +136,88 @@ const ChallengeExpandedCard = ({
   }
 
   return (
-    <Flex maxW={880} borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
+    <Box borderBottom="2px" borderColor={borderColor} backgroundColor={cardBgColor}>
+      <Flex
+        justifyContent="space-between"
+        py={8}
+        ml={14}
+        pl={10}
+        borderLeft="4px"
+        borderColor={borderColor}
+        position="relative"
+      >
+        <VStack alignItems="start" maxWidth="40%" spacing={24}>
+          <VStack alignItems="start" spacing={0}>
+            <Text color={primaryFontColor} fontSize="xl">
+              Challenge #0
+            </Text>
+            <Text fontSize="3xl" color={primaryFontColor} mt={0}>
+              Simple NFT Example
+            </Text>
+          </VStack>
+          <VStack alignItems="start" spacing={8}>
+            <Text color={primaryFontColor} fontSize="lg">
+              🎫 Create a simple NFT to learn basics of 🏗 scaffold-eth. You'll use 👷‍♀️ HardHat to compile and deploy
+              smart contracts. Then, you'll use a template React app full of important Ethereum components and hooks.
+              Finally, you'll deploy an NFT to a public network to share with friends! 🚀
+            </Text>
+            <Button
+              as={RouteLink}
+              to={!isChallengeLocked && `/challenge/${challengeId}`}
+              isDisabled={isChallengeLocked}
+              variant={isChallengeLocked ? "outline" : "solid"}
+              backgroundColor={bgColor}
+              borderRadius="3xl"
+              fontSize="xl"
+              border="2px"
+              borderColor={borderColor}
+            >
+              {!isChallengeLocked ? (
+                <>
+                  {" "}
+                  <span role="img" aria-label="castle icon">
+                    ⚔️
+                  </span>
+                  <chakra.span ml={1} color={primaryFontColor}>
+                    Quest
+                  </chakra.span>
+                </>
+              ) : (
+                <>
+                  <span role="img" aria-label="lock icon">
+                    🔒
+                  </span>
+                  <chakra.span ml={1} color={primaryFontColor}>
+                    Locked
+                  </chakra.span>
+                </>
+              )}
+            </Button>
+          </VStack>
+        </VStack>
+        <Box>
+          <img src="/assets/challenges/simpleNFT.svg" alt="simpleNFT" />
+        </Box>
+        <chakra.span
+          h={8}
+          w={8}
+          rounded="full"
+          backgroundColor={bgColor}
+          border="4px"
+          borderColor={borderColor}
+          position="absolute"
+          top="50%"
+          left="-18px"
+        />
+      </Flex>
+    </Box>
+  );
+};
+
+export default ChallengeExpandedCard;
+
+{
+  /* <Flex borderWidth="1px" borderRadius="lg" borderColor={borderColor} overflow="hidden" mb={6}>
       <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
         {challenge.previewImage ? (
           <Image src={challenge.previewImage} objectFit="cover" />
@@ -218,8 +302,5 @@ const ChallengeExpandedCard = ({
           </ButtonGroup>
         )}
       </Flex>
-    </Flex>
-  );
-};
-
-export default ChallengeExpandedCard;
+    </Flex> */
+}
