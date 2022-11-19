@@ -145,17 +145,17 @@ const ChallengeExpandedCard = ({
         py={8}
         ml={14}
         pl={10}
-        borderLeft="4px"
+        borderLeft="8px"
         borderColor={borderColor}
         position="relative"
         _after={
           isFirst && {
             content: `""`,
             position: "absolute",
-            left: "-4px",
+            left: "-8px",
             zIndex: "100",
             top: "0",
-            width: "4px",
+            width: "8px",
             height: "50%",
             background: cardBgColor,
           }
@@ -276,7 +276,7 @@ const ChallengeExpandedCard = ({
           borderColor={borderColor}
           position="absolute"
           top="50%"
-          left="-18px"
+          left="-20px"
         />
       </Flex>
     </Box>
