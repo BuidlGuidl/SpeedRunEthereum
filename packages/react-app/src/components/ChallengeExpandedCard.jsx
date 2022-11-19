@@ -4,7 +4,6 @@ import {
   chakra,
   ButtonGroup,
   Button,
-  IconButton,
   Tooltip,
   Center,
   Image,
@@ -17,11 +16,13 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 import JoinBG from "./JoinBG";
+import CrossedSwordsIcon from "./icons/CrossedSwordsIcon";
+import PadLockIcon from "./icons/PadLockIcon";
+import QuestionIcon from "./icons/QuestionIcon";
 
 const ChallengeExpandedCard = ({
   challengeId,
@@ -32,7 +33,6 @@ const ChallengeExpandedCard = ({
   isFirst = false,
 }) => {
   const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
-  const checkpointBgColor = useColorModeValue("#f9f9f9", "#000000");
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
   const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
@@ -126,7 +126,9 @@ const ChallengeExpandedCard = ({
 
               {!builderHasCompletedDependenciesChallenges && (
                 <Tooltip label={lockReasonToolTip}>
-                  <IconButton icon={<QuestionOutlineIcon />} />
+                  <chakra.span _hover={{ cursor: "pointer" }}>
+                    <QuestionIcon h={8} w={8} />
+                  </chakra.span>
                 </Tooltip>
               )}
             </ButtonGroup>
@@ -180,7 +182,7 @@ const ChallengeExpandedCard = ({
             </Text>
             {challenge.externalLink?.link ? (
               // Redirect to externalLink if set (instead of challenge detail view)
-              <ButtonGroup>
+              <ButtonGroup alignItems="center">
                 <Button
                   as={isChallengeLocked ? Button : Link}
                   href={isChallengeLocked ? null : challenge.externalLink?.link}
@@ -192,28 +194,30 @@ const ChallengeExpandedCard = ({
                   backgroundColor={bgColor}
                   borderColor={borderColor}
                   isExternal
+                  py="1.25rem"
+                  px={6}
                 >
                   {builderHasCompletedDependenciesChallenges ? (
                     <chakra.span color={primaryFontColor}>{challenge.externalLink.claim}</chakra.span>
                   ) : (
-                    <>
-                      <span role="img" aria-label="lock icon">
-                        🔒
-                      </span>
-                      <chakra.span color={primaryFontColor} ml={1}>
+                    <Flex justifyContent="center">
+                      <PadLockIcon w={6} h={6} />
+                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
                         Locked
                       </chakra.span>
-                    </>
+                    </Flex>
                   )}
                 </Button>
                 {!builderHasCompletedDependenciesChallenges && (
                   <Tooltip label={lockReasonToolTip}>
-                    <IconButton bgColor={bgColor} icon={<QuestionOutlineIcon />} />
+                    <chakra.span _hover={{ cursor: "pointer" }}>
+                      <QuestionIcon h={8} w={8} />
+                    </chakra.span>
                   </Tooltip>
                 )}
               </ButtonGroup>
             ) : (
-              <ButtonGroup>
+              <ButtonGroup alignItems="center">
                 <Button
                   as={RouteLink}
                   to={!isChallengeLocked && `/challenge/${challengeId}`}
@@ -224,31 +228,30 @@ const ChallengeExpandedCard = ({
                   border="2px"
                   backgroundColor={bgColor}
                   borderColor={borderColor}
+                  py="1.25rem"
+                  px={6}
                 >
                   {!isChallengeLocked ? (
-                    <>
-                      {" "}
-                      <span role="img" aria-label="castle icon">
-                        ⚔️
-                      </span>
-                      <chakra.span color={primaryFontColor} ml={1}>
+                    <Flex justifyContent="center" alignItems="center">
+                      <CrossedSwordsIcon w={6} h={6} />
+                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
                         Quest
                       </chakra.span>
-                    </>
+                    </Flex>
                   ) : (
-                    <>
-                      <span role="img" aria-label="lock icon">
-                        🔒
-                      </span>
-                      <chakra.span color={primaryFontColor} ml={1}>
+                    <Flex justifyContent="center">
+                      <PadLockIcon w={6} h={6} />
+                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
                         Locked
                       </chakra.span>
-                    </>
+                    </Flex>
                   )}
                 </Button>
                 {!builderHasCompletedDependenciesChallenges && (
                   <Tooltip label={lockReasonToolTip}>
-                    <IconButton bgColor={bgColor} icon={<QuestionOutlineIcon />} />
+                    <chakra.span _hover={{ cursor: "pointer" }}>
+                      <QuestionIcon h={8} w={8} />
+                    </chakra.span>
                   </Tooltip>
                 )}
               </ButtonGroup>
