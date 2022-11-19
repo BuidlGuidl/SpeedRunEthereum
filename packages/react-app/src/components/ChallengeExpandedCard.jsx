@@ -147,14 +147,14 @@ const ChallengeExpandedCard = ({
         pl={10}
         pr={{
           base: 10,
-          md: 0,
+          lg: 0,
         }}
         borderLeft="8px"
         borderColor={borderColor}
         position="relative"
         direction={{
           base: "column-reverse",
-          md: "row",
+          lg: "row",
         }}
         _after={
           isFirst && {
@@ -171,10 +171,10 @@ const ChallengeExpandedCard = ({
       >
         <VStack
           alignItems="start"
-          maxWidth={{ base: "100%", md: "40%" }}
+          maxWidth={{ base: "100%", lg: "40%" }}
           spacing={{
             base: 18,
-            md: isFirst ? 32 : 24,
+            lg: isFirst ? 32 : 24,
           }}
         >
           <VStack alignItems="start" spacing={0}>
