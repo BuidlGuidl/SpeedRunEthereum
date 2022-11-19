@@ -145,23 +145,38 @@ const ChallengeExpandedCard = ({
         py={8}
         ml={14}
         pl={10}
+        pr={{
+          base: 10,
+          md: 0,
+        }}
         borderLeft="8px"
         borderColor={borderColor}
         position="relative"
+        direction={{
+          base: "column-reverse",
+          md: "row",
+        }}
         _after={
           isFirst && {
             content: `""`,
             position: "absolute",
-            left: "-8px",
+            left: "-12px",
             zIndex: "100",
             top: "0",
-            width: "8px",
+            width: "18px",
             height: "50%",
             background: cardBgColor,
           }
         }
       >
-        <VStack alignItems="start" maxWidth="40%" spacing={isFirst ? 32 : 24}>
+        <VStack
+          alignItems="start"
+          maxWidth={{ base: "100%", md: "40%" }}
+          spacing={{
+            base: 18,
+            md: isFirst ? 32 : 24,
+          }}
+        >
           <VStack alignItems="start" spacing={0}>
             {challengeStatus && (
               <Badge borderRadius="xl" colorScheme={colorScheme} textTransform="none" py={0.5} px={2.5}>
