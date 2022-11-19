@@ -29,16 +29,16 @@ export const challengeInfo = {
     previewImage: "/assets/challenges/tokenVendor.svg",
     dependencies: [],
   },
-  // "dice-game": {
-  //   id: 3,
-  //   branchName: "challenge-3-dice-game",
-  //   label: "🚩 Challenge 3: 🎲 Dice Game",
-  //   disabled: false,
-  //   description:
-  //     "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
-  //   previewImage: "assets/dice.png",
-  //   dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
-  // },
+  "dice-game": {
+    id: 3,
+    branchName: "challenge-3-dice-game",
+    label: "🚩 Challenge 3: 🎲 Dice Game",
+    disabled: false,
+    description:
+      "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
+    previewImage: "/assets/challenges/diceGame.svg",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
+  },
   "buidl-guidl": {
     id: 4,
     branchName: "",
