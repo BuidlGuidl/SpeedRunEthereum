@@ -164,7 +164,10 @@ const ChallengeExpandedCard = ({
             zIndex: "100",
             top: "0",
             width: "18px",
-            height: "50%",
+            height: {
+              base: "58%",
+              lg: "50%",
+            },
             background: cardBgColor,
           }
         }
@@ -295,7 +298,10 @@ const ChallengeExpandedCard = ({
           border="4px"
           borderColor={borderColor}
           position="absolute"
-          top="50%"
+          top={{
+            base: "58%",
+            lg: "50%",
+          }}
           left="-20px"
         />
       </Flex>
