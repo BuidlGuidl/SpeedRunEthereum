@@ -273,7 +273,12 @@ const ChallengeExpandedCard = ({
             )}
           </VStack>
         </VStack>
-        <Box>
+        <Box
+          mb={{
+            base: 6,
+            lg: 0,
+          }}
+        >
           {challenge.previewImage ? (
             <Image src={challenge.previewImage} alt="simpleNFT" />
           ) : (
