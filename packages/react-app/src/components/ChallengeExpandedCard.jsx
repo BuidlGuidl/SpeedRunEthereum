@@ -188,7 +188,7 @@ const ChallengeExpandedCard = ({
               Challenge #{challenge.id}
             </Text>
             <Text fontSize="3xl" color={primaryFontColor} mt={0}>
-              {/* {challenge.label} */} Simple NFT Example
+              {challenge.label}
             </Text>
           </VStack>
           <VStack alignItems="start" spacing={8}>
@@ -280,7 +280,7 @@ const ChallengeExpandedCard = ({
           }}
         >
           {challenge.previewImage ? (
-            <Image src={challenge.previewImage} alt="simpleNFT" />
+            <Image src={challenge.previewImage} alt={challenge.label} />
           ) : (
             <Text p={3} textAlign="center">
               {challengeId} image
