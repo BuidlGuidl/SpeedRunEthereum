@@ -140,9 +140,10 @@ const ChallengeExpandedCard = ({
   }
 
   return (
-    <Box borderBottom="2px" borderColor={borderColor} backgroundColor={cardBgColor}>
+    <Center borderBottom="2px" borderColor={borderColor} backgroundColor={cardBgColor}>
       <Flex
         justifyContent="space-between"
+        maxW="container.xl"
         py={8}
         ml={14}
         pl={10}
@@ -306,7 +307,7 @@ const ChallengeExpandedCard = ({
           left="-20px"
         />
       </Flex>
-    </Box>
+    </Center>
   );
 };
 
