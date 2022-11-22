@@ -31,6 +31,7 @@ const ChallengeExpandedCard = ({
   builderAttemptedChallenges,
   userProvider,
   isFirst = false,
+  isLast = false,
   challengeIndex,
 }) => {
   const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
@@ -143,17 +144,14 @@ const ChallengeExpandedCard = ({
     <Center borderColor={borderColor} backgroundColor={cardBgColor}>
       <Flex
         justifyContent="space-between"
-        maxW="8xl"
+        maxW="7xl"
         py={8}
         ml={14}
+        mr={14}
         pl={10}
-        pr={{
-          base: 10,
-          lg: 0,
-        }}
         borderLeft="8px"
         borderColor={borderColor}
-        borderBottom="2px"
+        borderBottom={isLast ? 0 : "2px"}
         borderBottomColor={borderColor}
         position="relative"
         direction={{
@@ -181,7 +179,7 @@ const ChallengeExpandedCard = ({
           maxWidth={{ base: "100%", lg: "40%" }}
           spacing={{
             base: 18,
-            lg: isFirst ? 32 : 24,
+            lg: isFirst ? 24 : 20,
           }}
         >
           <VStack alignItems="start" spacing={0}>
@@ -191,15 +189,15 @@ const ChallengeExpandedCard = ({
               </Badge>
             )}
 
-            <Text color={primaryFontColor} fontSize="xl">
+            <Text color={primaryFontColor} fontSize={{ base: "xl", lg: "lg" }}>
               Challenge #{challengeIndex}
             </Text>
-            <Text fontSize="3xl" color={primaryFontColor} mt={0} fontWeight="bold">
+            <Text fontSize={{ base: "3xl", lg: "2xl" }} color={primaryFontColor} mt={0} fontWeight="bold">
               {challenge.label.split(": ")[1] ? challenge.label.split(": ")[1] : challenge.label}
             </Text>
           </VStack>
           <VStack alignItems="start" spacing={8}>
-            <Text color={primaryFontColor} fontSize="lg">
+            <Text color={primaryFontColor} fontSize={{ base: "lg", lg: "md" }}>
               {challenge.description}
             </Text>
             {challenge.externalLink?.link ? (
@@ -211,7 +209,7 @@ const ChallengeExpandedCard = ({
                   isDisabled={isChallengeLocked}
                   variant={isChallengeLocked ? "outline" : "solid"}
                   borderRadius="3xl"
-                  fontSize="xl"
+                  fontSize={{ base: "xl", lg: "lg" }}
                   border="2px"
                   backgroundColor={bgColor}
                   borderColor={borderColor}
@@ -246,12 +244,12 @@ const ChallengeExpandedCard = ({
                   isDisabled={isChallengeLocked}
                   variant={isChallengeLocked ? "outline" : "solid"}
                   borderRadius="3xl"
-                  fontSize="xl"
+                  fontSize={{ base: "xl", lg: "lg" }}
                   border="2px"
                   backgroundColor={bgColor}
                   borderColor={borderColor}
-                  py="1.25rem"
-                  px={6}
+                  py="1rem"
+                  px={4}
                 >
                   {!isChallengeLocked ? (
                     <Flex justifyContent="center" alignItems="center">
@@ -281,13 +279,16 @@ const ChallengeExpandedCard = ({
           </VStack>
         </VStack>
         <Box
+          d="flex"
+          justifyContent="center"
+          alignItems="center"
           mb={{
             base: 6,
             lg: 0,
           }}
         >
           {challenge.previewImage ? (
-            <Image src={challenge.previewImage} alt={challenge.label} />
+            <Image src={challenge.previewImage} alt={challenge.label} maxW="490px" mr={{ base: 0, lg: "50px" }} />
           ) : (
             <Text p={3} textAlign="center">
               {challengeId} image

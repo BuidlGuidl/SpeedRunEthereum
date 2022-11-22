@@ -8,14 +8,16 @@ import HeroDiamond from "../components/icons/HeroDiamond";
 
 const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
   <Box
-    display="inline"
-    textAlign="center"
+    display="flex"
+    justifyContent="center"
+    alignItems="center"
     color={bgColor}
     bgColor={primaryFontColor}
     borderRadius="50%"
-    w="23px"
-    h="23px"
-    mb="8px"
+    w="20px"
+    h="20px"
+    mb="5px"
+    fontSize="14px"
   >
     {children}
   </Box>
@@ -44,23 +46,39 @@ export default function HomeView({ connectedBuilder, userProvider }) {
         backgroundRepeat="repeat-x"
         backgroundSize="auto 300px"
       >
-        <Container maxW="container.lg" centerContent p="0 20px" mb="65px">
+        <Container maxW="container.lg" centerContent p="0 20px" mb="45px">
           <Center mb="35px" w="100%">
             <HeroDiamond maxW="45px" />
           </Center>
 
-          <Text color={primaryFontColor} mb="6" fontSize="lg" textAlign="center">
+          <Text
+            color={primaryFontColor}
+            mb="5"
+            fontSize={{
+              base: "lg",
+              lg: "md",
+            }}
+            textAlign="center"
+          >
             Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
           </Text>
 
           <Center mb="20px" mt="15px" w="100%">
-            <HeroLogo maxW="660px" />
+            <HeroLogo maxW="600px" />
           </Center>
 
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>
             1
           </BulletNumber>
-          <Text color={primaryFontColor} mb="6" fontSize="lg" textAlign="center">
+          <Text
+            color={primaryFontColor}
+            mb="5"
+            fontSize={{
+              base: "lg",
+              lg: "md",
+            }}
+            textAlign="center"
+          >
             Watch this{" "}
             <a
               href="https://www.youtube.com/watch?v=MlJPjJQZtC8"
@@ -76,7 +94,15 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>
             2
           </BulletNumber>
-          <Text color={primaryFontColor} mb="2" fontSize="lg" textAlign="center">
+          <Text
+            color={primaryFontColor}
+            mb="2"
+            fontSize={{
+              base: "lg",
+              lg: "md",
+            }}
+            textAlign="center"
+          >
             Then use{" "}
             <a
               style={{ textDecoration: "underline" }}
@@ -92,7 +118,15 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             to copy/paste each Solidity concept and tinker:
           </Text>
 
-          <Text color={primaryFontColor} mb="8" fontSize="lg" textAlign="center">
+          <Text
+            color={primaryFontColor}
+            mb="5"
+            fontSize={{
+              base: "lg",
+              lg: "md",
+            }}
+            textAlign="center"
+          >
             <div>
               <a
                 href="https://docs.soliditylang.org/en/v0.6.6/units-and-global-variables.html"
@@ -144,7 +178,15 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>
             3
           </BulletNumber>
-          <Text color={primaryFontColor} mb="8" fontSize="lg" textAlign="center">
+          <Text
+            color={primaryFontColor}
+            mb="5"
+            fontSize={{
+              base: "lg",
+              lg: "md",
+            }}
+            textAlign="center"
+          >
             Watch this{" "}
             <a
               href="https://www.youtube.com/playlist?list=PLJz1HruEnenAf80uOfDwBPqaliJkjKg69"
@@ -160,14 +202,22 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>
             4
           </BulletNumber>
-          <Text color={primaryFontColor} mb="0" fontSize="lg" textAlign="center">
+          <Text
+            color={primaryFontColor}
+            mb="0"
+            fontSize={{
+              base: "lg",
+              lg: "md",
+            }}
+            textAlign="center"
+          >
             When you are ready to test your knowledge, Speed Run Ethereum:
           </Text>
         </Container>
 
         <Box bgImg={platformBgAsset} backgroundRepeat="repeat-x" backgroundSize="auto 130px" h="130px" />
       </Box>
-      {Object.entries(challengeInfo).map(([challengeId, challenge], index) => (
+      {Object.entries(challengeInfo).map(([challengeId, challenge], index, { length }) => (
         <ChallengeExpandedCard
           challengeId={challengeId}
           challenge={challenge}
@@ -176,6 +226,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           userProvider={userProvider}
           connectedBuilder={connectedBuilder}
           isFirst={index === 0}
+          isLast={length - 1 === index}
         />
       ))}
     </Box>
