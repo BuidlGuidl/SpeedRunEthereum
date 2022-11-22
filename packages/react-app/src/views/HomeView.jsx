@@ -165,7 +165,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           </Text>
         </Container>
 
-        <Box bgImg={platformBgAsset} backgroundRepeat="repeat-x" backgroundSize="auto 130px" h="130px" mb="35px" />
+        <Box bgImg={platformBgAsset} backgroundRepeat="repeat-x" backgroundSize="auto 130px" h="130px" />
       </Box>
       {Object.entries(challengeInfo).map(([challengeId, challenge], index) => (
         <ChallengeExpandedCard
