@@ -107,7 +107,7 @@ export default function Account({
         </Text>
       </>
     ) : (
-      <Text fontSize="md" fontWeight="semibold" textAlign={textAlign} color={primaryFontColor} mb={mb}>
+      <Text fontSize="md" fontWeight="bold" textAlign={textAlign} color={primaryFontColor} mb={mb}>
         {shortAddress}
       </Text>
     );

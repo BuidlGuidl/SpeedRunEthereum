@@ -43,7 +43,7 @@ export default function Header({
       <Flex
         align={{ base: userIsRegistered ? "start" : "center", lg: "center" }}
         h="full"
-        fontWeight="semibold"
+        fontWeight="bold"
         pos="relative"
       >
         {!isHomepage && (

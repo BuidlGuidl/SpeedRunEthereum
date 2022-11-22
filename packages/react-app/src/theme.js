@@ -3,6 +3,13 @@ import { extendTheme } from "@chakra-ui/react";
 const theme = extendTheme({
   initialColorMode: "light",
   useSystemColorMode: false,
+  styles: {
+    global: {
+      strong: {
+        fontWeight: 500,
+      },
+    },
+  },
   fonts: {
     heading: `'Space Grotesk', sans-serif`,
     body: `'Space Grotesk', sans-serif`,
