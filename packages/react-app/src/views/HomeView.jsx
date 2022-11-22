@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Container, Box, Text, Center } from "@chakra-ui/react";
+import { Container, Box, Text, Center, useColorModeValue } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
@@ -23,6 +23,7 @@ const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
 
 export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor, bgColor } = useCustomColorModes();
+  const platformBgAsset = useColorModeValue("/assets/header_platform.svg", "/assets/header_platform_inv.svg");
 
   const builderAttemptedChallenges = useMemo(() => {
     if (!connectedBuilder?.challenges) {
@@ -164,13 +165,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           </Text>
         </Container>
 
-        <Box
-          bgImg="/assets/header_platform.svg"
-          backgroundRepeat="repeat-x"
-          backgroundSize="auto 130px"
-          h="130px"
-          mb="35px"
-        />
+        <Box bgImg={platformBgAsset} backgroundRepeat="repeat-x" backgroundSize="auto 130px" h="130px" mb="35px" />
 
         <Container maxW="container.lg" centerContent>
           <Box>
