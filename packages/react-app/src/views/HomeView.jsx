@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
-import { Container, Box, Text, Center } from "@chakra-ui/react";
+import { Container, Box, Text, Center, Image } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import HeroLogo from "../components/icons/HeroLogo";
 
 const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
   <Box
@@ -43,15 +44,15 @@ export default function HomeView({ connectedBuilder, userProvider }) {
       >
         <Container maxW="container.lg" centerContent p="0 20px" mb="65px">
           <Center mb="35px">
-            <img src="/assets/home_header_diamond.svg" alt="SRE Home diamond" />
+            <Image src="/assets/home_header_diamond.svg" maxW="45px" alt="SRE Home diamond" />
           </Center>
 
           <Text color={primaryFontColor} mb="6" fontSize="lg" textAlign="center">
             Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
           </Text>
 
-          <Center mb="20px" mt="15px">
-            <img src="/assets/home_header_logo.svg" alt="SRE Home logo" />
+          <Center mb="20px" mt="15px" w="100%">
+            <HeroLogo maxW="660px" />
           </Center>
 
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>
