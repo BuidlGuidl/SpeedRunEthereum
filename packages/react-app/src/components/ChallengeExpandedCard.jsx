@@ -191,7 +191,7 @@ const ChallengeExpandedCard = ({
             <Text color={primaryFontColor} fontSize="xl">
               Challenge #{challengeIndex}
             </Text>
-            <Text fontSize="3xl" color={primaryFontColor} mt={0}>
+            <Text fontSize="3xl" color={primaryFontColor} mt={0} fontWeight="bold">
               {challenge.label.split(": ")[1] ? challenge.label.split(": ")[1] : challenge.label}
             </Text>
           </VStack>
