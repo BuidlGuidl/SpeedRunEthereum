@@ -1,8 +1,10 @@
 import React, { useMemo } from "react";
-import { Container, Box, Text, Center } from "@chakra-ui/react";
+import { Container, Box, Text, Center, useColorModeValue } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import HeroLogo from "../components/icons/HeroLogo";
+import HeroDiamond from "../components/icons/HeroDiamond";
 
 const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
   <Box
@@ -21,6 +23,7 @@ const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
 
 export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor, bgColor } = useCustomColorModes();
+  const platformBgAsset = useColorModeValue("/assets/header_platform.svg", "/assets/header_platform_inv.svg");
 
   const builderAttemptedChallenges = useMemo(() => {
     if (!connectedBuilder?.challenges) {
@@ -42,16 +45,16 @@ export default function HomeView({ connectedBuilder, userProvider }) {
         backgroundSize="auto 300px"
       >
         <Container maxW="container.lg" centerContent p="0 20px" mb="65px">
-          <Center mb="35px">
-            <img src="/assets/home_header_diamond.svg" alt="SRE Home diamond" />
+          <Center mb="35px" w="100%">
+            <HeroDiamond maxW="45px" />
           </Center>
 
           <Text color={primaryFontColor} mb="6" fontSize="lg" textAlign="center">
             Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
           </Text>
 
-          <Center mb="20px" mt="15px">
-            <img src="/assets/home_header_logo.svg" alt="SRE Home logo" />
+          <Center mb="20px" mt="15px" w="100%">
+            <HeroLogo maxW="660px" />
           </Center>
 
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>
@@ -162,13 +165,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           </Text>
         </Container>
 
-        <Box
-          bgImg="/assets/header_platform.svg"
-          backgroundRepeat="repeat-x"
-          backgroundSize="auto 130px"
-          h="130px"
-          mb="35px"
-        />
+        <Box bgImg={platformBgAsset} backgroundRepeat="repeat-x" backgroundSize="auto 130px" h="130px" mb="35px" />
 
         <Container maxW="container.lg" centerContent>
           <Box>
