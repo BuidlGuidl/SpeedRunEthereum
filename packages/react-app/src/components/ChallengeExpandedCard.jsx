@@ -254,14 +254,14 @@ const ChallengeExpandedCard = ({
                   {!isChallengeLocked ? (
                     <Flex justifyContent="center" alignItems="center">
                       <CrossedSwordsIcon w={6} h={6} />
-                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
+                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
                         Quest
                       </chakra.span>
                     </Flex>
                   ) : (
                     <Flex justifyContent="center">
                       <PadLockIcon w={6} h={6} />
-                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
+                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
                         Locked
                       </chakra.span>
                     </Flex>
