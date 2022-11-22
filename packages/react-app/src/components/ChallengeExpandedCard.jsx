@@ -31,6 +31,7 @@ const ChallengeExpandedCard = ({
   builderAttemptedChallenges,
   userProvider,
   isFirst = false,
+  challengeIndex,
 }) => {
   const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
@@ -188,10 +189,10 @@ const ChallengeExpandedCard = ({
             )}
 
             <Text color={primaryFontColor} fontSize="xl">
-              Challenge #{challenge.id}
+              Challenge #{challengeIndex}
             </Text>
             <Text fontSize="3xl" color={primaryFontColor} mt={0}>
-              {challenge.label}
+              {challenge.label.split(": ")[1] ? challenge.label.split(": ")[1] : challenge.label}
             </Text>
           </VStack>
           <VStack alignItems="start" spacing={8}>
