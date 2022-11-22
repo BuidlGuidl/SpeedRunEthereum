@@ -163,7 +163,7 @@ const ChallengeExpandedCard = ({
             content: `""`,
             position: "absolute",
             left: "-12px",
-            zIndex: "100",
+            zIndex: "1",
             top: "0",
             width: "18px",
             height: {
