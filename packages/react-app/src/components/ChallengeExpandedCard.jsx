@@ -154,6 +154,7 @@ const ChallengeExpandedCard = ({
         borderLeft="8px"
         borderColor={borderColor}
         borderBottom="2px"
+        borderBottomColor={borderColor}
         position="relative"
         direction={{
           base: "column-reverse",
