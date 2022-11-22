@@ -50,7 +50,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
       >
         <Container maxW="container.lg" centerContent p="0 20px" mb="45px">
           <Center mb="35px" w="100%">
-            <HeroDiamond maxW="45px" />
+            <HeroDiamond maxW="45px" height="auto" />
           </Center>
 
           <Text
@@ -66,7 +66,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           </Text>
 
           <Center mb="20px" mt="15px" w="100%">
-            <HeroLogo maxW="600px" />
+            <HeroLogo maxW="600px" height="auto" />
           </Center>
 
           <BulletNumber primaryFontColor={primaryFontColor} bgColor={bgColor}>

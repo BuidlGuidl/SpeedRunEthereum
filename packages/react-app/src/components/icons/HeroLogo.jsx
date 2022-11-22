@@ -10,6 +10,7 @@ const HeroLogo = props => {
     <chakra.svg
       {...props}
       role="img"
+      width="800px"
       viewBox="0 0 800 229"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
