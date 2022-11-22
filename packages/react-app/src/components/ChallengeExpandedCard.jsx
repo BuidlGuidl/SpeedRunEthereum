@@ -141,7 +141,7 @@ const ChallengeExpandedCard = ({
   }
 
   return (
-    <Center borderColor={borderColor} backgroundColor={cardBgColor}>
+    <Center borderColor={borderColor}>
       <Flex
         justifyContent="space-between"
         maxW="7xl"
@@ -179,7 +179,7 @@ const ChallengeExpandedCard = ({
           maxWidth={{ base: "100%", lg: "40%" }}
           spacing={{
             base: 18,
-            lg: isFirst ? 24 : 20,
+            lg: 20,
           }}
         >
           <VStack alignItems="start" spacing={0}>
