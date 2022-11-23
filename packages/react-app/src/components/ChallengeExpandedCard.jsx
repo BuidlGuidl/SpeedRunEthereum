@@ -34,7 +34,7 @@ const ChallengeExpandedCard = ({
   isLast = false,
   challengeIndex,
 }) => {
-  const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
+  const { borderColor, bgColor, primaryFontColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
   const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
@@ -89,18 +89,20 @@ const ChallengeExpandedCard = ({
 
   if (challenge.checkpoint) {
     return (
-      <Box bg={bgColor} borderBottom="2px" borderColor={borderColor}>
-        <Flex maxW={500} overflow="hidden" m="0 auto" opacity={isChallengeLocked ? "0.5" : "1"}>
+      <Box
+        bg="sre.bgBannerBackground"
+        bgImg="assets/bgBanner_platform.svg"
+        backgroundPosition="bottom center"
+        backgroundRepeat="repeat-x"
+      >
+        <Flex maxW={500} overflow="hidden" m="0 auto">
           <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
             <Flex alignItems="center" pb={4} direction="column">
-              <Text fontWeight="bold" fontSize="lg" mb={2}>
+              <Text fontWeight="bold" fontSize="lg" mb={2} color="sre.text">
                 {challenge.label}
               </Text>
-              <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
-                <Image src={challenge.previewImage} objectFit="cover" />
-              </Center>
             </Flex>
-            <Text color={secondaryFontColor} mb={4} textAlign="center">
+            <Text mb={4} textAlign="center" color="sre.text">
               {challenge.description}
             </Text>
             <Spacer />

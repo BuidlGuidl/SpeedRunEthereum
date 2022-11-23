@@ -23,6 +23,7 @@ const theme = extendTheme({
       text: "#026262",
       background: "#C8F5FF",
       cardBackground: "#E9FBFF",
+      bgBannerBackground: "#67DDDE",
     },
     sreDark: {
       default: "#C8F5FF",
