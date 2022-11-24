@@ -27,8 +27,6 @@ export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor, bgColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
-  const platformBgAsset = useColorModeValue("/assets/header_platform.svg", "/assets/header_platform_inv.svg");
-
   const builderAttemptedChallenges = useMemo(() => {
     if (!connectedBuilder?.challenges) {
       return [];
@@ -216,7 +214,13 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             When you are ready to test your knowledge, Speed Run Ethereum:
           </Text>
         </Container>
-        <Box bgImg={platformBgAsset} backgroundRepeat="repeat-x" backgroundSize="auto 130px" h="130px" pos="relative" />
+        <Box
+          bgImg="/assets/header_platform.svg"
+          backgroundRepeat="repeat-x"
+          backgroundSize="auto 130px"
+          h="130px"
+          pos="relative"
+        />
       </Box>
 
       <Box mt="-20px" pt="20px" bgColor={cardBgColor}>

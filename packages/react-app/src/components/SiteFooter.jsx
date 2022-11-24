@@ -7,7 +7,7 @@ const SiteFooter = () => {
   const { linkColor } = useCustomColorModes();
 
   return (
-    <Box my={10}>
+    <Box my={5} fontSize="sm">
       <HStack justifyContent="center" spacing="10px">
         <HStack alignItems="center" spacing="7px">
           <GithubFilled />{" "}

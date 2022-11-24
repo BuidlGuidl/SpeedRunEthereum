@@ -1,10 +1,11 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { chakra, useColorModeValue, Box, Flex, HStack, Spacer, Image } from "@chakra-ui/react";
+import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import HeaderLogo from "./icons/HeaderLogo";
 
 export default function Header({
   injectedProvider,
@@ -31,12 +32,21 @@ export default function Header({
       borderBottom={isHomepage ? 0 : "1px"}
       borderColor="#088484"
       backgroundColor={bgColor}
-      mb={isHomepage ? 0 : 10}
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
       {ENVIRONMENT !== "production" && (
-        <Box pos="fixed" p="2px" fontSize={14} w="100%" bgColor="yellow.200" left={0} textAlign="center">
+        <Box
+          color="blackAlpha.500"
+          pos="fixed"
+          p="2px"
+          fontSize={14}
+          w="100%"
+          bgColor="yellow.200"
+          left={0}
+          textAlign="center"
+          zIndex="10"
+        >
           Working on a {ENVIRONMENT} environment.
         </Box>
       )}
@@ -49,7 +59,7 @@ export default function Header({
         {!isHomepage && (
           <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
             <NavLink to="/" exact>
-              <Image src="/logo.svg" w="205px" />
+              <HeaderLogo maxW="205px" height="auto" />
             </NavLink>
           </Flex>
         )}
