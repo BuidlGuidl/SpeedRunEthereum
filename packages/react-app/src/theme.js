@@ -10,6 +10,13 @@ const theme = extendTheme({
       },
     },
   },
+  components: {
+    Button: {
+      baseStyle: {
+        borderRadius: "3xl",
+      },
+    },
+  },
   fonts: {
     heading: `'Space Grotesk', sans-serif`,
     body: `'Space Grotesk', sans-serif`,
@@ -31,6 +38,7 @@ const theme = extendTheme({
       cardBackground: "#026262",
     },
     green: {
+      200: "#C8F5FF",
       500: "#088484",
     },
   },
