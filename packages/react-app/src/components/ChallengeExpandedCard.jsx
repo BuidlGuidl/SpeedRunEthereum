@@ -149,7 +149,7 @@ const ChallengeExpandedCard = ({
         ml={14}
         mr={14}
         pl={10}
-        borderLeft="8px"
+        borderLeft="solid 5px"
         borderColor={borderColor}
         borderBottom={isLast ? 0 : "2px"}
         borderBottomColor={borderColor}
@@ -296,8 +296,8 @@ const ChallengeExpandedCard = ({
           )}
         </Box>
         <chakra.span
-          h={8}
-          w={8}
+          h={5}
+          w={5}
           rounded="full"
           backgroundColor={bgColor}
           border="4px"
@@ -307,7 +307,7 @@ const ChallengeExpandedCard = ({
             base: "58%",
             lg: "50%",
           }}
-          left="-20px"
+          left="-13px"
         />
       </Flex>
     </Center>

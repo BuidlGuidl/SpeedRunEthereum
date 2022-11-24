@@ -36,7 +36,17 @@ export default function Header({
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
       {ENVIRONMENT !== "production" && (
-        <Box pos="fixed" p="2px" fontSize={14} w="100%" bgColor="yellow.200" left={0} textAlign="center">
+        <Box
+          color="blackAlpha.500"
+          pos="fixed"
+          p="2px"
+          fontSize={14}
+          w="100%"
+          bgColor="yellow.200"
+          left={0}
+          textAlign="center"
+          zIndex="10"
+        >
           Working on a {ENVIRONMENT} environment.
         </Box>
       )}
