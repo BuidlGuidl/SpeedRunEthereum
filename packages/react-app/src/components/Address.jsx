@@ -3,6 +3,7 @@ import { HStack } from "@chakra-ui/react";
 import QRPunkBlockie from "./QrPunkBlockie";
 import { useLookupAddress } from "../hooks";
 import BlockchainProvidersContext from "../contexts/blockchainProvidersContext";
+import { chakra } from "@chakra-ui/react";
 
 /*
   ~ What it does? ~
@@ -55,15 +56,15 @@ export default function Address({ value, address: sentAddress, size, w, fontSize
       <span style={{ verticalAlign: "middle" }}>
         <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={w ?? 12.5} borderRadius="md" />
       </span>
-      <span
+      <chakra.span
+        fontWeight="bold"
         style={{
           verticalAlign: "middle",
           fontSize: fontSize ?? 28,
-          fontWeight: "bold",
         }}
       >
         {displayAddress}
-      </span>
+      </chakra.span>
     </HStack>
   );
 }

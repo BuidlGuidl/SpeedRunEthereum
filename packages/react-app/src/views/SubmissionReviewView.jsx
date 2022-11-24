@@ -33,6 +33,7 @@ export default function SubmissionReviewView({ userProvider }) {
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
   const { secondaryFontColor, linkColor } = useCustomColorModes();
+  const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
   const fetchSubmittedChallenges = useCallback(async () => {
     setIsLoadingChallenges(true);
@@ -113,65 +114,67 @@ export default function SubmissionReviewView({ userProvider }) {
   };
 
   return (
-    <Container maxW="container.lg">
-      <Container maxW="container.md" centerContent>
-        <Heading as="h1">Review Submissions</Heading>
-        <Text color={secondaryFontColor}>Pending submissions to validate.</Text>
-        <Text color={secondaryFontColor} mb="6">
-          Check our{" "}
-          <Link href={RUBRIC_URL} color={linkColor} isExternal>
-            Grading Rubric
-          </Link>{" "}
-          and the{" "}
-          <Link href={SRE_GRADING_HELPER_URL} color={linkColor} isExternal>
-            SRE Grading helper
-          </Link>
-          .
-        </Text>
-      </Container>
-      <Heading as="h2" size="lg" mt={6} mb={4}>
-        Challenges
-      </Heading>
-      <Box overflowX="auto">
-        {isLoadingChallenges ? (
-          <ChallengesTableSkeleton />
-        ) : (
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>Builder</Th>
-                <Th>Challenge</Th>
-                <Th>Submitted time</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {!challenges || challenges.length === 0 ? (
+    <Box bgColor={bgColor} py={10}>
+      <Container maxW="container.lg">
+        <Container maxW="container.md" centerContent>
+          <Heading as="h1">Review Submissions</Heading>
+          <Text color={secondaryFontColor}>Pending submissions to validate.</Text>
+          <Text color={secondaryFontColor} mb="6">
+            Check our{" "}
+            <Link href={RUBRIC_URL} color={linkColor} isExternal>
+              Grading Rubric
+            </Link>{" "}
+            and the{" "}
+            <Link href={SRE_GRADING_HELPER_URL} color={linkColor} isExternal>
+              SRE Grading helper
+            </Link>
+            .
+          </Text>
+        </Container>
+        <Heading as="h2" size="lg" mt={6} mb={4}>
+          Challenges
+        </Heading>
+        <Box overflowX="auto">
+          {isLoadingChallenges ? (
+            <ChallengesTableSkeleton />
+          ) : (
+            <Table>
+              <Thead>
                 <Tr>
-                  <Td colSpan={6}>
-                    <Text color={secondaryFontColor} textAlign="center" mb={4}>
-                      <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
-                      <br />
-                      All challenges have been reviewed
-                    </Text>
-                  </Td>
+                  <Th>Builder</Th>
+                  <Th>Challenge</Th>
+                  <Th>Submitted time</Th>
+                  <Th>Actions</Th>
                 </Tr>
-              ) : (
-                challenges.map(challenge => (
-                  <ChallengeReviewRow
-                    key={`${challenge.userAddress}_${challenge.id}`}
-                    challenge={challenge}
-                    isLoading={isLoadingChallenges}
-                    approveClick={handleSendChallengeReview("ACCEPTED")}
-                    rejectClick={handleSendChallengeReview("REJECTED")}
-                    userProvider={userProvider}
-                  />
-                ))
-              )}
-            </Tbody>
-          </Table>
-        )}
-      </Box>
-    </Container>
+              </Thead>
+              <Tbody>
+                {!challenges || challenges.length === 0 ? (
+                  <Tr>
+                    <Td colSpan={6}>
+                      <Text color={secondaryFontColor} textAlign="center" mb={4}>
+                        <Icon as={HeroIconInbox} w={6} h={6} color={secondaryFontColor} mt={6} mb={4} />
+                        <br />
+                        All challenges have been reviewed
+                      </Text>
+                    </Td>
+                  </Tr>
+                ) : (
+                  challenges.map(challenge => (
+                    <ChallengeReviewRow
+                      key={`${challenge.userAddress}_${challenge.id}`}
+                      challenge={challenge}
+                      isLoading={isLoadingChallenges}
+                      approveClick={handleSendChallengeReview("ACCEPTED")}
+                      rejectClick={handleSendChallengeReview("REJECTED")}
+                      userProvider={userProvider}
+                    />
+                  ))
+                )}
+              </Tbody>
+            </Table>
+          )}
+        </Box>
+      </Container>
+    </Box>
   );
 }

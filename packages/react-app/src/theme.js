@@ -14,6 +14,7 @@ const theme = extendTheme({
     Button: {
       baseStyle: {
         borderRadius: "3xl",
+        fontWeight: "bold",
       },
     },
   },
@@ -38,10 +39,12 @@ const theme = extendTheme({
       cardBackground: "#026262",
     },
     green: {
+      100: "#C8F5FF",
       200: "#C8F5FF",
       300: "#E9FBFF",
       500: "#088484",
       600: "#026262",
+      700: "#088484",
     },
   },
 });

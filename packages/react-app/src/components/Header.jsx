@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { chakra, useColorModeValue, Box, Flex, HStack, Spacer, Image } from "@chakra-ui/react";
+import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
@@ -32,7 +32,6 @@ export default function Header({
       borderBottom={isHomepage ? 0 : "1px"}
       borderColor="#088484"
       backgroundColor={bgColor}
-      mb={isHomepage ? 0 : 10}
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
