@@ -175,7 +175,7 @@ const ChallengeExpandedCard = ({
             borderColor={borderColor}
             position="absolute"
             top={{
-              base: "58%",
+              base: "22%",
               lg: "30%",
             }}
             left="-13px"
