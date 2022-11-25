@@ -10,7 +10,6 @@ const QuestionIcon = props => {
     <chakra.svg
       width="44"
       height="44"
-      {...props}
       viewBox="0 0 44 44"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -19,6 +18,7 @@ const QuestionIcon = props => {
           fill: fillColor,
         },
       }}
+      {...props}
     >
       <path d="M43.3266 4.63367H41.2701V39.6749H43.3266V4.63367Z" />
       <path d="M41.2703 39.6749H39.2003V41.7449H41.2703V39.6749Z" />
