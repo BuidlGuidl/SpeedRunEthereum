@@ -7,6 +7,7 @@ const BG_FRONTEND_URL = "https://buidlguidl.com";
 export const JoinedBuidlGuidlBanner = ({ builderAddress }) => {
   return (
     <VStack
+      borderRadius="lg"
       bg="sre.bgBannerBackground"
       bgImg="/assets/bgBanner_castlePlatform.svg"
       backgroundPosition="bottom center"
