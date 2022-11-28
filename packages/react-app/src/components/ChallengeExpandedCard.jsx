@@ -181,10 +181,27 @@ const ChallengeExpandedCard = ({
             }}
             left="-13px"
           />
+          {challenge.icon && (
+            <chakra.span
+              h="20px"
+              w="20px"
+              backgroundImage={challenge.icon}
+              backgroundRepeat="no-repeat"
+              backgroundSize="20px auto"
+              position="absolute"
+              top={{
+                base: "22%",
+                lg: "30%",
+              }}
+              left="-40px"
+            />
+          )}
         </VStack>
       </Center>
     );
   }
+
+  console.log("challenge", challenge);
 
   return (
     <Center borderColor={borderColor}>
@@ -359,6 +376,21 @@ const ChallengeExpandedCard = ({
           }}
           left="-13px"
         />
+        {challenge.icon && (
+          <chakra.span
+            h="24px"
+            w="20px"
+            backgroundImage={challenge.icon}
+            backgroundRepeat="no-repeat"
+            backgroundSize="20px auto"
+            position="absolute"
+            top={{
+              base: "58%",
+              lg: "50%",
+            }}
+            left="-40px"
+          />
+        )}
       </Flex>
     </Center>
   );

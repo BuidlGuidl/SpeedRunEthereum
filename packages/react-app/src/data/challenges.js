@@ -33,6 +33,7 @@ export const challengeInfo = {
     id: 3,
     branchName: "challenge-3-dice-game",
     label: "🚩 Challenge 3: 🎲 Dice Game",
+    icon: "/assets/key_icon.svg",
     disabled: false,
     description:
       "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
@@ -43,6 +44,7 @@ export const challengeInfo = {
     id: 4,
     branchName: "",
     label: "Eligible to join 🏰️ BuidlGuidl",
+    icon: "/assets/vault_icon.svg",
     // Not a challenge, just a checkpoint in the Challenge timeline.
     checkpoint: true,
     disabled: false,
