@@ -119,7 +119,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
             {challenge.label}
           </Heading>
         </Box>
-        <Tabs variant="enclosed-colored" align="center">
+        <Tabs align="center" colorScheme="green">
           <TabList>
             {descriptionJs && <Tab>Javascript</Tab>}
             {descriptionTs && <Tab>Typescript</Tab>}

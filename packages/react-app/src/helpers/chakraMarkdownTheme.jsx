@@ -52,12 +52,18 @@ const MdP = ({ children }) => {
   );
 };
 
-export const chakraMarkdownComponents = {
-  a: ({ href, children }) => (
-    <Link href={href} color="#088484">
+const MdLink = ({ href, children }) => {
+  const { linkColor } = useCustomColorModes();
+
+  return (
+    <Link href={href} color={linkColor}>
       {children}
     </Link>
-  ),
+  );
+};
+
+export const chakraMarkdownComponents = {
+  a: props => <MdLink {...props} />,
   blockquote: props => <MdBlockQuote {...props} />,
   code: props => <MdCode {...props} />,
   h1: props => <MdH1 {...props} />,
