@@ -1,21 +1,23 @@
 import React from "react";
-import { Button, Center, Flex, Image, Link, Text, VStack, chakra } from "@chakra-ui/react";
+import { Button, Center, Flex, Image, Link, Text, VStack, chakra, useColorModeValue } from "@chakra-ui/react";
 import CrossedSwordsIcon from "../icons/CrossedSwordsIcon";
 
 const BG_FRONTEND_URL = "https://buidlguidl.com";
 
 export const JoinedBuidlGuidlBanner = ({ builderAddress }) => {
+  const bgColor = useColorModeValue("sre.background", "sre.bgBannerBackground");
+
   return (
     <VStack
       borderRadius="lg"
-      bg="sre.bgBannerBackground"
+      bg={bgColor}
       bgImg="/assets/bgBanner_castlePlatform.svg"
       backgroundPosition="bottom center"
       backgroundRepeat="repeat-x"
       position="relative"
       overflow="hidden"
-      minH={{ base: "20rem", lg: "24rem" }}
-      backgroundSize={{ base: "150%", lg: "110%" }}
+      paddingBottom="11rem"
+      backgroundSize={{ base: "150%", lg: "100%" }}
     >
       <Image
         src="/assets/bgBanner_joinBgClouds.svg"
