@@ -11,7 +11,6 @@ import { byTimestamp } from "../helpers/sorting";
 import { JoinedBuidlGuidlBanner } from "../components/builder/JoinedBuidlGuidlBanner";
 import { BuilderProfileHeader } from "../components/builder/BuilderProfileHeader";
 import { BuilderChallenges } from "../components/builder/BuilderChallenges";
-import { JoinBuidlGuidlBanner } from "../components/builder/JoinBuidlGuidlBanner";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 
 export default function BuilderProfileView({
@@ -98,18 +97,6 @@ export default function BuilderProfileView({
     );
   }, [connectedBuilder]);
 
-  const bgChallenge = challengeInfo["buidl-guidl"];
-  const isAllowedToJoinBg = bgChallenge.dependencies?.every(id => {
-    if (!builderAttemptedChallenges[id]) {
-      return false;
-    }
-    if (!(builderAttemptedChallenges[id].status === CHALLENGE_SUBMISSION_STATUS.ACCEPTED)) {
-      return false;
-    }
-
-    return true;
-  });
-
   return (
     <Box bgColor={bgColor} py={10}>
       <Container maxW="container.xl">
@@ -134,14 +121,6 @@ export default function BuilderProfileView({
           ) : (
             <GridItem colSpan={{ base: 1, xl: 3 }}>
               <BuilderProfileHeader acceptedChallenges={acceptedChallenges} builder={builder} />
-              {isMyProfile && isAllowedToJoinBg && (
-                <JoinBuidlGuidlBanner
-                  challenge={bgChallenge}
-                  connectedBuilder={connectedBuilder}
-                  userProvider={userProvider}
-                  onJoinCallback={fetchBuilder}
-                />
-              )}
               <BuilderChallenges
                 challenges={challenges}
                 challengeEvents={challengeEvents}
