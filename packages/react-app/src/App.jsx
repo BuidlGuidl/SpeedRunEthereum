@@ -189,7 +189,6 @@ function App() {
               serverUrl={serverUrl}
               mainnetProvider={mainnetProvider}
               address={address}
-              connectedBuilder={connectedBuilder}
               userRole={userRole}
               userProvider={userProvider}
               fetchUserData={fetchUserData}

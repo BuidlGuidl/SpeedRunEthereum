@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useToast, useColorModeValue, Container, SimpleGrid, GridItem, Box } from "@chakra-ui/react";
@@ -11,7 +11,6 @@ import { byTimestamp } from "../helpers/sorting";
 import { JoinedBuidlGuidlBanner } from "../components/builder/JoinedBuidlGuidlBanner";
 import { BuilderProfileHeader } from "../components/builder/BuilderProfileHeader";
 import { BuilderChallenges } from "../components/builder/BuilderChallenges";
-import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 
 export default function BuilderProfileView({
   serverUrl,
@@ -20,7 +19,6 @@ export default function BuilderProfileView({
   userProvider,
   userRole,
   fetchUserData,
-  connectedBuilder,
 }) {
   const { builderAddress } = useParams();
   const [builder, setBuilder] = useState();
@@ -86,16 +84,6 @@ export default function BuilderProfileView({
     fetchChallengeEvents();
     // eslint-disable-next-line
   }, [builderAddress]);
-
-  const builderAttemptedChallenges = useMemo(() => {
-    if (!connectedBuilder?.challenges) {
-      return [];
-    }
-
-    return Object.fromEntries(
-      Object.entries(connectedBuilder.challenges).filter(([_, challengeData]) => challengeData?.status),
-    );
-  }, [connectedBuilder]);
 
   return (
     <Box bgColor={bgColor} py={10}>
