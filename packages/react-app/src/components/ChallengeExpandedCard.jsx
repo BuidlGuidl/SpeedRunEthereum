@@ -8,7 +8,6 @@ import {
   Center,
   Image,
   Flex,
-  Spacer,
   Text,
   Link,
   Badge,
@@ -34,7 +33,7 @@ const ChallengeExpandedCard = ({
   isLast = false,
   challengeIndex,
 }) => {
-  const { borderColor, secondaryFontColor, bgColor, primaryFontColor } = useCustomColorModes();
+  const { borderColor, bgColor, primaryFontColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
   const builderHasCompletedDependenciesChallenges = challenge.dependencies?.every(id => {
@@ -89,22 +88,41 @@ const ChallengeExpandedCard = ({
 
   if (challenge.checkpoint) {
     return (
-      <Box bg={bgColor} borderBottom="2px" borderColor={borderColor}>
-        <Flex maxW={500} overflow="hidden" m="0 auto" opacity={isChallengeLocked ? "0.5" : "1"}>
-          <Flex pt={6} pb={4} px={4} direction="column" grow={1}>
-            <Flex alignItems="center" pb={4} direction="column">
-              <Text fontWeight="bold" fontSize="lg" mb={2}>
-                {challenge.label}
-              </Text>
-              <Center borderBottom="1px" borderColor={borderColor} w="200px" flexShrink={0} p={1}>
-                <Image src={challenge.previewImage} objectFit="cover" />
-              </Center>
-            </Flex>
-            <Text color={secondaryFontColor} mb={4} textAlign="center">
+      <Center
+        bg="sre.bgBannerBackground"
+        bgImg="assets/bgBanner_castlePlatform.svg"
+        backgroundPosition="bottom center"
+        backgroundRepeat="repeat-x"
+        position="relative"
+        overflow="hidden"
+      >
+        <Image
+          src="assets/bgBanner_joinBgClouds.svg"
+          position="absolute"
+          top={{ base: "13%", lg: "15%" }}
+          left={{ base: "4%", lg: "auto" }}
+          zIndex={100}
+        />
+        <VStack
+          maxW="7xl"
+          py={8}
+          ml={14}
+          mr={14}
+          pl={10}
+          borderLeft="solid 5px"
+          borderColor={borderColor}
+          position="relative"
+          spacing={{ base: 16, lg: 32 }}
+          minH={{ base: "md", lg: "lg" }}
+        >
+          <Center position="relative">
+            <Image src="assets/bgBanner_JoinBG.svg" />
+          </Center>
+          <Flex justifyContent="space-between" direction={{ base: "column", lg: "row" }}>
+            <Text mb={4} color="sre.text" maxW={{ base: "100%", lg: "35%" }}>
               {challenge.description}
             </Text>
-            <Spacer />
-            <ButtonGroup>
+            <ButtonGroup alignSelf="flex-end" alignItems="center">
               {builderHasCompletedDependenciesChallenges ? (
                 <JoinBG
                   text={challenge.externalLink.claim}
@@ -114,29 +132,56 @@ const ChallengeExpandedCard = ({
                 />
               ) : (
                 <Button
-                  isDisabled={isChallengeLocked}
-                  variant={isChallengeLocked ? "outline" : "solid"}
-                  isFullWidth
-                  isExternal
+                  variant="solid"
+                  fontSize={{ base: "xl", lg: "lg" }}
+                  border="2px"
+                  backgroundColor="sreDark.default"
+                  borderColor="sre.default"
+                  py="1rem"
+                  px={4}
                 >
-                  <span role="img" aria-label="lock icon">
-                    🔒
-                  </span>
-                  <chakra.span ml={1}>Locked</chakra.span>
+                  <Flex justifyContent="center" alignItems="center">
+                    <PadLockIcon w={6} h={6} />
+                    <chakra.span color="sre.text" ml={2} textTransform="uppercase" fontWeight="medium">
+                      Locked
+                    </chakra.span>
+                  </Flex>
                 </Button>
               )}
 
               {!builderHasCompletedDependenciesChallenges && (
                 <Tooltip label={lockReasonToolTip}>
                   <chakra.span _hover={{ cursor: "pointer" }}>
-                    <QuestionIcon h={8} w={8} />
+                    <QuestionIcon
+                      h={8}
+                      w={8}
+                      sx={{
+                        path: {
+                          fill: "sre.default",
+                        },
+                      }}
+                    />
                   </chakra.span>
                 </Tooltip>
               )}
             </ButtonGroup>
           </Flex>
-        </Flex>
-      </Box>
+          <chakra.span
+            h={5}
+            w={5}
+            rounded="full"
+            backgroundColor={bgColor}
+            border="4px"
+            borderColor={borderColor}
+            position="absolute"
+            top={{
+              base: "22%",
+              lg: "30%",
+            }}
+            left="-13px"
+          />
+        </VStack>
+      </Center>
     );
   }
 
@@ -151,7 +196,8 @@ const ChallengeExpandedCard = ({
         pl={10}
         borderLeft="solid 5px"
         borderColor={borderColor}
-        borderBottom={isLast ? 0 : "2px"}
+        // Magic number (challengeIndex === 3). Challenge before Join the BG
+        borderBottom={isLast || challengeIndex === 3 ? 0 : "2px"}
         borderBottomColor={borderColor}
         position="relative"
         direction={{
@@ -286,7 +332,12 @@ const ChallengeExpandedCard = ({
           }}
         >
           {challenge.previewImage ? (
-            <Image src={challenge.previewImage} alt={challenge.label} maxW="490px" mr={{ base: 0, lg: "50px" }} />
+            <Image
+              src={challenge.previewImage}
+              alt={challenge.label}
+              maxW={{ lg: "490px" }}
+              mr={{ base: 0, lg: "50px" }}
+            />
           ) : (
             <Text p={3} textAlign="center">
               {challengeId} image
