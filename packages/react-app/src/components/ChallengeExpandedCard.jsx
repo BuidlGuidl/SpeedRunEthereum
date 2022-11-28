@@ -136,6 +136,7 @@ const ChallengeExpandedCard = ({
                   fontSize={{ base: "xl", lg: "lg" }}
                   border="2px"
                   backgroundColor="sreDark.default"
+                  disabled={true}
                   borderColor="sre.default"
                   py="1rem"
                   px={4}
