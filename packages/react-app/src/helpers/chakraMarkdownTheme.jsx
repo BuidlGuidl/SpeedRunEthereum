@@ -24,9 +24,29 @@ const MdCode = ({ children }) => {
 
 const MdH1 = ({ children }) => {
   const { borderColor } = useCustomColorModes();
+  const { primaryFontColor } = useCustomColorModes();
 
   return (
-    <Heading as="h1" size="xl" mt={6} mb={4} pb={2} borderBottom="1px solid" borderColor={borderColor}>
+    <Heading
+      as="h1"
+      size="xl"
+      mt={6}
+      mb={4}
+      pb={2}
+      borderBottom="1px solid"
+      borderColor={borderColor}
+      color={primaryFontColor}
+    >
+      {children}
+    </Heading>
+  );
+};
+
+const MdH2 = ({ children }) => {
+  const { primaryFontColor } = useCustomColorModes();
+
+  return (
+    <Heading as="h2" size="lg" mt={6} mb={4} color={primaryFontColor}>
       {children}
     </Heading>
   );
@@ -43,20 +63,20 @@ const MdPre = ({ children }) => {
 };
 
 const MdP = ({ children }) => {
-  const { secondaryFontColor } = useCustomColorModes();
+  const { primaryFontColor } = useCustomColorModes();
 
   return (
-    <Text color={secondaryFontColor} mb={4}>
+    <Text color={primaryFontColor} mb={4}>
       {children}
     </Text>
   );
 };
 
 const MdLink = ({ href, children }) => {
-  const { linkColor } = useCustomColorModes();
+  const { linkAltColor } = useCustomColorModes();
 
   return (
-    <Link href={href} color={linkColor}>
+    <Link href={href} color={linkAltColor}>
       {children}
     </Link>
   );
@@ -67,11 +87,7 @@ export const chakraMarkdownComponents = {
   blockquote: props => <MdBlockQuote {...props} />,
   code: props => <MdCode {...props} />,
   h1: props => <MdH1 {...props} />,
-  h2: ({ children }) => (
-    <Heading as="h2" size="lg" mt={6} mb={4}>
-      {children}
-    </Heading>
-  ),
+  h2: props => <MdH2 {...props} />,
   h3: ({ children }) => (
     <Heading as="h3" size="md" mt={6} mb={4}>
       {children}

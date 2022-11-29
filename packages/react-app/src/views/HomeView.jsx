@@ -63,7 +63,14 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
           </Text>
 
-          <Center mb="20px" mt="15px" w="100%">
+          <Center
+            mb={{
+              base: "40px",
+              lg: "20px",
+            }}
+            mt="15px"
+            w="100%"
+          >
             <HeroLogo maxW="600px" height="auto" />
           </Center>
 

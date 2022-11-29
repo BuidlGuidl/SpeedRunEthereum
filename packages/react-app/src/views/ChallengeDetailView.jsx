@@ -111,11 +111,11 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   };
 
   return (
-    <Box bgColor={bgColor} py={10}>
+    <Box bgColor={bgColor} py={12}>
       {/* Magic number for maxW to match GitHub */}
       <Container maxW="894px" mb="60px">
         <Box textAlign="center" mb={6}>
-          <Heading as="h1" mb={4}>
+          <Heading as="h1" mb={8}>
             {challenge.label}
           </Heading>
         </Box>

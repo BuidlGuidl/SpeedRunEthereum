@@ -8,7 +8,8 @@ const useCustomColorModes = () => {
   const borderColor = dividerColor;
   const codeBgColor = useColorModeValue("gray.100", "gray.900");
   const iconBgColor = codeBgColor;
-  const linkColor = useColorModeValue("#088484", "#C8F5FF");
+  const linkColor = useColorModeValue("sre.default", "sreDark.default");
+  const linkAltColor = useColorModeValue("sre.linkAlt", "sreDark.linkAlt");
 
   const bgColor = useColorModeValue("sre.background", "sreDark.background");
 
@@ -22,6 +23,7 @@ const useCustomColorModes = () => {
     codeBgColor,
     iconBgColor,
     linkColor,
+    linkAltColor,
   };
 };
 

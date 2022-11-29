@@ -93,13 +93,14 @@ const ChallengeExpandedCard = ({
         bgImg="assets/bgBanner_castlePlatform.svg"
         backgroundPosition="bottom center"
         backgroundRepeat="repeat-x"
+        backgroundSize={{ base: "150%", lg: "auto" }}
         position="relative"
         overflow="hidden"
       >
         <Image
           src="assets/bgBanner_joinBgClouds.svg"
           position="absolute"
-          top={{ base: "13%", lg: "15%" }}
+          top={{ base: "13%", lg: "12%" }}
           left={{ base: "4%", lg: "auto" }}
           zIndex={100}
         />
@@ -116,10 +117,10 @@ const ChallengeExpandedCard = ({
           minH={{ base: "md", lg: "lg" }}
         >
           <Center position="relative">
-            <Image src="assets/bgBanner_JoinBG.svg" />
+            <Image src="assets/bgBanner_JoinBG.svg" w="820px" />
           </Center>
           <Flex justifyContent="space-between" direction={{ base: "column", lg: "row" }}>
-            <Text mb={4} color="sre.text" maxW={{ base: "100%", lg: "35%" }}>
+            <Text mb={4} color="sre.text" textAlign={{ base: "center", lg: "left" }} maxW={{ base: "100%", lg: "35%" }}>
               {challenge.description}
             </Text>
             <ButtonGroup alignSelf="flex-end" alignItems="center">
@@ -200,8 +201,6 @@ const ChallengeExpandedCard = ({
       </Center>
     );
   }
-
-  console.log("challenge", challenge);
 
   return (
     <Center borderColor={borderColor}>
