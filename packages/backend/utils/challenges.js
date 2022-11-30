@@ -15,13 +15,13 @@ const challengeMapping = {
     id: 3,
     autograding: true,
   },
+  "minimum-viable-exchange": {
+    id: 4,
+    autograding: true,
+  },
   "state-channels": {
     id: 9,
     autograding: true,
-  },
-  "minimum-viable-exchange": {
-    id: 5,
-    autograding: false,
   },
   "learn-multisig": {
     id: 6,
