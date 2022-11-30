@@ -59,17 +59,13 @@ export const challengeInfo = {
   },
   "minimum-viable-exchange": {
     id: 5,
-    branchName: "",
+    branchName: "challenge-4-dex",
     label: "⚖️ Build a DEX Challenge",
     disabled: false,
     description:
       "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
     previewImage: "assets/challenges/dex.svg",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
-    externalLink: {
-      link: "https://t.me/+q4WzoxX88nwzZmQx",
-      claim: "Join the ⚖️ DEX builder study group",
-    },
   },
   "state-channels": {
     id: 9,

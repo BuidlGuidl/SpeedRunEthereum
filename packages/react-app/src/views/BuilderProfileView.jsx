@@ -102,22 +102,17 @@ export default function BuilderProfileView({
               userRole={userRole}
             />
           </GridItem>
-          {isBuilderOnBg ? (
-            <GridItem colSpan={{ base: 1, xl: 3 }}>
-              <JoinedBuidlGuidlBanner builderAddress={builderAddress} />
-            </GridItem>
-          ) : (
-            <GridItem colSpan={{ base: 1, xl: 3 }}>
-              <BuilderProfileHeader acceptedChallenges={acceptedChallenges} builder={builder} />
-              <BuilderChallenges
-                challenges={challenges}
-                challengeEvents={challengeEvents}
-                isMyProfile={isMyProfile}
-                isLoadingBuilder={isLoadingBuilder}
-                isLoadingTimestamps={isLoadingTimestamps}
-              />
-            </GridItem>
-          )}
+          <GridItem colSpan={{ base: 1, xl: 3 }}>
+            {isBuilderOnBg && <JoinedBuidlGuidlBanner builderAddress={builderAddress} />}
+            <BuilderProfileHeader acceptedChallenges={acceptedChallenges} builder={builder} />
+            <BuilderChallenges
+              challenges={challenges}
+              challengeEvents={challengeEvents}
+              isMyProfile={isMyProfile}
+              isLoadingBuilder={isLoadingBuilder}
+              isLoadingTimestamps={isLoadingTimestamps}
+            />
+          </GridItem>
         </SimpleGrid>
       </Container>
     </Box>

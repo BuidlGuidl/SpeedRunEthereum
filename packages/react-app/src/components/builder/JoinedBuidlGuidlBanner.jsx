@@ -18,6 +18,7 @@ export const JoinedBuidlGuidlBanner = ({ builderAddress }) => {
       overflow="hidden"
       paddingBottom="11rem"
       backgroundSize={{ base: "150%", lg: "100%" }}
+      mb={8}
     >
       <Image
         src="/assets/bgBanner_joinBgClouds.svg"
@@ -28,7 +29,13 @@ export const JoinedBuidlGuidlBanner = ({ builderAddress }) => {
       />
       <VStack alignItems="center" justifyContent="center" spacing={{ base: "1", lg: "2" }} pt="3">
         <Center position="relative" maxW="2xl">
-          <Text textAlign="center" fontSize={{ base: "4xl", lg: "5xl" }} color="sre.text" fontWeight="extrabold">
+          <Text
+            textAlign="center"
+            fontSize={{ base: "4xl", lg: "5xl" }}
+            color="sre.text"
+            fontWeight="extrabold"
+            px="20px"
+          >
             This builder has upgraded to BuidlGuidl
           </Text>
         </Center>
