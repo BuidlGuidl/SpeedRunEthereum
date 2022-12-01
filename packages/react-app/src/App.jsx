@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import { Web3Provider, StaticJsonRpcProvider, InfuraProvider } from "@ethersproject/providers";
 import "./App.css";
@@ -46,6 +46,8 @@ function App() {
     mainnet: { provider: null, isReady: false },
     local: { provider: null, isReady: false },
   });
+
+  const connectWalletRef = useRef(false);
 
   useEffect(() => {
     // 🛰 providers
@@ -118,8 +120,11 @@ function App() {
   }, [mainnetProvider, address, selectedChainId]);
 
   const loadWeb3Modal = useCallback(async () => {
-    const provider = await web3Modal.connect();
-    setInjectedProvider(new Web3Provider(provider));
+    if (connectWalletRef) {
+      const provider = await web3Modal.connect();
+      setInjectedProvider(new Web3Provider(provider));
+    }
+    connectWalletRef.current = true;
   }, [setInjectedProvider]);
 
   const logoutOfWeb3Modal = async () => {
