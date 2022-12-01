@@ -1,16 +1,20 @@
 import { useColorModeValue } from "@chakra-ui/react";
 
 const useCustomColorModes = () => {
-  const primaryFontColor = useColorModeValue("gray.700", "gray.200");
+  const primaryFontColor = useColorModeValue("sre.text", "sreDark.text");
   const codeFontColor = primaryFontColor;
-  const secondaryFontColor = useColorModeValue("gray.600", "gray.400");
-  const dividerColor = useColorModeValue("gray.200", "gray.700");
+  const secondaryFontColor = useColorModeValue("gray.600", "gray.300");
+  const dividerColor = useColorModeValue("sre.default", "sreDark.default");
   const borderColor = dividerColor;
   const codeBgColor = useColorModeValue("gray.100", "gray.900");
   const iconBgColor = codeBgColor;
-  const linkColor = useColorModeValue("#088484", "#C8F5FF");
+  const linkColor = useColorModeValue("sre.default", "sreDark.default");
+  const linkAltColor = useColorModeValue("sre.linkAlt", "sreDark.linkAlt");
+
+  const bgColor = useColorModeValue("sre.background", "sreDark.background");
 
   return {
+    bgColor,
     primaryFontColor,
     secondaryFontColor,
     dividerColor,
@@ -19,6 +23,7 @@ const useCustomColorModes = () => {
     codeBgColor,
     iconBgColor,
     linkColor,
+    linkAltColor,
   };
 };
 

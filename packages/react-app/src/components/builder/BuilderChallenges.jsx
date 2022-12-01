@@ -43,10 +43,10 @@ export const BuilderChallenges = ({
       {!isLoadingBuilder &&
         (challenges ? (
           <Box overflowX="auto">
-            <Table>
+            <Table colorScheme="green">
               {isMyProfile && (
                 <TableCaption>
-                  <Button as={RouteLink} colorScheme="blue" to="/">
+                  <Button as={RouteLink} colorScheme="green" to="/">
                     Start a challenge
                   </Button>
                 </TableCaption>
@@ -72,7 +72,7 @@ export const BuilderChallenges = ({
                   return (
                     <Tr key={challengeId}>
                       <Td>
-                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="700" color={linkColor}>
+                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="bold" color={linkColor}>
                           {challengeInfo[challengeId].label}
                         </Link>
                       </Td>
@@ -135,7 +135,7 @@ export const BuilderChallenges = ({
                 <Text color={secondaryFontColor} mb={4}>
                   Show off your skills. Learn everything you need to build on Ethereum!
                 </Text>
-                <Button as={RouteLink} colorScheme="blue" to="/">
+                <Button as={RouteLink} colorScheme="green" to="/">
                   Start a challenge
                 </Button>
               </Box>

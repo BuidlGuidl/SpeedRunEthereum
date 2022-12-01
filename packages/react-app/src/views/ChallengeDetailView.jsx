@@ -19,6 +19,7 @@ import {
   Tooltip,
   SkeletonText,
   useDisclosure,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
@@ -37,6 +38,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [openModalOnLoad, setOpenModalOnLoad] = useState(false);
+  const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
   const challenge = challengeInfo[challengeId];
   const isWalletConnected = !!userRole;
@@ -99,7 +101,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         </Box>
         <Box pos="sticky" bottom={0} p={6} left={0} right={0} textAlign="center">
           <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
-            <Button colorScheme="blue" boxShadow="dark-lg" onClick={handleSubmitChallengeModal} disabled={isAnonymous}>
+            <Button colorScheme="green" boxShadow="dark-lg" onClick={handleSubmitChallengeModal} disabled={isAnonymous}>
               Submit challenge
             </Button>
           </Tooltip>
@@ -109,47 +111,49 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   };
 
   return (
-    // Magic number for maxW to match GitHub
-    <Container maxW="894px" mb="60px">
-      <Box textAlign="center" mb={6}>
-        <Heading as="h1" mb={4}>
-          {challenge.label}
-        </Heading>
-      </Box>
-      <Tabs variant="enclosed-colored" align="center">
-        <TabList>
-          {descriptionJs && <Tab>Javascript</Tab>}
-          {descriptionTs && <Tab>Typescript</Tab>}
-        </TabList>
-        <TabPanels align="left">
-          <TabPanel>
-            <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
-            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
-            {challengeActionButtons("JS")}
-          </TabPanel>
-          <TabPanel>
-            <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
-            <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
-            {challengeActionButtons("TS")}
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      <Modal isOpen={isOpen} onClose={onClose} size="lg">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Submit Challenge</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody px={6} pb={8}>
-            <ChallengeSubmission
-              challenge={challenge}
-              serverUrl={serverUrl}
-              address={address}
-              userProvider={userProvider}
-              loadWeb3Modal={loadWeb3Modal}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Container>
+    <Box bgColor={bgColor} py={12}>
+      {/* Magic number for maxW to match GitHub */}
+      <Container maxW="894px" mb="60px">
+        <Box textAlign="center" mb={6}>
+          <Heading as="h1" mb={8}>
+            {challenge.label}
+          </Heading>
+        </Box>
+        <Tabs align="center" colorScheme="green">
+          <TabList>
+            {descriptionJs && <Tab>Javascript</Tab>}
+            {descriptionTs && <Tab>Typescript</Tab>}
+          </TabList>
+          <TabPanels align="left">
+            <TabPanel>
+              <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
+              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
+              {challengeActionButtons("JS")}
+            </TabPanel>
+            <TabPanel>
+              <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
+              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
+              {challengeActionButtons("TS")}
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+        <Modal isOpen={isOpen} onClose={onClose} size="lg">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Submit Challenge</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody px={6} pb={8}>
+              <ChallengeSubmission
+                challenge={challenge}
+                serverUrl={serverUrl}
+                address={address}
+                userProvider={userProvider}
+                loadWeb3Modal={loadWeb3Modal}
+              />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Container>
+    </Box>
   );
 }

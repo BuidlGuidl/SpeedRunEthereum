@@ -298,7 +298,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
                 )
               )}
               {isMyProfile && (
-                <Button mb={3} size="xs" variant="outline" onClick={onOpen}>
+                <Button mb={3} size="xs" variant="outline" onClick={onOpen} colorScheme="green">
                   Update socials
                 </Button>
               )}

@@ -1,10 +1,11 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { chakra, useColorModeValue, Box, Flex, HStack, Spacer, Image } from "@chakra-ui/react";
+import { NavLink, useLocation } from "react-router-dom";
+import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import HeaderLogo from "./icons/HeaderLogo";
 
 export default function Header({
   injectedProvider,
@@ -16,39 +17,52 @@ export default function Header({
   logoutOfWeb3Modal,
   setUserRole,
 }) {
-  const { linkColor } = useCustomColorModes();
-  const headerBgColor = useColorModeValue("#C8F5FF", "gray.800");
+  const { linkColor, bgColor } = useCustomColorModes();
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
+  const location = useLocation();
 
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
   const userIsRegistered = userRole && USER_ROLES.anonymous !== userRole;
 
+  const isHomepage = location.pathname === "/";
+
   return (
     <Box
-      borderBottom="1px"
+      borderBottom={isHomepage ? 0 : "1px"}
       borderColor="#088484"
-      backgroundColor={headerBgColor}
-      mb={10}
+      backgroundColor={bgColor}
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
       {ENVIRONMENT !== "production" && (
-        <Box pos="fixed" p="2px" fontSize={14} w="100%" bgColor="yellow.200" left={0} textAlign="center">
+        <Box
+          color="blackAlpha.500"
+          pos="fixed"
+          p="2px"
+          fontSize={14}
+          w="100%"
+          bgColor="yellow.200"
+          left={0}
+          textAlign="center"
+          zIndex="10"
+        >
           Working on a {ENVIRONMENT} environment.
         </Box>
       )}
       <Flex
         align={{ base: userIsRegistered ? "start" : "center", lg: "center" }}
         h="full"
-        fontWeight="semibold"
+        fontWeight="bold"
         pos="relative"
       >
-        <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
-          <NavLink to="/" exact>
-            <Image src="/logo.svg" w="205px" />
-          </NavLink>
-        </Flex>
+        {!isHomepage && (
+          <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
+            <NavLink to="/" exact>
+              <HeaderLogo maxW="205px" height="auto" />
+            </NavLink>
+          </Flex>
+        )}
         <HStack
           as="ul"
           mr={{ base: 0, lg: 6 }}

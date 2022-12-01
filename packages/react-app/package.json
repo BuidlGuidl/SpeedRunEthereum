@@ -27,6 +27,7 @@
     "@ethersproject/providers": "^5.0.12",
     "@ethersproject/solidity": "^5.0.9",
     "@ethersproject/units": "^5.0.6",
+    "@fontsource/space-grotesk": "^4.5.10",
     "@ramp-network/ramp-instant-sdk": "^2.2.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

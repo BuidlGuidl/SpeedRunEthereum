@@ -118,6 +118,7 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
   return (
     <Button
       onClick={onJoin}
+      colorScheme="green"
       isLoading={isJoining}
       isDisabled={isChallengeLocked || builderAlreadyJoined || joined}
       variant={isChallengeLocked ? "outline" : "solid"}
