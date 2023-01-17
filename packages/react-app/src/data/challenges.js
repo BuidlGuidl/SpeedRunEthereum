@@ -23,22 +23,12 @@ export const challengeInfo = {
     id: 2,
     branchName: "challenge-2-token-vendor",
     label: "🚩 Challenge 2: 🏵 Token Vendor",
+    icon: "/assets/key_icon.svg",
     disabled: false,
     description:
       '🤖 Smart contracts are kind of like "always on" vending machines that anyone can access. Let\'s make a decentralized, digital currency (an ERC20 token). Then, let\'s build an unstoppable vending machine that will buy and sell the currency. We\'ll learn about the "approve" pattern for ERC20s and how contract to contract interactions work.',
     previewImage: "/assets/challenges/tokenVendor.svg",
     dependencies: [],
-  },
-  "dice-game": {
-    id: 3,
-    branchName: "challenge-3-dice-game",
-    label: "🚩 Challenge 3: 🎲 Dice Game",
-    icon: "/assets/key_icon.svg",
-    disabled: false,
-    description:
-      "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
-    previewImage: "/assets/challenges/diceGame.svg",
-    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
   },
   "buidl-guidl": {
     id: 4,
@@ -51,11 +41,21 @@ export const challengeInfo = {
     description:
       "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.",
     previewImage: "assets/bg.png",
-    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
       link: "https://buidlguidl.com/",
       claim: "Join the 🏰️ BuidlGuidl",
     },
+  },
+  "dice-game": {
+    id: 3,
+    branchName: "challenge-3-dice-game",
+    label: "🚩 Challenge 3: 🎲 Dice Game",
+    disabled: false,
+    description:
+      "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
+    previewImage: "/assets/challenges/diceGame.svg",
+    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
   },
   "minimum-viable-exchange": {
     id: 5,
