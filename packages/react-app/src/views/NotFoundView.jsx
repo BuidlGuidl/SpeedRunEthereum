@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Container, Heading, Image, Link, Text, useColorModeValue } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function NotFoundView() {
   const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
@@ -20,7 +20,7 @@ export default function NotFoundView() {
         >
           Sorry, the page you visited does not exist.
         </Text>
-        <Link as={NavLink} to="/">
+        <Link as={RouterLink} to="/">
           <Button>Back Home</Button>
         </Link>
       </Container>
