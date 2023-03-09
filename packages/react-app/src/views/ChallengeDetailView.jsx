@@ -24,6 +24,8 @@ import {
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import rehypeRaw from "rehype-raw";
+
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
@@ -127,12 +129,16 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
           <TabPanels align="left">
             <TabPanel>
               <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
-              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
+              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} rehypePlugins={[rehypeRaw]}>
+                {descriptionJs}
+              </ReactMarkdown>
               {challengeActionButtons("JS")}
             </TabPanel>
             <TabPanel>
               <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
-              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
+              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} rehypePlugins={[rehypeRaw]}>
+                {descriptionTs}
+              </ReactMarkdown>
               {challengeActionButtons("TS")}
             </TabPanel>
           </TabPanels>
