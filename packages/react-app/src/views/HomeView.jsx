@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Container, Box, Text, Center, useColorModeValue } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
@@ -60,7 +61,13 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             }}
             textAlign="center"
           >
-            Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
+            <FormattedMessage
+              id="index.learn-ethereum"
+              defaultMessage="df: Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas."
+              values={{
+                strong: chunks => <b>{chunks}</b>,
+              }}
+            />
           </Text>
 
           <Center

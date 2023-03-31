@@ -51,3 +51,11 @@ Then re-run:
 ```bash
 yarn backend
 ```
+
+## Translations
+
+Extract (run in react-app folder):
+
+```
+yarn translations-extract 'src/**/*.js*' --ignore='**/*.json' --format='src/lang/format.js' --out-file src/lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+```
