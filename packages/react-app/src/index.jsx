@@ -18,7 +18,7 @@ const translations = {
 };
 
 // TODO: change from ui
-const userLocale = "es";
+const userLocale = "en";
 
 ReactDOM.render(
   <ChakraProvider theme={theme}>

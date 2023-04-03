@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { forwardRef, chakra, Button, useToast } from "@chakra-ui/react";
+import { useIntl } from "react-intl";
 import { SERVER_URL as serverUrl } from "../constants";
 import { USER_ROLES } from "../helpers/constants";
 
 const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserRole }, ref) => {
   const [loading, setLoading] = useState(false);
+  const intl = useIntl();
   const toast = useToast({ position: "top", isClosable: true });
 
   const handleLoginSigning = async () => {
@@ -68,7 +70,13 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
 
   return (
     <Button ref={ref} colorScheme="blue" disabled={loading} onClick={handleLoginSigning}>
-      <span role="img" aria-label="write icon">✍</span><chakra.span ml={2}>Register</chakra.span>
+      <span
+        role="img"
+        aria-label={intl.formatMessage({ id: "signatureSingUp.write-icon", defaultMessage: "write icon" })}
+      >
+        ✍
+      </span>
+      <chakra.span ml={2}>Register</chakra.span>
     </Button>
   );
 });
