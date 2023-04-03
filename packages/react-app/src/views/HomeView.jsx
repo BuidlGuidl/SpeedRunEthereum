@@ -63,7 +63,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           >
             <FormattedMessage
               id="index.learn-ethereum"
-              defaultMessage="df: Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas."
+              defaultMessage="Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas."
               values={{
                 strong: chunks => <b>{chunks}</b>,
               }}

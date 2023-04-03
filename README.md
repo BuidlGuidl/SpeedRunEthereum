@@ -54,8 +54,8 @@ yarn backend
 
 ## Translations
 
-Extract (run in react-app folder):
+Extract and compile strings ([docs](https://formatjs.io/docs/tooling/cli/#extraction-and-compilation-with-a-single-script)) (run in react-app folder):
 
 ```
-yarn translations-extract 'src/**/*.js*' --ignore='**/*.json' --format='src/lang/format.js' --out-file src/lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+yarn translations-extract
 ```

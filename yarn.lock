@@ -2496,6 +2496,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/space-grotesk/-/space-grotesk-4.5.10.tgz#49c62a52e08c7c713ccf25ff58d9061d31048191"
   integrity sha512-Ua+3NeVpUbVrF4F0I5posgZ0/SvpX0ijmwU4MI43cormzOP6r6Z09+BWwhS85+wMJsM+ravc+65fa/rqAZQ3wg==
 
+"@formatjs/cli@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/cli/-/cli-6.0.4.tgz#f772639748ecb2173df0b028bf084df25e91d3f1"
+  integrity sha512-ivb+uUcYmHnffBkXM7OM4NDofxyfnVvW5G52p+M9Cg3DGMz3wVBm3TwW3SXgGGTft7CMWHeGQGXjxTOwBYKeEA==
+
 "@formatjs/ecma402-abstract@1.14.3":
   version "1.14.3"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.14.3.tgz#6428f243538a11126180d121ce8d4b2f17465738"

@@ -64,6 +64,7 @@
     "web3modal": "^1.9.1"
   },
   "devDependencies": {
+    "@formatjs/cli": "^6.0.4",
     "@testing-library/dom": "^6.12.2",
     "@types/react": "^16.9.19",
     "autoprefixer": "^10.2.4",
@@ -103,6 +104,6 @@
     "ship": "yarn surge",
     "theme": "npx gulp less",
     "watch": "node ./scripts/watch.js",
-    "translations-extract": "formatjs extract"
+    "translations-extract": "formatjs extract 'src/**/*.js*' --ignore='**/*.json' --out-file src/lang/extractions.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' && formatjs compile 'src/lang/extractions.json' --out-file src/lang/en.json && rm src/lang/extractions.json"
   }
 }
