@@ -8,5 +8,7 @@
   "index.step-2.3": "<a_inheritance>inheritance</a_inheritance>, <a_sendingEth>sending eth</a_sendingEth>, and <a_payable>payable</a_payable>/<a_fallback>fallback</a_fallback> functions.",
   "index.step-3": "Watch this <a>getting started playlist</a> to become a power user and eth scripter.",
   "index.step-4": "When you are ready to test your knowledge, Speed Run Ethereum:",
+  "locked": "Locked",
+  "quest": "Quest",
   "signatureSingUp.write-icon": "write icon"
 }

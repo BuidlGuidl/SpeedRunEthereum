@@ -15,6 +15,7 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
@@ -137,7 +138,7 @@ const ChallengeExpandedCard = ({
                   fontSize={{ base: "xl", lg: "lg" }}
                   border="2px"
                   backgroundColor="sreDark.default"
-                  disabled={true}
+                  disabled
                   borderColor="sre.default"
                   py="1rem"
                   px={4}
@@ -145,7 +146,7 @@ const ChallengeExpandedCard = ({
                   <Flex justifyContent="center" alignItems="center">
                     <PadLockIcon w={6} h={6} />
                     <chakra.span color="sre.text" ml={2} textTransform="uppercase" fontWeight="medium">
-                      Locked
+                      <FormattedMessage id="locked" defaultMessage="Locked" />
                     </chakra.span>
                   </Flex>
                 </Button>
@@ -285,7 +286,7 @@ const ChallengeExpandedCard = ({
                     <Flex justifyContent="center">
                       <PadLockIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
-                        Locked
+                        <FormattedMessage id="locked" defaultMessage="Locked" />
                       </chakra.span>
                     </Flex>
                   )}
@@ -316,14 +317,14 @@ const ChallengeExpandedCard = ({
                     <Flex justifyContent="center" alignItems="center">
                       <CrossedSwordsIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
-                        Quest
+                        <FormattedMessage id="quest" defaultMessage="Quest" />
                       </chakra.span>
                     </Flex>
                   ) : (
                     <Flex justifyContent="center">
                       <PadLockIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
-                        Locked
+                        <FormattedMessage id="locked" defaultMessage="Locked" />
                       </chakra.span>
                     </Flex>
                   )}
