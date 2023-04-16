@@ -2,5 +2,11 @@
   "account.connect-wallet": "Connect Wallet",
   "announcementBanner": "Hey builder!! The BuidlGuidl is hosting a <Link>🏗 Scaffold-Eth 2 hackathon</Link>. We are giving 10 ETH away to the best projects. {br}Come join the fun and learn the latest scaffold-eth techniques! Let's build a bunch of apps!",
   "index.learn-ethereum": "Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.",
+  "index.step-1": "Watch this <a>quick video</a> as an Intro to Ethereum Development.",
+  "index.step-2.1": "Then use <a><span>🏗</span> Scaffold-ETH</a> to copy/paste each Solidity concept and tinker:",
+  "index.step-2.2": "<a_globalUnits>global units</a_globalUnits>, <a_primitives>primitives</a_primitives>, <a_mappings>mappings</a_mappings>, <a_structs>structs</a_structs>, <a_modifiers>modifiers</a_modifiers>, <a_events>events</a_events>,",
+  "index.step-2.3": "<a_inheritance>inheritance</a_inheritance>, <a_sendingEth>sending eth</a_sendingEth>, and <a_payable>payable</a_payable>/<a_fallback>fallback</a_fallback> functions.",
+  "index.step-3": "Watch this <a>getting started playlist</a> to become a power user and eth scripter.",
+  "index.step-4": "When you are ready to test your knowledge, Speed Run Ethereum:",
   "signatureSingUp.write-icon": "write icon"
 }
