@@ -296,6 +296,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
       <Box mt="-20px" pt="20px" bgColor={cardBgColor}>
         {Object.entries(challengeInfo).map(([challengeId, challenge], index, { length }) => (
           <ChallengeExpandedCard
+            key={challengeId}
             challengeId={challengeId}
             challenge={challenge}
             challengeIndex={index}
