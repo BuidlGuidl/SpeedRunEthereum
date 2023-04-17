@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { chakra, useToast, Button, Link } from "@chakra-ui/react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { SERVER_URL as serverUrl } from "../constants";
 
 const serverPath = "/bg/join";
 
 export default function JoinBG({ text, connectedBuilder, isChallengeLocked, userProvider, onJoinCallback }) {
+  const intl = useIntl();
   const [isJoining, setIsJoining] = useState(false);
   // Optimistic update.
   const [joined, setJoined] = useState(false);
@@ -18,16 +20,25 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
 
     if (!connectedBuilder.socialLinks || Object.keys(connectedBuilder?.socialLinks ?? {}).length === 0) {
       toast({
-        title: "Can't join the BuidlGuidl",
+        title: intl.formatMessage({
+          id: "joinBg.missing-socials.title",
+          defaultMessage: "Can't join the BuidlGuidl",
+        }),
         duration: 10000,
-        description: (
-          <>
-            In order to join the BuildGuidl you need to set your socials in{" "}
-            <Link href="/portfolio" textDecoration="underline">
-              your portfolio
-            </Link>
-            . It's our way to contact you.
-          </>
+        description: intl.formatMessage(
+          {
+            id: "joinBg.missing-socials.description",
+            defaultMessage: `In order to join the BuildGuidl you need to set
+              your socials in <Link>your portfolio</Link>. It's our way to
+              contact you.`,
+          },
+          {
+            Link: chunks => (
+              <Link href="/portfolio" textDecoration="underline">
+                {chunks}
+              </Link>
+            ),
+          },
         ),
 
         status: "error",
@@ -48,7 +59,10 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
       signMessage = signMessageResponse.data;
     } catch (error) {
       toast({
-        description: "Can't get the message to sign. Please try again",
+        description: intl.formatMessage({
+          id: `joinBg.get-message-failed`,
+          defaultMessage: "Can't get the message to sign. Please try again",
+        }),
         status: "error",
       });
       setIsJoining(false);
@@ -61,7 +75,10 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
     } catch (error) {
       toast({
         status: "error",
-        description: "The signature was cancelled",
+        description: intl.formatMessage({
+          id: "joinBg.signature-cancelled",
+          defaultMessage: "The signature was cancelled",
+        }),
       });
       console.error(error);
       setIsJoining(false);
@@ -83,7 +100,12 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
     } catch (error) {
       toast({
         status: "error",
-        description: error?.response?.data ?? "Submission Error. Please try again.",
+        description:
+          error?.response?.data ??
+          intl.formatMessage({
+            id: "joinBg.signature-submission-error",
+            defaultMessage: "Submission Error. Please try again.",
+          }),
       });
       console.error(error);
       setIsJoining(false);
@@ -94,15 +116,21 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
     toast({
       status: "success",
       duration: 10000,
-      title: "Welcome to the BuildGuidl :)",
-      description: (
-        <>
-          Visit{" "}
-          <Link href="https://buidlguidl.com" textDecoration="underline" isExternal>
-            BuidlGuidl
-          </Link>{" "}
-          and start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.
-        </>
+      title: intl.formatMessage({ id: "joinBg.success.title", defaultMessage: "Welcome to the BuildGuidl :)" }),
+      description: intl.formatMessage(
+        {
+          id: "joinBg.success.description",
+          defaultMessage: `Visit <Link>BuidlGuidl</Link> and start crafting
+            your Web3 portfolio by submitting your DEX, Multisig or SVG NFT
+            build.`,
+        },
+        {
+          Link: chunks => (
+            <Link href="https://buidlguidl.com" textDecoration="underline" isExternal>
+              {chunks}
+            </Link>
+          ),
+        },
       ),
     });
     setIsJoining(false);
@@ -125,7 +153,13 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
       isFullWidth
       isExternal
     >
-      <chakra.span>{builderAlreadyJoined || joined ? "Already joined" : text}</chakra.span>
+      <chakra.span>
+        {builderAlreadyJoined || joined ? (
+          <FormattedMessage id="joinBg.button.already-joined" defaultMessage="Already joined" />
+        ) : (
+          text
+        )}
+      </chakra.span>
     </Button>
   );
 }

@@ -21,13 +21,13 @@ const translations = {
 const userLocale = "en";
 
 ReactDOM.render(
-  <ChakraProvider theme={theme}>
-    <IntlProvider locale={userLocale} messages={translations[userLocale]}>
+  <IntlProvider locale={userLocale} messages={translations[userLocale]}>
+    <ChakraProvider theme={theme}>
       <BrowserRouter>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <App />
       </BrowserRouter>
-    </IntlProvider>
-  </ChakraProvider>,
+    </ChakraProvider>
+  </IntlProvider>,
   document.getElementById("root"),
 );
