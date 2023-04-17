@@ -28,6 +28,7 @@ import {
   useClipboard,
 } from "@chakra-ui/react";
 import { CopyIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
+import { FormattedMessage, useIntl } from "react-intl";
 import QRPunkBlockie from "../QrPunkBlockie";
 import SocialLink from "../SocialLink";
 import useDisplayAddress from "../../hooks/useDisplayAddress";
@@ -56,6 +57,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { hasCopied, onCopy } = useClipboard(builder?.id);
   const { borderColor, secondaryFontColor } = useCustomColorModes();
+  const intl = useIntl();
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
 
@@ -85,9 +87,15 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
     const invalidSocials = validateSocials(socialLinkCleaned);
     if (invalidSocials.length !== 0) {
       toast({
-        description: `The usernames for the following socials are not correct: ${invalidSocials
-          .map(([social]) => social)
-          .join(", ")}`,
+        description: intl.formatMessage(
+          {
+            id: "builderProfileCard.error.invalid-socials",
+            defaultMessage: "The usernames for the following socials are not correct: {invalidSocials}",
+          },
+          {
+            invalidSocials: invalidSocials.map(([social]) => social).join(", "),
+          },
+        ),
         status: "error",
         variant: toastVariant,
       });
@@ -100,7 +108,10 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       signMessage = await getUpdateSocialsSignMessage(address);
     } catch (error) {
       toast({
-        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        description: intl.formatMessage({
+          id: "error.server-overloaded",
+          defaultMessage: "Sorry, the server is overloaded. 🧯🚒🔥",
+        }),
         status: "error",
         variant: toastVariant,
       });
@@ -113,7 +124,10 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       signature = await userProvider.send("personal_sign", [signMessage, address]);
     } catch (error) {
       toast({
-        description: "Couldn't get a signature from the Wallet",
+        description: intl.formatMessage({
+          id: "error.signature-from-wallet",
+          defaultMessage: "Couldn't get a signature from the Wallet",
+        }),
         status: "error",
         variant: toastVariant,
       });
@@ -127,7 +141,10 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       if (error.status === 401) {
         toast({
           status: "error",
-          description: "Access error",
+          description: intl.formatMessage({
+            id: "error.access-error",
+            defaultMessage: "Access error",
+          }),
           variant: toastVariant,
         });
         setIsUpdatingSocials(false);
@@ -135,7 +152,10 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       }
       toast({
         status: "error",
-        description: "Can't update your socials. Please try again.",
+        description: intl.formatMessage({
+          id: "builderProfileCard.error.updating-socials",
+          defaultMessage: "Can't update your socials. Please try again.",
+        }),
         variant: toastVariant,
       });
       setIsUpdatingSocials(false);
@@ -143,7 +163,10 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
     }
 
     toast({
-      description: "Your social links have been updated",
+      description: intl.formatMessage({
+        id: "builderProfileCard.success.updating-socials",
+        defaultMessage: "Your social links have been updated",
+      }),
       status: "success",
       variant: toastVariant,
     });
@@ -289,8 +312,18 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
                 isMyProfile && (
                   <Alert mb={3} status="warning">
                     <Text style={{ fontSize: 11 }}>
-                      You haven't set your socials{" "}
-                      <Tooltip label="It's our way of reaching out to you. We could sponsor you an ENS, offer to be part of a build or set up an ETH stream for you.">
+                      <FormattedMessage
+                        id="builderProfileCard.set-socials.warning"
+                        defaultMessage="You haven't set your socials"
+                      />{" "}
+                      <Tooltip
+                        label={
+                          <FormattedMessage
+                            id="builderProfileCard.set-socials.tooltip"
+                            defaultMessage="It's our way of reaching out to you. We could sponsor you an ENS, offer to be part of a build or set up an ETH stream for you."
+                          />
+                        }
+                      >
                         <QuestionOutlineIcon />
                       </Tooltip>
                     </Text>
@@ -299,11 +332,15 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               )}
               {isMyProfile && (
                 <Button mb={3} size="xs" variant="outline" onClick={onOpen} colorScheme="green">
-                  Update socials
+                  <FormattedMessage id="builderProfileCard.update-socials" defaultMessage="Update socials" />
                 </Button>
               )}
               <Text textAlign="center" color={secondaryFontColor}>
-                Joined {joinedDateDisplay}
+                <FormattedMessage
+                  id="builderProfileCard.joined"
+                  defaultMessage="Joined {date}"
+                  values={{ date: joinedDateDisplay }}
+                />
               </Text>
             </Flex>
           </Flex>
@@ -312,7 +349,9 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Update your socials</ModalHeader>
+          <ModalHeader>
+            <FormattedMessage id="builderProfileCard.modal-socials.header" defaultMessage="Update your socials" />
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody p={6}>
             {Object.entries(socials).map(([socialId, socialData]) => (
@@ -336,7 +375,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               </FormControl>
             ))}
             <Button colorScheme="blue" onClick={handleUpdateSocials} isLoading={isUpdatingSocials} isFullWidth mt={4}>
-              Update
+              <FormattedMessage id="update" defaultMessage="Update" />
             </Button>
           </ModalBody>
         </ModalContent>

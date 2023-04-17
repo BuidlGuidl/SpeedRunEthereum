@@ -1,7 +1,18 @@
 {
   "account.connect-wallet": "Connect Wallet",
   "announcementBanner": "Hey builder!! The BuidlGuidl is hosting a <Link>🏗 Scaffold-Eth 2 hackathon</Link>. We are giving 10 ETH away to the best projects. {br}Come join the fun and learn the latest scaffold-eth techniques! Let's build a bunch of apps!",
+  "builderProfileCard.error.invalid-socials": "The usernames for the following socials are not correct: {invalidSocials}",
+  "builderProfileCard.error.updating-socials": "Can't update your socials. Please try again.",
+  "builderProfileCard.joined": "Joined {date}",
+  "builderProfileCard.modal-socials.header": "Update your socials",
+  "builderProfileCard.set-socials.tooltip": "It's our way of reaching out to you. We could sponsor you an ENS, offer to be part of a build or set up an ETH stream for you.",
+  "builderProfileCard.set-socials.warning": "You haven't set your socials",
+  "builderProfileCard.success.updating-socials": "Your social links have been updated",
+  "builderProfileCard.update-socials": "Update socials",
   "builderProfileView.error-getting-challenges": "Can't get challenges metadata. Please try again",
+  "error.access-error": "Access error",
+  "error.server-overloaded": "Sorry, the server is overloaded. 🧯🚒🔥",
+  "error.signature-from-wallet": "Couldn't get a signature from the Wallet",
   "index.learn-ethereum": "Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.",
   "index.step-1": "Watch this <a>quick video</a> as an Intro to Ethereum Development.",
   "index.step-2.1": "Then use <a><span>🏗</span> Scaffold-ETH</a> to copy/paste each Solidity concept and tinker:",
@@ -19,5 +30,6 @@
   "joinBg.success.title": "Welcome to the BuildGuidl :)",
   "locked": "Locked",
   "quest": "Quest",
-  "signatureSingUp.write-icon": "write icon"
+  "signatureSingUp.write-icon": "write icon",
+  "update": "Update"
 }
