@@ -1,6 +1,7 @@
 {
   "account.connect-wallet": "Connect Wallet",
   "announcementBanner": "Hey builder!! The BuidlGuidl is hosting a <Link>🏗 Scaffold-Eth 2 hackathon</Link>. We are giving 10 ETH away to the best projects. {br}Come join the fun and learn the latest scaffold-eth techniques! Let's build a bunch of apps!",
+  "builderProfileView.error-getting-challenges": "Can't get challenges metadata. Please try again",
   "index.learn-ethereum": "Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.",
   "index.step-1": "Watch this <a>quick video</a> as an Intro to Ethereum Development.",
   "index.step-2.1": "Then use <a><span>🏗</span> Scaffold-ETH</a> to copy/paste each Solidity concept and tinker:",
