@@ -28,6 +28,8 @@
   "joinBg.signature-submission-error": "Submission Error. Please try again.",
   "joinBg.success.description": "Visit <Link>BuidlGuidl</Link> and start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.",
   "joinBg.success.title": "Welcome to the BuildGuidl :)",
+  "joinedBuidlGuidlBanner.button": "View their profile on Buidlguidl",
+  "joinedBuidlGuidlBanner.label": "This builder has upgraded to BuidlGuidl",
   "locked": "Locked",
   "quest": "Quest",
   "signatureSingUp.write-icon": "write icon",
