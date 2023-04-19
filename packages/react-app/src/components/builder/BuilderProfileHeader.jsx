@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, HStack, Tag, Text } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import { FormattedMessage } from "react-intl";
 import { userFunctionDescription } from "../../helpers/constants";
 import useCustomColorModes from "../../hooks/useCustomColorModes";
 
@@ -18,7 +19,7 @@ export const BuilderProfileHeader = ({ acceptedChallenges, builder }) => {
             {acceptedChallenges.length}
           </Text>
           <Text fontSize="sm" color={secondaryFontColor} textAlign="right">
-            challenges completed
+            <FormattedMessage id="builderProfileHeader.challenges" defaultMessage="challenges completed" />
           </Text>
         </div>
       </Flex>
@@ -37,7 +38,7 @@ export const BuilderProfileHeader = ({ acceptedChallenges, builder }) => {
             )}
           </Text>
           <Text fontSize="sm" color={secondaryFontColor} textAlign="right">
-            Role
+            <FormattedMessage id="role" defaultMessage="Role" />
           </Text>
         </div>
       </Flex>

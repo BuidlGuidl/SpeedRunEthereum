@@ -9,6 +9,7 @@
   "builderProfileCard.set-socials.warning": "You haven't set your socials",
   "builderProfileCard.success.updating-socials": "Your social links have been updated",
   "builderProfileCard.update-socials": "Update socials",
+  "builderProfileHeader.challenges": "challenges completed",
   "builderProfileView.error-getting-challenges": "Can't get challenges metadata. Please try again",
   "error.access-error": "Access error",
   "error.server-overloaded": "Sorry, the server is overloaded. 🧯🚒🔥",
@@ -32,6 +33,7 @@
   "joinedBuidlGuidlBanner.label": "This builder has upgraded to BuidlGuidl",
   "locked": "Locked",
   "quest": "Quest",
+  "role": "Role",
   "signatureSingUp.write-icon": "write icon",
   "update": "Update"
 }
