@@ -1,4 +1,5 @@
 {
+  "accepted": "Accepted",
   "account.connect-wallet": "Connect Wallet",
   "announcementBanner": "Hey builder!! The BuidlGuidl is hosting a <Link>🏗 Scaffold-Eth 2 hackathon</Link>. We are giving 10 ETH away to the best projects. {br}Come join the fun and learn the latest scaffold-eth techniques! Let's build a bunch of apps!",
   "builderChallenges.challenges": "Challenges",
@@ -22,6 +23,8 @@
   "builderProfileCard.update-socials": "Update socials",
   "builderProfileHeader.challenges": "challenges completed",
   "builderProfileView.error-getting-challenges": "Can't get challenges metadata. Please try again",
+  "challengeStatusTag.modal.header": "Review feedback",
+  "challengeStatusTag.see-comments": "See comments",
   "code": "Code",
   "demo": "Demo",
   "error.access-error": "Access error",
@@ -46,7 +49,9 @@
   "joinedBuidlGuidlBanner.label": "This builder has upgraded to BuidlGuidl",
   "locked": "Locked",
   "quest": "Quest",
+  "rejected": "Rejected",
   "role": "Role",
   "signatureSingUp.write-icon": "write icon",
+  "submitted": "Submitted",
   "update": "Update"
 }
