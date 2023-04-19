@@ -16,6 +16,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 import BuilderProfileChallengesTableSkeleton from "../skeletons/BuilderProfileChallengesTableSkeleton";
 import { challengeInfo } from "../../data/challenges";
 import DateWithTooltip from "../DateWithTooltip";
@@ -35,7 +36,7 @@ export const BuilderChallenges = ({
     <>
       <Flex mb={4}>
         <Text fontSize="2xl" fontWeight="bold">
-          Challenges
+          <FormattedMessage id="builderChallenges.challenges" defaultMessage="Challenges" />
         </Text>
         <Spacer />
       </Flex>
@@ -47,17 +48,27 @@ export const BuilderChallenges = ({
               {isMyProfile && (
                 <TableCaption>
                   <Button as={RouteLink} colorScheme="green" to="/">
-                    Start a challenge
+                    <FormattedMessage id="builderChallenges.start-challenge" defaultMessage="Start a challenge" />
                   </Button>
                 </TableCaption>
               )}
               <Thead>
                 <Tr>
-                  <Th>Name</Th>
-                  <Th>Contract</Th>
-                  <Th>Live Demo</Th>
-                  <Th>Updated</Th>
-                  <Th>Status</Th>
+                  <Th>
+                    <FormattedMessage id="builderChallenges.table.name" defaultMessage="Name" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="builderChallenges.table.contract" defaultMessage="Contract" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="builderChallenges.table.live-demo" defaultMessage="Live Demo" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="builderChallenges.table.updated" defaultMessage="Updated" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="builderChallenges.table.status" defaultMessage="Status" />
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -84,7 +95,7 @@ export const BuilderChallenges = ({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Code
+                          <FormattedMessage id="code" defaultMessage="Code" />
                         </Link>
                       </Td>
                       <Td>
@@ -94,7 +105,7 @@ export const BuilderChallenges = ({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Demo
+                          <FormattedMessage id="demo" defaultMessage="Demo" />
                         </Link>
                       </Td>
                       <Td>
@@ -130,19 +141,25 @@ export const BuilderChallenges = ({
             {isMyProfile ? (
               <Box maxW="xs" textAlign="center">
                 <Text fontWeight="medium" color={primaryFontColor} mb={2}>
-                  Start a new challenge
+                  <FormattedMessage id="builderChallenges.empty-state.title" defaultMessage="Start a new challenge" />
                 </Text>
                 <Text color={secondaryFontColor} mb={4}>
-                  Show off your skills. Learn everything you need to build on Ethereum!
+                  <FormattedMessage
+                    id="builderChallenges.empty-state.description"
+                    defaultMessage="Show off your skills. Learn everything you need to build on Ethereum!"
+                  />
                 </Text>
                 <Button as={RouteLink} colorScheme="green" to="/">
-                  Start a challenge
+                  <FormattedMessage id="builderChallenges.empty-state.button" defaultMessage="Start a challenge" />
                 </Button>
               </Box>
             ) : (
               <Box maxW="xs" textAlign="center">
                 <Text color={secondaryFontColor} mb={4}>
-                  This builder hasn't completed any challenges.
+                  <FormattedMessage
+                    id="builderChallenges.empty-state.other-profile"
+                    defaultMessage="This builder hasn't completed any challenges."
+                  />
                 </Text>
               </Box>
             )}
