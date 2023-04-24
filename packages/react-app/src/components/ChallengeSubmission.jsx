@@ -3,6 +3,7 @@ import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import { Button, Heading, FormControl, FormLabel, Input, Text, Tooltip, useToast } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { FormattedMessage, useIntl } from "react-intl";
 import { isValidEtherscanTestnetUrl, isValidUrl } from "../helpers/strings";
 
 const serverPath = "/challenges";
@@ -11,6 +12,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   const { challengeId } = useParams();
   const history = useHistory();
   const toast = useToast({ position: "top", isClosable: true });
+  const intl = useIntl();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deployedUrl, setDeployedUrl] = useState("");
   const [contractUrl, setContractUrl] = useState("");
@@ -20,7 +22,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     if (!deployedUrl || !contractUrl) {
       toast({
         status: "error",
-        description: "Both fields are required",
+        description: intl.formatMessage({
+          id: "challengeSubmission.error.both-fields-required",
+          defaultMessage: "Both fields are required",
+        }),
       });
       return;
     }
@@ -28,8 +33,14 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     if (!isValidUrl(deployedUrl) || !isValidUrl(contractUrl)) {
       toast({
         status: "error",
-        title: "Please provide a valid URL",
-        description: "Valid URLs start with http:// or https://",
+        title: intl.formatMessage({
+          id: "challengeSubmission.error.invalid-url.title",
+          defaultMessage: "Please provide a valid URL",
+        }),
+        description: intl.formatMessage({
+          id: "challengeSubmission.error.invalid-url.description",
+          defaultMessage: "Valid URLs start with http:// or https://",
+        }),
       });
 
       setHasErrorField({
@@ -43,9 +54,15 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     if (!isValidEtherscanTestnetUrl(contractUrl)) {
       toast({
         status: "error",
-        title: "Incorrect Etherscan Contract URL",
-        description:
-          "Please submit your verified contract’s address on a valid testnet. e.g. https://goerli.etherscan.io/address/**Your Contract Address**",
+        title: intl.formatMessage({
+          id: "challengeSubmission.error.incorrect-contract.title",
+          defaultMessage: "Incorrect Etherscan Contract URL",
+        }),
+        description: intl.formatMessage({
+          id: "challengeSubmission.error.incorrect-contract.description",
+          defaultMessage:
+            "Please submit your verified contract’s address on a valid testnet. e.g. https://goerli.etherscan.io/address/**Your Contract Address**",
+        }),
       });
 
       setHasErrorField({
@@ -70,7 +87,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
       signMessage = JSON.stringify(signMessageResponse.data);
     } catch (error) {
       toast({
-        description: "Can't get the message to sign. Please try again",
+        description: intl.formatMessage({
+          id: "general.error.cant-get-message",
+          defaultMessage: "Can't get the message to sign. Please try again",
+        }),
         status: "error",
       });
       setIsSubmitting(false);
@@ -83,7 +103,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     } catch (error) {
       toast({
         status: "error",
-        description: "The signature was cancelled",
+        description: intl.formatMessage({
+          id: "general.error.signature-cancelled",
+          defaultMessage: "The signature was cancelled",
+        }),
       });
       console.error(error);
       setIsSubmitting(false);
@@ -108,7 +131,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
     } catch (error) {
       toast({
         status: "error",
-        description: "Submission Error. Please try again.",
+        description: intl.formatMessage({
+          id: "general.error.submission-error",
+          defaultMessage: "Submission Error. Please try again.",
+        }),
       });
       console.error(error);
       setIsSubmitting(false);
@@ -118,7 +144,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
     toast({
       status: "success",
-      description: "Challenge submitted!",
+      description: intl.formatMessage({
+        id: "challengeSubmission.challenge-submitted",
+        defaultMessage: "Challenge submitted!",
+      }),
     });
     setIsSubmitting(false);
     history.push("/portfolio");
@@ -127,7 +156,10 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
   if (!address) {
     return (
       <Text color="orange.400" className="warning" align="center">
-        Connect your wallet to submit this Challenge.
+        <FormattedMessage
+          id="challengeSubmission.connect-wallet"
+          defaultMessage="Connect your wallet to submit this Challenge."
+        />
       </Text>
     );
   }
@@ -139,14 +171,21 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
       </Heading>
       {challenge.isDisabled ? (
         <Text color="orange.400" className="warning">
-          This challenge is disabled.
+          <FormattedMessage id="challengeSubmission.disabled" defaultMessage="This challenge is disabled." />
         </Text>
       ) : (
         <form name="basic" autoComplete="off">
           <FormControl id="deployedUrl" isRequired>
             <FormLabel>
-              Deployed URL{" "}
-              <Tooltip label="Your deployed challenge URL on surge / s3 / ipfs ">
+              <FormattedMessage id="challengeSubmission.deployed-url" defaultMessage="Deployed URL" />{" "}
+              <Tooltip
+                label={
+                  <FormattedMessage
+                    id="challengeSubmission.deployed-url.tooltip"
+                    defaultMessage="Your deployed challenge URL on surge / s3 / ipfs"
+                  />
+                }
+              >
                 <QuestionOutlineIcon ml="2px" />
               </Tooltip>
             </FormLabel>
@@ -170,8 +209,15 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
           <FormControl id="contractUrl" isRequired mt={4}>
             <FormLabel>
-              Etherscan Contract URL{" "}
-              <Tooltip label="Your verified contract URL on Etherscan">
+              <FormattedMessage id="challengeSubmission.etherscan-url" defaultMessage="Etherscan Contract URL" />{" "}
+              <Tooltip
+                label={
+                  <FormattedMessage
+                    id="challengeSubmission.etherscan-url.tooltip"
+                    defaultMessage="Your verified contract URL on Etherscan"
+                  />
+                }
+              >
                 <QuestionOutlineIcon ml="2px" />
               </Tooltip>
             </FormLabel>
@@ -195,7 +241,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
           <div className="form-item">
             <Button colorScheme="blue" onClick={onFinish} isLoading={isSubmitting} mt={4} isFullWidth>
-              Submit
+              <FormattedMessage id="Submit" defaultMessage="Submit" />
             </Button>
           </div>
         </form>

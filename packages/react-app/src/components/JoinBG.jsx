@@ -60,7 +60,7 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
     } catch (error) {
       toast({
         description: intl.formatMessage({
-          id: `joinBg.get-message-failed`,
+          id: "general.error.cant-get-message",
           defaultMessage: "Can't get the message to sign. Please try again",
         }),
         status: "error",
@@ -76,7 +76,7 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
       toast({
         status: "error",
         description: intl.formatMessage({
-          id: "joinBg.signature-cancelled",
+          id: "general.error.signature-cancelled",
           defaultMessage: "The signature was cancelled",
         }),
       });
@@ -103,7 +103,7 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
         description:
           error?.response?.data ??
           intl.formatMessage({
-            id: "joinBg.signature-submission-error",
+            id: "general.error.submission-error",
             defaultMessage: "Submission Error. Please try again.",
           }),
       });
