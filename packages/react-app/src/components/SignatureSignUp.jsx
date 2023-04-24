@@ -72,7 +72,7 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
     <Button ref={ref} colorScheme="blue" disabled={loading} onClick={handleLoginSigning}>
       <span
         role="img"
-        aria-label={intl.formatMessage({ id: "signatureSingUp.write-icon", defaultMessage: "write icon" })}
+        aria-label={intl.formatMessage({ id: "signatureSignUp.write-icon", defaultMessage: "write icon" })}
       >
         ✍
       </span>
