@@ -375,7 +375,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
               </FormControl>
             ))}
             <Button colorScheme="blue" onClick={handleUpdateSocials} isLoading={isUpdatingSocials} isFullWidth mt={4}>
-              <FormattedMessage id="update" defaultMessage="Update" />
+              <FormattedMessage id="general.update" defaultMessage="Update" />
             </Button>
           </ModalBody>
         </ModalContent>

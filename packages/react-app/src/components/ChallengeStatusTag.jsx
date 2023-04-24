@@ -33,18 +33,18 @@ const ChallengeStatusTag = ({ status, comment, autograding }) => {
     case CHALLENGE_SUBMISSION_STATUS.ACCEPTED: {
       colorScheme = "green";
       label = intl.formatMessage({
-        id: "accepted",
+        id: "general.accepted",
         defaultMessage: "Accepted",
       });
       break;
     }
     case CHALLENGE_SUBMISSION_STATUS.REJECTED: {
       colorScheme = "red";
-      label = intl.formatMessage({ id: "rejected", defaultMessage: "Rejected" });
+      label = intl.formatMessage({ id: "general.rejected", defaultMessage: "Rejected" });
       break;
     }
     case CHALLENGE_SUBMISSION_STATUS.SUBMITTED: {
-      label = intl.formatMessage({ id: "submitted", defaultMessage: "Submitted" });
+      label = intl.formatMessage({ id: "general.submitted", defaultMessage: "Submitted" });
       break;
     }
     default:

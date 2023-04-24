@@ -38,7 +38,7 @@ export const BuilderProfileHeader = ({ acceptedChallenges, builder }) => {
             )}
           </Text>
           <Text fontSize="sm" color={secondaryFontColor} textAlign="right">
-            <FormattedMessage id="role" defaultMessage="Role" />
+            <FormattedMessage id="general.role" defaultMessage="Role" />
           </Text>
         </div>
       </Flex>

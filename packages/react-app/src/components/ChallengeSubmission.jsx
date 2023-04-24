@@ -241,7 +241,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
 
           <div className="form-item">
             <Button colorScheme="blue" onClick={onFinish} isLoading={isSubmitting} mt={4} isFullWidth>
-              <FormattedMessage id="Submit" defaultMessage="Submit" />
+              <FormattedMessage id="general.Submit" defaultMessage="Submit" />
             </Button>
           </div>
         </form>

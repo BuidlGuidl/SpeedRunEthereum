@@ -95,7 +95,7 @@ export const BuilderChallenges = ({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <FormattedMessage id="code" defaultMessage="Code" />
+                          <FormattedMessage id="general.code" defaultMessage="Code" />
                         </Link>
                       </Td>
                       <Td>
@@ -105,7 +105,7 @@ export const BuilderChallenges = ({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <FormattedMessage id="demo" defaultMessage="Demo" />
+                          <FormattedMessage id="general.demo" defaultMessage="Demo" />
                         </Link>
                       </Td>
                       <Td>

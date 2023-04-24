@@ -146,7 +146,7 @@ const ChallengeExpandedCard = ({
                   <Flex justifyContent="center" alignItems="center">
                     <PadLockIcon w={6} h={6} />
                     <chakra.span color="sre.text" ml={2} textTransform="uppercase" fontWeight="medium">
-                      <FormattedMessage id="locked" defaultMessage="Locked" />
+                      <FormattedMessage id="general.locked" defaultMessage="Locked" />
                     </chakra.span>
                   </Flex>
                 </Button>
@@ -286,7 +286,7 @@ const ChallengeExpandedCard = ({
                     <Flex justifyContent="center">
                       <PadLockIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase">
-                        <FormattedMessage id="locked" defaultMessage="Locked" />
+                        <FormattedMessage id="general.locked" defaultMessage="Locked" />
                       </chakra.span>
                     </Flex>
                   )}
@@ -317,14 +317,14 @@ const ChallengeExpandedCard = ({
                     <Flex justifyContent="center" alignItems="center">
                       <CrossedSwordsIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
-                        <FormattedMessage id="quest" defaultMessage="Quest" />
+                        <FormattedMessage id="general.quest" defaultMessage="Quest" />
                       </chakra.span>
                     </Flex>
                   ) : (
                     <Flex justifyContent="center">
                       <PadLockIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
-                        <FormattedMessage id="locked" defaultMessage="Locked" />
+                        <FormattedMessage id="general.locked" defaultMessage="Locked" />
                       </chakra.span>
                     </Flex>
                   )}
