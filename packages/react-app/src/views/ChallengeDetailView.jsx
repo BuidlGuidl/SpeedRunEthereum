@@ -26,6 +26,7 @@ import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import rehypeRaw from "rehype-raw";
 
+import { FormattedMessage } from "react-intl";
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
@@ -98,13 +99,26 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
             target="_blank"
             rel="noopener noreferrer"
           >
-            View it on Github <ExternalLinkIcon ml={1} />
+            <FormattedMessage id="challengeDetailView.github-button" defaultMessage="View it on Github" />{" "}
+            <ExternalLinkIcon ml={1} />
           </Button>
         </Box>
         <Box pos="sticky" bottom={0} p={6} left={0} right={0} textAlign="center">
-          <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
+          <Tooltip
+            label={
+              isAnonymous ? (
+                <FormattedMessage
+                  id="challengeDetailView.submit-button.tooltip.register"
+                  defaultMessage="You need to register as a builder"
+                />
+              ) : (
+                <FormattedMessage id="challengeDetailView.submit-button" defaultMessage="Submit challenge" />
+              )
+            }
+            shouldWrapChildren
+          >
             <Button colorScheme="green" boxShadow="dark-lg" onClick={handleSubmitChallengeModal} disabled={isAnonymous}>
-              Submit challenge
+              <FormattedMessage id="challengeDetailView.submit-button" defaultMessage="Submit challenge" />
             </Button>
           </Tooltip>
         </Box>
@@ -146,7 +160,9 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         <Modal isOpen={isOpen} onClose={onClose} size="lg">
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Submit Challenge</ModalHeader>
+            <ModalHeader>
+              <FormattedMessage id="challengeDetailView.modal.header" defaultMessage="Submit Challenge" />
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody px={6} pb={8}>
               <ChallengeSubmission
