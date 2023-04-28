@@ -16,9 +16,9 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import BuilderProfileChallengesTableSkeleton from "../skeletons/BuilderProfileChallengesTableSkeleton";
-import { challengeInfo } from "../../data/challenges";
+import { getChallengeInfo } from "../../data/challenges";
 import DateWithTooltip from "../DateWithTooltip";
 import ChallengeStatusTag from "../ChallengeStatusTag";
 import useCustomColorModes from "../../hooks/useCustomColorModes";
@@ -31,6 +31,8 @@ export const BuilderChallenges = ({
   isLoadingTimestamps,
 }) => {
   const { primaryFontColor, secondaryFontColor, borderColor, linkColor } = useCustomColorModes();
+  const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
 
   return (
     <>

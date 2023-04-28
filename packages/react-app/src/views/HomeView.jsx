@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { Container, Box, Text, Center, useColorModeValue } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
-import { challengeInfo } from "../data/challenges";
+import { getChallengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeroLogo from "../components/icons/HeroLogo";
 import HeroDiamond from "../components/icons/HeroDiamond";
@@ -27,7 +27,8 @@ const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
 export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor, bgColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
-
+  const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
   const builderAttemptedChallenges = useMemo(() => {
     if (!connectedBuilder?.challenges) {
       return [];

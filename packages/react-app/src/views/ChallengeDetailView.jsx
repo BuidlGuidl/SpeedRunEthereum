@@ -26,8 +26,8 @@ import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import rehypeRaw from "rehype-raw";
 
-import { FormattedMessage } from "react-intl";
-import { challengeInfo } from "../data/challenges";
+import { FormattedMessage, useIntl } from "react-intl";
+import { getChallengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/constants";
@@ -43,6 +43,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const [openModalOnLoad, setOpenModalOnLoad] = useState(false);
   const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
+  const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
   const challenge = challengeInfo[challengeId];
   const isWalletConnected = !!userRole;
   const isAnonymous = userRole && USER_ROLES.anonymous === userRole;
@@ -51,11 +53,11 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   // In the future, this might be a fetch to the repos/branchs README
   // (Ideally fetched at build time)
   useEffect(() => {
-    getChallengeReadme(challengeId, "js")
+    getChallengeReadme(challengeId, "js", intl)
       .then(text => setDescriptionJs(parseGithubReadme(text)))
       .catch(() => setDescriptionJs(null));
 
-    getChallengeReadme(challengeId, "ts")
+    getChallengeReadme(challengeId, "ts", intl)
       .then(text => setDescriptionTs(parseGithubReadme(text)))
       .catch(() => setDescriptionTs(null));
   }, [challengeId, challenge]);

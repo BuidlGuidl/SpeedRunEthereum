@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "@fontsource/space-grotesk/400.css";
@@ -20,14 +20,18 @@ const translations = {
 // TODO: change from ui
 const userLocale = "en";
 
-ReactDOM.render(
-  <IntlProvider locale={userLocale} messages={translations[userLocale]}>
-    <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
-      </BrowserRouter>
-    </ChakraProvider>
-  </IntlProvider>,
-  document.getElementById("root"),
-);
+const Root = () => {
+  const [locale, setLocale] = useState(userLocale);
+  return (
+    <IntlProvider locale={locale} messages={translations[locale]}>
+      <ChakraProvider theme={theme}>
+        <BrowserRouter>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <App setLocale={setLocale} />
+        </BrowserRouter>
+      </ChakraProvider>
+    </IntlProvider>
+  );
+};
+
+ReactDOM.render(<Root />, document.getElementById("root"));

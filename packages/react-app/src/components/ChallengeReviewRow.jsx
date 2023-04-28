@@ -36,9 +36,10 @@ import {
 import { useUserAddress } from "eth-hooks";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import { useIntl } from "react-intl";
 import Address from "./Address";
 import DateWithTooltip from "./DateWithTooltip";
-import { challengeInfo } from "../data/challenges";
+import { getChallengeInfo } from "../data/challenges";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 import { runAutograderTest } from "../data/api";
 import { isBoolean } from "../helpers/strings";
@@ -51,6 +52,9 @@ export default function ChallengeReviewRow({ challenge, isLoading, approveClick,
   const { isOpen, onOpen, onClose } = useDisclosure();
   const address = useUserAddress(userProvider);
   const { linkColor } = useCustomColorModes();
+
+  const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
 
   if (!challengeInfo[challenge.id]) {
     return null;

@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
+import { useIntl } from "react-intl";
 import { useUserProvider } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
@@ -42,7 +43,7 @@ const web3Modal = new Web3Modal({
   },
 });
 
-function App() {
+function App({ setLocale }) {
   const [providers, setProviders] = useState({
     mainnet: { provider: null, isReady: false },
     local: { provider: null, isReady: false },
@@ -166,8 +167,23 @@ function App() {
     }
   }, [address, fetchUserData]);
 
+  const intl = useIntl();
+
   return (
     <BlockchainProvidersContext.Provider value={providers}>
+      <button
+        type="button"
+        style={{ position: "fixed", top: 10, left: 10 }}
+        onClick={() => {
+          if (intl.locale === "es") {
+            setLocale("en");
+          } else {
+            setLocale("es");
+          }
+        }}
+      >
+        switch lang
+      </button>
       <div className="App">
         <AnnouncementBanner />
         <Header

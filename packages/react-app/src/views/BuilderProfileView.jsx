@@ -4,7 +4,7 @@ import axios from "axios";
 import { useToast, useColorModeValue, Container, SimpleGrid, GridItem, Box } from "@chakra-ui/react";
 import { useIntl } from "react-intl";
 import BuilderProfileCard from "../components/builder/BuilderProfileCard";
-import { challengeInfo } from "../data/challenges";
+import { getChallengeInfo } from "../data/challenges";
 import { BG_BACKEND_URL as bgBackendUrl } from "../constants";
 import { getAcceptedChallenges } from "../helpers/builders";
 import { getChallengeEventsForUser } from "../data/api";
@@ -28,6 +28,7 @@ export default function BuilderProfileView({
   const [isBuilderOnBg, setIsBuilderOnBg] = useState(false);
   const [isLoadingTimestamps, setIsLoadingTimestamps] = useState(false);
   const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
   const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
