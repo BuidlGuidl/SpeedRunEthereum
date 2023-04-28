@@ -171,19 +171,6 @@ function App({ setLocale }) {
 
   return (
     <BlockchainProvidersContext.Provider value={providers}>
-      <button
-        type="button"
-        style={{ position: "fixed", top: 10, left: 10 }}
-        onClick={() => {
-          if (intl.locale === "es") {
-            setLocale("en");
-          } else {
-            setLocale("es");
-          }
-        }}
-      >
-        switch lang
-      </button>
       <div className="App">
         <AnnouncementBanner />
         <Header
