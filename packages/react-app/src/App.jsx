@@ -6,7 +6,6 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
-import { useIntl } from "react-intl";
 import { useUserProvider } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
@@ -167,7 +166,6 @@ function App({ setLocale }) {
     }
   }, [address, fetchUserData]);
 
-  const intl = useIntl();
 
   return (
     <BlockchainProvidersContext.Provider value={providers}>
