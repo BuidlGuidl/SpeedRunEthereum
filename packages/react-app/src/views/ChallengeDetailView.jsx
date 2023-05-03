@@ -60,7 +60,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
     getChallengeReadme(challengeId, "ts", intl)
       .then(text => setDescriptionTs(parseGithubReadme(text)))
       .catch(() => setDescriptionTs(null));
-  }, [challengeId, challenge]);
+  }, [challengeId, challenge, intl]);
 
   useEffect(() => {
     if (!isWalletConnected || isAnonymous) return;
