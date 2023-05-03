@@ -156,56 +156,54 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             }}
             textAlign="center"
           >
-            <div>
-              <FormattedMessage
-                id="index.step-2.2"
-                defaultMessage={`
+            <FormattedMessage
+              id="index.step-2.2"
+              defaultMessage={`
                   <a_globalUnits>global units</a_globalUnits>, <a_primitives>primitives</a_primitives
                   >, <a_mappings>mappings</a_mappings>, <a_structs>structs</a_structs>, <a_modifiers
                   >modifiers</a_modifiers>, <a_events>events</a_events>,
                 `}
-                values={{
-                  a_globalUnits: chunks => (
-                    <a
-                      href="https://docs.soliditylang.org/en/v0.6.6/units-and-global-variables.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {chunks}
-                    </a>
-                  ),
-                  a_primitives: chunks => (
-                    <a target="_blank" href="https://solidity-by-example.org/primitives/" rel="noopener noreferrer">
-                      {chunks}
-                    </a>
-                  ),
-                  a_mappings: chunks => (
-                    <a target="_blank" href="https://solidity-by-example.org/mapping/" rel="noopener noreferrer">
-                      {chunks}
-                    </a>
-                  ),
-                  a_structs: chunks => (
-                    <a href="https://solidity-by-example.org/structs/" target="_blank" rel="noopener noreferrer">
-                      {chunks}
-                    </a>
-                  ),
-                  a_modifiers: chunks => (
-                    <a
-                      href="https://solidity-by-example.org/function-modifier/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {chunks}
-                    </a>
-                  ),
-                  a_events: chunks => (
-                    <a href="https://solidity-by-example.org/events/" target="_blank" rel="noopener noreferrer">
-                      {chunks}
-                    </a>
-                  ),
-                }}
-              />
-            </div>{" "}
+              values={{
+                a_globalUnits: chunks => (
+                  <a
+                    href="https://docs.soliditylang.org/en/v0.6.6/units-and-global-variables.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {chunks}
+                  </a>
+                ),
+                a_primitives: chunks => (
+                  <a target="_blank" href="https://solidity-by-example.org/primitives/" rel="noopener noreferrer">
+                    {chunks}
+                  </a>
+                ),
+                a_mappings: chunks => (
+                  <a target="_blank" href="https://solidity-by-example.org/mapping/" rel="noopener noreferrer">
+                    {chunks}
+                  </a>
+                ),
+                a_structs: chunks => (
+                  <a href="https://solidity-by-example.org/structs/" target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </a>
+                ),
+                a_modifiers: chunks => (
+                  <a
+                    href="https://solidity-by-example.org/function-modifier/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {chunks}
+                  </a>
+                ),
+                a_events: chunks => (
+                  <a href="https://solidity-by-example.org/events/" target="_blank" rel="noopener noreferrer">
+                    {chunks}
+                  </a>
+                ),
+              }}
+            />{" "}
             <FormattedMessage
               id="index.step-2.3"
               defaultMessage={`
