@@ -4,6 +4,8 @@ const axios = require("axios");
 const PLAUSIBLE_EVENT_ENDPOINT = "https://plausible.io/api/event";
 
 const trackPlausibleEvent = async (eventName, props, request) => {
+  if (typeof jest !== "undefined") return;
+
   const payload = {
     domain: "speedrunethereum.com",
     name: eventName,
