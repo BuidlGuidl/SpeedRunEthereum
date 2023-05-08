@@ -21,7 +21,6 @@ import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 import SiteFooter from "./components/SiteFooter";
-import AnnouncementBanner from "./components/AnnouncementBanner";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -170,7 +169,6 @@ function App({ setLocale }) {
   return (
     <BlockchainProvidersContext.Provider value={providers}>
       <div className="App">
-        <AnnouncementBanner />
         <Header
           injectedProvider={injectedProvider}
           userRole={userRole}
