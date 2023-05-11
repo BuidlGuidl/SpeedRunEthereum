@@ -41,7 +41,7 @@ const web3Modal = new Web3Modal({
   },
 });
 
-function App({ setLocale }) {
+function App() {
   const [providers, setProviders] = useState({
     mainnet: { provider: null, isReady: false },
     local: { provider: null, isReady: false },
@@ -129,7 +129,7 @@ function App({ setLocale }) {
 
   const logoutOfWeb3Modal = async () => {
     await web3Modal.clearCachedProvider();
-    if (injectedProvider && injectedProvider.provider && typeof injectedProvider.provider.disconnect == "function") {
+    if (injectedProvider && injectedProvider.provider && typeof injectedProvider.provider.disconnect === "function") {
       await injectedProvider.provider.disconnect();
     }
     setTimeout(() => {
@@ -164,7 +164,6 @@ function App({ setLocale }) {
       fetchUserData();
     }
   }, [address, fetchUserData]);
-
 
   return (
     <BlockchainProvidersContext.Provider value={providers}>

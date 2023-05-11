@@ -20,18 +20,14 @@ const translations = {
 // TODO: change from ui
 const userLocale = "en";
 
-const Root = () => {
-  const [locale, setLocale] = useState(userLocale);
-  return (
-    <IntlProvider locale={locale} messages={translations[locale]}>
-      <ChakraProvider theme={theme}>
-        <BrowserRouter>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App setLocale={setLocale} />
-        </BrowserRouter>
-      </ChakraProvider>
-    </IntlProvider>
-  );
-};
-
+const Root = () => (
+  <IntlProvider locale={userLocale} messages={translations[userLocale]}>
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </BrowserRouter>
+    </ChakraProvider>
+  </IntlProvider>
+);
 ReactDOM.render(<Root />, document.getElementById("root"));
