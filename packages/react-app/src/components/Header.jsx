@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { chakra, useColorModeValue, Box, Flex, HStack, Spacer } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 import { Account } from "./index";
 import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
@@ -83,7 +84,7 @@ export default function Header({
                   color: primaryColorString,
                 }}
               >
-                Portfolio
+                <FormattedMessage id="header.portfolio" defaultMessage="Portfolio" />
               </NavLink>
             </chakra.li>
           )}
@@ -98,7 +99,7 @@ export default function Header({
                     color: primaryColorString,
                   }}
                 >
-                  Builders
+                  <FormattedMessage id="header.builders" defaultMessage="Builders" />
                 </NavLink>
               </chakra.li>
             </>
@@ -113,7 +114,7 @@ export default function Header({
                     color: primaryColorString,
                   }}
                 >
-                  Review Submissions
+                  <FormattedMessage id="header.review-submissions" defaultMessage="Review Submissions" />
                 </NavLink>
               </chakra.li>
               <chakra.li key="/activity" color={linkColor} _hover={{ color: primaryColorString }}>
@@ -124,7 +125,7 @@ export default function Header({
                     color: primaryColorString,
                   }}
                 >
-                  Activity
+                  <FormattedMessage id="header.activity" defaultMessage="Activity" />
                 </NavLink>
               </chakra.li>
             </>

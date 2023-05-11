@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, HStack, Link } from "@chakra-ui/react";
 import { GithubFilled, HeartFilled } from "@ant-design/icons";
+import { FormattedMessage } from "react-intl";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const SiteFooter = () => {
@@ -12,17 +13,27 @@ const SiteFooter = () => {
         <HStack alignItems="center" spacing="7px">
           <GithubFilled />{" "}
           <Link color={linkColor} href="https://github.com/BuidlGuidl/SpeedRunEthereum" isExternal>
-            Fork me
+            <FormattedMessage id="footer.fork-me" defaultMessage="Fork me" />
           </Link>
         </HStack>
         <p>|</p>
         <HStack alignItems="center" spacing="5px">
-          <HStack alignItems="center">
-            <span>Built with</span> <HeartFilled /> <span>at</span>
-          </HStack>
-          <Link color={linkColor} href="https://buidlguidl.com/" isExternal>
-            BuidlGuidl
-          </Link>
+          <FormattedMessage
+            id="footer.built-with-love-at-buidlguidl"
+            defaultMessage="Built with {heartIcon} at <Link>BuidlGuidl</Link>"
+            values={{
+              heartIcon: (
+                <HStack alignItems="center" mx="5px">
+                  <HeartFilled />
+                </HStack>
+              ),
+              Link: chunks => (
+                <Link color={linkColor} href="https://buidlguidl.com/" isExternal>
+                  {chunks}
+                </Link>
+              ),
+            }}
+          />
         </HStack>
       </HStack>
     </Box>
