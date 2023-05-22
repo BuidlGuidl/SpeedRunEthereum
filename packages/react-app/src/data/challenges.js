@@ -64,7 +64,7 @@ export const getChallengeInfo = intl => ({
       defaultMessage:
         "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.",
     }),
-    previewImage: "assets/bg.png",
+    previewImage: "/assets/bg.png",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
     externalLink: {
       link: "https://buidlguidl.com/",
@@ -100,7 +100,7 @@ export const getChallengeInfo = intl => ({
       defaultMessage:
         "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
     }),
-    previewImage: "assets/challenges/dex.svg",
+    previewImage: "/assets/challenges/dex.svg",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
   },
   "state-channels": {
@@ -116,7 +116,7 @@ export const getChallengeInfo = intl => ({
       defaultMessage:
         "🛣️ The Ethereum blockchain has great decentralization & security properties but these properties come at a price: transaction throughput is low, and transactions can be expensive. This makes many traditional web applications infeasible on a blockchain... or does it?  State channels look to solve these problems by allowing participants to securely transact off-chain while keeping interaction with Ethereum Mainnet at a minimum.",
     }),
-    previewImage: "assets/challenges/state.svg",
+    previewImage: "/assets/challenges/state.svg",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
   },
   "learn-multisig": {
@@ -132,7 +132,7 @@ export const getChallengeInfo = intl => ({
       defaultMessage:
         '👩‍👩‍👧‍👧 Using a smart contract as a wallet we can secure assets by requiring multiple accounts to "vote" on transactions. The contract will keep track of transactions in an array of structs and owners will confirm or reject each one. Any transaction with enough confirmations can "execute".',
     }),
-    previewImage: "assets/challenges/multiSig.svg",
+    previewImage: "/assets/challenges/multiSig.svg",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
     // Once the dependencies are completed, lock the challenge until
@@ -155,7 +155,7 @@ export const getChallengeInfo = intl => ({
       defaultMessage:
         "🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!",
     }),
-    previewImage: "assets/challenges/dynamicSvgNFT.svg",
+    previewImage: "/assets/challenges/dynamicSvgNFT.svg",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
     // Once the dependencies are completed, lock the challenge until

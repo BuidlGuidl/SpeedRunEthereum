@@ -22,6 +22,7 @@ import { getChallengeInfo } from "../../data/challenges";
 import DateWithTooltip from "../DateWithTooltip";
 import ChallengeStatusTag from "../ChallengeStatusTag";
 import useCustomColorModes from "../../hooks/useCustomColorModes";
+import useUrlLang from "../../hooks/useUrlLang";
 
 export const BuilderChallenges = ({
   challenges,
@@ -33,6 +34,7 @@ export const BuilderChallenges = ({
   const { primaryFontColor, secondaryFontColor, borderColor, linkColor } = useCustomColorModes();
   const intl = useIntl();
   const challengeInfo = getChallengeInfo(intl);
+  const { langUrlPrefix } = useUrlLang();
 
   return (
     <>
@@ -85,7 +87,12 @@ export const BuilderChallenges = ({
                   return (
                     <Tr key={challengeId}>
                       <Td>
-                        <Link as={RouteLink} to={`/challenge/${challengeId}`} fontWeight="bold" color={linkColor}>
+                        <Link
+                          as={RouteLink}
+                          to={`${langUrlPrefix}/challenge/${challengeId}`}
+                          fontWeight="bold"
+                          color={linkColor}
+                        >
                           {challengeInfo[challengeId].label}
                         </Link>
                       </Td>

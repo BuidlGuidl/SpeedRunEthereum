@@ -99,7 +99,7 @@ const ChallengeExpandedCard = ({
         overflow="hidden"
       >
         <Image
-          src="assets/bgBanner_joinBgClouds.svg"
+          src="/assets/bgBanner_joinBgClouds.svg"
           position="absolute"
           top={{ base: "6%", lg: "5%" }}
           left={{ base: "4%", lg: "auto" }}
@@ -118,7 +118,7 @@ const ChallengeExpandedCard = ({
           minH={{ base: "md", lg: "lg" }}
         >
           <Center position="relative" mt={{ base: 2, lg: 8 }}>
-            <Image src="assets/bgBanner_JoinBG.svg" w="820px" />
+            <Image src="/assets/bgBanner_JoinBG.svg" w="820px" />
           </Center>
           <Flex justifyContent="space-between" direction={{ base: "column", lg: "row" }}>
             <Text mb={4} color="sre.text" textAlign={{ base: "center", lg: "left" }} maxW={{ base: "100%", lg: "35%" }}>

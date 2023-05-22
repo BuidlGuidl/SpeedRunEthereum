@@ -23,6 +23,7 @@ import { FormattedMessage } from "react-intl";
 import QRPunkBlockie from "./QrPunkBlockie";
 import useDisplayAddress from "../hooks/useDisplayAddress";
 import useCustomColorModes from "../hooks/useCustomColorModes";
+import useUrlLang from "../hooks/useUrlLang";
 import { ellipsizedAddress } from "../helpers/strings";
 import { USER_ROLES } from "../helpers/constants";
 import HeroIconUser from "./icons/HeroIconUser";
@@ -80,6 +81,7 @@ export default function Account({
   const openPopover = () => setIsPopoverOpen(true);
   const closePopover = () => setIsPopoverOpen(false);
   const { primaryFontColor, secondaryFontColor, dividerColor } = useCustomColorModes();
+  const { langUrlPrefix } = useUrlLang();
 
   if (!userRole && isWalletConnected) {
     return <Spinner />;
@@ -115,7 +117,7 @@ export default function Account({
   const accountMenu = address && (
     <LinkBox>
       <Flex align="center">
-        <LinkOverlay as={NavLink} to="/portfolio">
+        <LinkOverlay as={NavLink} to={`${langUrlPrefix}/portfolio`}>
           <QRPunkBlockie withQr={false} address={address.toLowerCase()} w={9} borderRadius={6} />
         </LinkOverlay>
         <Box ml={4}>
@@ -138,7 +140,7 @@ export default function Account({
       description: (
         <>
           Visit{" "}
-          <Link href="/portfolio" textDecoration="underline">
+          <Link href={`${langUrlPrefix}/portfolio`} textDecoration="underline">
             your portfolio
           </Link>{" "}
           to start building

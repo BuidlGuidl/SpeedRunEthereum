@@ -32,6 +32,7 @@ import { getAcceptedChallenges } from "../helpers/builders";
 import Address from "../components/Address";
 import { bySocialWeight } from "../data/socials";
 import { USER_ROLES } from "../helpers/constants";
+import useUrlLang from "../hooks/useUrlLang";
 
 const serverPath = "/builders";
 
@@ -63,9 +64,9 @@ const BuilderSocialLinksCell = ({ builder, isAdmin }) => {
   );
 };
 
-const BuilderAddressCell = ({ builderId, mainnetProvider }) => {
+const BuilderAddressCell = ({ builderId, mainnetProvider, langUrlPrefix }) => {
   return (
-    <Link as={RouteLink} to={`/builders/${builderId}`} pos="relative">
+    <Link as={RouteLink} to={`${langUrlPrefix}/builders/${builderId}`} pos="relative">
       <Address address={builderId} ensProvider={mainnetProvider} w="12.5" fontSize="16" />
     </Link>
   );
@@ -75,6 +76,7 @@ export default function BuilderListView({ serverUrl, mainnetProvider, userRole }
   const [builders, setBuilders] = useState([]);
   const [isLoadingBuilders, setIsLoadingBuilders] = useState(false);
   const { secondaryFontColor, linkColor } = useCustomColorModes();
+  const { langUrlPrefix } = useUrlLang();
   const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
   const isAdmin = userRole === USER_ROLES.admin;
 
@@ -84,7 +86,9 @@ export default function BuilderListView({ serverUrl, mainnetProvider, userRole }
         Header: "Builder",
         accessor: "builder",
         disableSortBy: true,
-        Cell: ({ value }) => <BuilderAddressCell builderId={value} mainnetProvider={mainnetProvider} />,
+        Cell: ({ value }) => (
+          <BuilderAddressCell builderId={value} mainnetProvider={mainnetProvider} langUrlPrefix={langUrlPrefix} />
+        ),
       },
       {
         Header: "Challenges",
