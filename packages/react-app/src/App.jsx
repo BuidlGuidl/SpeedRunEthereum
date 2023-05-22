@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Switch, Redirect, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { Web3Provider, StaticJsonRpcProvider, InfuraProvider } from "@ethersproject/providers";
 import "./App.css";
 import Web3Modal from "web3modal";
@@ -10,15 +10,7 @@ import { useIntl } from "react-intl";
 import { useUserProvider } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
-import {
-  BuilderListView,
-  ChallengeDetailView,
-  BuilderProfileView,
-  SubmissionReviewView,
-  HomeView,
-  ActivityView,
-} from "./views";
-import { USER_ROLES } from "./helpers/constants";
+import { SUPPORTED_LANGS, USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 import SiteFooter from "./components/SiteFooter";
@@ -187,16 +179,30 @@ function App({ setLocale }) {
           logoutOfWeb3Modal={logoutOfWeb3Modal}
           setUserRole={setUserRole}
         />
-        <Routes
-          connectedBuilder={connectedBuilder}
-          userProvider={userProvider}
-          address={address}
-          serverUrl={serverUrl}
-          mainnetProvider={mainnetProvider}
-          userRole={userRole}
-          fetchUserData={fetchUserData}
-          loadWeb3Modal={loadWeb3Modal}
-        />
+        <Switch>
+          <Routes
+            connectedBuilder={connectedBuilder}
+            userProvider={userProvider}
+            address={address}
+            serverUrl={serverUrl}
+            mainnetProvider={mainnetProvider}
+            userRole={userRole}
+            fetchUserData={fetchUserData}
+            loadWeb3Modal={loadWeb3Modal}
+          />
+          <Route path={`/:lang(${SUPPORTED_LANGS.join("|")})`}>
+            <Routes
+              connectedBuilder={connectedBuilder}
+              userProvider={userProvider}
+              address={address}
+              serverUrl={serverUrl}
+              mainnetProvider={mainnetProvider}
+              userRole={userRole}
+              fetchUserData={fetchUserData}
+              loadWeb3Modal={loadWeb3Modal}
+            />
+          </Route>
+        </Switch>
         <ColorModeSwitcher />
       </div>
       <SiteFooter />

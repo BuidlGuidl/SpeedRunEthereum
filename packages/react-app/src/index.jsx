@@ -9,6 +9,7 @@ import { IntlProvider } from "react-intl";
 import theme from "./theme";
 import App from "./App";
 
+import { DEFAULT_LANG } from "./helpers/constants";
 import translationEn from "./lang/en.json";
 import translationEs from "./lang/es.json";
 
@@ -18,7 +19,7 @@ const translations = {
 };
 
 // TODO: change from ui
-const defaultLocale = "en";
+const defaultLocale = DEFAULT_LANG;
 
 const Root = () => {
   const [locale, setLocale] = useState(defaultLocale);

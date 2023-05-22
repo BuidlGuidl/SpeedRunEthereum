@@ -8,7 +8,7 @@ import {
   HomeView,
   SubmissionReviewView,
 } from "./views";
-import { SUPPORTED_LANGS } from "./helpers/constants";
+import useUrlLang from "./hooks/useUrlLang";
 
 const Routes = ({
   connectedBuilder,
@@ -20,18 +20,22 @@ const Routes = ({
   fetchUserData,
   loadWeb3Modal,
 }) => {
+  const { langUrlPrefix, path } = useUrlLang();
+  // INFO: pathPrefix is the path without trailing `/`
+  const pathPrefix = path.replace(/\/$/, "");
+
   return (
     <Switch>
-      <Route exact path="/">
-        {({ match }) => <HomeView connectedBuilder={connectedBuilder} userProvider={userProvider} match={match} />}
+      <Route exact path={path}>
+        <HomeView connectedBuilder={connectedBuilder} userProvider={userProvider} />
       </Route>
-      <Route exact path="/portfolio">
-        {address && <Redirect to={`/builders/${address}`} />}
+      <Route exact path={`${pathPrefix}/portfolio`}>
+        {address && <Redirect to={`${langUrlPrefix}/builders/${address}`} />}
       </Route>
-      <Route path="/builders" exact>
+      <Route path={`${pathPrefix}/builders`} exact>
         <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} userRole={userRole} />
       </Route>
-      <Route path="/builders/:builderAddress">
+      <Route path={`${pathPrefix}/builders/:builderAddress`}>
         <BuilderProfileView
           serverUrl={serverUrl}
           mainnetProvider={mainnetProvider}
@@ -41,7 +45,7 @@ const Routes = ({
           fetchUserData={fetchUserData}
         />
       </Route>
-      <Route path="/challenge/:challengeId">
+      <Route path={`${pathPrefix}/challenge/:challengeId`}>
         <ChallengeDetailView
           serverUrl={serverUrl}
           address={address}
@@ -51,54 +55,11 @@ const Routes = ({
         />
       </Route>
       {/* ToDo: Protect this route on the frontend? */}
-      <Route path="/submission-review" exact>
+      <Route path={`${pathPrefix}/submission-review`} exact>
         <SubmissionReviewView userProvider={userProvider} mainnetProvider={mainnetProvider} />
       </Route>
-      <Route path="/activity" exact>
+      <Route path={`${pathPrefix}/activity`} exact>
         <ActivityView />
-      </Route>
-      <Route path={`/:lang(${SUPPORTED_LANGS.join("|")})`}>
-        {({ match: { path, url } }) => (
-          <Switch>
-            <Route exact path={path}>
-              {({ match }) => (
-                <HomeView connectedBuilder={connectedBuilder} userProvider={userProvider} match={match} />
-              )}
-            </Route>
-            <Route exact path={`${path}/portfolio`}>
-              {address && <Redirect to={`${url}/builders/${address}`} />}
-            </Route>
-            <Route path={`${path}/builders`} exact>
-              <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} userRole={userRole} />
-            </Route>
-            <Route path={`${path}/builders/:builderAddress`}>
-              <BuilderProfileView
-                serverUrl={serverUrl}
-                mainnetProvider={mainnetProvider}
-                address={address}
-                userRole={userRole}
-                userProvider={userProvider}
-                fetchUserData={fetchUserData}
-              />
-            </Route>
-            <Route path={`${path}/challenge/:challengeId`}>
-              <ChallengeDetailView
-                serverUrl={serverUrl}
-                address={address}
-                userProvider={userProvider}
-                userRole={userRole}
-                loadWeb3Modal={loadWeb3Modal}
-              />
-            </Route>
-            {/* ToDo: Protect this route on the frontend? */}
-            <Route path={`${path}/submission-review`} exact>
-              <SubmissionReviewView userProvider={userProvider} mainnetProvider={mainnetProvider} />
-            </Route>
-            <Route path={`${path}/activity`} exact>
-              <ActivityView />
-            </Route>
-          </Switch>
-        )}
       </Route>
     </Switch>
   );
