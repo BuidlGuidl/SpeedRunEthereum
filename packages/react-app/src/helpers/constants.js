@@ -31,3 +31,5 @@ export const userFunctionDescription = {
   [USER_FUNCTIONS.support]: { colorScheme: "blue", label: "Support" },
   [USER_FUNCTIONS.mentor]: { colorScheme: "yellow", label: "Mentor" },
 };
+
+export const SUPPORTED_LANGS = ["es", "fr"];

@@ -24,7 +24,8 @@ const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
   </Box>
 );
 
-export default function HomeView({ connectedBuilder, userProvider }) {
+export default function HomeView({ connectedBuilder, userProvider, match }) {
+  console.log("homeView match", match);
   const { primaryFontColor, bgColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
   const intl = useIntl();

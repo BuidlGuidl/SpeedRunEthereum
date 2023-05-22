@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import axios from "axios";
+import { useIntl } from "react-intl";
 import { useUserProvider } from "./hooks";
 import { Header, ColorModeSwitcher } from "./components";
 import { INFURA_ID, SERVER_URL as serverUrl } from "./constants";
@@ -21,6 +22,8 @@ import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 import SiteFooter from "./components/SiteFooter";
+import Routes from "./Routes";
+import useUrlLang from "./hooks/useUrlLang";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -41,7 +44,7 @@ const web3Modal = new Web3Modal({
   },
 });
 
-function App() {
+function App({ setLocale }) {
   const [providers, setProviders] = useState({
     mainnet: { provider: null, isReady: false },
     local: { provider: null, isReady: false },
@@ -165,6 +168,12 @@ function App() {
     }
   }, [address, fetchUserData]);
 
+  const intl = useIntl();
+  const { lang: urlLang } = useUrlLang();
+  if (urlLang !== intl.locale) {
+    setLocale(urlLang);
+  }
+
   return (
     <BlockchainProvidersContext.Provider value={providers}>
       <div className="App">
@@ -178,43 +187,16 @@ function App() {
           logoutOfWeb3Modal={logoutOfWeb3Modal}
           setUserRole={setUserRole}
         />
-        <Switch>
-          <Route exact path="/">
-            <HomeView connectedBuilder={connectedBuilder} userProvider={userProvider} />
-          </Route>
-          <Route exact path="/portfolio">
-            {address && <Redirect to={"/builders/" + address} />}
-          </Route>
-          <Route path="/builders" exact>
-            <BuilderListView serverUrl={serverUrl} mainnetProvider={mainnetProvider} userRole={userRole} />
-          </Route>
-          <Route path="/builders/:builderAddress">
-            <BuilderProfileView
-              serverUrl={serverUrl}
-              mainnetProvider={mainnetProvider}
-              address={address}
-              userRole={userRole}
-              userProvider={userProvider}
-              fetchUserData={fetchUserData}
-            />
-          </Route>
-          <Route path="/challenge/:challengeId">
-            <ChallengeDetailView
-              serverUrl={serverUrl}
-              address={address}
-              userProvider={userProvider}
-              userRole={userRole}
-              loadWeb3Modal={loadWeb3Modal}
-            />
-          </Route>
-          {/* ToDo: Protect this route on the frontend? */}
-          <Route path="/submission-review" exact>
-            <SubmissionReviewView userProvider={userProvider} mainnetProvider={mainnetProvider} />
-          </Route>
-          <Route path="/activity" exact>
-            <ActivityView />
-          </Route>
-        </Switch>
+        <Routes
+          connectedBuilder={connectedBuilder}
+          userProvider={userProvider}
+          address={address}
+          serverUrl={serverUrl}
+          mainnetProvider={mainnetProvider}
+          userRole={userRole}
+          fetchUserData={fetchUserData}
+          loadWeb3Modal={loadWeb3Modal}
+        />
         <ColorModeSwitcher />
       </div>
       <SiteFooter />

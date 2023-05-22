@@ -43,6 +43,7 @@ import {
 import { bySocialWeight, socials } from "../../data/socials";
 import { USER_ROLES } from "../../helpers/constants";
 import { validateSocials } from "../../helpers/validators";
+import useUrlLang from "../../hooks/useUrlLang";
 
 const BuilderProfileCardSkeleton = ({ isLoaded, children }) => (
   <Skeleton isLoaded={isLoaded}>{isLoaded ? children() : <SkeletonText mt="4" noOfLines={4} spacing="4" />}</Skeleton>
@@ -60,6 +61,8 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
   const intl = useIntl();
   const shortAddress = ellipsizedAddress(builder?.id);
   const hasEns = ens !== shortAddress;
+
+  const { langUrlPrefix } = useUrlLang();
 
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
@@ -250,7 +253,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
             maxW={{ base: "full", lg: "50%", xl: 60 }}
             margin="auto"
           >
-            <Link as={RouteLink} to={`/builders/${builder.id}`}>
+            <Link as={RouteLink} to={`${langUrlPrefix}/builders/${builder.id}`}>
               <QRPunkBlockie
                 withQr={false}
                 address={builder.id?.toLowerCase()}

@@ -7,6 +7,7 @@ import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeaderLogo from "./icons/HeaderLogo";
+import useUrlLang from "../hooks/useUrlLang";
 
 export default function Header({
   injectedProvider,
@@ -21,6 +22,7 @@ export default function Header({
   const { linkColor, bgColor } = useCustomColorModes();
   const primaryColorString = useColorModeValue("var(--chakra-colors-gray-700)", "var(--chakra-colors-gray-200)");
   const location = useLocation();
+  const { langUrlPrefix } = useUrlLang();
 
   const isSignerProviderConnected =
     injectedProvider && injectedProvider.getSigner && injectedProvider.getSigner()._isSigner;
@@ -59,7 +61,7 @@ export default function Header({
       >
         {!isHomepage && (
           <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
-            <NavLink to="/" exact>
+            <NavLink to={`${langUrlPrefix}/`} exact>
               <HeaderLogo maxW="205px" height="auto" />
             </NavLink>
           </Flex>
@@ -78,7 +80,7 @@ export default function Header({
           {userRole && USER_ROLES.anonymous !== userRole && (
             <chakra.li key="/portfolio" color={linkColor} _hover={{ color: primaryColorString }}>
               <NavLink
-                to="/portfolio"
+                to={`${langUrlPrefix}/portfolio`}
                 isActive={(match, location) => location.pathname.includes("/builders/")}
                 activeStyle={{
                   color: primaryColorString,
@@ -93,7 +95,7 @@ export default function Header({
             <>
               <chakra.li key="/builders" color={linkColor} _hover={{ color: primaryColorString }}>
                 <NavLink
-                  to="/builders"
+                  to={`${langUrlPrefix}/builders`}
                   exact
                   activeStyle={{
                     color: primaryColorString,

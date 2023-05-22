@@ -3,6 +3,7 @@ import axios from "axios";
 import { chakra, useToast, Button, Link } from "@chakra-ui/react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { SERVER_URL as serverUrl } from "../constants";
+import useUrlLang from "../hooks/useUrlLang";
 
 const serverPath = "/bg/join";
 
@@ -12,6 +13,8 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
   // Optimistic update.
   const [joined, setJoined] = useState(false);
   const toast = useToast({ position: "top", isClosable: true });
+
+  const { langUrlPrefix } = useUrlLang();
 
   const address = connectedBuilder?.id;
 
@@ -34,7 +37,7 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
           },
           {
             Link: chunks => (
-              <Link href="/portfolio" textDecoration="underline">
+              <Link href={`${langUrlPrefix}/portfolio`} textDecoration="underline">
                 {chunks}
               </Link>
             ),
