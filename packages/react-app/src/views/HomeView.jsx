@@ -235,7 +235,8 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           <ChallengeExpandedCard
             challengeId={challengeId}
             challenge={challenge}
-            challengeIndex={index}
+            // Magic number: we don't want to count the Join the BG as a challenge
+            challengeIndex={index < 3 ? index : index - 1}
             builderAttemptedChallenges={builderAttemptedChallenges}
             userProvider={userProvider}
             connectedBuilder={connectedBuilder}
