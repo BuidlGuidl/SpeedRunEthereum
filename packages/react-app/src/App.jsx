@@ -129,7 +129,7 @@ function App() {
 
   const logoutOfWeb3Modal = async () => {
     await web3Modal.clearCachedProvider();
-    if (injectedProvider && injectedProvider.provider && typeof injectedProvider.provider.disconnect == "function") {
+    if (injectedProvider && injectedProvider.provider && typeof injectedProvider.provider.disconnect === "function") {
       await injectedProvider.provider.disconnect();
     }
     setTimeout(() => {

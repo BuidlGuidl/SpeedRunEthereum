@@ -26,7 +26,8 @@ import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import rehypeRaw from "rehype-raw";
 
-import { challengeInfo } from "../data/challenges";
+import { FormattedMessage, useIntl } from "react-intl";
+import { getChallengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/constants";
@@ -42,6 +43,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   const [openModalOnLoad, setOpenModalOnLoad] = useState(false);
   const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
+  const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
   const challenge = challengeInfo[challengeId];
   const isWalletConnected = !!userRole;
   const isAnonymous = userRole && USER_ROLES.anonymous === userRole;
@@ -50,14 +53,14 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   // In the future, this might be a fetch to the repos/branchs README
   // (Ideally fetched at build time)
   useEffect(() => {
-    getChallengeReadme(challengeId, "js")
+    getChallengeReadme(challengeId, "js", intl)
       .then(text => setDescriptionJs(parseGithubReadme(text)))
       .catch(() => setDescriptionJs(null));
 
-    getChallengeReadme(challengeId, "ts")
+    getChallengeReadme(challengeId, "ts", intl)
       .then(text => setDescriptionTs(parseGithubReadme(text)))
       .catch(() => setDescriptionTs(null));
-  }, [challengeId, challenge]);
+  }, [challengeId, challenge, intl]);
 
   useEffect(() => {
     if (!isWalletConnected || isAnonymous) return;
@@ -98,13 +101,26 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
             target="_blank"
             rel="noopener noreferrer"
           >
-            View it on Github <ExternalLinkIcon ml={1} />
+            <FormattedMessage id="challengeDetailView.github-button" defaultMessage="View it on Github" />{" "}
+            <ExternalLinkIcon ml={1} />
           </Button>
         </Box>
         <Box pos="sticky" bottom={0} p={6} left={0} right={0} textAlign="center">
-          <Tooltip label={isAnonymous ? "You need to register as a builder" : "Submit Challenge"} shouldWrapChildren>
+          <Tooltip
+            label={
+              isAnonymous ? (
+                <FormattedMessage
+                  id="challengeDetailView.submit-button.tooltip.register"
+                  defaultMessage="You need to register as a builder"
+                />
+              ) : (
+                <FormattedMessage id="challengeDetailView.submit-button" defaultMessage="Submit challenge" />
+              )
+            }
+            shouldWrapChildren
+          >
             <Button colorScheme="green" boxShadow="dark-lg" onClick={handleSubmitChallengeModal} disabled={isAnonymous}>
-              Submit challenge
+              <FormattedMessage id="challengeDetailView.submit-button" defaultMessage="Submit challenge" />
             </Button>
           </Tooltip>
         </Box>
@@ -146,7 +162,9 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
         <Modal isOpen={isOpen} onClose={onClose} size="lg">
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Submit Challenge</ModalHeader>
+            <ModalHeader>
+              <FormattedMessage id="challengeDetailView.modal.header" defaultMessage="Submit Challenge" />
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody px={6} pb={8}>
               <ChallengeSubmission

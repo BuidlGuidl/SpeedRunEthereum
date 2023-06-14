@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Center, Flex, Image, Link, Text, VStack, chakra, useColorModeValue } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 import CrossedSwordsIcon from "../icons/CrossedSwordsIcon";
 
 const BG_FRONTEND_URL = "https://buidlguidl.com";
@@ -36,7 +37,10 @@ export const JoinedBuidlGuidlBanner = ({ builderAddress }) => {
             fontWeight="extrabold"
             px="20px"
           >
-            This builder has upgraded to BuidlGuidl
+            <FormattedMessage
+              id="joinedBuidlGuidlBanner.label"
+              defaultMessage="This builder has upgraded to BuidlGuidl"
+            />
           </Text>
         </Center>
         <Button
@@ -53,7 +57,7 @@ export const JoinedBuidlGuidlBanner = ({ builderAddress }) => {
           <Flex justifyContent="center" alignItems="center">
             <CrossedSwordsIcon w={5} h={5} />
             <chakra.span color="sre.text" ml={2} fontWeight="medium">
-              View their profile on Buidlguidl
+              <FormattedMessage id="joinedBuidlGuidlBanner.button" defaultMessage="View their profile on Buidlguidl" />
             </chakra.span>
           </Flex>
         </Button>

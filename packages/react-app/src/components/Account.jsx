@@ -19,6 +19,7 @@ import {
   LinkBox,
   LinkOverlay,
 } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 import QRPunkBlockie from "./QrPunkBlockie";
 import useDisplayAddress from "../hooks/useDisplayAddress";
 import useCustomColorModes from "../hooks/useCustomColorModes";
@@ -63,7 +64,6 @@ import SignatureSignUp from "./SignatureSignUp";
 
 export default function Account({
   address,
-  connectText,
   ensProvider,
   isWalletConnected,
   loadWeb3Modal,
@@ -92,7 +92,7 @@ export default function Account({
 
   const connectWallet = (
     <Button colorScheme="green" key="loginbutton" onClick={loadWeb3Modal}>
-      {connectText || "connect"}
+      <FormattedMessage id="account.connect-wallet" defaultMessage="Connect Wallet" />
     </Button>
   );
 

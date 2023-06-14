@@ -18,11 +18,13 @@ import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import { FormattedMessage, useIntl } from "react-intl";
 import { CHALLENGE_SUBMISSION_STATUS } from "../helpers/constants";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
 
 const ChallengeStatusTag = ({ status, comment, autograding }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const intl = useIntl();
 
   let colorScheme;
   let label;
@@ -30,16 +32,19 @@ const ChallengeStatusTag = ({ status, comment, autograding }) => {
   switch (status) {
     case CHALLENGE_SUBMISSION_STATUS.ACCEPTED: {
       colorScheme = "green";
-      label = "Accepted";
+      label = intl.formatMessage({
+        id: "general.accepted",
+        defaultMessage: "Accepted",
+      });
       break;
     }
     case CHALLENGE_SUBMISSION_STATUS.REJECTED: {
       colorScheme = "red";
-      label = "Rejected";
+      label = intl.formatMessage({ id: "general.rejected", defaultMessage: "Rejected" });
       break;
     }
     case CHALLENGE_SUBMISSION_STATUS.SUBMITTED: {
-      label = "Submitted";
+      label = intl.formatMessage({ id: "general.submitted", defaultMessage: "Submitted" });
       break;
     }
     default:
@@ -56,7 +61,12 @@ const ChallengeStatusTag = ({ status, comment, autograding }) => {
         </Box>
         <Spacer />
         {status !== CHALLENGE_SUBMISSION_STATUS.SUBMITTED && comment && (
-          <Tooltip label="See comment">
+          <Tooltip
+            label={intl.formatMessage({
+              id: "challengeStatusTag.see-comments",
+              defaultMessage: "See comments",
+            })}
+          >
             <Button variant="ghost" onClick={onOpen} p={0} ml={1}>
               <QuestionOutlineIcon ml="2px" />
             </Button>
@@ -66,7 +76,9 @@ const ChallengeStatusTag = ({ status, comment, autograding }) => {
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent maxW="56rem">
-          <ModalHeader>Review feedback</ModalHeader>
+          <ModalHeader>
+            <FormattedMessage id="challengeStatusTag.modal.header" defaultMessage="Review feedback" />
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody p={6} overflowX="auto">
             {autograding ? (

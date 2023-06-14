@@ -53,6 +53,7 @@
     "react": "^16.14.0",
     "react-blockies": "^1.4.1",
     "react-dom": "^16.14.0",
+    "react-intl": "^6.3.2",
     "react-markdown": "^7.1.0",
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
@@ -63,6 +64,7 @@
     "web3modal": "^1.9.1"
   },
   "devDependencies": {
+    "@formatjs/cli": "^6.0.4",
     "@testing-library/dom": "^6.12.2",
     "@types/react": "^16.9.19",
     "autoprefixer": "^10.2.4",
@@ -101,6 +103,7 @@
     "s3": "node ./scripts/s3.js",
     "ship": "yarn surge",
     "theme": "npx gulp less",
-    "watch": "node ./scripts/watch.js"
+    "watch": "node ./scripts/watch.js",
+    "translations-extract": "formatjs extract 'src/**/*.js*' --ignore='**/*.json' --out-file src/lang/extractions.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' && formatjs compile 'src/lang/extractions.json' --out-file src/lang/en.json && rm src/lang/extractions.json"
   }
 }

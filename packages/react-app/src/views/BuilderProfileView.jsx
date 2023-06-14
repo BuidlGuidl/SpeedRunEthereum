@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useToast, useColorModeValue, Container, SimpleGrid, GridItem, Box } from "@chakra-ui/react";
+import { useIntl } from "react-intl";
 import BuilderProfileCard from "../components/builder/BuilderProfileCard";
-import { challengeInfo } from "../data/challenges";
+import { getChallengeInfo } from "../data/challenges";
 import { BG_BACKEND_URL as bgBackendUrl } from "../constants";
 import { getAcceptedChallenges } from "../helpers/builders";
 import { getChallengeEventsForUser } from "../data/api";
@@ -26,6 +27,8 @@ export default function BuilderProfileView({
   const [isLoadingBuilder, setIsLoadingBuilder] = useState(false);
   const [isBuilderOnBg, setIsBuilderOnBg] = useState(false);
   const [isLoadingTimestamps, setIsLoadingTimestamps] = useState(false);
+  const intl = useIntl();
+  const challengeInfo = getChallengeInfo(intl);
   const toast = useToast({ position: "top", isClosable: true });
   const toastVariant = useColorModeValue("subtle", "solid");
   const bgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
@@ -75,7 +78,10 @@ export default function BuilderProfileView({
         setIsLoadingTimestamps(false);
       } catch (error) {
         toast({
-          description: "Can't get challenges metadata. Please try again",
+          description: intl.formatMessage({
+            id: "builderProfileView.error-getting-challenges",
+            defaultMessage: "Can't get challenges metadata. Please try again",
+          }),
           status: "error",
           variant: toastVariant,
         });

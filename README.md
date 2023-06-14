@@ -51,3 +51,11 @@ Then re-run:
 ```bash
 yarn backend
 ```
+
+## Translations
+
+Extract and compile strings ([docs](https://formatjs.io/docs/tooling/cli/#extraction-and-compilation-with-a-single-script)) (run in react-app folder):
+
+```
+yarn translations-extract
+```
