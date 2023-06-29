@@ -39,7 +39,7 @@ const web3Modal = new Web3Modal({
         description: "Scan with WalletConnect to connect",
       },
       options: {
-        projecId: "3a8170812b534d0ff9d794f19a901d64",
+        projecId: process.env.REACT_APP_WALLETCONNECT_PROJECT_ID,
         chains: [1],
       },
       package: EthereumProvider,
