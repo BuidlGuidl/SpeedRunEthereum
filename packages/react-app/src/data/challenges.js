@@ -69,7 +69,7 @@ export const challengeInfo = {
   },
   "state-channels": {
     id: 9,
-    branchName: "challenge-9-state-channels",
+    branchName: "challenge-5-state-channels",
     label: "📺 A State Channel Application Challenge",
     disabled: false,
     description:
