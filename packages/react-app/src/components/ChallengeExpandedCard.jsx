@@ -100,7 +100,7 @@ const ChallengeExpandedCard = ({
         <Image
           src="assets/bgBanner_joinBgClouds.svg"
           position="absolute"
-          top={{ base: "13%", lg: "12%" }}
+          top={{ base: "6%", lg: "5%" }}
           left={{ base: "4%", lg: "auto" }}
           zIndex={100}
         />
@@ -116,7 +116,7 @@ const ChallengeExpandedCard = ({
           spacing={{ base: 16, lg: 32 }}
           minH={{ base: "md", lg: "lg" }}
         >
-          <Center position="relative">
+          <Center position="relative" mt={{ base: 2, lg: 8 }}>
             <Image src="assets/bgBanner_JoinBG.svg" w="820px" />
           </Center>
           <Flex justifyContent="space-between" direction={{ base: "column", lg: "row" }}>
@@ -213,8 +213,8 @@ const ChallengeExpandedCard = ({
         pl={10}
         borderLeft="solid 5px"
         borderColor={borderColor}
-        // Magic number (challengeIndex === 3). Challenge before Join the BG
-        borderBottom={isLast || challengeIndex === 3 ? 0 : "2px"}
+        // Magic number (challengeIndex === 2). Challenge before Join the BG
+        borderBottom={isLast || challengeIndex === 2 ? 0 : "2px"}
         borderBottomColor={borderColor}
         position="relative"
         direction={{

@@ -61,5 +61,6 @@
       "**/hardhat",
       "**/hardhat/**"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.1"
 }

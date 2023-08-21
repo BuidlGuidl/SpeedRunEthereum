@@ -2,18 +2,11 @@
   "name": "@scaffold-eth/react-app",
   "version": "1.0.0",
   "homepage": ".",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@chakra-ui/icons": "^1.0.15",
@@ -34,6 +27,8 @@
     "@testing-library/user-event": "^12.1.8",
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "@walletconnect/ethereum-provider": "^2.8.4",
+    "@walletconnect/modal": "^2.5.6",
     "@walletconnect/web3-provider": "^1.3.1",
     "axios": "^0.20.0",
     "bnc-notify": "^1.5.0",
@@ -58,6 +53,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-table": "^7.7.0",
+    "rehype-raw": "^6.1.1",
     "remark-breaks": "^3.0.2",
     "web3modal": "^1.9.1"
   },
@@ -92,7 +88,7 @@
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "test": "react-scripts test",
     "lint": "eslint --config ./.eslintrc.js --ignore-path ./.eslintignore ./src/**/*",
     "ipfs": "node ./scripts/ipfs.js",

@@ -24,16 +24,17 @@ import {
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import ReactMarkdown from "react-markdown";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import rehypeRaw from "rehype-raw";
+
 import { challengeInfo } from "../data/challenges";
 import ChallengeSubmission from "../components/ChallengeSubmission";
 import { chakraMarkdownComponents } from "../helpers/chakraMarkdownTheme";
-import { USER_ROLES, JS_CHALLENGE_REPO, TS_CHALLENGE_REPO } from "../helpers/constants";
+import { USER_ROLES, CHALLENGE_REPO } from "../helpers/constants";
 import { getChallengeReadme } from "../data/api";
 import { parseGithubReadme } from "../helpers/strings";
 
 export default function ChallengeDetailView({ serverUrl, address, userProvider, userRole, loadWeb3Modal }) {
-  const [descriptionJs, setDescriptionJs] = useState(null);
-  const [descriptionTs, setDescriptionTs] = useState(null);
+  const [challengeDescription, setChallengeDescription] = useState(null);
   const { challengeId } = useParams();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,13 +49,9 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   // In the future, this might be a fetch to the repos/branchs README
   // (Ideally fetched at build time)
   useEffect(() => {
-    getChallengeReadme(challengeId, "js")
-      .then(text => setDescriptionJs(parseGithubReadme(text)))
-      .catch(() => setDescriptionJs(null));
-
-    getChallengeReadme(challengeId, "ts")
-      .then(text => setDescriptionTs(parseGithubReadme(text)))
-      .catch(() => setDescriptionTs(null));
+    getChallengeReadme(challengeId)
+      .then(text => setChallengeDescription(parseGithubReadme(text)))
+      .catch(() => setChallengeDescription(null));
   }, [challengeId, challenge]);
 
   useEffect(() => {
@@ -83,8 +80,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
     }
   };
 
-  const challengeActionButtons = (type = "JS") => {
-    const repo = type === "JS" ? JS_CHALLENGE_REPO : TS_CHALLENGE_REPO;
+  const challengeActionButtons = () => {
     return (
       <>
         <Box textAlign="center">
@@ -92,7 +88,7 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
             as="a"
             colorScheme="gray"
             variant="outline"
-            href={`${repo}/tree/${challenge.branchName}`}
+            href={`${CHALLENGE_REPO}/tree/${challenge.branchName}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -114,26 +110,14 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
     <Box bgColor={bgColor} py={12}>
       {/* Magic number for maxW to match GitHub */}
       <Container maxW="894px" mb="60px">
-        <Box textAlign="center" mb={6}>
-          <Heading as="h1" mb={8}>
-            {challenge.label}
-          </Heading>
-        </Box>
         <Tabs align="center" colorScheme="green">
-          <TabList>
-            {descriptionJs && <Tab>Javascript</Tab>}
-            {descriptionTs && <Tab>Typescript</Tab>}
-          </TabList>
           <TabPanels align="left">
             <TabPanel>
-              <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionJs} />
-              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionJs}</ReactMarkdown>
-              {challengeActionButtons("JS")}
-            </TabPanel>
-            <TabPanel>
-              <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={descriptionTs} />
-              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)}>{descriptionTs}</ReactMarkdown>
-              {challengeActionButtons("TS")}
+              <SkeletonText mt="4" noOfLines={4} spacing="4" isLoaded={challengeDescription} />
+              <ReactMarkdown components={ChakraUIRenderer(chakraMarkdownComponents)} rehypePlugins={[rehypeRaw]}>
+                {challengeDescription}
+              </ReactMarkdown>
+              {challengeActionButtons()}
             </TabPanel>
           </TabPanels>
         </Tabs>

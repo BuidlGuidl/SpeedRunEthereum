@@ -1,6 +1,6 @@
 /* eslint react/jsx-props-no-spreading: off */
 import React from "react";
-import { chakra, Code, Divider, Heading, Image, Link, UnorderedList, Text } from "@chakra-ui/react";
+import { chakra, Code, Divider, Heading, Image, Link, UnorderedList, Text, useToken } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
 const MdBlockQuote = ({ children }) => {
@@ -82,6 +82,17 @@ const MdLink = ({ href, children }) => {
   );
 };
 
+const MdSummary = ({ children }) => {
+  const { primaryFontColor } = useCustomColorModes();
+  const [color] = useToken("colors", [primaryFontColor]);
+
+  return <summary style={{ color, cursor: "pointer" }}>{children}</summary>;
+};
+
+const MdDetails = ({ children }) => {
+  return <details style={{ marginBottom: 10 }}>{children}</details>;
+};
+
 export const chakraMarkdownComponents = {
   a: props => <MdLink {...props} />,
   blockquote: props => <MdBlockQuote {...props} />,
@@ -98,4 +109,6 @@ export const chakraMarkdownComponents = {
   pre: props => <MdPre {...props} />,
   p: props => <MdP {...props} />,
   ul: ({ children }) => <UnorderedList mb={4}>{children}</UnorderedList>,
+  details: ({ children }) => <MdDetails>{children}</MdDetails>,
+  summary: ({ children }) => <MdSummary>{children}</MdSummary>,
 };
