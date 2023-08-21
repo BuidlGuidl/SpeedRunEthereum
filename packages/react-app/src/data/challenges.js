@@ -113,10 +113,7 @@ export const challengeInfo = {
   },
 };
 
-const githubChallengesRepoBaseRawUrl = {
-  js: "https://raw.githubusercontent.com/scaffold-eth/scaffold-eth-challenges",
-  ts: "https://raw.githubusercontent.com/scaffold-eth/scaffold-eth-typescript-challenges",
-};
+const githubChallengesRepoBaseRawUrl = "https://raw.githubusercontent.com/scaffold-eth/se-2-challenges";
 
-export const getGithubChallengeReadmeUrl = (challengeId, version) =>
-  `${githubChallengesRepoBaseRawUrl[version]}/${challengeInfo[challengeId].branchName}/README.md`;
+export const getGithubChallengeReadmeUrl = challengeId =>
+  `${githubChallengesRepoBaseRawUrl}/${challengeInfo[challengeId].branchName}/README.md`;
