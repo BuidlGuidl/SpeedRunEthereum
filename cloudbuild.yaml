@@ -1,0 +1,9 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd packages/backend
+        gcloud app deploy --quiet
+timeout: "1600s"
