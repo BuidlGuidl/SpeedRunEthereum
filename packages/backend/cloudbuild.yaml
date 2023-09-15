@@ -1,0 +1,15 @@
+steps:
+  # Creates the production .env file
+  - name: 'alpine'
+    entrypoint: sh
+    args: ['-c', 'printenv > packages/backend/.env']
+    env:
+      - BG_API_KEY=$_BG_API_KEY
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd packages/backend
+        gcloud app deploy --quiet
+timeout: "1600s"
