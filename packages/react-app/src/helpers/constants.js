@@ -1,5 +1,4 @@
-export const JS_CHALLENGE_REPO = "https://github.com/scaffold-eth/scaffold-eth-challenges";
-export const TS_CHALLENGE_REPO = "https://github.com/scaffold-eth/scaffold-eth-typescript-challenges";
+export const CHALLENGE_REPO = "https://github.com/scaffold-eth/se-2-challenges";
 
 export const CHALLENGE_SUBMISSION_STATUS = {
   ACCEPTED: "ACCEPTED",

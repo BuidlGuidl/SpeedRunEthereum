@@ -146,7 +146,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
           <FormControl id="deployedUrl" isRequired>
             <FormLabel>
               Deployed URL{" "}
-              <Tooltip label="Your deployed challenge URL on surge / s3 / ipfs ">
+              <Tooltip label="Your deployed challenge URL on vercel">
                 <QuestionOutlineIcon ml="2px" />
               </Tooltip>
             </FormLabel>
@@ -154,7 +154,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
               type="text"
               name="deployedUrl"
               value={deployedUrl}
-              placeholder="https://your-site.surge.sh"
+              placeholder="https://your-site.vercel.app"
               onChange={e => {
                 setDeployedUrl(e.target.value);
                 if (hasErrorField.deployedUrl) {
@@ -179,7 +179,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
               type="text"
               name="contractUrl"
               value={contractUrl}
-              placeholder="https://goerli.etherscan.io/address/**YourContractAddress**"
+              placeholder="https://sepolia.etherscan.io/address/**YourContractAddress**"
               onChange={e => {
                 setContractUrl(e.target.value);
                 if (hasErrorField.contractUrl) {
