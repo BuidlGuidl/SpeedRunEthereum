@@ -161,8 +161,8 @@ export default function BuilderListView({ serverUrl, mainnetProvider, userRole }
           </Heading>
           <Text color={secondaryFontColor} textAlign="center" mb="10">
             List of Ethereum builders creating products, prototypes, and tutorials with{" "}
-            <Link href="https://github.com/scaffold-eth/scaffold-eth" color={linkColor} isExternal>
-              scaffold-eth
+            <Link href="https://github.com/scaffold-eth/scaffold-eth-2" color={linkColor} isExternal>
+              Scaffold-ETH 2
             </Link>
             .
           </Text>

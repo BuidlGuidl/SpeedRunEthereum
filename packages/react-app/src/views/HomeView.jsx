@@ -113,14 +113,14 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             Then use{" "}
             <a
               style={{ textDecoration: "underline" }}
-              href="https://github.com/scaffold-eth/scaffold-eth#-scaffold-eth"
+              href="https://github.com/scaffold-eth/scaffold-eth-2"
               rel="noopener noreferrer"
               target="_blank"
             >
               <span role="img" aria-label="teacher icon">
                 🏗
               </span>{" "}
-              Scaffold-ETH
+              Scaffold-ETH 2
             </a>{" "}
             to copy/paste each Solidity concept and tinker:
           </Text>
