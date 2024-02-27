@@ -58,7 +58,7 @@ export const challengeInfo = {
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
   },
   "minimum-viable-exchange": {
-    id: 5,
+    id: 4,
     branchName: "challenge-4-dex",
     label: "🚩 Challenge 4: ⚖️ Build a DEX",
     disabled: false,
@@ -68,7 +68,7 @@ export const challengeInfo = {
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
   },
   "state-channels": {
-    id: 9,
+    id: 5,
     branchName: "challenge-5-state-channels",
     label: "🚩 Challenge 5: 📺 A State Channel Application",
     disabled: false,

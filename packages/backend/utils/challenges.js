@@ -20,7 +20,7 @@ const challengeMapping = {
     autograding: true,
   },
   "state-channels": {
-    id: 9,
+    id: 5,
     autograding: true,
   },
   "learn-multisig": {
