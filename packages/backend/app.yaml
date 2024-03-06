@@ -1,5 +1,5 @@
 # Google app engine deployment
-runtime: nodejs16
+runtime: nodejs18
 env: standard
 entrypoint: node index.js
 automatic_scaling:
