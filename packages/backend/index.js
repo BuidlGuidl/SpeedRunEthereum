@@ -390,6 +390,83 @@ app.get("/challenges", withRole("admin"), async (request, response) => {
   }
 });
 
+app.post("/api/frame", (req, res) => {
+  const baseUrl = "https://speedrunethereum.com";
+  const apiUrl = "http://localhost:49832";
+
+  const challengeButtons = {
+    0: {
+      label: "🎟 Simple NFT Example",
+      link: "https://speedrunethereum.com/challenge/simple-nft-example",
+    },
+    1: {
+      label: "🥩 Staking App",
+      link: "https://speedrunethereum.com/challenge/decentralized-staking",
+    },
+    2: {
+      label: "🏵 Token Vendor",
+      link: "https://speedrunethereum.com/challenge/token-vendor",
+    },
+    3: {
+      label: "🎲 Dice Game",
+      link: "https://speedrunethereum.com/challenge/dice-game",
+    },
+    4: {
+      label: "⚖️ Build a DEX",
+      link: "https://speedrunethereum.com/challenge/minimum-viable-exchange",
+    },
+    5: {
+      label: "📺 State Channel App",
+      link: "https://speedrunethereum.com/challenge/state-channels",
+    },
+  };
+
+  try {
+    const { query } = req;
+
+    let idAsNumber = 0;
+
+    if (query && query.id) {
+      idAsNumber = Number(query.id);
+    }
+
+    const nextId = idAsNumber + 1;
+
+    if (idAsNumber === 6) {
+      res.status(200).send(`<!DOCTYPE html><html><head>
+      <title>Speed Run Ethereum</title>
+      <meta property="og:image" content="${baseUrl}/frames/buidlguidl.jpg" />
+      <meta property="fc:frame" content="vNext" />
+      <meta property="fc:frame:image" content="${baseUrl}/frames/buidlguidl.jpg" />
+      <meta property="fc:frame:button:1" content="🛠️ GitHub" />
+      <meta property="fc:frame:button:1:action" content="link" />
+      <meta property="fc:frame:button:1:target" content="https://github.com/scaffold-eth/se-2-challenges" />
+      <meta property="fc:frame:button:2" content="🏰 BuidlGuidl" />
+      <meta property="fc:frame:button:2:action" content="link" />
+      <meta property="fc:frame:button:2:target" content="https://buidlguidl.com/" />
+      <meta property="fc:frame:button:3" content="💬 Telegram" />
+      <meta property="fc:frame:button:3:action" content="link" />
+      <meta property="fc:frame:button:3:target" content="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" />
+      </head></html>`);
+    } else {
+      res.status(200).send(`<!DOCTYPE html><html><head>
+        <title>Speed Run Ethereum</title>
+        <meta property="og:image" content="${baseUrl}/frames/challenge-${idAsNumber}.png" />
+        <meta property="fc:frame" content="vNext" />
+        <meta property="fc:frame:image" content="${baseUrl}/frames/challenge-${idAsNumber}.png" />
+        <meta property="fc:frame:button:1" content="${challengeButtons[idAsNumber].label}" />
+        <meta property="fc:frame:button:1:action" content="link" />
+        <meta property="fc:frame:button:1:target" content="${challengeButtons[idAsNumber].link}" />
+        <meta property="fc:frame:button:2" content="Next →" />
+        <meta property="fc:frame:post_url" content="${apiUrl}/api/frame?id=${nextId}" />
+      </head></html>`);
+    }
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).send({ error: "failed to load frame" });
+  }
+});
+
 // If nothing processed the request, return 404
 app.use((req, res) => {
   console.log(`Request to ${req.path} resulted in 404`);
