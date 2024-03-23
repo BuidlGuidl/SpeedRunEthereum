@@ -392,7 +392,7 @@ app.get("/challenges", withRole("admin"), async (request, response) => {
 
 app.post("/api/frame", (req, res) => {
   const baseUrl = "https://speedrunethereum.com";
-  const apiUrl = "http://localhost:49832";
+  const BG_SERVER = process.env.BG_BACKEND;
 
   const challengeButtons = {
     0: {
@@ -458,7 +458,7 @@ app.post("/api/frame", (req, res) => {
         <meta property="fc:frame:button:1:action" content="link" />
         <meta property="fc:frame:button:1:target" content="${challengeButtons[idAsNumber].link}" />
         <meta property="fc:frame:button:2" content="Next →" />
-        <meta property="fc:frame:post_url" content="${apiUrl}/api/frame?id=${nextId}" />
+        <meta property="fc:frame:post_url" content="${BG_SERVER}/api/frame?id=${nextId}" />
       </head></html>`);
     }
   } catch (err) {
