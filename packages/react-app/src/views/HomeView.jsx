@@ -6,23 +6,6 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeroLogo from "../components/icons/HeroLogo";
 import HeroDiamond from "../components/icons/HeroDiamond";
 
-const BulletNumber = ({ children, bgColor, primaryFontColor }) => (
-  <Box
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    color={bgColor}
-    bgColor={primaryFontColor}
-    borderRadius="50%"
-    w="20px"
-    h="20px"
-    mb="5px"
-    fontSize="14px"
-  >
-    {children}
-  </Box>
-);
-
 export default function HomeView({ connectedBuilder, userProvider }) {
   const { primaryFontColor, bgColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
