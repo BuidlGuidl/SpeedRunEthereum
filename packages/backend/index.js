@@ -400,7 +400,7 @@ app.post("/api/frame", (req, res) => {
       link: "https://speedrunethereum.com/challenge/simple-nft-example",
     },
     1: {
-      label: "🥩 Staking App",
+      label: "🔏 Staking App",
       link: "https://speedrunethereum.com/challenge/decentralized-staking",
     },
     2: {
