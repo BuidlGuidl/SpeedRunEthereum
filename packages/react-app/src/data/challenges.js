@@ -30,23 +30,6 @@ export const challengeInfo = {
     previewImage: "/assets/challenges/tokenVendor.svg",
     dependencies: [],
   },
-  "buidl-guidl": {
-    id: 4,
-    branchName: "",
-    label: "Eligible to join 🏰️ BuidlGuidl",
-    icon: "/assets/vault_icon.svg",
-    // Not a challenge, just a checkpoint in the Challenge timeline.
-    checkpoint: true,
-    disabled: false,
-    description:
-      "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.",
-    previewImage: "assets/bg.png",
-    dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor"],
-    externalLink: {
-      link: "https://buidlguidl.com/",
-      claim: "Join the 🏰️ BuidlGuidl",
-    },
-  },
   "dice-game": {
     id: 3,
     branchName: "challenge-3-dice-game",
@@ -66,6 +49,29 @@ export const challengeInfo = {
       "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
     previewImage: "assets/challenges/dex.svg",
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
+  },
+  "buidl-guidl": {
+    id: 9999,
+    branchName: "",
+    label: "Eligible to join 🏰️ BuidlGuidl",
+    icon: "/assets/vault_icon.svg",
+    // Not a challenge, just a checkpoint in the Challenge timeline.
+    checkpoint: true,
+    disabled: false,
+    description:
+      "The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3 portfolio by submitting your DEX, Multisig or SVG NFT build.",
+    previewImage: "assets/bg.png",
+    dependencies: [
+      "simple-nft-example",
+      "decentralized-staking",
+      "token-vendor",
+      "dice-game",
+      "minimum-viable-exchange",
+    ],
+    externalLink: {
+      link: "https://buidlguidl.com/",
+      claim: "Join the 🏰️ BuidlGuidl",
+    },
   },
   "state-channels": {
     id: 5,

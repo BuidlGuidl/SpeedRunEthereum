@@ -214,7 +214,7 @@ const ChallengeExpandedCard = ({
         borderLeft="solid 5px"
         borderColor={borderColor}
         // Magic number (challengeIndex === 2). Challenge before Join the BG
-        borderBottom={isLast || challengeIndex === 2 ? 0 : "2px"}
+        borderBottom={isLast || challengeIndex === 4 ? 0 : "2px"}
         borderBottomColor={borderColor}
         position="relative"
         direction={{
