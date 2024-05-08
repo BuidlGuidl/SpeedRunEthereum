@@ -56,7 +56,6 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           >
             <HeroLogo maxW="600px" height="auto" />
           </Center>
-
         </Container>
         <Box
           bgImg="/assets/header_platform.svg"
@@ -73,7 +72,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             challengeId={challengeId}
             challenge={challenge}
             // Magic number: we don't want to count the Join the BG as a challenge
-            challengeIndex={index < 3 ? index : index - 1}
+            challengeIndex={index < 5 ? index : index - 1}
             builderAttemptedChallenges={builderAttemptedChallenges}
             userProvider={userProvider}
             connectedBuilder={connectedBuilder}
