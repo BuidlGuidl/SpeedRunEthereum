@@ -23,7 +23,7 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
     } catch (e) {
       // TODO handle errors. Issue #25 https://github.com/moonshotcollective/scaffold-directory/issues/25
       toast({
-        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        description: "Can't get the sign message from the server",
         status: "error",
       });
       setLoading(false);
@@ -33,7 +33,7 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
 
     if (!signMessage) {
       toast({
-        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        description: "Sign message is empty",
         status: "error",
       });
       setLoading(false);
@@ -68,7 +68,10 @@ const SignatureSignUp = forwardRef(({ address, userProvider, onSuccess, setUserR
 
   return (
     <Button ref={ref} colorScheme="blue" disabled={loading} onClick={handleLoginSigning}>
-      <span role="img" aria-label="write icon">✍</span><chakra.span ml={2}>Register</chakra.span>
+      <span role="img" aria-label="write icon">
+        ✍
+      </span>
+      <chakra.span ml={2}>Register</chakra.span>
     </Button>
   );
 });
