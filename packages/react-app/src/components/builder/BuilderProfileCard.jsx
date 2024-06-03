@@ -100,7 +100,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       signMessage = await getUpdateSocialsSignMessage(address);
     } catch (error) {
       toast({
-        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        description: "Can't get the sign message from the server",
         status: "error",
         variant: toastVariant,
       });
@@ -160,7 +160,7 @@ const BuilderProfileCard = ({ builder, mainnetProvider, isMyProfile, userProvide
       signMessage = await getUpdateReachedOutFlagSignMessage(builder.id, reachedOut);
     } catch (error) {
       toast({
-        description: " Sorry, the server is overloaded. 🧯🚒🔥",
+        description: "Can't get the sign message from the server",
         status: "error",
         variant: toastVariant,
       });
