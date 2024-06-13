@@ -103,10 +103,10 @@ export const challengeInfo = {
   "nft-cohort": {
     id: 7,
     branchName: "challenge-5-svg-nft-cohort",
-    label: "🎁 SVG NFT 🎫 Building Cohort Challenge",
+    label: "🎁 SVG NFT 🎫 Challenge",
     disabled: false,
     description:
-      "🧙 Tinker around with cutting edge smart contracts that render SVGs in Solidity. 🧫 We quickly discovered that the render function needs to be public... 🤔 This allows NFTs that own other NFTs to render their stash. Just wait until you see an Optimistic Loogie and a Fancy Loogie swimming around in the same Loogie Tank!",
+      "🎨 Create a dynamic SVG NFT using a smart contract. Your contract will generate on-chain SVG images and allow users to mint their unique NFTs. ✨ Customize your SVG graphics and metadata directly within the smart contract. 🚀 Share the minting URL once your project is live!",
     previewImage: "assets/challenges/dynamicSvgNFT.svg",
     // Challenge locked until the builder completed these challenges
     dependencies: ["simple-nft-example", "decentralized-staking", "token-vendor", "dice-game"],
