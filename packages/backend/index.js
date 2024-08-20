@@ -19,18 +19,6 @@ const { trackPlausibleEvent } = require("./services/plausible");
 const app = express();
 const autogradingEnabled = process.env.NODE_ENV !== "test" && !!process.env.AUTOGRADING_SERVER;
 
-/*
-  Uncomment this if you want to create a wallet to send ETH or something...
-const INFURA = JSON.parse(fs.readFileSync("./infura.txt").toString().trim())
-const PK = fs.readFileSync("./pk.txt").toString().trim()
-let wallet = new ethers.Wallet(PK,new ethers.providers.InfuraProvider("goerli",INFURA))
-console.log(wallet.address)
-const checkWalletBalance = async ()=>{
-  console.log("BALANCE:",ethers.utils.formatEther(await wallet.provider.getBalance(wallet.address)))
-}
-checkWalletBalance()
-*/
-
 app.use(cors());
 
 app.use(bodyParser.json());
@@ -39,6 +27,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/events", eventsRoutes);
 app.use("/builds", buildsRoutes);
 app.use("/bg", bgRoutes);
+
+app.get("/healthcheck", (_, res) => {
+  res.status(200).send("ok");
+});
 
 app.get("/sign-message", (req, res) => {
   const messageId = req.query.messageId ?? "login";
