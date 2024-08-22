@@ -1,12 +1,14 @@
 import React, { useMemo } from "react";
-import { Container, Box, Text, Center, useColorModeValue } from "@chakra-ui/react";
+import { Container, Box, Text, Center, useColorModeValue, Button } from "@chakra-ui/react";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeroLogo from "../components/icons/HeroLogo";
 import HeroDiamond from "../components/icons/HeroDiamond";
+import { useHistory } from "react-router-dom";
 
 export default function HomeView({ connectedBuilder, userProvider }) {
+  const history = useHistory();
   const { primaryFontColor, bgColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
 
@@ -19,6 +21,16 @@ export default function HomeView({ connectedBuilder, userProvider }) {
       Object.entries(connectedBuilder.challenges).filter(([_, challengeData]) => challengeData?.status),
     );
   }, [connectedBuilder]);
+
+  const handleCtaClick = () => {
+    if (window.plausible) {
+      window.plausible("cta");
+    }
+
+    setTimeout(() => {
+      history.push(`/challenge/${Object.keys(challengeInfo)[0]}`);
+    }, 100);
+  };
 
   return (
     <Box>
@@ -56,6 +68,9 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           >
             <HeroLogo maxW="600px" height="auto" />
           </Center>
+          <Button onClick={handleCtaClick} colorScheme="green" mt={4} size="lg">
+            Start Building on Ethereum
+          </Button>
         </Container>
         <Box
           bgImg="/assets/header_platform.svg"
