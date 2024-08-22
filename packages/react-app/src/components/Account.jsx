@@ -91,7 +91,7 @@ export default function Account({
   const isAnonymous = userRole === USER_ROLES.anonymous;
 
   const connectWallet = (
-    <Button colorScheme="green" key="loginbutton" onClick={loadWeb3Modal}>
+    <Button colorScheme="green" key="loginbutton" onClick={loadWeb3Modal} variant="outline">
       {connectText || "connect"}
     </Button>
   );
