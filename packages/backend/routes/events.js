@@ -19,7 +19,7 @@ const router = express.Router();
  *
  * All params accept a comma separated list of values, allowing to filter for
  * multiple values at once. They act as an OR.
- * Every query param condition must be met for a event to pass the filter. Each query param acts as an AND.
+ * Every query param condition must be met for an event to pass the filter. Each query param acts as an AND.
  */
 router.get("/", async (req, res) => {
   console.log("/events");
