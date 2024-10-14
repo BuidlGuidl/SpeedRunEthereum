@@ -248,13 +248,13 @@ app.post("/challenges", withAddress, async (request, response) => {
 
     const challengeIndex = getChallengeIndexFromChallengeId(challengeId);
     const contractUrlObject = new URL(contractUrl);
-    const network = contractUrlObject.host.split(".")[0];
+    const blockExplorer = contractUrlObject.host;
     const contractAddress = contractUrlObject.pathname.replace("/address/", "");
 
     axios
       .post(process.env.AUTOGRADING_SERVER, {
         challenge: challengeIndex,
-        network,
+        blockExplorer,
         address: contractAddress,
       })
       .then(async gradingResponse => {

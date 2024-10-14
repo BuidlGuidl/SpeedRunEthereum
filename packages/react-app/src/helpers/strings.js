@@ -1,5 +1,11 @@
 // Update after merge.
-export const ALLOWED_TESTNETS = ["rinkeby", "kovan", "ropsten", "goerli", "sepolia"];
+export const VALID_BLOCK_EXPLORER_HOSTS = [
+  "sepolia.etherscan.io",
+  "sepolia-optimism.etherscan.io",
+  "sepolia.arbiscan.io",
+  "amoy.polygonscan.com",
+  "sepolia.basescan.org",
+];
 
 export const ellipsizedAddress = longAddress =>
   longAddress ? `${longAddress.slice(0, 6)}...${longAddress.slice(-4)}` : "";
@@ -31,8 +37,9 @@ export const isValidEtherscanTestnetUrl = urlText => {
     return false;
   }
 
-  const network = url.host.split(".")[0];
-  return network && ALLOWED_TESTNETS.includes(network);
+  const { host } = url;
+
+  return host && VALID_BLOCK_EXPLORER_HOSTS.includes(host);
 };
 
 export const isBoolean = val => typeof val === "boolean";
