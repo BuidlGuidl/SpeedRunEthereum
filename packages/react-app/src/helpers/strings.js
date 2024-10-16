@@ -1,11 +1,5 @@
 // Update after merge.
-export const VALID_BLOCK_EXPLORER_HOSTS = [
-  "sepolia.etherscan.io",
-  "sepolia-optimism.etherscan.io",
-  "sepolia.arbiscan.io",
-  "amoy.polygonscan.com",
-  "sepolia.basescan.org",
-];
+export const VALID_BLOCK_EXPLORER_HOSTS = ["sepolia.etherscan.io", "sepolia-optimism.etherscan.io"];
 
 export const ellipsizedAddress = longAddress =>
   longAddress ? `${longAddress.slice(0, 6)}...${longAddress.slice(-4)}` : "";
