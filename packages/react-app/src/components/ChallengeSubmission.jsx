@@ -45,7 +45,7 @@ export default function ChallengeSubmission({ challenge, serverUrl, address, use
         status: "error",
         title: "Incorrect Etherscan Contract URL",
         description:
-          "Please submit your verified contract’s address on a valid testnet. e.g. https://goerli.etherscan.io/address/**Your Contract Address**",
+          "Please submit your verified contract’s address on a valid testnet. e.g. https://sepolia.etherscan.io/address/**Your Contract Address**",
       });
 
       setHasErrorField({
