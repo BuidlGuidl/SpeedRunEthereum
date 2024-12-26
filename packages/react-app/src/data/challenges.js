@@ -122,4 +122,4 @@ export const challengeInfo = {
 const githubChallengesRepoBaseRawUrl = "https://raw.githubusercontent.com/scaffold-eth/se-2-challenges";
 
 export const getGithubChallengeReadmeUrl = challengeId =>
-  `${githubChallengesRepoBaseRawUrl}/${challengeInfo[challengeId].branchName}/README.md`;
+  `${githubChallengesRepoBaseRawUrl}/${challengeInfo[challengeId].branchName}--extension/README.md`;
