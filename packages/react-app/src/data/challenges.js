@@ -81,7 +81,7 @@ export const challengeInfo = {
     label: "💰 Stablecoins",
     disabled: false,
     description:
-      "🪙Build your own decentralized stablecoin. Let’s write a contract that takes collateral and issues MyUSD tokens based on the value of the collateral. What happens when the collateral changes in value? We will be able to borrow more tokens if it is higher or if it is lower we will also build a system for liquidating the MyUSD.",
+      "🪙Build your own decentralized stablecoin. Let’s write a contract that takes collateral and issues MyUSD tokens based on the value of the collateral. What happens when the collateral changes in value? If it is higher, we will be able to borrow more tokens. If it is lower, we will also build a system for liquidating the MyUSD.",
     previewImage: "assets/challenges/stablecoins.svg",
     comingSoon: true,
     dependencies: [],
@@ -92,7 +92,7 @@ export const challengeInfo = {
     label: "📈 Prediction Markets",
     disabled: false,
     description:
-      "🔮 Build a prediction market where users can create questions about future outcomes for others to bet on or participate in existing markets to speculate on event results. 📊 Outcome shares can be traded, with prices adjusting dynamically based on market belief. This is possible because the smart contract acts as an automated market maker (like in the DEX challenge) and adjusts odds based on supply and demand.",
+      "🔮 Build a prediction market where users can create questions about future outcomes for others to bet on. Users can also participate in existing markets to speculate on event results. 📊 Outcome shares can be traded, with prices adjusting dynamically based on market belief. This is possible because the smart contract acts as an automated market maker (like in the DEX challenge) and adjusts odds based on supply and demand.",
     previewImage: "assets/challenges/predictionMarkets.svg",
     comingSoon: true,
     dependencies: [],
