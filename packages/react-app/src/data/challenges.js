@@ -73,6 +73,30 @@ export const challengeInfo = {
       claim: "Join the 🏰️ BuidlGuidl",
     },
   },
+  stablecoins: {
+    // ID is not acually used (We are passing the object key as the id ("stablecoins")
+    id: 8,
+    branchName: "challenge-8-stablecoin",
+    // Label shown in the User profile (won't be shown until we enabled this, then it might be time to change label and id)
+    label: "💰 Stablecoins",
+    disabled: false,
+    description:
+      "🪙Build your own decentralized stablecoin. Let’s write a contract that takes collateral and issues MyUSD tokens based on the value of the collateral. What happens when the collateral changes in value? We will be able to borrow more tokens if it is higher or if it is lower we will also build a system for liquidating the MyUSD.",
+    previewImage: "assets/challenges/stablecoins.svg",
+    comingSoon: true,
+    dependencies: [],
+  },
+  "prediction-markets": {
+    id: 9,
+    branchName: "challenge-9-prediction-markets",
+    label: "📈 Prediction Markets",
+    disabled: false,
+    description:
+      "🔮 Build a prediction market where users can create questions about future outcomes for others to bet on or participate in existing markets to speculate on event results. 📊 Outcome shares can be traded, with prices adjusting dynamically based on market belief. This is possible because the smart contract acts as an automated market maker (like in the DEX challenge) and adjusts odds based on supply and demand.",
+    previewImage: "assets/challenges/predictionMarkets.svg",
+    comingSoon: true,
+    dependencies: [],
+  },
   "state-channels": {
     id: 5,
     branchName: "challenge-5-state-channels",
