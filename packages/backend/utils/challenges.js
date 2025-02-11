@@ -31,6 +31,14 @@ const challengeMapping = {
     id: 7,
     autograding: false,
   },
+  stablecoins: {
+    id: 8,
+    autograding: false,
+  },
+  "prediction-markets": {
+    id: 9,
+    autograding: false,
+  },
 };
 
 function getChallengeIndexFromChallengeId(challengeId) {

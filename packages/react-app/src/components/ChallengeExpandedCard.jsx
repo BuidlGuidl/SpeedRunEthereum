@@ -22,6 +22,7 @@ import JoinBG from "./JoinBG";
 import CrossedSwordsIcon from "./icons/CrossedSwordsIcon";
 import PadLockIcon from "./icons/PadLockIcon";
 import QuestionIcon from "./icons/QuestionIcon";
+import NewIcon from "./icons/NewIcon";
 
 const ChallengeExpandedCard = ({
   challengeId,
@@ -85,6 +86,7 @@ const ChallengeExpandedCard = ({
   }
 
   const isChallengeLocked = challenge.disabled || !builderHasCompletedDependenciesChallenges;
+  const isChallengeComingSoon = challenge.comingSoon;
 
   if (challenge.checkpoint) {
     return (
@@ -302,8 +304,8 @@ const ChallengeExpandedCard = ({
               <ButtonGroup alignItems="center">
                 <Button
                   as={RouteLink}
-                  to={!isChallengeLocked && `/challenge/${challengeId}`}
-                  isDisabled={isChallengeLocked}
+                  to={!isChallengeLocked && !isChallengeComingSoon && `/challenge/${challengeId}`}
+                  isDisabled={isChallengeLocked || isChallengeComingSoon}
                   variant={isChallengeLocked ? "outline" : "solid"}
                   fontSize={{ base: "xl", lg: "lg" }}
                   border="2px"
@@ -312,7 +314,14 @@ const ChallengeExpandedCard = ({
                   py="1rem"
                   px={4}
                 >
-                  {!isChallengeLocked ? (
+                  {isChallengeComingSoon ? (
+                    <Flex justifyContent="center">
+                      <NewIcon w={6} h={6} />
+                      <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
+                        Coming Soon
+                      </chakra.span>
+                    </Flex>
+                  ) : !isChallengeLocked ? (
                     <Flex justifyContent="center" alignItems="center">
                       <CrossedSwordsIcon w={6} h={6} />
                       <chakra.span color={primaryFontColor} ml={2} textTransform="uppercase" fontWeight="medium">
