@@ -82,19 +82,21 @@ export default function HomeView({ connectedBuilder, userProvider }) {
       </Box>
 
       <Box mt="-20px" pt="20px" bgColor={cardBgColor}>
-        {Object.entries(challengeInfo).map(([challengeId, challenge], index, { length }) => (
-          <ChallengeExpandedCard
-            challengeId={challengeId}
-            challenge={challenge}
-            // Magic number: we don't want to count the Join the BG as a challenge
-            challengeIndex={index < 5 ? index : index - 1}
-            builderAttemptedChallenges={builderAttemptedChallenges}
-            userProvider={userProvider}
-            connectedBuilder={connectedBuilder}
-            isFirst={index === 0}
-            isLast={length - 1 === index}
-          />
-        ))}
+        {Object.entries(challengeInfo)
+          .filter(([_, challenge]) => !challenge.disabled)
+          .map(([challengeId, challenge], index, { length }) => (
+            <ChallengeExpandedCard
+              challengeId={challengeId}
+              challenge={challenge}
+              // Magic number: we don't want to count the Join the BG as a challenge
+              challengeIndex={index < 5 ? index : index - 1}
+              builderAttemptedChallenges={builderAttemptedChallenges}
+              userProvider={userProvider}
+              connectedBuilder={connectedBuilder}
+              isFirst={index === 0}
+              isLast={length - 1 === index}
+            />
+          ))}
       </Box>
     </Box>
   );

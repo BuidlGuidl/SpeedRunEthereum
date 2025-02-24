@@ -97,11 +97,22 @@ export const challengeInfo = {
     comingSoon: true,
     dependencies: [],
   },
+  "deploy-to-l2": {
+    id: 10,
+    branchName: "challenge-10-deploy-to-l2",
+    label: "⚡ Deploy to Layer 2",
+    disabled: false,
+    description:
+      "🚀 Ethereum L2s make blockchain apps fast and cheap, bringing us closer to mainstream adoption! Most L2s are EVM compatible, meaning your app should work seamlessly across them with little to no changes—just deploy and go! In this challenge, you will deploy an app across multiple chains, including Optimism, Base, and Arbitrum, and experience the snappy, low-cost transactions while exploring how they make building scalable apps and games easier than ever.",
+    previewImage: "assets/challenges/deployToL2.svg",
+    comingSoon: true,
+    dependencies: [],
+  },
   "state-channels": {
     id: 5,
     branchName: "challenge-5-state-channels",
     label: "🚩 Challenge 5: 📺 A State Channel Application",
-    disabled: false,
+    disabled: true,
     description:
       "🛣️ The Ethereum blockchain has great decentralization & security properties but these properties come at a price: transaction throughput is low, and transactions can be expensive. This makes many traditional web applications infeasible on a blockchain... or does it?  State channels look to solve these problems by allowing participants to securely transact off-chain while keeping interaction with Ethereum Mainnet at a minimum.",
     previewImage: "assets/challenges/state.svg",
