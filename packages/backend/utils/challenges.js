@@ -39,6 +39,10 @@ const challengeMapping = {
     id: 9,
     autograding: false,
   },
+  "deploy-to-l2": {
+    id: 10,
+    autograding: false,
+  },
 };
 
 function getChallengeIndexFromChallengeId(challengeId) {
