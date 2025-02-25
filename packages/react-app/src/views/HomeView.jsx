@@ -7,6 +7,7 @@ import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeroLogo from "../components/icons/HeroLogo";
 import HeroDiamond from "../components/icons/HeroDiamond";
 import AfterSreCard from "../components/AfterSreCard";
+import AfterSreLine from "../components/AfterSreLine";
 
 export default function HomeView({ connectedBuilder, userProvider }) {
   const history = useHistory();
@@ -100,7 +101,15 @@ export default function HomeView({ connectedBuilder, userProvider }) {
         ))}
       </Box>
 
-      <Box display="flex" flexDirection={{ base: "column" }} justifyContent="center" bgColor={cardBgColor}>
+      <Box
+        display="flex"
+        flexDirection={{ base: "column", xl: "row" }}
+        justifyContent="center"
+        bgColor={cardBgColor}
+        mx="auto"
+        position="relative"
+      >
+        <AfterSreLine />
         <AfterSreCard
           title="Tech Tree"
           description="Check this advanced Solidity challenges to test your Ethereum dev skills."

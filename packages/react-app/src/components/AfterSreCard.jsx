@@ -8,13 +8,13 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
     <Center borderColor={borderColor} bgColor={backgroundColor}>
       <Flex
         justifyContent="space-between"
-        maxW="7xl"
+        maxW={{ base: "7xl", lg: "none" }}
         w="100%"
         py={8}
         ml={14}
         mr={14}
         pl={10}
-        borderLeft="dashed 5px"
+        borderLeft={{ base: "dashed 5px", xl: "none" }}
         borderColor={borderColor}
         borderBottomColor={borderColor}
         position="relative"
@@ -22,21 +22,6 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
           base: "column-reverse",
           lg: "row",
         }}
-        // _after={
-        //   isFirst && {
-        //     content: `""`,
-        //     position: "absolute",
-        //     left: "-12px",
-        //     zIndex: "1",
-        //     top: "0",
-        //     width: "18px",
-        //     height: {
-        //       base: "58%",
-        //       lg: "50%",
-        //     },
-        //     background: cardBgColor,
-        //   }
-        // }
       >
         <chakra.span
           h={5}
@@ -51,16 +36,10 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
             lg: "50%",
           }}
           left="-13px"
+          display={{ base: "flex", xl: "none" }}
         />
-        <VStack
-          alignItems="start"
-          maxWidth={{ base: "100%", lg: "40%" }}
-          spacing={{
-            base: 18,
-            lg: 20,
-          }}
-        >
-          <VStack alignItems="start" spacing={0}>
+        <VStack alignItems="start" maxWidth={{ base: "100%", lg: "40%" }} spacing={4}>
+          <VStack alignItems="start" spacing={0} mt={100}>
             <Text fontSize={{ base: "3xl", lg: "2xl" }} color={primaryFontColor} mt={0} fontWeight="bold">
               {title}
             </Text>
