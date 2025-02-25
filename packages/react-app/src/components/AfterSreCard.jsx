@@ -1,8 +1,8 @@
 import React from "react";
-import { chakra, ButtonGroup, Button, Center, Image, Flex, Text, Link, Box, VStack } from "@chakra-ui/react";
+import { chakra, Button, Center, Image, Flex, Text, Link, Box, VStack } from "@chakra-ui/react";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 
-const AfterSreCard = ({ title, description, externalLink, previewImage, backgroundColor }) => {
+const AfterSreCard = ({ title, description, externalLink, previewImage, backgroundColor, buttonText }) => {
   const { borderColor, bgColor, primaryFontColor } = useCustomColorModes();
   return (
     <Center borderColor={borderColor} bgColor={backgroundColor}>
@@ -49,24 +49,19 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
               {description}
             </Text>
 
-            <ButtonGroup alignItems="center">
-              <Button
-                as={Link}
-                href={externalLink}
-                variant="solid"
-                fontSize={{ base: "xl", lg: "lg" }}
-                border="2px"
-                backgroundColor={bgColor}
-                borderColor={borderColor}
-                isExternal
-                py="1.25rem"
-                px={6}
-              >
-                <chakra.span color={primaryFontColor} textTransform="uppercase">
-                  Join
-                </chakra.span>
-              </Button>
-            </ButtonGroup>
+            <Button
+              as={Link}
+              href={externalLink}
+              fontSize={{ base: "xl", lg: "lg" }}
+              colorScheme="green"
+              isExternal
+              py="1.25rem"
+              px={6}
+              textTransform="uppercase"
+              textDecoration="none !important"
+            >
+              {buttonText}
+            </Button>
           </VStack>
         </VStack>
         <Box
