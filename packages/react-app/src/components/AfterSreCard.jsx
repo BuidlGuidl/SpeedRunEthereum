@@ -8,7 +8,7 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
     <Center borderColor={borderColor} bgColor={backgroundColor}>
       <Flex
         justifyContent="space-between"
-        maxW={{ base: "7xl", lg: "none" }}
+        maxW={{ base: "7xl", xl: "3xl" }}
         w="100%"
         py={8}
         ml={14}
