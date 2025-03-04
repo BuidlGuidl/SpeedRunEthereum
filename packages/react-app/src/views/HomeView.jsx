@@ -115,7 +115,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           description="Check this advanced Solidity challenges to test your Ethereum dev skills."
           externalLink="https://github.com/BuidlGuidl/eth-tech-tree"
           buttonText="Join"
-          previewImage="/assets/challenges/techTree.png"
+          previewImage="/assets/challenges/techTree.svg"
           backgroundColor={techTreeBgColor}
         />
         <AfterSreCard
@@ -123,7 +123,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           description="Join our Capture the Flag game and win back the 12 flags to prove your skills."
           externalLink="https://ctf.buidlguidl.com"
           buttonText="Start"
-          previewImage="/assets/challenges/ctf.png"
+          previewImage="/assets/challenges/ctf.svg"
           backgroundColor={bgColor}
         />
       </Box>
