@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Container, Box, Text, Center, useColorModeValue, Button } from "@chakra-ui/react";
+import { Container, Box, Text, Center, useColorModeValue, Button, Flex } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
@@ -110,6 +110,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
         position="relative"
       >
         <AfterSreLine />
+        <Flex display={{ base: "none", xl: "flex" }} flexGrow={1} bgColor={techTreeBgColor} />
         <AfterSreCard
           title="ETH Tech Tree"
           description="Check this advanced Solidity challenges to test your Ethereum dev skills."
@@ -126,6 +127,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           previewImage="/assets/challenges/ctf.svg"
           backgroundColor={bgColor}
         />
+        <Flex display={{ base: "none", xl: "flex" }} flexGrow={1} bgColor={bgColor} />
       </Box>
     </Box>
   );
