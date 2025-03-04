@@ -111,7 +111,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
       >
         <AfterSreLine />
         <AfterSreCard
-          title="Tech Tree"
+          title="ETH Tech Tree"
           description="Check this advanced Solidity challenges to test your Ethereum dev skills."
           externalLink="https://github.com/BuidlGuidl/eth-tech-tree"
           buttonText="Join"
@@ -119,8 +119,8 @@ export default function HomeView({ connectedBuilder, userProvider }) {
           backgroundColor={techTreeBgColor}
         />
         <AfterSreCard
-          title="CTF"
-          description="Join our Capture the Flag game and win back the 12 flags to prove your skills."
+          title="Capture the Flag"
+          description="Join our CTF game and hack your way through 12 Smart Contract challenges."
           externalLink="https://ctf.buidlguidl.com"
           buttonText="Start"
           previewImage="/assets/challenges/ctf.svg"
