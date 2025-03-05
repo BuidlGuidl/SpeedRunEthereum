@@ -73,7 +73,13 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
             lg: 0,
           }}
         >
-          <Image src={previewImage} alt={`${title} image`} maxW={{ lg: "400px" }} mr={{ base: 0, lg: "50px" }} />
+          <Image
+            src={previewImage}
+            alt={`${title} image`}
+            maxW={{ lg: "400px" }}
+            p={previewImage.includes("techTree") ? "36px" : 0}
+            mr={{ base: 0, lg: "50px" }}
+          />
         </Box>
       </Flex>
     </Center>
