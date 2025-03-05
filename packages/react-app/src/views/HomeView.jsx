@@ -114,7 +114,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
         <AfterSreCard
           title="ETH Tech Tree"
           description="Check this advanced Solidity challenges to test your Ethereum dev skills."
-          externalLink="https://github.com/BuidlGuidl/eth-tech-tree"
+          externalLink="https://www.ethtechtree.com"
           buttonText="Join"
           previewImage="/assets/challenges/techTree.svg"
           backgroundColor={techTreeBgColor}
