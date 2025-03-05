@@ -11,8 +11,8 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
         maxW={{ base: "7xl", xl: "3xl" }}
         w="100%"
         py={8}
-        ml={14}
-        mr={14}
+        ml={{ base: 14, xl: 0, "2xl": 14 }}
+        mr={{ base: 14, xl: 0, "2xl": 14 }}
         pl={10}
         borderLeft={{ base: "dashed 5px", xl: "none" }}
         borderColor={borderColor}
@@ -39,7 +39,7 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
           display={{ base: "flex", xl: "none" }}
         />
         <VStack alignItems="start" maxWidth={{ base: "100%", lg: "40%" }} spacing={4}>
-          <VStack alignItems="start" spacing={0} mt={100}>
+          <VStack alignItems="start" spacing={0} mt={{ base: 0, lg: 100 }}>
             <Text fontSize={{ base: "3xl", lg: "2xl" }} color={primaryFontColor} mt={0} fontWeight="bold">
               {title}
             </Text>
@@ -78,7 +78,7 @@ const AfterSreCard = ({ title, description, externalLink, previewImage, backgrou
             alt={`${title} image`}
             maxW={{ lg: "400px" }}
             p={previewImage.includes("techTree") ? "36px" : 0}
-            mr={{ base: 0, lg: "50px" }}
+            mr={{ base: 0, "2xl": "50px" }}
           />
         </Box>
       </Flex>
