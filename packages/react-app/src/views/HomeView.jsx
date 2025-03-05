@@ -1,16 +1,19 @@
 import React, { useMemo } from "react";
-import { Container, Box, Text, Center, useColorModeValue, Button } from "@chakra-ui/react";
+import { Container, Box, Text, Center, useColorModeValue, Button, Flex } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 import ChallengeExpandedCard from "../components/ChallengeExpandedCard";
 import { challengeInfo } from "../data/challenges";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeroLogo from "../components/icons/HeroLogo";
 import HeroDiamond from "../components/icons/HeroDiamond";
-import { useHistory } from "react-router-dom";
+import AfterSreCard from "../components/AfterSreCard";
+import AfterSreLine from "../components/AfterSreLine";
 
 export default function HomeView({ connectedBuilder, userProvider }) {
   const history = useHistory();
   const { primaryFontColor, bgColor } = useCustomColorModes();
   const cardBgColor = useColorModeValue("sre.cardBackground", "sreDark.cardBackground");
+  const techTreeBgColor = useColorModeValue("#96EAEA", "#3AACAD");
 
   const builderAttemptedChallenges = useMemo(() => {
     if (!connectedBuilder?.challenges) {
@@ -18,6 +21,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
     }
 
     return Object.fromEntries(
+      // eslint-disable-next-line no-unused-vars
       Object.entries(connectedBuilder.challenges).filter(([_, challengeData]) => challengeData?.status),
     );
   }, [connectedBuilder]);
@@ -97,6 +101,35 @@ export default function HomeView({ connectedBuilder, userProvider }) {
               isLast={length - 1 === index}
             />
           ))}
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ base: "column", xl: "row" }}
+        justifyContent="center"
+        bgColor={cardBgColor}
+        mx="auto"
+        position="relative"
+      >
+        <AfterSreLine />
+        <Flex display={{ base: "none", xl: "flex" }} flexGrow={1} bgColor={techTreeBgColor} />
+        <AfterSreCard
+          title="ETH Tech Tree"
+          description="Check this advanced Solidity challenges to test your Ethereum dev skills."
+          externalLink="https://www.ethtechtree.com"
+          buttonText="Join"
+          previewImage="/assets/challenges/techTree.svg"
+          backgroundColor={techTreeBgColor}
+        />
+        <AfterSreCard
+          title="Capture the Flag"
+          description="Join our CTF game and hack your way through 12 Smart Contract challenges."
+          externalLink="https://ctf.buidlguidl.com"
+          buttonText="Start"
+          previewImage="/assets/challenges/ctf.svg"
+          backgroundColor={bgColor}
+        />
+        <Flex display={{ base: "none", xl: "flex" }} flexGrow={1} bgColor={bgColor} />
       </Box>
     </Box>
   );
