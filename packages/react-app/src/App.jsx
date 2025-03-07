@@ -21,6 +21,7 @@ import { USER_ROLES } from "./helpers/constants";
 import { providerPromiseWrapper } from "./helpers/blockchainProviders";
 import BlockchainProvidersContext from "./contexts/blockchainProvidersContext";
 import SiteFooter from "./components/SiteFooter";
+import NotFoundView from "./views/NotFoundView";
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -228,6 +229,12 @@ function App() {
           </Route>
           <Route path="/activity" exact>
             <ActivityView />
+          </Route>
+          <Route path="/404" exact>
+            <NotFoundView />
+          </Route>
+          <Route path="*">
+            <Redirect to="/404" />
           </Route>
         </Switch>
         <ColorModeSwitcher />

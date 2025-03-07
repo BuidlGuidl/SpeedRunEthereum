@@ -61,9 +61,8 @@ export default function ChallengeDetailView({ serverUrl, address, userProvider, 
   }, [isAnonymous, isWalletConnected, onOpen, userRole, openModalOnLoad, setOpenModalOnLoad]);
 
   if (!challenge) {
-    // TODO implement a 404 page
-    // this looks good: https://ant.design/components/result/#components-result-demo-404
     history.push("/404");
+    return null;
   }
 
   const handleSubmitChallengeModal = async () => {
