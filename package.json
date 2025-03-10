@@ -9,6 +9,9 @@
     "yarn"
   ],
   "private": true,
+  "engines": {
+    "node": ">=17.0.0"
+  },
   "scripts": {
     "react-app:build": "yarn workspace @scaffold-eth/react-app build --max-old-space-size=12288",
     "react-app:eject": "yarn workspace @scaffold-eth/react-app eject",
