@@ -1,6 +1,6 @@
 # Full build with debuginfo for graph-node
 #
-# The expectation if that the docker build uses the parent directory as PWD
+# The expectation is that the docker build uses the parent directory as PWD
 # by running something like the following
 #   docker build --target STAGE -f docker/Dockerfile .
 
